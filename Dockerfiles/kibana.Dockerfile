@@ -32,7 +32,6 @@ ENV ELASTICSEARCH_URL $ELASTICSEARCH_URL
 
 USER root
 
-ADD kibana/plugin-patches /tmp/plugin-patches
 ADD kibana/elastalert-kibana-plugin/server/routes/elastalert.js /tmp/elastalert-server-routes.js
 
 # todo: these extra plugins are kind of gutted right now with 7.x, need to fix
@@ -60,7 +59,7 @@ ADD kibana/elastalert-kibana-plugin/server/routes/elastalert.js /tmp/elastalert-
 RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
       curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-swimlane-vis/releases/download/v7.6.2/prelert_swimlane_vis-7.6.2.zip" && \
       curl -sSL -o /tmp/elastalert-kibana-plugin.zip "https://github.com/bitsensor/elastalert-kibana-plugin/releases/download/1.1.0/elastalert-kibana-plugin-1.1.0-7.5.0.zip" && \
-      curl -sSL -o /tmp/kibana-network.zip "https://codeload.github.com/dlumbrer/kbn_network/zip/7-dev" && \
+      curl -sSL -o /tmp/kibana-network.zip "https://codeload.github.com/cpiment/kbn_network/zip/7-dev" && \
       curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
       curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
     yum install -y epel-release && \
@@ -118,7 +117,6 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       cd ./network_vis && \
       sed -i "s/7\.5\.2/7\.8\.0/g" ./package.json && \
       rm -rf ./images && \
-      patch -p 1 < /tmp/plugin-patches/kbn_network_7.6.x.patch && \
       npm install && \
       rm -rf /tmp/kibana-network.zip && \
     cd /tmp && \
@@ -138,7 +136,7 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-swimlane.zip --allow-root && \
       bash -c "find /usr/share/kibana/plugins/prelert_swimlane_vis/ -type f -exec chmod 644 '{}' \;" && \
       rm -rf /tmp/kibana-swimlane.zip /tmp/kibana && \
-    rm -rf /tmp/plugin-patches /tmp/elastalert-server-routes.js /tmp/npm-*
+    rm -rf /tmp/elastalert-server-routes.js /tmp/npm-*
 
 ADD kibana/dashboards /opt/kibana/dashboards
 ADD kibana/kibana-offline-maps.yml /opt/kibana/config/kibana-offline-maps.yml
