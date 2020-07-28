@@ -134,7 +134,7 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       unzip /tmp/kibana-network.zip && \
       mv ./kbn_network-* ./network_vis && \
       cd ./network_vis && \
-      sed -i "s/7\.5\.2/7\.8\.1/g" ./package.json && \
+      sed -i "s/7\.6\.2/7\.8\.1/g" ./package.json && \
       rm -rf ./images && \
       npm install && \
       rm -rf /tmp/kibana-network.zip && \
