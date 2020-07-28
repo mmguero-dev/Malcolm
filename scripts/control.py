@@ -57,6 +57,7 @@ def logs():
         deprecated
       | elastalert-server:\s+Routes:
       | eshealth
+      | remov(ed|ing)\s+(old\s+file|dead\s+symlink|empty\s+directory)
       | update_mapping
       | throttling\s+index
       | but\s+there\s+are\s+no\s+living\s+connections
@@ -610,7 +611,7 @@ def main():
   os.chdir(MalcolmPath)
 
   # don't run this as root
-  if (pyPlatform != PLATFORM_WINDOWS) and (('SUDO_UID' in os.environ.keys()) or (getpass.getuser() == 'root')):
+  if (pyPlatform != PLATFORM_WINDOWS) and ((os.getuid() == 0) or (os.geteuid() == 0) or (getpass.getuser() == 'root')):
     raise Exception('{} should not be run as root'.format(ScriptName))
 
   # make sure docker/docker-compose is available
