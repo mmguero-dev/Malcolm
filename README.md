@@ -156,22 +156,22 @@ You can then observe that the images have been retrieved by running `docker imag
 ```
 $ docker images
 REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
-malcolmnetsec/curator                               2.2.0               xxxxxxxxxxxx        20 hours ago        246MB
-malcolmnetsec/elastalert                            2.2.0               xxxxxxxxxxxx        20 hours ago        408MB
-malcolmnetsec/elasticsearch-oss                     2.2.0               xxxxxxxxxxxx        20 hours ago        693MB
-malcolmnetsec/filebeat-oss                          2.2.0               xxxxxxxxxxxx        20 hours ago        474MB
-malcolmnetsec/file-monitor                          2.2.0               xxxxxxxxxxxx        20 hours ago        386MB
-malcolmnetsec/file-upload                           2.2.0               xxxxxxxxxxxx        20 hours ago        199MB
-malcolmnetsec/freq                                  2.2.0               xxxxxxxxxxxx        20 hours ago        390MB
-malcolmnetsec/htadmin                               2.2.0               xxxxxxxxxxxx        20 hours ago        180MB
-malcolmnetsec/kibana-oss                            2.2.0               xxxxxxxxxxxx        20 hours ago        1.07GB
-malcolmnetsec/logstash-oss                          2.2.0               xxxxxxxxxxxx        20 hours ago        1.05GB
-malcolmnetsec/moloch                                2.2.0               xxxxxxxxxxxx        20 hours ago        667MB
-malcolmnetsec/name-map-ui                           2.2.0               xxxxxxxxxxxx        20 hours ago        134MB
-malcolmnetsec/nginx-proxy                           2.2.0               xxxxxxxxxxxx        20 hours ago        118MB
-malcolmnetsec/pcap-capture                          2.2.0               xxxxxxxxxxxx        20 hours ago        111MB
-malcolmnetsec/pcap-monitor                          2.2.0               xxxxxxxxxxxx        20 hours ago        156MB
-malcolmnetsec/zeek                                  2.2.0               xxxxxxxxxxxx        20 hours ago        442MB
+malcolmnetsec/curator                               2.2.1               xxxxxxxxxxxx        20 hours ago        246MB
+malcolmnetsec/elastalert                            2.2.1               xxxxxxxxxxxx        20 hours ago        408MB
+malcolmnetsec/elasticsearch-oss                     2.2.1               xxxxxxxxxxxx        20 hours ago        693MB
+malcolmnetsec/filebeat-oss                          2.2.1               xxxxxxxxxxxx        20 hours ago        474MB
+malcolmnetsec/file-monitor                          2.2.1               xxxxxxxxxxxx        20 hours ago        386MB
+malcolmnetsec/file-upload                           2.2.1               xxxxxxxxxxxx        20 hours ago        199MB
+malcolmnetsec/freq                                  2.2.1               xxxxxxxxxxxx        20 hours ago        390MB
+malcolmnetsec/htadmin                               2.2.1               xxxxxxxxxxxx        20 hours ago        180MB
+malcolmnetsec/kibana-oss                            2.2.1               xxxxxxxxxxxx        20 hours ago        1.07GB
+malcolmnetsec/logstash-oss                          2.2.1               xxxxxxxxxxxx        20 hours ago        1.05GB
+malcolmnetsec/moloch                                2.2.1               xxxxxxxxxxxx        20 hours ago        667MB
+malcolmnetsec/name-map-ui                           2.2.1               xxxxxxxxxxxx        20 hours ago        134MB
+malcolmnetsec/nginx-proxy                           2.2.1               xxxxxxxxxxxx        20 hours ago        118MB
+malcolmnetsec/pcap-capture                          2.2.1               xxxxxxxxxxxx        20 hours ago        111MB
+malcolmnetsec/pcap-monitor                          2.2.1               xxxxxxxxxxxx        20 hours ago        156MB
+malcolmnetsec/zeek                                  2.2.1               xxxxxxxxxxxx        20 hours ago        442MB
 ```
 
 #### Import from pre-packaged tarballs
@@ -226,21 +226,25 @@ Malcolm leverages the following excellent open source tools, among others.
 * [nginx-auth-ldap](https://github.com/kvspb/nginx-auth-ldap) - an LDAP authentication module for nginx
 * [ElastAlert](https://github.com/Yelp/elastalert) - an alerting framework for Elasticsearch. Specifically, the [BitSensor fork of ElastAlert](https://github.com/bitsensor/elastalert), its Docker configuration and its corresponding [Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin) are used.
 * [freq](https://github.com/MarkBaggett/freq) - a tool for calculating entropy of strings
-* These third party Zeek plugins:
+* These Zeek plugins:
     * Amazon.com, Inc.'s [ICS protocol](https://github.com/amzn?q=zeek) analyzers
-    * Andrew Klaus's [zeek-httpattacks](https://github.com/precurse/zeek-httpattacks) plugin for detecting noncompliant HTTP requests
     * Andrew Klaus's [Sniffpass](https://github.com/cybera/zeek-sniffpass) plugin for detecting cleartext passwords in HTTP POST requests
+    * Andrew Klaus's [zeek-httpattacks](https://github.com/precurse/zeek-httpattacks) plugin for detecting noncompliant HTTP requests
     * Corelight's [bro-xor-exe](https://github.com/corelight/bro-xor-exe-plugin) plugin
+    * Corelight's [callstranger-detector](https://github.com/corelight/callstranger-detector) plugin
     * Corelight's [community ID](https://github.com/corelight/zeek-community-id) flow hashing plugin
+    * Corelight's [ripple20](https://github.com/corelight/ripple20) plugin
+    * Corelight's [SIGred](https://github.com/corelight/SIGred) plugin
     * J-Gras' [Zeek::AF_Packet](https://github.com/J-Gras/zeek-af_packet-plugin) plugin
-    * Verizon Media's [spicy-noise](https://github.com/theparanoids/spicy-noise) WireGuard analyzer plugin
+    * Johanna Amann's [CVE-2020-0601](https://github.com/0xxon/cve-2020-0601) ECC certificate validation plugin and [CVE-2020-13777](https://github.com/0xxon/cve-2020-13777) GnuTLS unencrypted session ticket detection plugin
     * Lexi Brent's [EternalSafety](https://github.com/lexibrent/zeek-EternalSafety) plugin
     * MITRE Cyber Analytics Repository's [Bro/Zeek ATT&CK-Based Analytics (BZAR)](https://github.com/mitre-attack/car/tree/master/implementations) script
     * Salesforce's [gQUIC](https://github.com/salesforce/GQUIC_Protocol_Analyzer) analyzer
     * Salesforce's [HASSH](https://github.com/salesforce/hassh) SSH fingerprinting plugin
     * Salesforce's [JA3](https://github.com/salesforce/ja3) TLS fingerprinting plugin
     * SoftwareConsultingEmporium's [Bro::LDAP](https://github.com/SoftwareConsultingEmporium/ldap-analyzer) analyzer
-    * Johanna Amann's [CVE-2020-0601](https://github.com/0xxon/cve-2020-0601) ECC certificate validation plugin and [CVE-2020-13777](https://github.com/0xxon/cve-2020-13777) GnuTLS unencrypted session ticket detection plugin
+    * Verizon Media's [spicy-noise](https://github.com/theparanoids/spicy-noise) WireGuard analyzer plugin
+    * Zeek's [Spicy](https://github.com/zeek/spicy) plugin framework
 * [GeoLite2](https://dev.maxmind.com/geoip/geoip2/geolite2/) - Malcolm includes GeoLite2 data created by [MaxMind](https://www.maxmind.com)
 
 ## <a name="Protocols"></a>Supported Protocols
@@ -979,7 +983,7 @@ Moloch's **SPI** (**S**ession **P**rofile **I**nformation) **View** provides a q
 
 ![Moloch's SPIView](./docs/images/screenshots/moloch_spiview.png)
 
-Click the the plus **➕** icon to the right of a category to expand it. The values for specific fields are displayed by clicking the field description in the field list underneatn the category name. The list of field names can be filtered by typing part of the field name in the *Search for fields to display in this category* text input. The **Load All** and **Unload All** buttons can be used to toggle display of all of the fields belonging to that category. Once displayed, a field's name or one of its values may be clicked to provide further actions for filtering or displaying that field or its values. Of particular interest may be the **Open [fieldname] SPI Graph** option when clicking on a field's name. This will open a new tab with the SPI Graph ([see below](#MolochSPIGraph)) populated with the field's top values.
+Click the the plus **➕** icon to the right of a category to expand it. The values for specific fields are displayed by clicking the field description in the field list underneath the category name. The list of field names can be filtered by typing part of the field name in the *Search for fields to display in this category* text input. The **Load All** and **Unload All** buttons can be used to toggle display of all of the fields belonging to that category. Once displayed, a field's name or one of its values may be clicked to provide further actions for filtering or displaying that field or its values. Of particular interest may be the **Open [fieldname] SPI Graph** option when clicking on a field's name. This will open a new tab with the SPI Graph ([see below](#MolochSPIGraph)) populated with the field's top values.
 
 Note that because the SPIView page can potentially run many queries, SPIView limits the search domain to seven days (in other words, seven indices, as each index represents one day's worth of data). When using SPIView, you will have best results if you limit your search time frame to less than or equal to seven days. This limit can be adjusted by editing the `spiDataMaxIndices` setting in [config.ini](./etc/moloch/config.ini) and rebuilding the `malcolmnetsec/moloch` docker container.
 
@@ -1001,7 +1005,7 @@ The **Connections** page presents network communications via a force-directed gr
 
 ![Moloch's Connections graph](./docs/images/screenshots/moloch_connections.png)
 
-Controls are available for specifying the query size (where smaller values will execute more quickly but may only contain an incomplete representation of the top *n* sessions, and larger values may take longer to execute but will be more complete), which fields to use as the source and destionation for node values, a minimum connections threshold, and the method for determining the "weight" of the link between two nodes. As is the case with most other visualizations in Moloch, the graph is interactive: clicking on a node or the link between two nodes can be used to modify query filters, and the nodes themselves may be repositioned by dragging and dropping them. A node's color indicates whether it communicated as a source/originator, a destination/responder, or both.
+Controls are available for specifying the query size (where smaller values will execute more quickly but may only contain an incomplete representation of the top *n* sessions, and larger values may take longer to execute but will be more complete), which fields to use as the source and destination for node values, a minimum connections threshold, and the method for determining the "weight" of the link between two nodes. As is the case with most other visualizations in Moloch, the graph is interactive: clicking on a node or the link between two nodes can be used to modify query filters, and the nodes themselves may be repositioned by dragging and dropping them. A node's color indicates whether it communicated as a source/originator, a destination/responder, or both.
 
 While the default source and destination fields are *Src IP* and *Dst IP:Dst Port*, the Connections view is able to use any combination of any of the fields populated by Moloch and Zeek. For example:
 
@@ -1411,7 +1415,7 @@ Building the ISO may take 30 minutes or more depending on your system. As the bu
 
 ```
 …
-Finished, created "/malcolm-build/malcolm-iso/malcolm-2.2.0.iso"
+Finished, created "/malcolm-build/malcolm-iso/malcolm-2.2.1.iso"
 …
 ```
 
@@ -1806,22 +1810,22 @@ Pulling zeek          ... done
 
 user@host:~/Malcolm$ docker images
 REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
-malcolmnetsec/curator                               2.2.0               xxxxxxxxxxxx        20 hours ago        246MB
-malcolmnetsec/elastalert                            2.2.0               xxxxxxxxxxxx        20 hours ago        408MB
-malcolmnetsec/elasticsearch-oss                     2.2.0               xxxxxxxxxxxx        20 hours ago        693MB
-malcolmnetsec/filebeat-oss                          2.2.0               xxxxxxxxxxxx        20 hours ago        474MB
-malcolmnetsec/file-monitor                          2.2.0               xxxxxxxxxxxx        20 hours ago        386MB
-malcolmnetsec/file-upload                           2.2.0               xxxxxxxxxxxx        20 hours ago        199MB
-malcolmnetsec/freq                                  2.2.0               xxxxxxxxxxxx        20 hours ago        390MB
-malcolmnetsec/htadmin                               2.2.0               xxxxxxxxxxxx        20 hours ago        180MB
-malcolmnetsec/kibana-oss                            2.2.0               xxxxxxxxxxxx        20 hours ago        1.07GB
-malcolmnetsec/logstash-oss                          2.2.0               xxxxxxxxxxxx        20 hours ago        1.05GB
-malcolmnetsec/moloch                                2.2.0               xxxxxxxxxxxx        20 hours ago        667MB
-malcolmnetsec/name-map-ui                           2.2.0               xxxxxxxxxxxx        20 hours ago        134MB
-malcolmnetsec/nginx-proxy                           2.2.0               xxxxxxxxxxxx        20 hours ago        118MB
-malcolmnetsec/pcap-capture                          2.2.0               xxxxxxxxxxxx        20 hours ago        111MB
-malcolmnetsec/pcap-monitor                          2.2.0               xxxxxxxxxxxx        20 hours ago        156MB
-malcolmnetsec/zeek                                  2.2.0               xxxxxxxxxxxx        20 hours ago        442MB
+malcolmnetsec/curator                               2.2.1               xxxxxxxxxxxx        20 hours ago        246MB
+malcolmnetsec/elastalert                            2.2.1               xxxxxxxxxxxx        20 hours ago        408MB
+malcolmnetsec/elasticsearch-oss                     2.2.1               xxxxxxxxxxxx        20 hours ago        693MB
+malcolmnetsec/filebeat-oss                          2.2.1               xxxxxxxxxxxx        20 hours ago        474MB
+malcolmnetsec/file-monitor                          2.2.1               xxxxxxxxxxxx        20 hours ago        386MB
+malcolmnetsec/file-upload                           2.2.1               xxxxxxxxxxxx        20 hours ago        199MB
+malcolmnetsec/freq                                  2.2.1               xxxxxxxxxxxx        20 hours ago        390MB
+malcolmnetsec/htadmin                               2.2.1               xxxxxxxxxxxx        20 hours ago        180MB
+malcolmnetsec/kibana-oss                            2.2.1               xxxxxxxxxxxx        20 hours ago        1.07GB
+malcolmnetsec/logstash-oss                          2.2.1               xxxxxxxxxxxx        20 hours ago        1.05GB
+malcolmnetsec/moloch                                2.2.1               xxxxxxxxxxxx        20 hours ago        667MB
+malcolmnetsec/name-map-ui                           2.2.1               xxxxxxxxxxxx        20 hours ago        134MB
+malcolmnetsec/nginx-proxy                           2.2.1               xxxxxxxxxxxx        20 hours ago        118MB
+malcolmnetsec/pcap-capture                          2.2.1               xxxxxxxxxxxx        20 hours ago        111MB
+malcolmnetsec/pcap-monitor                          2.2.1               xxxxxxxxxxxx        20 hours ago        156MB
+malcolmnetsec/zeek                                  2.2.1               xxxxxxxxxxxx        20 hours ago        442MB
 ```
 
 Finally, we can start Malcolm. When Malcolm starts it will stream informational and debug messages to the console. If you wish, you can safely close the console or use `Ctrl+C` to stop these messages; Malcolm will continue running in the background.
