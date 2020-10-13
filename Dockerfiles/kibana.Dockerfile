@@ -50,6 +50,9 @@ USER root
 # TODO: these plugins do not work with 7.x at the moment; if they can be fixed, we could include them.
 # for now they are not used in any of the default Malcolm visualizations
 
+# TODO: still seeing this error message on startup
+# kibana_1         | Error in worker TypeError [ERR_INVALID_ARG_TYPE]: The "id" argument must be of type string. Received type object
+
 # see https://github.com/walterra/kibana-milestones-vis/issues/9
 # curl -sSL -o /tmp/kibana-milestones.zip "https://github.com/walterra/kibana-milestones-vis/releases/download/v7.1.1/kibana-milestones-vis-7.1.1.zip"
 #    cd /tmp && \
