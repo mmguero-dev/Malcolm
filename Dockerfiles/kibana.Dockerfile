@@ -47,7 +47,8 @@ ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 USER root
 
-# todo: these extra plugins are kind of gutted right now with 7.x, need to fix
+# TODO: these plugins do not work with 7.x at the moment; if they can be fixed, we could include them.
+# for now they are not used in any of the default Malcolm visualizations
 
 # see https://github.com/walterra/kibana-milestones-vis/issues/9
 # curl -sSL -o /tmp/kibana-milestones.zip "https://github.com/walterra/kibana-milestones-vis/releases/download/v7.1.1/kibana-milestones-vis-7.1.1.zip"
@@ -60,7 +61,6 @@ USER root
 #      /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-milestones.zip --allow-root && \
 #      rm -rf /tmp/kibana-milestones.zip /tmp/kibana
 
-# not optimizing in 6.6+ correctly
 # curl -sSL -o /tmp/kibana-calendar.zip "https://github.com/aaronoah/kibana_calendar_vis/releases/download/v6.4.0/kibana_calendar_vis-6.4.0.zip"
 #    echo "Installing Calendar visualization..." && \
 #    unzip kibana-calendar.zip kibana/kibana_calendar_vis/package.json && \
@@ -69,7 +69,6 @@ USER root
 #    /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-calendar.zip --allow-root && \
 #    rm -rf /tmp/kibana-calendar.zip /tmp/kibana && \
 
-#
 # curl -sSL -o /tmp/kibana-network.zip "https://codeload.github.com/cpiment/kbn_network/zip/7-dev" && \
 # cd /tmp && \
 #   echo "Installing Network visualization..." && \
@@ -81,7 +80,6 @@ USER root
 #   rm -rf ./images && \
 #   npm install && \
 #   rm -rf /tmp/kibana-network.zip && \
-
 
 RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
       curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-swimlane-vis/releases/download/v7.6.2/prelert_swimlane_vis-7.6.2.zip" && \
@@ -161,7 +159,6 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       rm -rf /tmp/kibana-swimlane.zip /tmp/kibana && \
     rm -rf /tmp/npm-*
 
-ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD kibana/dashboards /opt/kibana/dashboards
 ADD kibana/kibana-offline-maps.yml /opt/kibana/config/kibana-offline-maps.yml
 ADD kibana/kibana-standard.yml /opt/kibana/config/kibana-standard.yml
@@ -169,6 +166,7 @@ ADD kibana/maps /opt/maps
 ADD kibana/scripts /data/
 ADD kibana/supervisord.conf /etc/supervisord.conf
 ADD kibana/zeek_template.json /data/zeek_template.json
+ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD shared/bin/elastic_search_status.sh /data/
 
 RUN chmod 755 /data/*.sh /data/*.py && \
