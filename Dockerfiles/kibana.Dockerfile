@@ -82,18 +82,9 @@ USER root
 #   npm install && \
 #   rm -rf /tmp/kibana-network.zip && \
 
-# curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
-# cd /tmp && \
-# echo "Installing Comments visualization..." && \
-#   unzip kibana-comments.zip kibana/kibana-comments-app-plugin/package.json && \
-#   sed -i "s/7\.4\.0/7\.9\.2/g" kibana/kibana-comments-app-plugin/package.json && \
-#   zip kibana-comments.zip kibana/kibana-comments-app-plugin/package.json && \
-#   cd /usr/share/kibana/plugins && \
-#   /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-comments.zip --allow-root && \
-#   rm -rf /tmp/kibana-comments.zip /tmp/kibana && \
-#
 
-RUN   curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-swimlane-vis/releases/download/v7.6.2/prelert_swimlane_vis-7.6.2.zip" && \
+RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
+      curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-swimlane-vis/releases/download/v7.6.2/prelert_swimlane_vis-7.6.2.zip" && \
       curl -sSL -o /tmp/elastalert-kibana-plugin.zip "https://github.com/nsano-rururu/elastalert-kibana-plugin/releases/download/1.3.0/elastalert-kibana-plugin-1.3.0-7.9.2.zip" && \
       curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
       curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
@@ -146,6 +137,19 @@ RUN   curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-s
       cd /usr/share/kibana/plugins && \
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/drilldown.zip --allow-root && \
       rm -rf /tmp/kibana /tmp/*drilldown* && \
+    cd /tmp && \
+    echo "Installing Comments visualization..." && \
+      unzip kibana-comments.zip \
+            kibana/kibana-comments-app-plugin/package.json \
+            kibana/kibana-comments-app-plugin/public/app.js && \
+      sed -i "s/7\.4\.0/7\.9\.2/g" kibana/kibana-comments-app-plugin/package.json && \
+      sed -i "s/^import.*ui\/autoload\/styles.*$//" kibana/kibana-comments-app-plugin/public/app.js && \
+      zip kibana-comments.zip \
+          kibana/kibana-comments-app-plugin/package.json \
+          kibana/kibana-comments-app-plugin/public/app.js && \
+      cd /usr/share/kibana/plugins && \
+      /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-comments.zip --allow-root && \
+      rm -rf /tmp/kibana-comments.zip /tmp/kibana && \
     cd /tmp && \
     echo "Installing Swimlanes visualization..." && \
       unzip kibana-swimlane.zip kibana/prelert_swimlane_vis/package.json && \
