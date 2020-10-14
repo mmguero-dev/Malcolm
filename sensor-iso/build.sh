@@ -140,7 +140,7 @@ if [ -d "$WORKDIR" ]; then
   # clone and build custom protologbeat from github for logging temperature, etc.
   mkdir -p ./config/includes.chroot/usr/local/bin/
   bash "$SCRIPT_PATH/beats/build-docker-image.sh"
-  bash "$SCRIPT_PATH/beats/beat-build.sh" -b "https://github.com/mmguero-dev/protologbeat" -t "topic/es_update"
+  bash "$SCRIPT_PATH/beats/beat-build.sh" -b "https://github.com/mmguero-dev/protologbeat" -t "master"
   cp github.com_mmguero-dev_protologbeat/protologbeat ./config/includes.chroot/opt/hedgehog_install_artifacts/
   mv github.com_mmguero-dev_protologbeat/protologbeat ./config/includes.chroot/usr/local/bin
 
