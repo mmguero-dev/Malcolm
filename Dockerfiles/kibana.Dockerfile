@@ -111,7 +111,7 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
           kibana/elastalert-kibana-plugin/public/components/main/main.js && \
       cd /usr/share/kibana/plugins && \
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/elastalert-kibana-plugin.zip --allow-root && \
-      rm -rf /tmp/elastalert-kibana-plugin.zip /tmp/elastalert.js /tmp/kibana && \
+      rm -rf /tmp/elastalert-kibana-plugin.zip /tmp/kibana && \
     cd /tmp && \
       echo "Installing Sankey visualization..." && \
       unzip /tmp/kibana-sankey.zip && \
