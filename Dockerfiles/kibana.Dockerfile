@@ -108,7 +108,7 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       sed -i "s/^import.*eui_theme_light.css.*$//" kibana/elastalert-kibana-plugin/public/components/main/main.js && \
       zip elastalert-kibana-plugin.zip \
           kibana/elastalert-kibana-plugin/package.json \
-          kibana/elastalert-kibana-plugin/public/components/main/main.js \
+          kibana/elastalert-kibana-plugin/public/components/main/main.js && \
       cd /usr/share/kibana/plugins && \
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/elastalert-kibana-plugin.zip --allow-root && \
       rm -rf /tmp/elastalert-kibana-plugin.zip /tmp/elastalert.js /tmp/kibana && \
