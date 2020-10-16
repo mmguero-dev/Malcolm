@@ -67,6 +67,7 @@ function clone_github_repo() {
 
 # install Zeek packages that insatll nicely using zkg
 ZKG_GITHUB_URLS=(
+  https://github.com/0xl3x1/zeek-EternalSafety
   https://github.com/0xxon/cve-2020-0601
   https://github.com/0xxon/cve-2020-13777
   https://github.com/amzn/zeek-plugin-bacnet
@@ -75,12 +76,12 @@ ZKG_GITHUB_URLS=(
   https://github.com/amzn/zeek-plugin-s7comm
   https://github.com/amzn/zeek-plugin-tds
   https://github.com/corelight/callstranger-detector
+  https://github.com/corelight/CVE-2020-16898
   https://github.com/corelight/ripple20
   https://github.com/corelight/SIGRed
   https://github.com/corelight/zeek-community-id
   https://github.com/corelight/zerologon
   https://github.com/cybera/zeek-sniffpass
-  https://github.com/0xl3x1/zeek-EternalSafety
   https://github.com/mitre-attack/bzar
   https://github.com/precurse/zeek-httpattacks
   https://github.com/salesforce/hassh
@@ -91,12 +92,12 @@ for i in ${ZKG_GITHUB_URLS[@]}; do
   [[ -d "$SRC_DIR" ]] && zkg install --force --skiptests "$SRC_DIR"
 done
 
-# manual build processes that don't fit the other patterns
+cat /root/.zkg/logs/* || true
 
 SRC_DIR="$(clone_github_repo "https://github.com/salesforce/GQUIC_Protocol_Analyzer")"
 if [[ -d "$SRC_DIR" ]]; then
   CWD="$(pwd)"
-  cd "$ZEEK_DIST_DIR"/aux/zeek-aux/plugin-support && \
+  cd "$ZEEK_DIST_DIR"/auxil/zeek-aux/plugin-support && \
     ./init-plugin ./zeek-quic Salesforce GQUIC && \
     cd ./zeek-quic && \
     rm -rf CMakeLists.txt ./scripts ./src && \
@@ -106,6 +107,8 @@ if [[ -d "$SRC_DIR" ]]; then
     make install
   cd "$CWD"
 fi
+
+# manual build processes that don't fit the other patterns
 
 SRC_DIR="$(clone_github_repo "https://github.com/J-Gras/zeek-af_packet-plugin")"
 if [[ -d "$SRC_DIR" ]]; then
@@ -121,6 +124,7 @@ MANUAL_BRO_GITHUB_URLS=(
   https://github.com/SoftwareConsultingEmporium/ldap-analyzer
   https://github.com/corelight/bro-xor-exe-plugin
 )
+ln -s -r "${ZEEK_DIST_DIR}"/zeek-path-dev.in "${ZEEK_DIST_DIR}"/bro-path-dev.in
 for i in ${MANUAL_BRO_GITHUB_URLS[@]}; do
   SRC_DIR="$(clone_github_repo "$i")"
   if [[ -d "$SRC_DIR" ]]; then

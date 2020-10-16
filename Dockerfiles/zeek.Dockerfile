@@ -16,14 +16,15 @@ ENV SRC_BASE_DIR "/usr/local/src"
 ENV ZEEK_DIR "/opt/zeek"
 ENV ZEEK_PATCH_DIR "${SRC_BASE_DIR}/zeek-patches"
 ENV ZEEK_SRC_DIR "${SRC_BASE_DIR}/zeek-${ZEEK_VERSION}"
-ENV ZEEK_VERSION "3.0.11"
+ENV ZEEK_VERSION "3.2.2"
 
 # using clang now instead of gcc because Spicy depends on it
 ENV LLVM_VERSION "10"
 ENV CC "clang-${LLVM_VERSION}"
 ENV CXX "clang++-${LLVM_VERSION}"
+ENV CFLAGS "-fsized-deallocation"
+ENV CXXFLAGS "${CFLAGS}"
 ENV ASM "clang-${LLVM_VERSION}"
-
 ENV PATH "${ZEEK_DIR}/bin:${CMAKE_DIR}/bin:${PATH}"
 
 ADD shared/bin/zeek_install_plugins.sh /usr/local/bin/
@@ -176,7 +177,8 @@ ENV ZEEK_THIRD_PARTY_GREP_STRING "(spicy/main|Bro_LDAP/scripts/main|Corelight/PE
 
 RUN mkdir -p /tmp/logs && \
     cd /tmp/logs && \
-      $ZEEK_DIR/bin/zeek -C -r /tmp/pcaps/udp.pcap local policy/misc/loaded-scripts 2>/dev/null && \
+      $ZEEK_DIR/bin/zeek -N 2>&1 && \
+      $ZEEK_DIR/bin/zeek -C -r /tmp/pcaps/udp.pcap local policy/misc/loaded-scripts && \
       bash -c "(( $(grep -cP "$ZEEK_THIRD_PARTY_GREP_STRING" loaded_scripts.log) == $ZEEK_THIRD_PARTY_PLUGINS_COUNT)) && echo 'Zeek plugins loaded correctly' || (echo 'One or more Zeek plugins did not load correctly' && cat loaded_scripts.log && exit 1)" && \
       cd /tmp && \
       rm -rf /tmp/logs /tmp/pcaps
