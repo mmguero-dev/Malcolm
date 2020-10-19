@@ -122,7 +122,7 @@ fi
 
 MANUAL_BRO_GITHUB_URLS=(
   https://github.com/SoftwareConsultingEmporium/ldap-analyzer
-  https://github.com/corelight/bro-xor-exe-plugin
+  https://github.com/mmguero-dev/bro-xor-exe-plugin
 )
 ln -s -r "${ZEEK_DIST_DIR}"/zeek-path-dev.in "${ZEEK_DIST_DIR}"/bro-path-dev.in
 for i in ${MANUAL_BRO_GITHUB_URLS[@]}; do
