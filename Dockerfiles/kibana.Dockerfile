@@ -47,23 +47,23 @@ ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 USER root
 
-ADD kibana/plugin-patches /tmp/plugin-patches
-ADD kibana/elastalert-kibana-plugin/server/routes/elastalert.js /tmp/elastalert-server-routes.js
+# TODO: these plugins do not work with 7.x at the moment; if they can be fixed, we could include them.
+# for now they are not used in any of the default Malcolm visualizations
 
-# todo: these extra plugins are kind of gutted right now with 7.x, need to fix
+# TODO: still seeing this error message on startup
+# kibana_1         | Error in worker TypeError [ERR_INVALID_ARG_TYPE]: The "id" argument must be of type string. Received type object
 
 # see https://github.com/walterra/kibana-milestones-vis/issues/9
 # curl -sSL -o /tmp/kibana-milestones.zip "https://github.com/walterra/kibana-milestones-vis/releases/download/v7.1.1/kibana-milestones-vis-7.1.1.zip"
 #    cd /tmp && \
 #    echo "Installing Milestones visualization..." && \
 #      unzip kibana-milestones.zip kibana/kibana-milestones-vis/package.json && \
-#      sed -i "s/7\.1\.1/7\.6\.2/g" kibana/kibana-milestones-vis/package.json && \
+#      sed -i "s/7\.1\.1/7\.9\.1/g" kibana/kibana-milestones-vis/package.json && \
 #      zip kibana-milestones.zip kibana/kibana-milestones-vis/package.json && \
 #      cd /usr/share/kibana/plugins && \
 #      /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-milestones.zip --allow-root && \
 #      rm -rf /tmp/kibana-milestones.zip /tmp/kibana
 
-# not optimizing in 6.6+ correctly
 # curl -sSL -o /tmp/kibana-calendar.zip "https://github.com/aaronoah/kibana_calendar_vis/releases/download/v6.4.0/kibana_calendar_vis-6.4.0.zip"
 #    echo "Installing Calendar visualization..." && \
 #    unzip kibana-calendar.zip kibana/kibana_calendar_vis/package.json && \
@@ -72,10 +72,21 @@ ADD kibana/elastalert-kibana-plugin/server/routes/elastalert.js /tmp/elastalert-
 #    /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-calendar.zip --allow-root && \
 #    rm -rf /tmp/kibana-calendar.zip /tmp/kibana && \
 
+# curl -sSL -o /tmp/kibana-network.zip "https://codeload.github.com/cpiment/kbn_network/zip/7-dev" && \
+# cd /tmp && \
+#   echo "Installing Network visualization..." && \
+#   cd /usr/share/kibana/plugins && \
+#   unzip /tmp/kibana-network.zip && \
+#   mv ./kbn_network-* ./network_vis && \
+#   cd ./network_vis && \
+#   sed -i "s/7\.6\.2/7\.9\.1/g" ./package.json && \
+#   rm -rf ./images && \
+#   npm install && \
+#   rm -rf /tmp/kibana-network.zip && \
+
 RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
       curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-swimlane-vis/releases/download/v7.6.2/prelert_swimlane_vis-7.6.2.zip" && \
-      curl -sSL -o /tmp/elastalert-kibana-plugin.zip "https://github.com/bitsensor/elastalert-kibana-plugin/releases/download/1.1.0/elastalert-kibana-plugin-1.1.0-7.5.0.zip" && \
-      curl -sSL -o /tmp/kibana-network.zip "https://codeload.github.com/dlumbrer/kbn_network/zip/7-dev" && \
+      curl -sSL -o /tmp/elastalert-kibana-plugin.zip "https://github.com/nsano-rururu/elastalert-kibana-plugin/releases/download/1.3.0/elastalert-kibana-plugin-1.3.0-7.9.1.zip" && \
       curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
       curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
     yum install -y epel-release && \
@@ -95,24 +106,21 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
     cd /tmp && \
     echo "Installing ElastAlert plugin..." && \
       unzip elastalert-kibana-plugin.zip kibana/elastalert-kibana-plugin/package.json kibana/elastalert-kibana-plugin/public/components/main/main.js && \
-      sed -i "s/7\.5\.0/7\.6\.2/g" kibana/elastalert-kibana-plugin/package.json && \
+      sed -i "s/7\.9\.1/7\.9\.1/g" kibana/elastalert-kibana-plugin/package.json && \
       sed -i "s/^import.*eui_theme_light.css.*$//" kibana/elastalert-kibana-plugin/public/components/main/main.js && \
-      mkdir -p kibana/elastalert-kibana-plugin/server/routes/ && \
-      cp /tmp/elastalert-server-routes.js kibana/elastalert-kibana-plugin/server/routes/elastalert.js && \
       zip elastalert-kibana-plugin.zip \
           kibana/elastalert-kibana-plugin/package.json \
-          kibana/elastalert-kibana-plugin/public/components/main/main.js \
-          kibana/elastalert-kibana-plugin/server/routes/elastalert.js && \
+          kibana/elastalert-kibana-plugin/public/components/main/main.js && \
       cd /usr/share/kibana/plugins && \
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/elastalert-kibana-plugin.zip --allow-root && \
-      rm -rf /tmp/elastalert-kibana-plugin.zip /tmp/elastalert.js /tmp/kibana && \
+      rm -rf /tmp/elastalert-kibana-plugin.zip /tmp/kibana && \
     cd /tmp && \
       echo "Installing Sankey visualization..." && \
       unzip /tmp/kibana-sankey.zip && \
       mkdir ./kibana &&\
       mv ./kbn_sankey_vis-* ./kibana/sankey_vis && \
       cd ./kibana/sankey_vis && \
-      sed -i "s/7\.6\.3/7\.6\.2/g" ./package.json && \
+      sed -i "s/7\.6\.3/7\.9\.1/g" ./package.json && \
       npm install && \
       cd /tmp && \
       zip -r sankey_vis.zip kibana --exclude ./kibana/sankey_vis/.git\* && \
@@ -125,7 +133,7 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       mkdir ./kibana &&\
       mv ./kibana-plugin-drilldownmenu-* ./kibana/kibana-plugin-drilldownmenu && \
       cd ./kibana/kibana-plugin-drilldownmenu && \
-      sed -i "s/7\.6\.2/7\.6\.2/g" ./package.json && \
+      sed -i "s/7\.6\.2/7\.9\.1/g" ./package.json && \
       npm install && \
       cd /tmp && \
       zip -r drilldown.zip kibana --exclude ./kibana/kibana-plugin-drilldownmenu/.git\* && \
@@ -133,36 +141,29 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/drilldown.zip --allow-root && \
       rm -rf /tmp/kibana /tmp/*drilldown* && \
     cd /tmp && \
-      echo "Installing Network visualization..." && \
-      cd /usr/share/kibana/plugins && \
-      unzip /tmp/kibana-network.zip && \
-      mv ./kbn_network-* ./network_vis && \
-      cd ./network_vis && \
-      sed -i "s/7\.5\.2/7\.6\.2/g" ./package.json && \
-      rm -rf ./images && \
-      patch -p 1 < /tmp/plugin-patches/kbn_network_7.6.x.patch && \
-      npm install && \
-      rm -rf /tmp/kibana-network.zip && \
-    cd /tmp && \
     echo "Installing Comments visualization..." && \
-      unzip kibana-comments.zip kibana/kibana-comments-app-plugin/package.json && \
-      sed -i "s/7\.4\.0/7\.6\.2/g" kibana/kibana-comments-app-plugin/package.json && \
-      zip kibana-comments.zip kibana/kibana-comments-app-plugin/package.json && \
+      unzip kibana-comments.zip \
+            kibana/kibana-comments-app-plugin/package.json \
+            kibana/kibana-comments-app-plugin/public/app.js && \
+      sed -i "s/7\.4\.0/7\.9\.1/g" kibana/kibana-comments-app-plugin/package.json && \
+      sed -i "s/^import.*ui\/autoload\/styles.*$//" kibana/kibana-comments-app-plugin/public/app.js && \
+      zip kibana-comments.zip \
+          kibana/kibana-comments-app-plugin/package.json \
+          kibana/kibana-comments-app-plugin/public/app.js && \
       cd /usr/share/kibana/plugins && \
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-comments.zip --allow-root && \
       rm -rf /tmp/kibana-comments.zip /tmp/kibana && \
     cd /tmp && \
     echo "Installing Swimlanes visualization..." && \
       unzip kibana-swimlane.zip kibana/prelert_swimlane_vis/package.json && \
-      sed -i "s/7\.6\.2/7\.6\.2/g" kibana/prelert_swimlane_vis/package.json && \
+      sed -i "s/7\.6\.2/7\.9\.1/g" kibana/prelert_swimlane_vis/package.json && \
       zip kibana-swimlane.zip kibana/prelert_swimlane_vis/package.json && \
       cd /usr/share/kibana/plugins && \
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-swimlane.zip --allow-root && \
       bash -c "find /usr/share/kibana/plugins/prelert_swimlane_vis/ -type f -exec chmod 644 '{}' \;" && \
       rm -rf /tmp/kibana-swimlane.zip /tmp/kibana && \
-    rm -rf /tmp/plugin-patches /tmp/elastalert-server-routes.js /tmp/npm-*
+    rm -rf /tmp/npm-*
 
-ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD kibana/dashboards /opt/kibana/dashboards
 ADD kibana/kibana-offline-maps.yml /opt/kibana/config/kibana-offline-maps.yml
 ADD kibana/kibana-standard.yml /opt/kibana/config/kibana-standard.yml
@@ -170,6 +171,7 @@ ADD kibana/maps /opt/maps
 ADD kibana/scripts /data/
 ADD kibana/supervisord.conf /etc/supervisord.conf
 ADD kibana/zeek_template.json /data/zeek_template.json
+ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD shared/bin/elastic_search_status.sh /data/
 
 RUN chmod 755 /data/*.sh /data/*.py && \

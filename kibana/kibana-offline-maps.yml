@@ -25,6 +25,3 @@ map.regionmap:
             description: "Country Code2"
           - name: "NAME"
             description: "Country Name"
-
-server.cors: true
-server.cors.origin: ['*']
