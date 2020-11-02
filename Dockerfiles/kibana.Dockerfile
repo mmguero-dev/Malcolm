@@ -102,7 +102,7 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" && \
       ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic && \
     cd /tmp && \
-      /usr/share/kibana/bin/kibana-plugin remove opendistro_security && \
+      /usr/share/kibana/bin/kibana-plugin remove opendistro_security --allow-root && \
     cd /tmp && \
     echo "Installing ElastAlert plugin..." && \
       unzip elastalert-kibana-plugin.zip kibana/elastalert-kibana-plugin/package.json kibana/elastalert-kibana-plugin/public/components/main/main.js && \
