@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch-oss:7.6.2
+FROM amazon/opendistro-for-elasticsearch:1.11.0
 
 # Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm.netsec@gmail.com"
@@ -20,10 +20,14 @@ ENV PUSER_PRIV_DROP true
 
 ENV TERM xterm
 
+# Malcolm manages authentication and encryption via NGINX reverse proxy
+RUN rm -rf /usr/share/elasticsearch/plugins/opendistro_security
+
 ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/docker-uid-gid-setup.sh", "/usr/local/bin/docker-entrypoint.sh"]
 
+CMD ["eswrapper"]
 
 # to be populated at build-time:
 ARG BUILD_DATE

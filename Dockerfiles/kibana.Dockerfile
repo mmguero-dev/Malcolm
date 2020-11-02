@@ -1,4 +1,4 @@
-FROM docker.elastic.co/kibana/kibana-oss:7.6.2
+FROM amazon/opendistro-for-elasticsearch-kibana:1.11.0
 
 # Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm.netsec@gmail.com"
@@ -72,8 +72,7 @@ ADD kibana/elastalert-kibana-plugin/server/routes/elastalert.js /tmp/elastalert-
 #    /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-calendar.zip --allow-root && \
 #    rm -rf /tmp/kibana-calendar.zip /tmp/kibana && \
 
-RUN sed -i "s/d\.name\.split/d\.name\.toString()\.split/" /usr/share/kibana/src/legacy/ui/public/vislib/visualizations/pie_chart.js && \
-    curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
+RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
       curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-swimlane-vis/releases/download/v7.6.2/prelert_swimlane_vis-7.6.2.zip" && \
       curl -sSL -o /tmp/elastalert-kibana-plugin.zip "https://github.com/bitsensor/elastalert-kibana-plugin/releases/download/1.1.0/elastalert-kibana-plugin-1.1.0-7.5.0.zip" && \
       curl -sSL -o /tmp/kibana-network.zip "https://codeload.github.com/dlumbrer/kbn_network/zip/7-dev" && \
@@ -91,6 +90,8 @@ RUN sed -i "s/d\.name\.split/d\.name\.toString()\.split/" /usr/share/kibana/src/
       chmod +x "$SUPERCRONIC" && \
       mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" && \
       ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic && \
+    cd /tmp && \
+      /usr/share/kibana/bin/kibana-plugin remove opendistro_security && \
     cd /tmp && \
     echo "Installing ElastAlert plugin..." && \
       unzip elastalert-kibana-plugin.zip kibana/elastalert-kibana-plugin/package.json kibana/elastalert-kibana-plugin/public/components/main/main.js && \
