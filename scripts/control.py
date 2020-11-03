@@ -80,6 +80,7 @@ def logs():
       | _cat/indices
       | use_field_mapping
       | reaped\s+unknown\s+pid
+      | plugin\s+installed\s+but\s+disabled
       | Successfully\s+handled\s+GET\s+request\s+for\s+'/'
       | GET\s+/(_cat/health|api/status|sessions2-).+HTTP/[\d\.].+\b200\b
       | POST\s+/(d?stats/(d?stat|_doc|_search)|_bulk|fields/(field/)?_search).+HTTP/[\d\.].+\b20[01]\b

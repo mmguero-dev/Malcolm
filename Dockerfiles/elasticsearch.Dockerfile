@@ -21,8 +21,7 @@ ENV PUSER_PRIV_DROP true
 ENV TERM xterm
 
 # Malcolm manages authentication and encryption via NGINX reverse proxy
-RUN /usr/share/elasticsearch/bin/elasticsearch-plugin remove opendistro_security && \
-    rm -rf /usr/share/elasticsearch/plugins/opendistro_security
+ENV opendistro_security.disabled "true"
 
 ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 

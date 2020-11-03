@@ -64,10 +64,6 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" && \
       ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic && \
     cd /tmp && \
-      # Malcolm manages authentication and encryption via NGINX reverse proxy
-      /usr/share/kibana/bin/kibana-plugin remove opendistro_security --allow-root && \
-      rm -rf /usr/share/kibana/plugins/opendistro_security /usr/share/kibana/config/*.cert /usr/share/kibana/config/*.key && \
-    cd /tmp && \
       echo "Installing Sankey visualization..." && \
       unzip /tmp/kibana-sankey.zip && \
       mkdir ./kibana &&\
