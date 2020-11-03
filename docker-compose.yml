@@ -141,7 +141,7 @@ services:
       ES_JAVA_OPTS : '-Xms4g -Xmx4g -Xss256k -Djava.security.egd=file:/dev/./urandom'
       VIRTUAL_HOST : 'es.malcolm.local'
       discovery.type : 'single-node'
-      # cluster.initial_master_nodes : 'elasticsearch'
+      discovery.zen.minimum_master_nodes : 1
       cluster.routing.allocation.disk.threshold_enabled : 'false'
       cluster.routing.allocation.node_initial_primaries_recoveries : 8
       indices.query.bool.max_clause_count : 2048
