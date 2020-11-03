@@ -9,3 +9,6 @@ elasticsearch.hosts: ["${ELASTICSEARCH_URL}"]
 elasticsearch.requestTimeout: 180000
 kibana.defaultAppId: "dashboard/${KIBANA_DEFAULT_DASHBOARD}"
 
+newsfeed.enabled: false
+telemetry.optIn: false
+telemetry.enabled: false
