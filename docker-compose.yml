@@ -192,37 +192,6 @@ services:
       timeout: 15s
       retries: 3
       start_period: 210s
-  elastalert:
-    build:
-      context: .
-      dockerfile: Dockerfiles/elastalert.Dockerfile
-    image: malcolmnetsec/elastalert:3.0.0
-    restart: "no"
-    stdin_open: false
-    tty: true
-    hostname: elastalert
-    environment:
-      << : *process-variables
-      ELASTICSEARCH_URL : 'http://elasticsearch:9200'
-      ES_HOST : 'elasticsearch'
-      ES_PORT : 9200
-      VIRTUAL_HOST : 'elastalert.malcolm.local'
-    depends_on:
-      - elasticsearch
-    expose:
-      - 3030
-      - 3333
-    volumes:
-      - ./elastalert/config/elastalert.yaml:/opt/elastalert/config.yaml
-      - ./elastalert/config/smtp-auth.yaml:/opt/elastalert/smtp-auth.yaml:ro
-      - ./elastalert/config/config.json:/opt/elastalert-server/config/config.json
-      - ./elastalert/rules/:/opt/elastalert/rules/
-    healthcheck:
-      test: ["CMD", "curl", "--silent", "--fail", "http://localhost:3030"]
-      interval: 30s
-      timeout: 15s
-      retries: 3
-      start_period: 210s
   curator:
     build:
       context: .

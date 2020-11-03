@@ -47,46 +47,9 @@ ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 USER root
 
-# TODO: these plugins do not work with 7.x at the moment; if they can be fixed, we could include them.
-# for now they are not used in any of the default Malcolm visualizations
-
-# TODO: still seeing this error message on startup
-# kibana_1         | Error in worker TypeError [ERR_INVALID_ARG_TYPE]: The "id" argument must be of type string. Received type object
-
-# see https://github.com/walterra/kibana-milestones-vis/issues/9
-# curl -sSL -o /tmp/kibana-milestones.zip "https://github.com/walterra/kibana-milestones-vis/releases/download/v7.1.1/kibana-milestones-vis-7.1.1.zip"
-#    cd /tmp && \
-#    echo "Installing Milestones visualization..." && \
-#      unzip kibana-milestones.zip kibana/kibana-milestones-vis/package.json && \
-#      sed -i "s/7\.1\.1/7\.9\.1/g" kibana/kibana-milestones-vis/package.json && \
-#      zip kibana-milestones.zip kibana/kibana-milestones-vis/package.json && \
-#      cd /usr/share/kibana/plugins && \
-#      /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-milestones.zip --allow-root && \
-#      rm -rf /tmp/kibana-milestones.zip /tmp/kibana
-
-# curl -sSL -o /tmp/kibana-calendar.zip "https://github.com/aaronoah/kibana_calendar_vis/releases/download/v6.4.0/kibana_calendar_vis-6.4.0.zip"
-#    echo "Installing Calendar visualization..." && \
-#    unzip kibana-calendar.zip kibana/kibana_calendar_vis/package.json && \
-#    sed -i "s/6\.4\.0/6\.6\.0/g" kibana/kibana_calendar_vis/package.json && \
-#    zip kibana-calendar.zip kibana/kibana_calendar_vis/package.json && \
-#    /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-calendar.zip --allow-root && \
-#    rm -rf /tmp/kibana-calendar.zip /tmp/kibana && \
-
-# curl -sSL -o /tmp/kibana-network.zip "https://codeload.github.com/cpiment/kbn_network/zip/7-dev" && \
-# cd /tmp && \
-#   echo "Installing Network visualization..." && \
-#   cd /usr/share/kibana/plugins && \
-#   unzip /tmp/kibana-network.zip && \
-#   mv ./kbn_network-* ./network_vis && \
-#   cd ./network_vis && \
-#   sed -i "s/7\.6\.2/7\.9\.1/g" ./package.json && \
-#   rm -rf ./images && \
-#   npm install && \
-#   rm -rf /tmp/kibana-network.zip && \
-
 RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
       curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-swimlane-vis/releases/download/v7.6.2/prelert_swimlane_vis-7.6.2.zip" && \
-      curl -sSL -o /tmp/elastalert-kibana-plugin.zip "https://github.com/nsano-rururu/elastalert-kibana-plugin/releases/download/1.3.0/elastalert-kibana-plugin-1.3.0-7.9.1.zip" && \
+      # see https://github.com/uniberg/kbn_sankey_vis/issues/15#issuecomment-720700879
       curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
       curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
     yum install -y epel-release && \
@@ -103,17 +66,6 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic && \
     cd /tmp && \
       /usr/share/kibana/bin/kibana-plugin remove opendistro_security --allow-root && \
-    cd /tmp && \
-    echo "Installing ElastAlert plugin..." && \
-      unzip elastalert-kibana-plugin.zip kibana/elastalert-kibana-plugin/package.json kibana/elastalert-kibana-plugin/public/components/main/main.js && \
-      sed -i "s/7\.9\.1/7\.9\.1/g" kibana/elastalert-kibana-plugin/package.json && \
-      sed -i "s/^import.*eui_theme_light.css.*$//" kibana/elastalert-kibana-plugin/public/components/main/main.js && \
-      zip elastalert-kibana-plugin.zip \
-          kibana/elastalert-kibana-plugin/package.json \
-          kibana/elastalert-kibana-plugin/public/components/main/main.js && \
-      cd /usr/share/kibana/plugins && \
-      /usr/share/kibana/bin/kibana-plugin install file:///tmp/elastalert-kibana-plugin.zip --allow-root && \
-      rm -rf /tmp/elastalert-kibana-plugin.zip /tmp/kibana && \
     cd /tmp && \
       echo "Installing Sankey visualization..." && \
       unzip /tmp/kibana-sankey.zip && \

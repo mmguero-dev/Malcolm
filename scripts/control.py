@@ -68,7 +68,6 @@ def logs():
   ignoreRegEx = re.compile(r"""
     .+(
         deprecated
-      | elastalert-server:\s+Routes:
       | eshealth
       | remov(ed|ing)\s+(old\s+file|dead\s+symlink|empty\s+directory)
       | update_mapping
@@ -231,14 +230,6 @@ def start():
 
   # touch the metadata file
   open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
-
-  smtpAuthFile = os.path.join(MalcolmPath, os.path.join('elastalert', os.path.join('config', 'smtp-auth.yaml')))
-  if (not os.path.isfile(smtpAuthFile)):
-    # create a sample smtp-auth.yaml for if/when we want to do elastalert email
-    with open(smtpAuthFile, 'w') as f:
-      f.write('user: "user@gmail.com"\n')
-      f.write('password: "abcdefg1234567"\n')
-    os.chmod(smtpAuthFile, stat.S_IRUSR | stat.S_IWUSR)
 
   # make sure permissions are set correctly for the nginx worker processes
   for authFile in [os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')),
@@ -426,14 +417,6 @@ def authSetup(wipe=False):
 
   # touch the metadata file
   open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
-
-  # create a sample smtp-auth.yaml for if/when we want to do elastalert email
-  smtpAuthFile = os.path.join(MalcolmPath, os.path.join('elastalert', os.path.join('config', 'smtp-auth.yaml')))
-  if not os.path.isfile(smtpAuthFile):
-    with open(smtpAuthFile, 'w') as f:
-      f.write('user: "user@gmail.com"\n')
-      f.write('password: "abcdefg1234567"\n')
-    os.chmod(smtpAuthFile, stat.S_IRUSR | stat.S_IWUSR)
 
   # generate HTTPS self-signed certificates
   if YesOrNo('(Re)generate self-signed certificates for HTTPS access', default=True):

@@ -136,7 +136,6 @@ Malcolm's Docker images are periodically built and hosted on [Docker Hub](https:
 ```
 $ docker-compose pull
 Pulling curator       ... done
-Pulling elastalert    ... done
 Pulling elasticsearch ... done
 Pulling file-monitor  ... done
 Pulling filebeat      ... done
@@ -158,7 +157,6 @@ You can then observe that the images have been retrieved by running `docker imag
 $ docker images
 REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
 malcolmnetsec/curator                               3.0.0               xxxxxxxxxxxx        40 hours ago        256MB
-malcolmnetsec/elastalert                            3.0.0               xxxxxxxxxxxx        40 hours ago        410MB
 malcolmnetsec/elasticsearch-oss                     3.0.0               xxxxxxxxxxxx        40 hours ago        690MB
 malcolmnetsec/file-monitor                          3.0.0               xxxxxxxxxxxx        39 hours ago        470MB
 malcolmnetsec/file-upload                           3.0.0               xxxxxxxxxxxx        39 hours ago        199MB
@@ -227,7 +225,6 @@ Malcolm leverages the following excellent open source tools, among others.
 * [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) - for simple, reproducible deployment of the Malcolm appliance across environments and to coordinate communication between its various components
 * [Nginx](https://nginx.org/) - for HTTPS and reverse proxying Malcolm components
 * [nginx-auth-ldap](https://github.com/kvspb/nginx-auth-ldap) - an LDAP authentication module for nginx
-* [ElastAlert](https://github.com/Yelp/elastalert) - an alerting framework for Elasticsearch. Specifically, the [BitSensor fork of ElastAlert](https://github.com/bitsensor/elastalert), its Docker configuration and its corresponding [Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin) are used.
 * [Mark Baggett](https://github.com/MarkBaggett)'s [freq](https://github.com/MarkBaggett/freq) - a tool for calculating entropy of strings
 * [Florian Roth](https://github.com/Neo23x0)'s [Signature-Base](https://github.com/Neo23x0/signature-base) Yara ruleset
 * These Zeek plugins:
@@ -316,7 +313,6 @@ Checking out the [Malcolm source code](https://github.com/idaholab/Malcolm/tree/
 * `curator` - code and configuration for the `curator` container which define rules for closing and/or deleting old Elasticsearch indices
 * `Dockerfiles` - a directory containing build instructions for Malcolm's docker images
 * `docs` - a directory containing instructions and documentation
-* `elastalert` - code and configuration for the `elastalert` container which provides an alerting framework for Elasticsearch
 * `elasticsearch` - an initially empty directory where the Elasticsearch database instance will reside
 * `elasticsearch-backup` - an initially empty directory for storing Elasticsearch [index snapshots](#Curator) 
 * `filebeat` - code and configuration for the `filebeat` container which ingests Zeek logs and forwards them to the `logstash` container
@@ -361,7 +357,6 @@ $ ./scripts/build.sh
 Then, go take a walk or something since it will be a while. When you're done, you can run `docker images` and see you have fresh images for:
 
 * `malcolmnetsec/curator` (based on `debian:buster-slim`)
-* `malcolmnetsec/elastalert` (based on `bitsensor/elastalert`)
 * `malcolmnetsec/elasticsearch-oss` (based on `docker.elastic.co/elasticsearch/elasticsearch-oss`)
 * `malcolmnetsec/filebeat-oss` (based on `docker.elastic.co/beats/filebeat-oss`)
 * `malcolmnetsec/file-monitor` (based on `debian:buster-slim`)
@@ -1812,7 +1807,6 @@ For now, rather than [build Malcolm from scratch](#Build), we'll pull images fro
 ```
 user@host:~/Malcolm$ docker-compose pull
 Pulling curator       ... done
-Pulling elastalert    ... done
 Pulling elasticsearch ... done
 Pulling file-monitor  ... done
 Pulling filebeat      ... done
@@ -1831,7 +1825,6 @@ Pulling zeek          ... done
 user@host:~/Malcolm$ docker images
 REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
 malcolmnetsec/curator                               3.0.0               xxxxxxxxxxxx        40 hours ago        256MB
-malcolmnetsec/elastalert                            3.0.0               xxxxxxxxxxxx        40 hours ago        410MB
 malcolmnetsec/elasticsearch-oss                     3.0.0               xxxxxxxxxxxx        40 hours ago        690MB
 malcolmnetsec/file-monitor                          3.0.0               xxxxxxxxxxxx        39 hours ago        470MB
 malcolmnetsec/file-upload                           3.0.0               xxxxxxxxxxxx        39 hours ago        199MB
@@ -1853,7 +1846,6 @@ Finally, we can start Malcolm. When Malcolm starts it will stream informational 
 user@host:~/Malcolm$ python3 ./scripts/start
 Creating network "malcolm_default" with the default driver
 Creating malcolm_curator_1       ... done
-Creating malcolm_elastalert_1    ... done
 Creating malcolm_elasticsearch_1 ... done
 Creating malcolm_file-monitor_1  ... done
 Creating malcolm_filebeat_1      ... done
@@ -1880,7 +1872,7 @@ In a few minutes, Malcolm services will be accessible via the following URLs:
 …
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 …
-Attaching to malcolm_curator_1, malcolm_elastalert_1, malcolm_elasticsearch_1, malcolm_file-monitor_1, malcolm_filebeat_1, malcolm_freq_1, malcolm_htadmin_1, malcolm_kibana_1, malcolm_logstash_1, malcolm_name-map-ui_1, malcolm_moloch_1, malcolm_nginx-proxy_1, malcolm_pcap-capture_1, malcolm_pcap-monitor_1, malcolm_upload_1, malcolm_zeek_1
+Attaching to malcolm_curator_1, malcolm_elasticsearch_1, malcolm_file-monitor_1, malcolm_filebeat_1, malcolm_freq_1, malcolm_htadmin_1, malcolm_kibana_1, malcolm_logstash_1, malcolm_name-map-ui_1, malcolm_moloch_1, malcolm_nginx-proxy_1, malcolm_pcap-capture_1, malcolm_pcap-monitor_1, malcolm_upload_1, malcolm_zeek_1
 …
 ```
 
@@ -1935,7 +1927,7 @@ If you installed Malcolm from [pre-packaged installation files](https://github.c
     * `tar xf malcolm_YYYYMMDD_HHNNSS_xxxxxxx.tar.gz`
 3. backup current Malcolm scripts, configuration files and certificates
     * `mkdir -p ./upgrade_backup_$(date +%Y-%m-%d)`
-    * `cp -r elastalert/ filebeat/ htadmin/ logstash/ nginx/ auth.env cidr-map.txt docker-compose.yml host-map.txt net-map.json ./scripts ./README.md ./upgrade_backup_$(date +%Y-%m-%d)/`
+    * `cp -r filebeat/ htadmin/ logstash/ nginx/ auth.env cidr-map.txt docker-compose.yml host-map.txt net-map.json ./scripts ./README.md ./upgrade_backup_$(date +%Y-%m-%d)/`
 3. replace scripts and local documentation in your existing installation with the new ones
     * `rm -rf ./scripts ./README.md`
     * `cp -r ./malcolm_YYYYMMDD_HHNNSS_xxxxxxx/scripts ./malcolm_YYYYMMDD_HHNNSS_xxxxxxx/README.md ./`
