@@ -11,4 +11,4 @@ else
   KIBANA_CFG="/opt/kibana/config/kibana-standard.yml"
 fi
 
-/usr/local/bin/kibana-docker --config "$KIBANA_CFG" --opendistro_security.enabled=false
+/usr/local/bin/kibana-docker --config "$KIBANA_CFG"
