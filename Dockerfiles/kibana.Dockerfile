@@ -48,7 +48,6 @@ ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 USER root
 
 RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
-      curl -sSL -o /tmp/kibana-swimlane.zip "https://github.com/prelert/kibana-swimlane-vis/releases/download/v7.6.2/prelert_swimlane_vis-7.6.2.zip" && \
       # see https://github.com/uniberg/kbn_sankey_vis/issues/15#issuecomment-720700879
       curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
       curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
@@ -65,7 +64,9 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" && \
       ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic && \
     cd /tmp && \
+      # Malcolm manages authentication and encryption via NGINX reverse proxy
       /usr/share/kibana/bin/kibana-plugin remove opendistro_security --allow-root && \
+      rm -rf /usr/share/kibana/plugins/opendistro_security && \
     cd /tmp && \
       echo "Installing Sankey visualization..." && \
       unzip /tmp/kibana-sankey.zip && \
@@ -105,15 +106,6 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       cd /usr/share/kibana/plugins && \
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-comments.zip --allow-root && \
       rm -rf /tmp/kibana-comments.zip /tmp/kibana && \
-    cd /tmp && \
-    echo "Installing Swimlanes visualization..." && \
-      unzip kibana-swimlane.zip kibana/prelert_swimlane_vis/package.json && \
-      sed -i "s/7\.6\.2/7\.9\.1/g" kibana/prelert_swimlane_vis/package.json && \
-      zip kibana-swimlane.zip kibana/prelert_swimlane_vis/package.json && \
-      cd /usr/share/kibana/plugins && \
-      /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-swimlane.zip --allow-root && \
-      bash -c "find /usr/share/kibana/plugins/prelert_swimlane_vis/ -type f -exec chmod 644 '{}' \;" && \
-      rm -rf /tmp/kibana-swimlane.zip /tmp/kibana && \
     rm -rf /tmp/npm-*
 
 ADD kibana/dashboards /opt/kibana/dashboards
