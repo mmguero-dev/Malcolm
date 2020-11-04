@@ -111,7 +111,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/elasticsearch.Dockerfile
-    image: malcolmnetsec/elasticsearch-oss:3.0.0
+    image: malcolmnetsec/elasticsearch-od:3.0.0
     restart: "no"
     stdin_open: false
     tty: true
@@ -149,7 +149,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/kibana.Dockerfile
-    image: malcolmnetsec/kibana-oss:3.0.0
+    image: malcolmnetsec/kibana-od:3.0.0
     restart: "no"
     stdin_open: false
     tty: true

@@ -155,13 +155,13 @@ You can then observe that the images have been retrieved by running `docker imag
 ```
 $ docker images
 REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
-malcolmnetsec/elasticsearch-oss                     3.0.0               xxxxxxxxxxxx        40 hours ago        690MB
+malcolmnetsec/elasticsearch-od                      3.0.0               xxxxxxxxxxxx        40 hours ago        690MB
 malcolmnetsec/file-monitor                          3.0.0               xxxxxxxxxxxx        39 hours ago        470MB
 malcolmnetsec/file-upload                           3.0.0               xxxxxxxxxxxx        39 hours ago        199MB
 malcolmnetsec/filebeat-oss                          3.0.0               xxxxxxxxxxxx        39 hours ago        555MB
 malcolmnetsec/freq                                  3.0.0               xxxxxxxxxxxx        39 hours ago        390MB
 malcolmnetsec/htadmin                               3.0.0               xxxxxxxxxxxx        39 hours ago        180MB
-malcolmnetsec/kibana-oss                            3.0.0               xxxxxxxxxxxx        40 hours ago        1.16GB
+malcolmnetsec/kibana-od                             3.0.0               xxxxxxxxxxxx        40 hours ago        1.16GB
 malcolmnetsec/logstash-oss                          3.0.0               xxxxxxxxxxxx        39 hours ago        1.41GB
 malcolmnetsec/moloch                                3.0.0               xxxxxxxxxxxx        17 hours ago        683MB
 malcolmnetsec/name-map-ui                           3.0.0               xxxxxxxxxxxx        39 hours ago        137MB
@@ -199,7 +199,7 @@ Malcolm processes network traffic data in the form of packet capture (PCAP) file
 
 Malcolm parses the network session data and enriches it with additional lookups and mappings including GeoIP mapping, hardware manufacturer lookups from [organizationally unique identifiers (OUI)](http://standards-oui.ieee.org/oui/oui.txt) in MAC addresses, assigning names to [network segments](#SegmentNaming) and [hosts](#HostNaming) based on user-defined IP address and MAC mappings, performing [TLS fingerprinting](#https://engineering.salesforce.com/tls-fingerprinting-with-ja3-and-ja3s-247362855967), and many others.
 
-The enriched data is stored in an [Elasticsearch](https://www.elastic.co/products/elasticsearch) document store in a format suitable for analysis through two intuitive interfaces: Kibana, a flexible data visualization plugin with dozens of prebuilt dashboards providing an at-a-glance overview of network protocols; and Moloch, a powerful tool for finding and identifying the network sessions comprising suspected security incidents. These tools can be accessed through a web browser from analyst workstations or for display in a security operations center (SOC). Logs can also optionally be forwarded on to another instance of Malcolm.
+The enriched data is stored in an [Elasticsearch](https://opendistro.github.io/for-elasticsearch/) document store in a format suitable for analysis through two intuitive interfaces: Kibana, a flexible data visualization plugin with dozens of prebuilt dashboards providing an at-a-glance overview of network protocols; and Moloch, a powerful tool for finding and identifying the network sessions comprising suspected security incidents. These tools can be accessed through a web browser from analyst workstations or for display in a security operations center (SOC). Logs can also optionally be forwarded on to another instance of Malcolm.
 
 For smaller networks, use at home by network security enthusiasts, or in the field for incident response engagements, Malcolm can also easily be deployed locally on an ordinary consumer workstation or laptop. Malcolm can process local artifacts such as locally-generated Zeek logs, locally-captured PCAP files, and PCAP files collected offline without the use of a dedicated sensor appliance.
 
@@ -210,9 +210,9 @@ Malcolm leverages the following excellent open source tools, among others.
 * [Moloch](https://molo.ch/) - for PCAP file processing, browsing, searching, analysis, and carving/exporting; Moloch itself consists of two parts:
     * [moloch-capture](https://github.com/aol/moloch/tree/master/capture) - a tool for traffic capture, as well as offline PCAP parsing and metadata insertion into Elasticsearch
     * [viewer](https://github.com/aol/moloch/tree/master/viewer) - a browser-based interface for data visualization
-* [Elasticsearch](https://www.elastic.co/products/elasticsearch) - a search and analytics engine for indexing and querying network traffic session metadata 
+* [Elasticsearch](https://www.elastic.co/products/elasticsearch) ([Open Distro](https://opendistro.github.io/for-elasticsearch/) variant) - a search and analytics engine for indexing and querying network traffic session metadata 
 * [Logstash](https://www.elastic.co/products/logstash) and [Filebeat](https://www.elastic.co/products/beats/filebeat) - for ingesting and parsing [Zeek](https://www.zeek.org/index.html) [Log Files](https://docs.zeek.org/en/stable/script-reference/log-files.html) and ingesting them into Elasticsearch in a format that Moloch understands and is able to understand in the same way it natively understands PCAP data
-* [Kibana](https://www.elastic.co/products/kibana) - for creating additional ad-hoc visualizations and dashboards beyond that which is provided by Moloch Viewer
+* [Kibana](https://www.elastic.co/products/kibana) ([Open Distro](https://opendistro.github.io/for-elasticsearch/) variant) - for creating additional ad-hoc visualizations and dashboards beyond that which is provided by Moloch Viewer
 * [Zeek](https://www.zeek.org/index.html) - a network analysis framework and IDS
 * [Yara](https://github.com/VirusTotal/yara) - a tool used to identify and classify malware samples
 * [Capa](https://github.com/fireeye/capa) - a tool for detecting capabilities in executable files
@@ -353,13 +353,13 @@ $ ./scripts/build.sh
 
 Then, go take a walk or something since it will be a while. When you're done, you can run `docker images` and see you have fresh images for:
 
-* `malcolmnetsec/elasticsearch-oss` (based on `docker.elastic.co/elasticsearch/elasticsearch-oss`)
+* `malcolmnetsec/elasticsearch-od` (based on `amazon/opendistro-for-elasticsearch`)
 * `malcolmnetsec/filebeat-oss` (based on `docker.elastic.co/beats/filebeat-oss`)
 * `malcolmnetsec/file-monitor` (based on `debian:buster-slim`)
 * `malcolmnetsec/file-upload` (based on `debian:buster-slim`)
 * `malcolmnetsec/freq` (based on `debian:buster-slim`)
 * `malcolmnetsec/htadmin` (based on `debian:buster-slim`)
-* `malcolmnetsec/kibana-oss` (based on `docker.elastic.co/kibana/kibana-oss`)
+* `malcolmnetsec/kibana-od` (based on `amazon/opendistro-for-elasticsearch-kibana`)
 * `malcolmnetsec/logstash-oss` (based on `docker.elastic.co/logstash/logstash-oss`)
 * `malcolmnetsec/name-map-ui` (based on `alpine:3.11`)
 * `malcolmnetsec/moloch` (based on `debian:buster-slim`)
@@ -1790,13 +1790,13 @@ Pulling zeek          ... done
 
 user@host:~/Malcolm$ docker images
 REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
-malcolmnetsec/elasticsearch-oss                     3.0.0               xxxxxxxxxxxx        40 hours ago        690MB
+malcolmnetsec/elasticsearch-od                      3.0.0               xxxxxxxxxxxx        40 hours ago        690MB
 malcolmnetsec/file-monitor                          3.0.0               xxxxxxxxxxxx        39 hours ago        470MB
 malcolmnetsec/file-upload                           3.0.0               xxxxxxxxxxxx        39 hours ago        199MB
 malcolmnetsec/filebeat-oss                          3.0.0               xxxxxxxxxxxx        39 hours ago        555MB
 malcolmnetsec/freq                                  3.0.0               xxxxxxxxxxxx        39 hours ago        390MB
 malcolmnetsec/htadmin                               3.0.0               xxxxxxxxxxxx        39 hours ago        180MB
-malcolmnetsec/kibana-oss                            3.0.0               xxxxxxxxxxxx        40 hours ago        1.16GB
+malcolmnetsec/kibana-od                             3.0.0               xxxxxxxxxxxx        40 hours ago        1.16GB
 malcolmnetsec/logstash-oss                          3.0.0               xxxxxxxxxxxx        39 hours ago        1.41GB
 malcolmnetsec/moloch                                3.0.0               xxxxxxxxxxxx        17 hours ago        683MB
 malcolmnetsec/name-map-ui                           3.0.0               xxxxxxxxxxxx        39 hours ago        137MB
