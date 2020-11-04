@@ -292,63 +292,6 @@ class Installer(object):
       except:
         pass
 
-    curatorSnapshots = InstallerYesOrNo('Create daily snapshots (backups) of Elasticsearch indices?', default=False)
-    curatorSnapshotDir = './elasticsearch-backup'
-    if curatorSnapshots:
-      if not InstallerYesOrNo('Store snapshots locally in {}?'.format(os.path.join(malcolm_install_path, 'elasticsearch-backup')), default=True):
-        while True:
-          curatorSnapshotDir = InstallerAskForString('Enter Elasticsearch index snapshot directory')
-          if (len(curatorSnapshotDir) > 1) and os.path.isdir(curatorSnapshotDir):
-            curatorSnapshotDir = os.path.realpath(curatorSnapshotDir)
-            break
-
-    curatorCloseUnits = 'years'
-    curatorCloseCount = '5'
-    if InstallerYesOrNo('Periodically close old Elasticsearch indices?', default=False):
-      while not InstallerYesOrNo('Indices older than {} {} will be periodically closed. Is this OK?'.format(curatorCloseCount, curatorCloseUnits), default=True):
-        while True:
-          curatorPeriod = InstallerAskForString('Enter index close threshold (e.g., 90 days, 2 years, etc.)').lower().split()
-          if (len(curatorPeriod) == 2) and (not curatorPeriod[1].endswith('s')):
-            curatorPeriod[1] += 's'
-          if ((len(curatorPeriod) == 2) and
-              curatorPeriod[0].isdigit() and
-              (curatorPeriod[1] in ('seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years'))):
-            curatorCloseUnits = curatorPeriod[1]
-            curatorCloseCount = curatorPeriod[0]
-            break
-    else:
-      curatorCloseUnits = 'years'
-      curatorCloseCount = '99'
-
-    curatorDeleteUnits = 'years'
-    curatorDeleteCount = '10'
-    if InstallerYesOrNo('Periodically delete old Elasticsearch indices?', default=False):
-      while not InstallerYesOrNo('Indices older than {} {} will be periodically deleted. Is this OK?'.format(curatorDeleteCount, curatorDeleteUnits), default=True):
-        while True:
-          curatorPeriod = InstallerAskForString('Enter index delete threshold (e.g., 90 days, 2 years, etc.)').lower().split()
-          if (len(curatorPeriod) == 2) and (not curatorPeriod[1].endswith('s')):
-            curatorPeriod[1] += 's'
-          if ((len(curatorPeriod) == 2) and
-              curatorPeriod[0].isdigit() and
-              (curatorPeriod[1] in ('seconds', 'minutes', 'hours', 'days', 'weeks', 'months', 'years'))):
-            curatorDeleteUnits = curatorPeriod[1]
-            curatorDeleteCount = curatorPeriod[0]
-            break
-    else:
-      curatorDeleteUnits = 'years'
-      curatorDeleteCount = '99'
-
-    curatorDeleteOverGigs = '10000'
-    if InstallerYesOrNo('Periodically delete the oldest Elasticsearch indices when the database exceeds a certain size?', default=False):
-      while not InstallerYesOrNo('Indices will be deleted when the database exceeds {} gigabytes. Is this OK?'.format(curatorDeleteOverGigs), default=True):
-        while True:
-          curatorSize = InstallerAskForString('Enter index threshold in gigabytes')
-          if (len(curatorSize) > 0) and curatorSize.isdigit():
-            curatorDeleteOverGigs = curatorSize
-            break
-    else:
-      curatorDeleteOverGigs = '9000000'
-
     autoZeek = InstallerYesOrNo('Automatically analyze all PCAP files with Zeek?', default=True)
     reverseDns = InstallerYesOrNo('Perform reverse DNS lookup locally for source and destination IP addresses in Zeek logs?', default=False)
     autoOui = InstallerYesOrNo('Perform hardware vendor OUI lookups for MAC addresses?', default=True)
@@ -516,29 +459,6 @@ class Installer(object):
           elif 'BEATS_SSL' in line:
             # enable/disable beats SSL
             line = re.sub(r'(BEATS_SSL\s*:\s*)(\S+)', r'\g<1>{}'.format("'true'" if logstashOpen and logstashSsl else "'false'"), line)
-          elif 'CURATOR_SNAPSHOT_DISABLED' in line:
-            # set count for index curation snapshot enable/disable
-            line = re.sub(r'(CURATOR_SNAPSHOT_DISABLED\s*:\s*)(\S+)', r'\g<1>{}'.format("'False'" if curatorSnapshots else "'True'"), line)
-          elif (currentService == 'elasticsearch') and re.match(r'^\s*-.+:/opt/elasticsearch/backup(:.+)?\s*$', line) and (curatorSnapshotDir is not None) and os.path.isdir(curatorSnapshotDir):
-            # elasticsearch backup directory
-            volumeParts = line.strip().lstrip('-').lstrip().split(':')
-            volumeParts[0] = curatorSnapshotDir
-            line = "{}- {}".format(serviceIndent * 3, ':'.join(volumeParts))
-          elif 'CURATOR_CLOSE_COUNT' in line:
-            # set count for index curation close age
-            line = re.sub(r'(CURATOR_CLOSE_COUNT\s*:\s*)(\S+)', r'\g<1>{}'.format(curatorCloseCount), line)
-          elif 'CURATOR_CLOSE_UNITS' in line:
-            # set units for index curation close age
-            line = re.sub(r'(CURATOR_CLOSE_UNITS\s*:\s*)(\S+)', r'\g<1>{}'.format(curatorCloseUnits), line)
-          elif 'CURATOR_DELETE_COUNT' in line:
-            # set count for index curation delete age
-            line = re.sub(r'(CURATOR_DELETE_COUNT\s*:\s*)(\S+)', r'\g<1>{}'.format(curatorDeleteCount), line)
-          elif 'CURATOR_DELETE_UNITS' in line:
-            # set units for index curation delete age
-            line = re.sub(r'(CURATOR_DELETE_UNITS\s*:\s*)(\S+)', r'\g<1>{}'.format(curatorDeleteUnits), line)
-          elif 'CURATOR_DELETE_GIGS' in line:
-            # set size for index deletion threshold
-            line = re.sub(r'(CURATOR_DELETE_GIGS\s*:\s*)(\S+)', r'\g<1>{}'.format(curatorDeleteOverGigs), line)
           elif 'ES_EXTERNAL_HOSTS' in line:
             # enable/disable forwarding Logstash to external Elasticsearch instance
             line = re.sub(r'(#\s*)?(ES_EXTERNAL_HOSTS\s*:\s*)(\S+)', r"\g<2>'{}'".format(externalEsHost), line)

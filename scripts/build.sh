@@ -83,7 +83,6 @@ fi
 
 # we're going to do some validation that some things got pulled/built correctly
 FILES_IN_IMAGES=(
-  "/usr/local/bin/curator;curator"
   "/usr/share/filebeat/filebeat.yml;filebeat-oss"
   "/var/lib/clamav/main.cvd;file-monitor"
   "/var/lib/clamav/daily.cvd;file-monitor"

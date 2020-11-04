@@ -76,7 +76,7 @@ In short, Malcolm provides an easily deployable network analysis tool suite for 
         + [CIDR subnet to network segment name mapping via `cidr-map.txt`](#SegmentNaming)
         + [Defining hostname and CIDR subnet names interface](#NameMapUI)
         + [Applying mapping changes](#ApplyMapping)
-    - [Elasticsearch index curation](#Curator)
+    - [Elasticsearch index management](#IndexManagement)
 * [Using Beats to forward host logs to Malcolm](#OtherBeats)
 * [Malcolm installer ISO](#ISO)
     * [Installation](#ISOInstallation)
@@ -135,7 +135,6 @@ You must run [`auth_setup`](#AuthSetup) prior to pulling Malcolm's Docker images
 Malcolm's Docker images are periodically built and hosted on [Docker Hub](https://hub.docker.com/u/malcolmnetsec). If you already have [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/), these prebuilt images can be pulled by navigating into the Malcolm directory (containing the `docker-compose.yml` file) and running `docker-compose pull` like this:
 ```
 $ docker-compose pull
-Pulling curator       ... done
 Pulling elasticsearch ... done
 Pulling file-monitor  ... done
 Pulling filebeat      ... done
@@ -156,7 +155,6 @@ You can then observe that the images have been retrieved by running `docker imag
 ```
 $ docker images
 REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
-malcolmnetsec/curator                               3.0.0               xxxxxxxxxxxx        40 hours ago        256MB
 malcolmnetsec/elasticsearch-oss                     3.0.0               xxxxxxxxxxxx        40 hours ago        690MB
 malcolmnetsec/file-monitor                          3.0.0               xxxxxxxxxxxx        39 hours ago        470MB
 malcolmnetsec/file-upload                           3.0.0               xxxxxxxxxxxx        39 hours ago        199MB
@@ -310,11 +308,10 @@ See [Zeek log integration](#MolochZeek) for more information on how Malcolm inte
 
 Checking out the [Malcolm source code](https://github.com/idaholab/Malcolm/tree/master) results in the following subdirectories in your `malcolm/` working copy:
 
-* `curator` - code and configuration for the `curator` container which define rules for closing and/or deleting old Elasticsearch indices
 * `Dockerfiles` - a directory containing build instructions for Malcolm's docker images
 * `docs` - a directory containing instructions and documentation
 * `elasticsearch` - an initially empty directory where the Elasticsearch database instance will reside
-* `elasticsearch-backup` - an initially empty directory for storing Elasticsearch [index snapshots](#Curator) 
+* `elasticsearch-backup` - an initially empty directory for storing Elasticsearch [index snapshots](#IndexManagement) 
 * `filebeat` - code and configuration for the `filebeat` container which ingests Zeek logs and forwards them to the `logstash` container
 * `file-monitor` - code and configuration for the `file-monitor` container which can scan files extracted by Zeek
 * `file-upload` - code and configuration for the `upload` container which serves a web browser-based upload form for uploading PCAP files and Zeek logs, and which serves an SFTP share as an alternate method for upload
@@ -356,7 +353,6 @@ $ ./scripts/build.sh
 
 Then, go take a walk or something since it will be a while. When you're done, you can run `docker images` and see you have fresh images for:
 
-* `malcolmnetsec/curator` (based on `debian:buster-slim`)
 * `malcolmnetsec/elasticsearch-oss` (based on `docker.elastic.co/elasticsearch/elasticsearch-oss`)
 * `malcolmnetsec/filebeat-oss` (based on `docker.elastic.co/beats/filebeat-oss`)
 * `malcolmnetsec/file-monitor` (based on `debian:buster-slim`)
@@ -497,14 +493,6 @@ Various other environment variables inside of `docker-compose.yml` can be tweake
 * `ES_EXTERNAL_SSL_CERTIFICATE_VERIFICATION` – if set to `true`, Logstash will require full SSL certificate validation; this may fail if using self-signed certificates (default `false`)
 
 * `KIBANA_OFFLINE_REGION_MAPS` – if set to `true`, a small internal server will be surfaced to Kibana to provide the ability to view region map visualizations even when an Internet connection is not available (default `true`)
-
-* `CURATOR_CLOSE_COUNT` and `CURATOR_CLOSE_UNITS` - determine behavior for automatically closing older Elasticsearch indices to conserve memory; see [Elasticsearch index curation](#Curator)
-
-* `CURATOR_DELETE_COUNT` and `CURATOR_DELETE_UNITS` - determine behavior for automatically deleting older Elasticsearch indices to reduce disk usage; see [Elasticsearch index curation](#Curator)
-
-* `CURATOR_DELETE_GIGS` - if the Elasticsearch indices representing the log data exceed this size, in gigabytes, older indices will be deleted to bring the total size back under this threshold; see [Elasticsearch index curation](#Curator)
-
-* `CURATOR_SNAPSHOT_DISABLED` - if set to `False`, daily snapshots (backups) will be made of the previous day's Elasticsearch log index; see [Elasticsearch index curation](#Curator)
 
 * `AUTO_TAG` – if set to `true`, Malcolm will automatically create Moloch sessions and Zeek logs with tags based on the filename, as described in [Tagging](#Tagging) (default `true`)
 
@@ -824,7 +812,7 @@ Malcolm can be configured to be automatically restarted when the Docker system d
 
 ### <a name="Wipe"></a>Clearing Malcolm’s data
 
-Run `./scripts/wipe` to stop the Malcolm instance and wipe its Elasticsearch database (including [index snapshots](#Curator)).
+Run `./scripts/wipe` to stop the Malcolm instance and wipe its Elasticsearch database (including [index snapshots](#IndexManagement)).
 
 ## <a name="Upload"></a>Capture file and log archive upload
 
@@ -1373,30 +1361,9 @@ When changes are made to either `cidr-map.txt`, `host-map.txt` or `net-map.json`
 
 Restarting Logstash may take several minutes, after which log ingestion will be resumed.
 
-## <a name="Curator"></a>Elasticsearch index curation
+## <a name="IndexManagement"></a>Elasticsearch index management
 
-Malcolm uses [Elasticsearch Curator](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/about.html) to periodically examine indices representing the log data and perform actions on indices meeting criteria for age or disk usage. The environment variables prefixed with `CURATOR_` in the [`docker-compose.yml`](#DockerComposeYml) file determine the criteria for the following actions:
-
-* [snapshot](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/snapshot.html) (back up) the previous day's Elasticsearch index once daily; by default snapshots are stored locally under the `./elasticsearch-backup/` directory mounted as a volume into the `elasticsearch` container
-* [close](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/close.html) indices [older than a specified age](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_age.html) in order to reduce RAM utilization
-* [delete](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) indices [older than a specified age](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_age.html) in order to reduce disk usage
-* [delete](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/delete_indices.html) the oldest indices in order to keep the total [database size under a specified threshold](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filtertype_space.html)
-
-This behavior can also be modified by running [`./scripts/install.py --configure`](#ConfigAndTuning).
-
-Other custom [filters](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/filters.html) and [actions](https://www.elastic.co/guide/en/elasticsearch/client/curator/current/actions.html) may be defined by the user by manually modifying the `action_file.yml` file used by the `curator` container and ensuring that it is mounted into the container as a volume in the `curator:` section of your `docker-compose.yml` file:
-
-```
-  curator:
-…
-    volumes:
-      - ./curator/config/action_file.yml:/config/action_file.yml
-…
-```
-
-The settings governing index curation can affect Malcolm's performance in both log ingestion and queries, and there are caveats that should be taken into consideration when configuring this feature. Please read the Elasticsearch documentation linked in this section with regards to index curation.
-
-Index curation only deals with disk space consumed by Elasticsearch indices: it does not have anything to do with PCAP file storage. The `MANAGE_PCAP_FILES` environment variable in the [`docker-compose.yml`](#DockerComposeYml) file can be used to allow Moloch to prune old PCAP files based on available disk space.
+See [Index State Management](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/) in the Open Distro for Elasticsearch documentation.
 
 ## <a name="OtherBeats"></a>Using Beats to forward host logs to Malcolm
 
@@ -1806,7 +1773,6 @@ Store username/password for forwarding Logstash events to a secondary, external 
 For now, rather than [build Malcolm from scratch](#Build), we'll pull images from [Docker Hub](https://hub.docker.com/u/malcolmnetsec):
 ```
 user@host:~/Malcolm$ docker-compose pull
-Pulling curator       ... done
 Pulling elasticsearch ... done
 Pulling file-monitor  ... done
 Pulling filebeat      ... done
@@ -1824,7 +1790,6 @@ Pulling zeek          ... done
 
 user@host:~/Malcolm$ docker images
 REPOSITORY                                          TAG                 IMAGE ID            CREATED             SIZE
-malcolmnetsec/curator                               3.0.0               xxxxxxxxxxxx        40 hours ago        256MB
 malcolmnetsec/elasticsearch-oss                     3.0.0               xxxxxxxxxxxx        40 hours ago        690MB
 malcolmnetsec/file-monitor                          3.0.0               xxxxxxxxxxxx        39 hours ago        470MB
 malcolmnetsec/file-upload                           3.0.0               xxxxxxxxxxxx        39 hours ago        199MB
@@ -1845,7 +1810,6 @@ Finally, we can start Malcolm. When Malcolm starts it will stream informational 
 ```
 user@host:~/Malcolm$ python3 ./scripts/start
 Creating network "malcolm_default" with the default driver
-Creating malcolm_curator_1       ... done
 Creating malcolm_elasticsearch_1 ... done
 Creating malcolm_file-monitor_1  ... done
 Creating malcolm_filebeat_1      ... done
@@ -1872,7 +1836,7 @@ In a few minutes, Malcolm services will be accessible via the following URLs:
 …
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 …
-Attaching to malcolm_curator_1, malcolm_elasticsearch_1, malcolm_file-monitor_1, malcolm_filebeat_1, malcolm_freq_1, malcolm_htadmin_1, malcolm_kibana_1, malcolm_logstash_1, malcolm_name-map-ui_1, malcolm_moloch_1, malcolm_nginx-proxy_1, malcolm_pcap-capture_1, malcolm_pcap-monitor_1, malcolm_upload_1, malcolm_zeek_1
+Attaching to malcolm_elasticsearch_1, malcolm_file-monitor_1, malcolm_filebeat_1, malcolm_freq_1, malcolm_htadmin_1, malcolm_kibana_1, malcolm_logstash_1, malcolm_name-map-ui_1, malcolm_moloch_1, malcolm_nginx-proxy_1, malcolm_pcap-capture_1, malcolm_pcap-monitor_1, malcolm_upload_1, malcolm_zeek_1
 …
 ```
 

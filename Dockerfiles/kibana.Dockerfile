@@ -47,10 +47,10 @@ ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 USER root
 
-RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-comments-app-plugin/releases/download/7.4.0/kibana-comments-app-plugin-7.4.0-latest.zip" && \
-      # see https://github.com/uniberg/kbn_sankey_vis/issues/15#issuecomment-720700879
-      curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
-      curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
+
+RUN # see https://github.com/uniberg/kbn_sankey_vis/issues/15#issuecomment-720700879
+    curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
+    curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
     yum install -y epel-release && \
       yum update -y && \
       yum install -y curl inotify-tools npm patch psmisc python-requests python-setuptools zip unzip && \
@@ -93,19 +93,7 @@ RUN curl -sSL -o /tmp/kibana-comments.zip "https://github.com/gwintzer/kibana-co
       /usr/share/kibana/bin/kibana-plugin install file:///tmp/drilldown.zip --allow-root && \
       rm -rf /tmp/kibana /tmp/*drilldown* && \
     cd /tmp && \
-    echo "Installing Comments visualization..." && \
-      unzip kibana-comments.zip \
-            kibana/kibana-comments-app-plugin/package.json \
-            kibana/kibana-comments-app-plugin/public/app.js && \
-      sed -i "s/7\.4\.0/7\.9\.1/g" kibana/kibana-comments-app-plugin/package.json && \
-      sed -i "s/^import.*ui\/autoload\/styles.*$//" kibana/kibana-comments-app-plugin/public/app.js && \
-      zip kibana-comments.zip \
-          kibana/kibana-comments-app-plugin/package.json \
-          kibana/kibana-comments-app-plugin/public/app.js && \
-      cd /usr/share/kibana/plugins && \
-      /usr/share/kibana/bin/kibana-plugin install file:///tmp/kibana-comments.zip --allow-root && \
-      rm -rf /tmp/kibana-comments.zip /tmp/kibana && \
-    rm -rf /tmp/npm-*
+      rm -rf /tmp/npm-*
 
 ADD kibana/dashboards /opt/kibana/dashboards
 ADD kibana/kibana-offline-maps.yml /opt/kibana/config/kibana-offline-maps.yml
