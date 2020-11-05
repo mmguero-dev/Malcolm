@@ -1,4 +1,4 @@
-FROM amazon/opendistro-for-elasticsearch:1.10.1
+FROM amazon/opendistro-for-elasticsearch:1.11.0
 
 # Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm.netsec@gmail.com"
@@ -24,6 +24,9 @@ ENV TERM xterm
 # https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/disable/
 # https://opendistro.github.io/for-elasticsearch-docs/docs/install/docker/#customize-the-docker-image
 RUN /usr/share/elasticsearch/bin/elasticsearch-plugin remove opendistro_security && \
+    # see https://github.com/opendistro-for-elasticsearch/alerting/issues/292#issuecomment-721992434
+    /usr/share/elasticsearch/bin/elasticsearch-plugin remove opendistro-anomaly-detection && \
+    /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch "https://github.com/opendistro-for-elasticsearch/alerting/files/5490651/opendistro-anomaly-detection-1.11.0.0.zip" && \
     echo -e 'cluster.name: "docker-cluster"\nnetwork.host: 0.0.0.0' > /usr/share/elasticsearch/config/elasticsearch.yml && \
     chown -R $PUSER:$PGROUP /usr/share/elasticsearch/config/elasticsearch.yml
 

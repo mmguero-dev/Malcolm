@@ -1,4 +1,4 @@
-FROM amazon/opendistro-for-elasticsearch-kibana:1.10.1
+FROM amazon/opendistro-for-elasticsearch-kibana:1.11.0
 
 # Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm.netsec@gmail.com"
@@ -47,9 +47,7 @@ ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 USER root
 
-
-RUN # see https://github.com/uniberg/kbn_sankey_vis/issues/15#issuecomment-720700879
-    curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
+RUN curl -sSL -o /tmp/kibana-sankey.zip "https://codeload.github.com/mmguero-dev/kbn_sankey_vis/zip/master" && \
     curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
     yum install -y epel-release && \
       yum update -y && \
@@ -68,6 +66,7 @@ RUN # see https://github.com/uniberg/kbn_sankey_vis/issues/15#issuecomment-72070
       /usr/share/kibana/bin/kibana-plugin remove opendistro_security --allow-root && \
     cd /tmp && \
       echo "Installing Sankey visualization..." && \
+      # see https://github.com/uniberg/kbn_sankey_vis/issues/15#issuecomment-720700879
       unzip /tmp/kibana-sankey.zip && \
       mkdir ./kibana &&\
       mv ./kbn_sankey_vis-* ./kibana/sankey_vis && \
