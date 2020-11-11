@@ -15,6 +15,7 @@ pip3 install --no-compile --no-cache-dir --force-reinstall --upgrade \
   colorama \
   debinterface \
   ipaddress \
+  magic-wormhole \
   netifaces \
   psutil \
   pyinotify \
