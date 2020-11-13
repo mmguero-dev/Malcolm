@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.12
 
 # Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm.netsec@gmail.com"
@@ -64,7 +64,6 @@ COPY docs/images/logo/Malcolm_banner.png /var/www/html/
 COPY docs/images/favicon/favicon.ico /var/www/html/
 
 EXPOSE 8080
-
 
 ENTRYPOINT ["/usr/local/bin/docker-uid-gid-setup.sh"]
 

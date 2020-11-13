@@ -81,9 +81,6 @@ x-logstash-variables: &logstash-variables
   # ES_EXTERNAL_USER : 'janedoe'
   # ES_EXTERNAL_PASSWORD : 'secret'
 
-x-kibana-variables: &kibana-variables
-  KIBANA_OFFLINE_REGION_MAPS : 'true'
-
 x-common-upload-variables: &common-upload-variables
   AUTO_TAG : 'true'
   PCAP_PIPELINE_DEBUG : 'false'
@@ -142,6 +139,25 @@ services:
       timeout: 15s
       retries: 3
       start_period: 180s
+  kibana-helper:
+    image: malcolmnetsec/kibana-helper:3.0.0
+    restart: "no"
+    stdin_open: false
+    tty: true
+    hostname: kibana-helper
+    environment:
+      << : *process-variables
+      ELASTICSEARCH_URL : 'http://elasticsearch:9200'
+      KIBANA_URL : 'http://kibana:5601/kibana'
+      VIRTUAL_HOST : 'kibana-helper.malcolm.local'
+      CREATE_ES_MOLOCH_SESSION_INDEX : 'true'
+      MOLOCH_INDEX_PATTERN : 'sessions2-*'
+      MOLOCH_INDEX_PATTERN_ID : 'sessions2-*'
+      MOLOCH_INDEX_TIME_FIELD : 'firstPacket'
+    depends_on:
+      - elasticsearch
+    expose:
+      - 28991
   kibana:
     image: malcolmnetsec/kibana-od:3.0.0
     restart: "no"
@@ -150,18 +166,13 @@ services:
     hostname: kibana
     environment:
       << : *process-variables
-      << : *kibana-variables
       ELASTICSEARCH_URL : 'http://elasticsearch:9200'
       VIRTUAL_HOST : 'kibana.malcolm.local'
-      CREATE_ES_MOLOCH_SESSION_INDEX : 'true'
-      MOLOCH_INDEX_PATTERN : 'sessions2-*'
-      MOLOCH_INDEX_PATTERN_ID : 'sessions2-*'
-      MOLOCH_INDEX_TIME_FIELD : 'firstPacket'
     depends_on:
       - elasticsearch
+      - kibana-helper
     expose:
       - 5601
-      - 28991
     healthcheck:
       test: ["CMD", "curl", "--silent", "--fail", "http://localhost:5601/kibana/api/status"]
       interval: 30s

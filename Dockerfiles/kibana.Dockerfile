@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.documentation='https://github.com/idaholab/Malcol
 LABEL org.opencontainers.image.source='https://github.com/idaholab/Malcolm'
 LABEL org.opencontainers.image.vendor='Idaho National Laboratory'
 LABEL org.opencontainers.image.title='malcolmnetsec/kibana-od'
-LABEL org.opencontainers.image.description='Malcolm container providing Kibana (the Apache-licensed variant)'
+LABEL org.opencontainers.image.description='Malcolm container providing Kibana (the Apache-licensed Open Distro variant)'
 
 ARG DEFAULT_UID=1000
 ARG DEFAULT_GID=1000
@@ -21,29 +21,10 @@ ENV PUSER_PRIV_DROP true
 ENV TERM xterm
 
 ARG ELASTICSEARCH_URL="http://elasticsearch:9200"
-ARG CREATE_ES_MOLOCH_SESSION_INDEX="true"
-ARG MOLOCH_INDEX_PATTERN="sessions2-*"
-ARG MOLOCH_INDEX_PATTERN_ID="sessions2-*"
-ARG MOLOCH_INDEX_TIME_FIELD="firstPacket"
 ARG KIBANA_DEFAULT_DASHBOARD="0ad3d7c2-3441-485e-9dfe-dbb22e84e576"
-ARG KIBANA_OFFLINE_REGION_MAPS="false"
-ARG KIBANA_OFFLINE_REGION_MAPS_PORT="28991"
 
-ENV CREATE_ES_MOLOCH_SESSION_INDEX $CREATE_ES_MOLOCH_SESSION_INDEX
-ENV MOLOCH_INDEX_PATTERN $MOLOCH_INDEX_PATTERN
-ENV MOLOCH_INDEX_PATTERN_ID $MOLOCH_INDEX_PATTERN_ID
-ENV MOLOCH_INDEX_TIME_FIELD $MOLOCH_INDEX_TIME_FIELD
-ENV KIBANA_DEFAULT_DASHBOARD $KIBANA_DEFAULT_DASHBOARD
-ENV KIBANA_OFFLINE_REGION_MAPS $KIBANA_OFFLINE_REGION_MAPS
-ENV KIBANA_OFFLINE_REGION_MAPS_PORT $KIBANA_OFFLINE_REGION_MAPS_PORT
-ENV PATH="/data:${PATH}"
 ENV ELASTICSEARCH_URL $ELASTICSEARCH_URL
-
-ENV SUPERCRONIC_VERSION "0.1.11"
-ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-amd64"
-ENV SUPERCRONIC "supercronic-linux-amd64"
-ENV SUPERCRONIC_SHA1SUM "a2e2d47078a8dafc5949491e5ea7267cc721d67c"
-ENV SUPERCRONIC_CRONTAB "/etc/crontab"
+ENV KIBANA_DEFAULT_DASHBOARD $KIBANA_DEFAULT_DASHBOARD
 
 USER root
 
@@ -64,22 +45,15 @@ USER root
 #   /usr/share/kibana/bin/kibana-plugin install file:///tmp/sankey_vis.zip --allow-root && \
 #   rm -rf /tmp/kibana /tmp/*sankey* && \
 
-RUN curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
-    yum install -y epel-release && \
+RUN yum install -y epel-release && \
       yum update -y && \
-      yum install -y curl inotify-tools npm patch psmisc python-requests python-setuptools zip unzip && \
+      yum install -y curl npm patch psmisc zip unzip && \
       yum clean all && \
-      easy_install supervisor && \
-      npm install -g http-server && \
       usermod -a -G tty ${PUSER} && \
-    curl -fsSLO "$SUPERCRONIC_URL" && \
-      echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - && \
-      chmod +x "$SUPERCRONIC" && \
-      mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" && \
-      ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic && \
     cd /tmp && \
       # Malcolm manages authentication and encryption via NGINX reverse proxy
       /usr/share/kibana/bin/kibana-plugin remove opendistro_security --allow-root && \
+    curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
     cd /tmp && \
       echo "Installing Drilldown menu plugin..." && \
       unzip /tmp/kibana-drilldown.zip && \
@@ -96,25 +70,11 @@ RUN curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-
     cd /tmp && \
       rm -rf /tmp/npm-*
 
-ADD kibana/dashboards /opt/kibana/dashboards
-ADD kibana/kibana-offline-maps.yml /opt/kibana/config/kibana-offline-maps.yml
-ADD kibana/kibana-standard.yml /opt/kibana/config/kibana-standard.yml
-ADD kibana/maps /opt/maps
-ADD kibana/scripts /data/
-ADD kibana/supervisord.conf /etc/supervisord.conf
-ADD kibana/zeek_template.json /data/zeek_template.json
-ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
-ADD shared/bin/elastic_search_status.sh /data/
+ADD kibana/kibana.yml /usr/share/kibana/config/kibana.yml
 
-RUN chmod 755 /data/*.sh /data/*.py && \
-    chown -R ${PUSER}:${PGROUP} /opt/kibana/dashboards /opt/maps /opt/kibana/config/kibana*.yml && \
-    chmod 400 /opt/maps/* && \
-    (echo -e "*/2 * * * * /data/kibana-create-moloch-sessions-index.sh\n0 10 * * * /data/kibana_index_refresh.py" > ${SUPERCRONIC_CRONTAB})
+USER $DEFAULT_UID
 
-ENTRYPOINT ["/usr/local/bin/docker-uid-gid-setup.sh"]
-
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf", "-n"]
-
+EXPOSE 5601
 
 # to be populated at build-time:
 ARG BUILD_DATE

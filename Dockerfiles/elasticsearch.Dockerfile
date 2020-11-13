@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.documentation='https://github.com/idaholab/Malcol
 LABEL org.opencontainers.image.source='https://github.com/idaholab/Malcolm'
 LABEL org.opencontainers.image.vendor='Idaho National Laboratory'
 LABEL org.opencontainers.image.title='malcolmnetsec/elasticsearch-od'
-LABEL org.opencontainers.image.description='Malcolm container providing Elasticsearch (the Apache-licensed variant)'
+LABEL org.opencontainers.image.description='Malcolm container providing Elasticsearch (the Apache-licensed Open Distro variant)'
 
 ARG DEFAULT_UID=1000
 ARG DEFAULT_GID=1000
@@ -20,6 +20,9 @@ ENV PUSER_PRIV_DROP true
 
 ENV TERM xterm
 
+ARG DISABLE_INSTALL_DEMO_CONFIG=true
+ENV DISABLE_INSTALL_DEMO_CONFIG $DISABLE_INSTALL_DEMO_CONFIG
+
 # Malcolm manages authentication and encryption via NGINX reverse proxy
 # https://opendistro.github.io/for-elasticsearch-docs/docs/security/configuration/disable/
 # https://opendistro.github.io/for-elasticsearch-docs/docs/install/docker/#customize-the-docker-image
@@ -29,12 +32,6 @@ RUN /usr/share/elasticsearch/bin/elasticsearch-plugin remove opendistro_security
     /usr/share/elasticsearch/bin/elasticsearch-plugin install --batch "https://github.com/opendistro-for-elasticsearch/alerting/files/5490651/opendistro-anomaly-detection-1.11.0.0.zip" && \
     echo -e 'cluster.name: "docker-cluster"\nnetwork.host: 0.0.0.0' > /usr/share/elasticsearch/config/elasticsearch.yml && \
     chown -R $PUSER:$PGROUP /usr/share/elasticsearch/config/elasticsearch.yml
-
-ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
-
-ENTRYPOINT ["/usr/local/bin/docker-uid-gid-setup.sh", "/usr/local/bin/docker-entrypoint.sh"]
-
-CMD ["eswrapper"]
 
 # to be populated at build-time:
 ARG BUILD_DATE

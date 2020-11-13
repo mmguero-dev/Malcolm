@@ -10,7 +10,7 @@
 # build a patched APK of stunnel supporting ldap StartTLS (patched protocols.c)
 # (based on https://www.stunnel.org/pipermail/stunnel-users/2013-November/004437.html)
 
-FROM alpine:3.11 as stunnel_build
+FROM alpine:3.12 as stunnel_build
 
 ARG DEFAULT_UID=1000
 ARG DEFAULT_GID=300
@@ -46,7 +46,7 @@ RUN set -x ; \
 
 ####################################################################################
 
-FROM alpine:3.11
+FROM alpine:3.12
 
 LABEL maintainer="malcolm.netsec@gmail.com"
 LABEL org.opencontainers.image.authors='malcolm.netsec@gmail.com'

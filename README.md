@@ -161,6 +161,7 @@ malcolmnetsec/file-upload                           3.0.0               xxxxxxxx
 malcolmnetsec/filebeat-oss                          3.0.0               xxxxxxxxxxxx        39 hours ago        555MB
 malcolmnetsec/freq                                  3.0.0               xxxxxxxxxxxx        39 hours ago        390MB
 malcolmnetsec/htadmin                               3.0.0               xxxxxxxxxxxx        39 hours ago        180MB
+malcolmnetsec/kibana-helper                         3.0.0               xxxxxxxxxxxx        40 hours ago        141MB
 malcolmnetsec/kibana-od                             3.0.0               xxxxxxxxxxxx        40 hours ago        1.16GB
 malcolmnetsec/logstash-oss                          3.0.0               xxxxxxxxxxxx        39 hours ago        1.41GB
 malcolmnetsec/moloch                                3.0.0               xxxxxxxxxxxx        17 hours ago        683MB
@@ -360,10 +361,11 @@ Then, go take a walk or something since it will be a while. When you're done, yo
 * `malcolmnetsec/freq` (based on `debian:buster-slim`)
 * `malcolmnetsec/htadmin` (based on `debian:buster-slim`)
 * `malcolmnetsec/kibana-od` (based on `amazon/opendistro-for-elasticsearch-kibana`)
+* `malcolmnetsec/kibana-helper` (based on `alpine:3.12`)
 * `malcolmnetsec/logstash-oss` (based on `docker.elastic.co/logstash/logstash-oss`)
-* `malcolmnetsec/name-map-ui` (based on `alpine:3.11`)
+* `malcolmnetsec/name-map-ui` (based on `alpine:3.12`)
 * `malcolmnetsec/moloch` (based on `debian:buster-slim`)
-* `malcolmnetsec/nginx-proxy` (based on `alpine:3.11`)
+* `malcolmnetsec/nginx-proxy` (based on `alpine:3.12`)
 * `malcolmnetsec/pcap-capture` (based on `debian:buster-slim`)
 * `malcolmnetsec/pcap-monitor` (based on `debian:buster-slim`)
 * `malcolmnetsec/pcap-zeek` (based on `debian:buster-slim`)
@@ -491,8 +493,6 @@ Various other environment variables inside of `docker-compose.yml` can be tweake
 * `ES_EXTERNAL_SSL` –  if set to `true`, Logstash will use HTTPS for the connection to external Elasticsearch instances specified in `ES_EXTERNAL_HOSTS`
 
 * `ES_EXTERNAL_SSL_CERTIFICATE_VERIFICATION` – if set to `true`, Logstash will require full SSL certificate validation; this may fail if using self-signed certificates (default `false`)
-
-* `KIBANA_OFFLINE_REGION_MAPS` – if set to `true`, a small internal server will be surfaced to Kibana to provide the ability to view region map visualizations even when an Internet connection is not available (default `true`)
 
 * `AUTO_TAG` – if set to `true`, Malcolm will automatically create Moloch sessions and Zeek logs with tags based on the filename, as described in [Tagging](#Tagging) (default `true`)
 
@@ -1796,6 +1796,7 @@ malcolmnetsec/file-upload                           3.0.0               xxxxxxxx
 malcolmnetsec/filebeat-oss                          3.0.0               xxxxxxxxxxxx        39 hours ago        555MB
 malcolmnetsec/freq                                  3.0.0               xxxxxxxxxxxx        39 hours ago        390MB
 malcolmnetsec/htadmin                               3.0.0               xxxxxxxxxxxx        39 hours ago        180MB
+malcolmnetsec/kibana-helper                         3.0.0               xxxxxxxxxxxx        40 hours ago        141MB
 malcolmnetsec/kibana-od                             3.0.0               xxxxxxxxxxxx        40 hours ago        1.16GB
 malcolmnetsec/logstash-oss                          3.0.0               xxxxxxxxxxxx        39 hours ago        1.41GB
 malcolmnetsec/moloch                                3.0.0               xxxxxxxxxxxx        17 hours ago        683MB
