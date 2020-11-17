@@ -83,11 +83,32 @@ def keystore_op(service, *keystore_args, **run_process_kwargs):
     if (localKeystore is not None) and (volumeKeystore is not None) and os.path.isdir(localKeystoreDir):
       localKeystorePreExists = os.path.isfile(localKeystore)
 
+      dockerCmd = None
+
       # determine if Malcolm is running; if so, we'll use docker-compose exec, other wise we'll use docker run
       err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'ps', '-q', service], debug=args.debug)
+      out[:] = [x for x in out if x]
       if (err == 0) and (len(out) > 0):
-        # the system is running, we can use an existing container
-        pass
+        # Malcolm is running, we can use an existing container
+
+        # assemble the service-keystore command
+        dockerCmd = [dockerComposeBin, 'exec',
+
+                     # if using stdin, indicate the container is "interactive", else noop (duplicate --rm)
+                     '-T' if ('stdin' in run_process_kwargs and run_process_kwargs['stdin']) else '',
+
+                     # execute as current UID:GID, as we're assuming this would match docker-compose YML PUID/PGID
+                     # todo: alternately grep PUID/PGID out of docker-compose YML
+                     '-u', f'{os.getuid()}:{os.getgid()}' if (pyPlatform != PLATFORM_WINDOWS) else '1000:1000',
+
+                     # the work directory in the container is the directory to contain the keystore file
+                     '-w', volumeKeystoreDir,
+
+                     # the service name
+                     service,
+
+                     # the executable filespec
+                     keystoreBinProc]
 
       else:
         # Malcolm isn't running, do 'docker run' to spin up a temporary container to run the ocmmand
@@ -109,8 +130,8 @@ def keystore_op(service, *keystore_args, **run_process_kwargs):
                        # remove the container when complete
                        '--rm',
 
-                       # if using stdin, indicate the container is "interactive", else noop (duplicate --rm)
-                       '-i' if ('stdin' in run_process_kwargs and run_process_kwargs['stdin']) else '--rm',
+                       # if using stdin, indicate the container is "interactive", else noop
+                       '-i' if ('stdin' in run_process_kwargs and run_process_kwargs['stdin']) else '',
 
                        # the executable filespec
                        '--entrypoint', keystoreBinProc,
@@ -129,17 +150,24 @@ def keystore_op(service, *keystore_args, **run_process_kwargs):
                        # the service image name grepped from the YML file
                        serviceImage]
 
-          # append whatever other arguments to pass to the executable filespec
-          if keystore_args:
-            dockerCmd.extend(list(keystore_args))
-
-          # execute the command, passing through run_process_kwargs to run_process as expanded keyword arguments
-          err, out = run_process(dockerCmd, stderr=True, debug=args.debug, **run_process_kwargs)
-          if (err != 0) or (not os.path.isfile(localKeystore)):
-            raise Exception(f'Unable to generate keystore file for {service}: {out}')
-
         else:
           raise Exception(f'Unable to identify docker image for {service} in {args.composeFile}')
+
+      if (dockerCmd is not None):
+
+        # append whatever other arguments to pass to the executable filespec
+        if keystore_args:
+          dockerCmd.extend(list(keystore_args))
+
+        dockerCmd[:] = [x for x in dockerCmd if x]
+
+        # execute the command, passing through run_process_kwargs to run_process as expanded keyword arguments
+        err, out = run_process(dockerCmd, stderr=True, debug=args.debug, **run_process_kwargs)
+        if (err != 0) or (not os.path.isfile(localKeystore)):
+          raise Exception(f'Unable to generate keystore file for {service}: {out}')
+
+      else:
+        raise Exception(f'Unable formulate keystore command for {service} in {args.composeFile}')
 
     else:
       raise Exception(f'Unable to identify a unique keystore file bind mount for {service} in {args.composeFile}')
@@ -149,7 +177,8 @@ def keystore_op(service, *keystore_args, **run_process_kwargs):
       err = -1
 
     # don't be so whiny if the "create" failed just because it already existed
-    if (list(keystore_args) and
+    if ((not args.debug) and
+        list(keystore_args) and
         (len(list(keystore_args)) > 0) and
         (list(keystore_args)[0].lower() == 'create') and
         localKeystorePreExists):
