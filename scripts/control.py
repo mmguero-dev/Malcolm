@@ -39,22 +39,126 @@ except:
   coloramaImported = False
 
 ###################################################################################################
-def keystore_op(service, op, key=None, value=None, stdin=False, workDir=None):
+# perform a service-keystore operation in a Docker container
+#
+# service - the service in the docker-compose YML file
+# keystore_args - arguments to pass to the service-keystore binary in the container
+# run_process_kwargs - keyword arguments to pass to run_process
+#
+# returns True (success) or False (failure)
+#
+def keystore_op(service, *keystore_args, **run_process_kwargs):
   global args
   global dockerBin
   global dockerComposeBin
 
+  err = -1
+
+  # the elastic containers all follow the same naming pattern for these executables
   keystoreBinProc = f"/usr/share/{service}/bin/{service}-keystore"
 
-  with pushd(workDir) if (workDir is not None) else nullcontext():
-    err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'ps', service], debug=args.debug)
-    if (err == 0) and (len(out) > 0):
-      # the system is running, we can use an existing container
-      pass
+  # open up the docker-compose file and "grep" for the line where the keystore file
+  # is bind-mounted into the service container (once and only once). the bind
+  # mount needs to exist in the YML file and the local directory containing the
+  # keystore file needs to exist (although the file itself might not yet)
+  localKeystore = None
+  localKeystoreDir = None
+  localKeystorePreExists = False
+  volumeKeystore = None
+  volumeKeystoreDir = None
+
+  try:
+
+    composeFileLines = list()
+    with open(args.composeFile, 'r') as f:
+      composeFileLines = [x for x in f.readlines() if re.search(fr'-.*?{service}.keystore\s*:.*{service}.keystore', x)]
+    if (len(composeFileLines) == 1) and (len(composeFileLines[0]) > 0):
+      matches = re.search(fr'-\s*(?P<localKeystore>.*?{service}.keystore)\s*:\s*(?P<volumeKeystore>.*?{service}.keystore)', composeFileLines[0])
+      if matches:
+        localKeystore = os.path.realpath(matches.group('localKeystore'))
+        localKeystoreDir = os.path.dirname(localKeystore)
+        volumeKeystore = matches.group('volumeKeystore')
+        volumeKeystoreDir = os.path.dirname(volumeKeystore)
+
+    if (localKeystore is not None) and (volumeKeystore is not None) and os.path.isdir(localKeystoreDir):
+      localKeystorePreExists = os.path.isfile(localKeystore)
+
+      # determine if Malcolm is running; if so, we'll use docker-compose exec, other wise we'll use docker run
+      err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'ps', '-q', service], debug=args.debug)
+      if (err == 0) and (len(out) > 0):
+        # the system is running, we can use an existing container
+        pass
+
+      else:
+        # Malcolm isn't running, do 'docker run' to spin up a temporary container to run the ocmmand
+
+        # "grep" the docker image out of the service's image: value from the docker-compose YML file
+        serviceImage = None
+        composeFileLines = list()
+        with open(args.composeFile, 'r') as f:
+          composeFileLines = [x for x in f.readlines() if f'image: malcolmnetsec/{service}' in x]
+        if (len(composeFileLines) > 0) and (len(composeFileLines[0]) > 0):
+          imageLineValues = composeFileLines[0].split()
+          if (len(imageLineValues) > 1):
+            serviceImage = imageLineValues[1]
+
+        if serviceImage is not None:
+          # assemble the service-keystore command
+          dockerCmd = [dockerBin, 'run',
+
+                       # remove the container when complete
+                       '--rm',
+
+                       # if using stdin, indicate the container is "interactive", else noop (duplicate --rm)
+                       '-i' if ('stdin' in run_process_kwargs and run_process_kwargs['stdin']) else '--rm',
+
+                       # the executable filespec
+                       '--entrypoint', keystoreBinProc,
+
+                       # rw bind mount the local directory to contain the keystore file to the container directory
+                       '-v', f'{localKeystoreDir}:{volumeKeystoreDir}:rw',
+
+                       # the work directory in the container is the directory to contain the keystore file
+                       '-w', volumeKeystoreDir,
+
+                       # execute as 1000:1000; this should be the right thing to do as this is how the images were built
+                       # todo: alternately:
+                       #   '-u', f'{os.getuid()}:{os.getgid()}' if (pyPlatform != PLATFORM_WINDOWS) else '1000:1000',
+                       '-u', '1000:1000',
+
+                       # the service image name grepped from the YML file
+                       serviceImage]
+
+          # append whatever other arguments to pass to the executable filespec
+          if keystore_args:
+            dockerCmd.extend(list(keystore_args))
+
+          # execute the command, passing through run_process_kwargs to run_process as expanded keyword arguments
+          err, out = run_process(dockerCmd, stderr=True, debug=args.debug, **run_process_kwargs)
+          if (err != 0) or (not os.path.isfile(localKeystore)):
+            raise Exception(f'Unable to generate keystore file for {service}: {out}')
+
+        else:
+          raise Exception(f'Unable to identify docker image for {service} in {args.composeFile}')
 
     else:
-      # the system is down, we need to run docker manually
+      raise Exception(f'Unable to identify a unique keystore file bind mount for {service} in {args.composeFile}')
+
+  except Exception as e:
+    if (err == 0):
+      err = -1
+
+    # don't be so whiny if the "create" failed just because it already existed
+    if (list(keystore_args) and
+        (len(list(keystore_args)) > 0) and
+        (list(keystore_args)[0].lower() == 'create') and
+        localKeystorePreExists):
       pass
+    else:
+      eprint(e)
+
+  # success = (error == 0)
+  return (err == 0)
 
 ###################################################################################################
 def status():
@@ -242,10 +346,8 @@ def start():
   # touch the metadata file
   open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
 
-  # if the elasticsearch keystore doesn't exist, create an empty one
-  #esKeystoreSpec = os.path.join(MalcolmPath, os.path.join('elasticsearch', 'elasticsearch.keystore'))
-  #if not os.path.isfile(esKeystoreSpec):
-
+  # if the elasticsearch keystore doesn't exist, create an empty one (this will fail if it already exists, which we ignore)
+  keystore_op('elasticsearch', 'create')
 
   # make sure permissions are set correctly for the nginx worker processes
   for authFile in [os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')),
