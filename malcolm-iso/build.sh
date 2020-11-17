@@ -125,7 +125,6 @@ if [ -d "$WORKDIR" ]; then
   ln -s ./control.py status
   ln -s ./control.py stop
   ln -s ./control.py wipe
-  sed -i 's@#!/usr/bin/env[[:space:]]*python$@#!/usr/bin/env python3@g' *.py
   popd >/dev/null 2>&1
   cp ./scripts/malcolm_common.py "$MALCOLM_DEST_DIR/scripts/"
   cp ./README.md "$MALCOLM_DEST_DIR/"
