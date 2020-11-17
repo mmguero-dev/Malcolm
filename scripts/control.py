@@ -1,9 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
-
-from __future__ import print_function
 
 import argparse
 import errno
@@ -18,13 +16,13 @@ import stat
 import sys
 
 from malcolm_common import *
+from contextlib import nullcontext
 from collections import defaultdict, namedtuple
 from subprocess import (PIPE, STDOUT, Popen, check_call, CalledProcessError)
 
 ###################################################################################################
 ScriptName = os.path.basename(__file__)
 
-PY3 = (sys.version_info.major >= 3)
 pyPlatform = platform.system()
 
 args = None
@@ -34,11 +32,6 @@ opensslBin = None
 
 ###################################################################################################
 try:
-  FileNotFoundError
-except NameError:
-  FileNotFoundError = IOError
-
-try:
   from colorama import init as ColoramaInit, Fore, Back, Style
   ColoramaInit()
   coloramaImported = True
@@ -46,11 +39,29 @@ except:
   coloramaImported = False
 
 ###################################################################################################
+def keystore_op(service, op, key=None, value=None, stdin=False, workDir=None):
+  global args
+  global dockerBin
+  global dockerComposeBin
+
+  keystoreBinProc = f"/usr/share/{service}/bin/{service}-keystore"
+
+  with pushd(workDir) if (workDir is not None) else nullcontext():
+    err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'ps', service], debug=args.debug)
+    if (err == 0) and (len(out) > 0):
+      # the system is running, we can use an existing container
+      pass
+
+    else:
+      # the system is down, we need to run docker manually
+      pass
+
+###################################################################################################
 def status():
   global args
   global dockerComposeBin
 
-  err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'ps', '--all'][:5 if args.debug else -1], debug=args.debug)
+  err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'ps'], debug=args.debug)
   if (err == 0):
     print("\n".join(out))
   else:
@@ -108,7 +119,7 @@ def logs():
       outputStr = output.decode().strip()
       outputStrEscaped = EscapeAnsi(outputStr)
       if ignoreRegEx.match(outputStrEscaped):
-        pass  ### print('!!!!!!!: {}'.format(outputStr))
+        pass  ### print(f'!!!!!!!: {outputStr}')
       else:
         serviceMatch = serviceRegEx.search(outputStrEscaped)
         serviceMatchFmt = serviceRegEx.search(outputStr) if coloramaImported else serviceMatch
@@ -127,12 +138,12 @@ def logs():
             timeKey = '@timestamp'
           timeStr = ''
           if timeKey is not None:
-            timeStr = outputJson[timeKey] + ' '
+            timeStr = f"{outputJson[timeKey]} "
             outputJson.pop(timeKey, None)
 
           if ('job.schedule' in outputJson) and ('job.position' in outputJson) and ('job.command' in outputJson):
 
-            # this is a status output line from supercronic, let's format and cleant it up so it fits in better with the rest of the logs
+            # this is a status output line from supercronic, let's format and clean it up so it fits in better with the rest of the logs
 
             # remove some clutter for the display
             for noisyKey in ['level', 'channel', 'iteration', 'job.position', 'job.schedule']:
@@ -144,13 +155,13 @@ def logs():
             if (len(outputJson.keys()) == 2) and ('job.command' in outputJson) and ('msg' in outputJson):
               # if it's the most common status (starting or job succeeded) then don't print unless debug mode
               if args.debug or ((jobStatus != 'starting') and (jobStatus != 'job succeeded')):
-                print('{}{} {} {}: {}'.format(serviceStr, Style.RESET_ALL if coloramaImported else '', timeStr, jobCmd, jobStatus))
+                print(f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr} {jobCmd}: {jobStatus}")
               else:
                 pass
 
             else:
               # standardize and print the JSON output
-              print('{}{} {}{}'.format(serviceStr, Style.RESET_ALL if coloramaImported else '', timeStr, json.dumps(outputJson)))
+              print(f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{json.dumps(outputJson)}")
 
           elif ('kibana' in serviceStr):
             # this is an output line from kibana, let's clean it up a bit: remove some clutter for the display
@@ -158,11 +169,11 @@ def logs():
               outputJson.pop(noisyKey, None)
 
             # standardize and print the JSON output
-            print('{}{} {}{}'.format(serviceStr, Style.RESET_ALL if coloramaImported else '', timeStr, json.dumps(outputJson)))
+            print(f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{json.dumps(outputJson)}")
 
           else:
             # standardize and print the JSON output
-            print('{}{} {}{}'.format(serviceStr, Style.RESET_ALL if coloramaImported else '', timeStr, json.dumps(outputJson)))
+            print(f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{json.dumps(outputJson)}")
 
         else:
           # just a regular non-JSON string, print as-is
@@ -232,8 +243,8 @@ def start():
   open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
 
   # if the elasticsearch keystore doesn't exist, create an empty one
-  esKeystoreSpec = os.path.join(MalcolmPath, os.path.join('elasticsearch', 'elasticsearch.keystore'))
-  if not os.path.isfile(esKeystoreSpec):
+  #esKeystoreSpec = os.path.join(MalcolmPath, os.path.join('elasticsearch', 'elasticsearch.keystore'))
+  #if not os.path.isfile(esKeystoreSpec):
 
 
   # make sure permissions are set correctly for the nginx worker processes
@@ -300,8 +311,8 @@ def authSetup(wipe=False):
     username = AskForString("Administrator username")
 
     while True:
-      password = AskForPassword("{} password: ".format(username))
-      passwordConfirm = AskForPassword("{} password (again): ".format(username))
+      password = AskForPassword(f"{username} password: ")
+      passwordConfirm = AskForPassword(f"{username} password (again): ")
       if (password == passwordConfirm):
         break
       eprint("Passwords do not match")
@@ -330,8 +341,8 @@ def authSetup(wipe=False):
     # write auth.env (used by htadmin and file-upload containers)
     with open(authEnvFile, 'w') as f:
       f.write("# Malcolm Administrator username and encrypted password for nginx reverse proxy (and upload server's SFTP access)\n")
-      f.write('MALCOLM_USERNAME={}\n'.format(username))
-      f.write('MALCOLM_PASSWORD={}\n'.format(passwordEncrypted))
+      f.write(f'MALCOLM_USERNAME={username}\n')
+      f.write(f'MALCOLM_PASSWORD={passwordEncrypted}\n')
     os.chmod(authEnvFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
 
     # create or update the htpasswd file
@@ -345,7 +356,7 @@ def authSetup(wipe=False):
       htpasswdCmd.insert(1, '-c')
     err, out = run_process(htpasswdCmd, stdin=password, stderr=True, debug=args.debug)
     if (err != 0):
-      raise Exception('Unable to generate htpasswd file: {}'.format(out))
+      raise Exception(f'Unable to generate htpasswd file: {out}')
 
     # if the admininstrator username has changed, remove the previous administrator username from htpasswd
     if (usernamePrevious is not None) and (usernamePrevious != username):
@@ -354,7 +365,7 @@ def authSetup(wipe=False):
         htpasswdLines = f.readlines()
       with open(htpasswdFile, 'w') as f:
         for line in htpasswdLines:
-          if not line.startswith("{}:".format(usernamePrevious)):
+          if not line.startswith(f"{usernamePrevious}:"):
             f.write(line)
 
     # configure default LDAP stuff (they'll have to edit it by hand later)
@@ -387,11 +398,11 @@ def authSetup(wipe=False):
         f.write('# Yours will vary depending on how your Active Directory/LDAP server is configured.\n')
         f.write('# See https://github.com/kvspb/nginx-auth-ldap#available-config-parameters for options.\n\n')
         f.write('ldap_server ad_server {\n')
-        f.write('  url "{}{}:{}/{}";\n\n'.format(ldapProto, ldapHost, ldapPort, ldapUri))
+        f.write(f'  url "{ldapProto}{ldapHost}:{ldapPort}/{ldapUri}";\n\n')
         f.write('  binddn "bind_dn";\n')
         f.write('  binddn_passwd "bind_dn_password";\n\n')
-        f.write('  group_attribute {};\n'.format(ldapGroupAttr))
-        f.write('  group_attribute_is_dn {};\n'.format(ldapGroupAttrIsDN))
+        f.write(f'  group_attribute {ldapGroupAttr};\n')
+        f.write(f'  group_attribute_is_dn {ldapGroupAttrIsDN};\n')
         f.write('  require group "CN=malcolm,OU=groups,DC=example,DC=com";\n')
         f.write('  require valid_user;\n')
         f.write('  satisfy all;\n')
@@ -412,7 +423,7 @@ def authSetup(wipe=False):
       f.write('; metadata file\n')
       f.write('metadata_path  = ./config/metadata\n\n')
       f.write('; administrator user/password (htpasswd -b -c -B ...)\n')
-      f.write('admin_user = {}\n\n'.format(username))
+      f.write(f'admin_user = {username}\n\n')
       f.write('; username field quality checks\n')
       f.write(';\n')
       f.write('min_username_len = 4\n')
@@ -427,9 +438,7 @@ def authSetup(wipe=False):
 
   # generate HTTPS self-signed certificates
   if YesOrNo('(Re)generate self-signed certificates for HTTPS access', default=True):
-    os.chdir(os.path.join(MalcolmPath, os.path.join('nginx', 'certs')))
-    try:
-
+    with pushd(os.path.join(MalcolmPath, os.path.join('nginx', 'certs'))):
       # remove previous files
       for oldfile in glob.glob("*.pem"):
         os.remove(oldfile)
@@ -437,22 +446,18 @@ def authSetup(wipe=False):
       # generate dhparam -------------------------------
       err, out = run_process([opensslBin, 'dhparam', '-out', 'dhparam.pem', '2048'], stderr=True, debug=args.debug)
       if (err != 0):
-        raise Exception('Unable to generate dhparam.pem file: {}'.format(out))
+        raise Exception(f'Unable to generate dhparam.pem file: {out}')
 
       # generate key/cert -------------------------------
       err, out = run_process([opensslBin, 'req', '-subj', '/CN=localhost', '-x509', '-newkey', 'rsa:4096', '-nodes', '-keyout', 'key.pem', '-out', 'cert.pem', '-days', '3650'], stderr=True, debug=args.debug)
       if (err != 0):
-        raise Exception('Unable to generate key.pem/cert.pem file(s): {}'.format(out))
-
-    finally:
-      os.chdir(MalcolmPath)
+        raise Exception(f'Unable to generate key.pem/cert.pem file(s): {out}')
 
   # generate beats/logstash self-signed certificates
   logstashPath = os.path.join(MalcolmPath, os.path.join('logstash', 'certs'))
   filebeatPath = os.path.join(MalcolmPath, os.path.join('filebeat', 'certs'))
   if YesOrNo('(Re)generate self-signed certificates for a remote log forwarder', default=True):
-    os.chdir(logstashPath)
-    try:
+    with pushd(logstashPath):
 
       # make clean to clean previous files
       for pat in ['*.srl', '*.csr', '*.key', '*.crt', '*.pem']:
@@ -463,34 +468,34 @@ def authSetup(wipe=False):
       # generate new ca/server/client certificates/keys
       # ca -------------------------------
       err, out = run_process([opensslBin, 'genrsa', '-out', 'ca.key', '2048'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate ca.key: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate ca.key: {out}')
 
       err, out = run_process([opensslBin, 'req', '-x509', '-new', '-nodes', '-key', 'ca.key', '-sha256', '-days', '9999', '-subj', '/C=US/ST=ID/O=sensor/OU=ca', '-out', 'ca.crt'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate ca.crt: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate ca.crt: {out}')
 
       # server -------------------------------
       err, out = run_process([opensslBin, 'genrsa', '-out', 'server.key', '2048'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate server.key: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate server.key: {out}')
 
       err, out = run_process([opensslBin, 'req', '-sha512', '-new', '-key', 'server.key', '-out', 'server.csr', '-config', 'server.conf'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate server.csr: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate server.csr: {out}')
 
       err, out = run_process([opensslBin, 'x509', '-days', '3650', '-req', '-sha512', '-in', 'server.csr', '-CAcreateserial', '-CA', 'ca.crt', '-CAkey', 'ca.key', '-out', 'server.crt', '-extensions', 'v3_req', '-extfile', 'server.conf'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate server.crt: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate server.crt: {out}')
 
       shutil.move("server.key", "server.key.pem")
       err, out = run_process([opensslBin, 'pkcs8', '-in', 'server.key.pem', '-topk8', '-nocrypt', '-out', 'server.key'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate server.key: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate server.key: {out}')
 
       # client -------------------------------
       err, out = run_process([opensslBin, 'genrsa', '-out', 'client.key', '2048'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate client.key: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate client.key: {out}')
 
       err, out = run_process([opensslBin, 'req', '-sha512', '-new', '-key', 'client.key', '-out', 'client.csr', '-config', 'client.conf'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate client.csr: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate client.csr: {out}')
 
       err, out = run_process([opensslBin, 'x509', '-days', '3650', '-req', '-sha512', '-in', 'client.csr', '-CAcreateserial', '-CA', 'ca.crt', '-CAkey', 'ca.key', '-out', 'client.crt', '-extensions', 'v3_req', '-extensions', 'usr_cert', '-extfile', 'client.conf'], stderr=True, debug=args.debug)
-      if (err != 0): raise Exception('Unable to generate client.crt: {}'.format(out))
+      if (err != 0): raise Exception(f'Unable to generate client.crt: {out}')
       # -----------------------------------------------
 
       # mkdir filebeat/certs if it doesn't exist
@@ -518,9 +523,6 @@ def authSetup(wipe=False):
         for oldfile in glob.glob(pat):
           os.remove(oldfile)
 
-    finally:
-      os.chdir(MalcolmPath)
-
   # create and populate keystore for remote
   if YesOrNo('Store username/password for forwarding Logstash events to a secondary, external Elasticsearch instance', default=False):
 
@@ -530,8 +532,8 @@ def authSetup(wipe=False):
     esUsername = AskForString("External Elasticsearch username")
 
     while True:
-      esPassword = AskForPassword("{} password: ".format(esUsername))
-      esPasswordConfirm = AskForPassword("{} password (again): ".format(esUsername))
+      esPassword = AskForPassword(f"{esUsername} password: ")
+      esPasswordConfirm = AskForPassword(f"{esUsername} password (again): ")
       if (esPassword == esPasswordConfirm):
         break
       eprint("Passwords do not match")
@@ -548,8 +550,7 @@ def authSetup(wipe=False):
         logstashImage = imageLineValues[1]
 
     if logstashImage is not None:
-      os.chdir(logstashPath)
-      try:
+      with pushd(logstashPath):
         if os.path.isfile('logstash.keystore'):
           os.remove('logstash.keystore')
 
@@ -558,22 +559,20 @@ def authSetup(wipe=False):
                      '--rm',
                      '--entrypoint',
                      '/bin/bash',
-                     '-v', '{}:/usr/share/logstash/config:rw'.format(logstashPath),
+                     '-v', f'{logstashPath}:/usr/share/logstash/config:rw',
                      '-w', '/usr/share/logstash/config',
                      '-u', 'logstash',
-                     '-e', 'EXT_USERNAME={}'.format(esUsername),
-                     '-e', 'EXT_PASSWORD={}'.format(esPassword),
+                     '-e', f'EXT_USERNAME={esUsername}',
+                     '-e', f'EXT_PASSWORD={esPassword}',
                      logstashImage,
                      '/usr/local/bin/set_es_external_keystore.sh']
 
         err, out = run_process(dockerCmd, stderr=True, debug=args.debug)
         if (err != 0) or not os.path.isfile('logstash.keystore'):
-          raise Exception('Unable to generate logstash keystore: {}'.format(out))
+          raise Exception(f'Unable to generate logstash keystore: {out}')
 
-      finally:
-        os.chdir(MalcolmPath)
     else:
-      raise Exception('Failed to determine logstash image from {}'.format(args.composeFile))
+      raise Exception(f'Failed to determine logstash image from {args.composeFile}')
 
   # Open Distro for Elasticsearch authenticate sender account credentials
   # https://opendistro.github.io/for-elasticsearch-docs/docs/alerting/monitors/#authenticate-sender-account
@@ -586,8 +585,8 @@ def authSetup(wipe=False):
     emailUsername = AskForString("Email account username")
 
     while True:
-      emailPassword = AskForPassword("{} password: ".format(emailUsername))
-      emailPasswordConfirm = AskForPassword("{} password (again): ".format(emailUsername))
+      emailPassword = AskForPassword(f"{emailUsername} password: ")
+      emailPasswordConfirm = AskForPassword(f"{emailUsername} password (again): ")
       if (emailPassword == emailPasswordConfirm):
         break
       eprint("Passwords do not match")
@@ -613,21 +612,21 @@ def authSetup(wipe=False):
     #                  '--rm',
     #                  '--entrypoint',
     #                  '/bin/bash',
-    #                  '-v', '{}:/usr/share/logstash/config:rw'.format(esPath),
+    #                  '-v', f'{esPath}:/usr/share/logstash/config:rw',
     #                  '-w', '/usr/share/logstash/config',
     #                  '-u', 'logstash',
-    #                  '-e', 'EXT_USERNAME={}'.format(emailUsername),
-    #                  '-e', 'EXT_PASSWORD={}'.format(emailPassword),
+    #                  '-e', f'EXT_USERNAME={emailUsername}',
+    #                  '-e', f'EXT_PASSWORD={emailPassword}',
     #                  esImage,
     #                  '/usr/local/bin/set_es_external_keystore.sh']
 
     #     err, out = run_process(dockerCmd, stderr=True, debug=args.debug)
     #     if (err != 0) or not os.path.isfile('logstash.keystore'):
-    #       raise Exception('Unable to generate logstash keystore: {}'.format(out))
+    #       raise Exception(f'Unable to generate logstash keystore: {out}')
     #   finally:
     #     os.chdir(MalcolmPath)
     # else:
-    #   raise Exception('Failed to determine elasticsearch image from {}'.format(args.composeFile))
+    #   raise Exception(f'Failed to determine elasticsearch image from {args.composeFile}')
 
 
 ###################################################################################################
@@ -640,7 +639,7 @@ def main():
 
   # extract arguments from the command line
   # print (sys.argv[1:]);
-  parser = argparse.ArgumentParser(description='Malcolm control script', add_help=False, usage='{} <arguments>'.format(ScriptName))
+  parser = argparse.ArgumentParser(description='Malcolm control script', add_help=False, usage=f'{ScriptName} <arguments>')
   parser.add_argument('-v', '--verbose', dest='debug', type=str2bool, nargs='?', const=True, default=False, help="Verbose output")
   parser.add_argument('-f', '--file', required=False, dest='composeFile', metavar='<STR>', type=str, default='docker-compose.yml', help='docker-compose YML file')
   parser.add_argument('-l', '--logs', dest='cmdLogs', type=str2bool, nargs='?', const=True, default=False, help="Tail Malcolm logs")
@@ -660,67 +659,67 @@ def main():
 
   if args.debug:
     eprint(os.path.join(ScriptPath, ScriptName))
-    eprint("Arguments: {}".format(sys.argv[1:]))
-    eprint("Arguments: {}".format(args))
+    eprint(f"Arguments: {sys.argv[1:]}")
+    eprint(f"Arguments: {args}")
     eprint("Malcolm path:", MalcolmPath)
   else:
     sys.tracebacklimit = 0
 
-  os.chdir(MalcolmPath)
+  with pushd(MalcolmPath):
 
-  # don't run this as root
-  if (pyPlatform != PLATFORM_WINDOWS) and ((os.getuid() == 0) or (os.geteuid() == 0) or (getpass.getuser() == 'root')):
-    raise Exception('{} should not be run as root'.format(ScriptName))
+    # don't run this as root
+    if (pyPlatform != PLATFORM_WINDOWS) and ((os.getuid() == 0) or (os.geteuid() == 0) or (getpass.getuser() == 'root')):
+      raise Exception(f'{ScriptName} should not be run as root')
 
-  # make sure docker/docker-compose is available
-  dockerBin = 'docker.exe' if ((pyPlatform == PLATFORM_WINDOWS) and Which('docker.exe')) else 'docker'
-  dockerComposeBin = 'docker-compose.exe' if ((pyPlatform == PLATFORM_WINDOWS) and Which('docker-compose.exe')) else 'docker-compose'
-  err, out = run_process([dockerBin, 'info'], debug=args.debug)
-  if (err != 0):
-    raise Exception('{} requires docker, please run install.py'.format(ScriptName))
-  err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'version'], debug=args.debug)
-  if (err != 0):
-    raise Exception('{} requires docker-compose, please run install.py'.format(ScriptName))
+    # make sure docker/docker-compose is available
+    dockerBin = 'docker.exe' if ((pyPlatform == PLATFORM_WINDOWS) and Which('docker.exe')) else 'docker'
+    dockerComposeBin = 'docker-compose.exe' if ((pyPlatform == PLATFORM_WINDOWS) and Which('docker-compose.exe')) else 'docker-compose'
+    err, out = run_process([dockerBin, 'info'], debug=args.debug)
+    if (err != 0):
+      raise Exception(f'{ScriptName} requires docker, please run install.py')
+    err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'version'], debug=args.debug)
+    if (err != 0):
+      raise Exception(f'{ScriptName} requires docker-compose, please run install.py')
 
-  # identify openssl binary
-  opensslBin = 'openssl.exe' if ((pyPlatform == PLATFORM_WINDOWS) and Which('openssl.exe')) else 'openssl'
+    # identify openssl binary
+    opensslBin = 'openssl.exe' if ((pyPlatform == PLATFORM_WINDOWS) and Which('openssl.exe')) else 'openssl'
 
-  # if executed via a symlink, figure out what was intended via the symlink name
-  if os.path.islink(os.path.join(ScriptPath, ScriptName)):
-    if (ScriptName == "logs"):
-      args.cmdLogs = True
-    elif (ScriptName == "status"):
-      args.cmdStatus = True
-    elif (ScriptName == "start"):
-      args.cmdStart = True
-    elif (ScriptName == "restart"):
-      args.cmdRestart = True
-    elif (ScriptName == "stop"):
-      args.cmdStop = True
-    elif (ScriptName == "wipe"):
-      args.cmdWipe = True
-    elif (ScriptName.startswith("auth")):
-      args.cmdAuthSetup = True
+    # if executed via a symlink, figure out what was intended via the symlink name
+    if os.path.islink(os.path.join(ScriptPath, ScriptName)):
+      if (ScriptName == "logs"):
+        args.cmdLogs = True
+      elif (ScriptName == "status"):
+        args.cmdStatus = True
+      elif (ScriptName == "start"):
+        args.cmdStart = True
+      elif (ScriptName == "restart"):
+        args.cmdRestart = True
+      elif (ScriptName == "stop"):
+        args.cmdStop = True
+      elif (ScriptName == "wipe"):
+        args.cmdWipe = True
+      elif (ScriptName.startswith("auth")):
+        args.cmdAuthSetup = True
 
-  # stop Malcolm (and wipe data if requestsed)
-  if args.cmdRestart or args.cmdStop or args.cmdWipe:
-    stop(wipe=args.cmdWipe)
+    # stop Malcolm (and wipe data if requestsed)
+    if args.cmdRestart or args.cmdStop or args.cmdWipe:
+      stop(wipe=args.cmdWipe)
 
-  # configure Malcolm authentication
-  if args.cmdAuthSetup:
-    authSetup()
+    # configure Malcolm authentication
+    if args.cmdAuthSetup:
+      authSetup()
 
-  # start Malcolm
-  if args.cmdStart or args.cmdRestart:
-    start()
+    # start Malcolm
+    if args.cmdStart or args.cmdRestart:
+      start()
 
-  # tail Malcolm logs
-  if args.cmdStart or args.cmdRestart or args.cmdLogs:
-    logs()
+    # tail Malcolm logs
+    if args.cmdStart or args.cmdRestart or args.cmdLogs:
+      logs()
 
-  # display Malcolm status
-  if args.cmdStatus:
-    status()
+    # display Malcolm status
+    if args.cmdStatus:
+      status()
 
 if __name__ == '__main__':
   main()

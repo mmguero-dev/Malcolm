@@ -98,29 +98,11 @@ In short, Malcolm provides an easily deployable network analysis tool suite for 
 
 For a `TL;DR` example of downloading, configuring, and running Malcolm on a Linux platform, see [Installation example using Ubuntu 20.04 LTS](#InstallationExample).
 
+The scripts to control Malcolm require Python 3.
+
 #### Source code
 
 The files required to build and run Malcolm are available on the [Idaho National Lab's GitHub page](https://github.com/idaholab/Malcolm/tree/master). Malcolm's source code is released under the terms of a permissive open source software license (see see `License.txt` for the terms of its release).
-
-#### <a name="XPython"></a>Cross-platform considerations when running Python scripts
-
-There are two Python scripts used to configure and run Malcolm that are referenced several times in this document: `install.py` and `control.py` (`control.py` is actually what is executed under the hood for the `logs`, `restart`, `start`, `stop` and `wipe` commands).
-
-To maximize compatibility across the various platforms capable of running Malcolm, for the time being these Python scripts are compatible with both the current major release of Python (Python 3.x) and the "sunsetted" Python 2.x.
-
-The line `#!/usr/bin/env python` line at the beginning of these Python scripts (known as the "hashbang" or "shebang") should ensure that the `python` interpreter that is executed is the one defined by the operating system as the default Python implementation for that system. In most cases this is handled correctly and automatically.
-
-However, this behavior is not consistent across all platforms.  On some platforms (for example, Ubuntu 20.04), `python2` and `python3` targets are provided, but not `python`. When this is the case, running Malcolm's Python scripts will result in an error like `/usr/bin/env: 'python': No such file or directory`.
-
-There are various workarounds for this scenario, including (but not limited to):
-
-1. Explicitly specifying the Python interpreter when running the scripts (e.g., `python3 ./scripts/install.py` or `python2 ./scripts/start`): this is the "safest" solution
-2. Defining a symlink called `python` in your `PATH` pointing to the desired interpreter (e.g., `sudo ln -r -s /usr/bin/python3 /usr/local/bin/python` or `ln -s /usr/bin/python3 ~/bin/python`, depending on your `PATH`); in Ubuntu 20.04 and up installing either the package [python-is-python3](https://packages.ubuntu.com/focal/python-is-python3) or [python-is-python2](https://packages.ubuntu.com/focal/python-is-python2) will take care of this for you
-3. Using `update-alternatives` to specify a target for calls to `python`
-
-For the most part, this document will just use the `./scripts/install.py`-style pattern to execute the scripts. Just be aware that you may have to adjust your usage as necessitated by your system.
-
-For more information on this topic, see [PEP 394 -- The "python" Command on Unix-Like Systems](https://legacy.python.org/dev/peps/pep-0394/).
 
 #### Building Malcolm from scratch
 
@@ -129,7 +111,7 @@ The `build.sh` script can build Malcolm's Docker images from scratch. See [Build
 #### Initial configuration
 
 You must run [`auth_setup`](#AuthSetup) prior to pulling Malcolm's Docker images. You should also ensure your system configuration and `docker-compose.yml` settings are tuned by running `./scripts/install.py` or `./scripts/install.py --configure` (see [System configuration and tuning](#ConfigAndTuning)).
-
+    
 #### Pull Malcolm's Docker images
 
 Malcolm's Docker images are periodically built and hosted on [Docker Hub](https://hub.docker.com/u/malcolmnetsec). If you already have [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/), these prebuilt images can be pulled by navigating into the Malcolm directory (containing the `docker-compose.yml` file) and running `docker-compose pull` like this:
@@ -666,7 +648,7 @@ After making these changes, right click on the Docker 🐋 icon in the system tr
 Installing and configuring Docker to run under Windows must be done manually, rather than through the `install.py` script as is done for Linux and macOS.
 
 1. In order to be able to configure Docker volume mounts correctly, you should be running [Windows 10, version 1803](https://docs.microsoft.com/en-us/windows/whats-new/whats-new-windows-10-version-1803) or higher.
-1. The control scripts in the `scripts/` directory are written in the Python. They also rely on a few other utilities such as OpenSSL and htpasswd. The easiest way to run these tools in Windows is using the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (WSL) (however, they may also be installed and configured manually: [Python](https://www.python.org/downloads/windows); [OpenSSL](https://wiki.openssl.org/index.php/Binaries); [htpasswd](https://httpd.apache.org/docs/current/platform/windows.html#down), download the `httpd….zip` file and extract `htpasswd.exe` from the `Apache…\bin\` directory). To install WSL, run the following command in PowerShell as Administrator:
+1. The control scripts in the `scripts/` directory are written for Python 3. They also rely on a few other utilities such as OpenSSL and htpasswd. The easiest way to run these tools in Windows is using the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10) (WSL) (however, they may also be installed and configured manually: [Python 3](https://www.python.org/downloads/windows); [OpenSSL](https://wiki.openssl.org/index.php/Binaries); [htpasswd](https://httpd.apache.org/docs/current/platform/windows.html#down), download the `httpd….zip` file and extract `htpasswd.exe` from the `Apache…\bin\` directory). To install WSL, run the following command in PowerShell as Administrator:
     + `Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux`
 1. Install the [Linux distribution of your choice](https://docs.microsoft.com/en-us/windows/wsl/install-win10#install-your-linux-distribution-of-choice) in WSL. These instructions have been tested using Debian, but will probably work with other distributions as well.
 1. Run the following commands in PowerShell as Administrator to enable required Windows features:
@@ -1607,9 +1589,9 @@ Resolving deltas: 100% (81/81), done.
 user@host:~$ cd Malcolm/
 ```
 
-Next, run the `install.py` script to configure your system. Replace `user` in this example with your local account username, and follow the prompts. Most questions have an acceptable default you can accept by pressing the `Enter` key. Depending on whether you are installing Malcolm from the release tarball or inside of a git working copy, the questions below will be slightly different, but for the most part are the same. See the section on [**cross-platform considerations when running Python scripts**](#XPython) if you are adapting these instructions to another platform.
+Next, run the `install.py` script to configure your system. Replace `user` in this example with your local account username, and follow the prompts. Most questions have an acceptable default you can accept by pressing the `Enter` key. Depending on whether you are installing Malcolm from the release tarball or inside of a git working copy, the questions below will be slightly different, but for the most part are the same.
 ```
-user@host:~/Downloads$ sudo python3 ./install.py
+user@host:~/Downloads$ sudo ./install.py
 Installing required packages: ['apache2-utils', 'make', 'openssl']
 
 "docker info" failed, attempt to install Docker? (Y/n): y
@@ -1678,7 +1660,7 @@ Malcolm runtime files extracted to /home/user/Malcolm
 
 Alternatively, **if you are configuring Malcolm from within a git working copy**, `install.py` will now exit. Run `install.py` again like you did at the beginning of the example, only remove the `sudo` and add `--configure` to run `install.py` in "configuration only" mode. 
 ```
-user@host:~/Malcolm$ python3 ./scripts/install.py --configure
+user@host:~/Malcolm$ ./scripts/install.py --configure
 ```
 
 Now that any necessary system configuration changes have been made, the local Malcolm instance will be configured:
@@ -1758,7 +1740,7 @@ At this point you should **reboot your computer** so that the new system setting
 
 Now we need to [set up authentication](#AuthSetup) and generate some unique self-signed SSL certificates. You can replace `analyst` in this example with whatever username you wish to use to log in to the Malcolm web interface.
 ```
-user@host:~/Malcolm$ python3 ./scripts/auth_setup
+user@host:~/Malcolm$ ./scripts/auth_setup
 Username: analyst
 analyst password:
 analyst password (again):
@@ -1809,7 +1791,7 @@ malcolmnetsec/zeek                                  3.0.0               xxxxxxxx
 
 Finally, we can start Malcolm. When Malcolm starts it will stream informational and debug messages to the console. If you wish, you can safely close the console or use `Ctrl+C` to stop these messages; Malcolm will continue running in the background.
 ```
-user@host:~/Malcolm$ python3 ./scripts/start
+user@host:~/Malcolm$ ./scripts/start
 Creating network "malcolm_default" with the default driver
 Creating malcolm_elasticsearch_1 ... done
 Creating malcolm_file-monitor_1  ... done
