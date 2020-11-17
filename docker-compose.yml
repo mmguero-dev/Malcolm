@@ -134,6 +134,7 @@ services:
     cap_add:
       - IPC_LOCK
     volumes:
+      - ./elasticsearch/elasticsearch.keystore:/usr/share/elasticsearch/config/elasticsearch.keystore:rw
       - ./elasticsearch:/usr/share/elasticsearch/data:delegated
       - ./elasticsearch-backup:/opt/elasticsearch/backup:delegated
     healthcheck:

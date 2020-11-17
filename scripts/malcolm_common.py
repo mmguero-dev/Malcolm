@@ -287,9 +287,9 @@ def ImportRequests(debug=False):
 def MalcolmAuthFilesExist():
   return os.path.isfile(os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd'))) and \
          os.path.isfile(os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf'))) and \
-         os.path.isfile(os.path.join(MalcolmPath, os.path.join('htadmin', 'config.ini'))) and \
          os.path.isfile(os.path.join(MalcolmPath, os.path.join('nginx', os.path.join('certs', 'cert.pem')))) and \
          os.path.isfile(os.path.join(MalcolmPath, os.path.join('nginx', os.path.join('certs', 'key.pem')))) and \
+         os.path.isfile(os.path.join(MalcolmPath, os.path.join('htadmin', 'config.ini'))) and \
          os.path.isfile(os.path.join(MalcolmPath, 'auth.env'))
 
 ###################################################################################################

@@ -231,6 +231,11 @@ def start():
   # touch the metadata file
   open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
 
+  # if the elasticsearch keystore doesn't exist, create an empty one
+  esKeystoreSpec = os.path.join(MalcolmPath, os.path.join('elasticsearch', 'elasticsearch.keystore'))
+  if not os.path.isfile(esKeystoreSpec):
+
+
   # make sure permissions are set correctly for the nginx worker processes
   for authFile in [os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')),
                    os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf')),
@@ -285,138 +290,140 @@ def authSetup(wipe=False):
   global dockerComposeBin
   global opensslBin
 
-  # prompt usernamd and password
-  usernamePrevious = None
-  password = None
-  passwordConfirm = None
-  passwordEncrypted = ''
-  username = AskForString("Administrator username")
+  if YesOrNo('Store administrator username/password for local Malcolm access?', default=True):
 
-  while True:
-    password = AskForPassword("{} password: ".format(username))
-    passwordConfirm = AskForPassword("{} password (again): ".format(username))
-    if (password == passwordConfirm):
-      break
-    eprint("Passwords do not match")
+    # prompt username and password
+    usernamePrevious = None
+    password = None
+    passwordConfirm = None
+    passwordEncrypted = ''
+    username = AskForString("Administrator username")
 
-  # get previous admin username to remove from htpasswd file if it's changed
-  authEnvFile = os.path.join(MalcolmPath, 'auth.env')
-  if os.path.isfile(authEnvFile):
-    prevAuthInfo = defaultdict(str)
-    with open(authEnvFile, 'r') as f:
-      for line in f:
-        try:
-          k, v = line.rstrip().split("=")
-          prevAuthInfo[k] = v.strip('"')
-        except:
-          pass
-    if (len(prevAuthInfo['MALCOLM_USERNAME']) > 0):
-      usernamePrevious = prevAuthInfo['MALCOLM_USERNAME']
+    while True:
+      password = AskForPassword("{} password: ".format(username))
+      passwordConfirm = AskForPassword("{} password (again): ".format(username))
+      if (password == passwordConfirm):
+        break
+      eprint("Passwords do not match")
 
-  # get openssl hash of password
-  err, out = run_process([opensslBin, 'passwd', '-1', '-stdin'], stdin=password, stderr=False, debug=args.debug)
-  if (err == 0) and (len(out) > 0) and (len(out[0]) > 0):
-    passwordEncrypted = out[0]
-  else:
-    raise Exception('Unable to generate password hash with openssl')
-
-  # write auth.env (used by htadmin and file-upload containers)
-  with open(authEnvFile, 'w') as f:
-    f.write("# Malcolm Administrator username and encrypted password for nginx reverse proxy (and upload server's SFTP access)\n")
-    f.write('MALCOLM_USERNAME={}\n'.format(username))
-    f.write('MALCOLM_PASSWORD={}\n'.format(passwordEncrypted))
-  os.chmod(authEnvFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
-
-  # create or update the htpasswd file
-  htpasswdFile = os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd'))
-  htpasswdCmd = ['htpasswd',
-                 '-i',
-                 '-B',
-                 htpasswdFile,
-                 username]
-  if not os.path.isfile(htpasswdFile):
-    htpasswdCmd.insert(1, '-c')
-  err, out = run_process(htpasswdCmd, stdin=password, stderr=True, debug=args.debug)
-  if (err != 0):
-    raise Exception('Unable to generate htpasswd file: {}'.format(out))
-
-  # if the admininstrator username has changed, remove the previous administrator username from htpasswd
-  if (usernamePrevious is not None) and (usernamePrevious != username):
-    htpasswdLines = list()
-    with open(htpasswdFile, 'r') as f:
-      htpasswdLines = f.readlines()
-    with open(htpasswdFile, 'w') as f:
-      for line in htpasswdLines:
-        if not line.startswith("{}:".format(usernamePrevious)):
-          f.write(line)
-
-  # configure default LDAP stuff (they'll have to edit it by hand later)
-  ldapConfFile = os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf'))
-  if not os.path.isfile(ldapConfFile):
-    ldapDefaults = defaultdict(str)
-    if os.path.isfile(os.path.join(MalcolmPath, '.ldap_config_defaults')):
-      ldapDefaults = defaultdict(str)
-      with open(os.path.join(MalcolmPath, '.ldap_config_defaults'), 'r') as f:
+    # get previous admin username to remove from htpasswd file if it's changed
+    authEnvFile = os.path.join(MalcolmPath, 'auth.env')
+    if os.path.isfile(authEnvFile):
+      prevAuthInfo = defaultdict(str)
+      with open(authEnvFile, 'r') as f:
         for line in f:
           try:
             k, v = line.rstrip().split("=")
-            ldapDefaults[k] = v.strip('"').strip("'")
+            prevAuthInfo[k] = v.strip('"')
           except:
             pass
-    ldapProto = ldapDefaults.get("LDAP_PROTO", "ldap://")
-    ldapHost = ldapDefaults.get("LDAP_HOST", "ds.example.com")
-    ldapPort = ldapDefaults.get("LDAP_PORT", "3268")
-    ldapType = ldapDefaults.get("LDAP_SERVER_TYPE", "winldap")
-    if (ldapType == "openldap"):
-      ldapUri = 'DC=example,DC=com?uid?sub?(objectClass=posixAccount)'
-      ldapGroupAttr = "memberUid"
-      ldapGroupAttrIsDN = "off"
+      if (len(prevAuthInfo['MALCOLM_USERNAME']) > 0):
+        usernamePrevious = prevAuthInfo['MALCOLM_USERNAME']
+
+    # get openssl hash of password
+    err, out = run_process([opensslBin, 'passwd', '-1', '-stdin'], stdin=password, stderr=False, debug=args.debug)
+    if (err == 0) and (len(out) > 0) and (len(out[0]) > 0):
+      passwordEncrypted = out[0]
     else:
-      ldapUri = 'DC=example,DC=com?sAMAccountName?sub?(objectClass=person)'
-      ldapGroupAttr = "member"
-      ldapGroupAttrIsDN = "on"
-    with open(ldapConfFile, 'w') as f:
-      f.write('# This is a sample configuration for the ldap_server section of nginx.conf.\n')
-      f.write('# Yours will vary depending on how your Active Directory/LDAP server is configured.\n')
-      f.write('# See https://github.com/kvspb/nginx-auth-ldap#available-config-parameters for options.\n\n')
-      f.write('ldap_server ad_server {\n')
-      f.write('  url "{}{}:{}/{}";\n\n'.format(ldapProto, ldapHost, ldapPort, ldapUri))
-      f.write('  binddn "bind_dn";\n')
-      f.write('  binddn_passwd "bind_dn_password";\n\n')
-      f.write('  group_attribute {};\n'.format(ldapGroupAttr))
-      f.write('  group_attribute_is_dn {};\n'.format(ldapGroupAttrIsDN))
-      f.write('  require group "CN=malcolm,OU=groups,DC=example,DC=com";\n')
-      f.write('  require valid_user;\n')
-      f.write('  satisfy all;\n')
-      f.write('}\n\n')
-      f.write('auth_ldap_cache_enabled on;\n')
-      f.write('auth_ldap_cache_expiration_time 10000;\n')
-      f.write('auth_ldap_cache_size 1000;\n')
-    os.chmod(ldapConfFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+      raise Exception('Unable to generate password hash with openssl')
 
-  # populate htadmin config file
-  with open(os.path.join(MalcolmPath, os.path.join('htadmin', 'config.ini')), 'w') as f:
-    f.write('; HTAdmin config file.\n\n')
-    f.write('[application]\n')
-    f.write('; Change this to customize your title:\n')
-    f.write('app_title = Malcolm User Management\n\n')
-    f.write('; htpasswd file\n')
-    f.write('secure_path  = ./config/htpasswd\n')
-    f.write('; metadata file\n')
-    f.write('metadata_path  = ./config/metadata\n\n')
-    f.write('; administrator user/password (htpasswd -b -c -B ...)\n')
-    f.write('admin_user = {}\n\n'.format(username))
-    f.write('; username field quality checks\n')
-    f.write(';\n')
-    f.write('min_username_len = 4\n')
-    f.write('max_username_len = 12\n\n')
-    f.write('; Password field quality checks\n')
-    f.write(';\n')
-    f.write('min_password_len = 6\n')
-    f.write('max_password_len = 20\n\n')
+    # write auth.env (used by htadmin and file-upload containers)
+    with open(authEnvFile, 'w') as f:
+      f.write("# Malcolm Administrator username and encrypted password for nginx reverse proxy (and upload server's SFTP access)\n")
+      f.write('MALCOLM_USERNAME={}\n'.format(username))
+      f.write('MALCOLM_PASSWORD={}\n'.format(passwordEncrypted))
+    os.chmod(authEnvFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
 
-  # touch the metadata file
-  open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
+    # create or update the htpasswd file
+    htpasswdFile = os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd'))
+    htpasswdCmd = ['htpasswd',
+                   '-i',
+                   '-B',
+                   htpasswdFile,
+                   username]
+    if not os.path.isfile(htpasswdFile):
+      htpasswdCmd.insert(1, '-c')
+    err, out = run_process(htpasswdCmd, stdin=password, stderr=True, debug=args.debug)
+    if (err != 0):
+      raise Exception('Unable to generate htpasswd file: {}'.format(out))
+
+    # if the admininstrator username has changed, remove the previous administrator username from htpasswd
+    if (usernamePrevious is not None) and (usernamePrevious != username):
+      htpasswdLines = list()
+      with open(htpasswdFile, 'r') as f:
+        htpasswdLines = f.readlines()
+      with open(htpasswdFile, 'w') as f:
+        for line in htpasswdLines:
+          if not line.startswith("{}:".format(usernamePrevious)):
+            f.write(line)
+
+    # configure default LDAP stuff (they'll have to edit it by hand later)
+    ldapConfFile = os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf'))
+    if not os.path.isfile(ldapConfFile):
+      ldapDefaults = defaultdict(str)
+      if os.path.isfile(os.path.join(MalcolmPath, '.ldap_config_defaults')):
+        ldapDefaults = defaultdict(str)
+        with open(os.path.join(MalcolmPath, '.ldap_config_defaults'), 'r') as f:
+          for line in f:
+            try:
+              k, v = line.rstrip().split("=")
+              ldapDefaults[k] = v.strip('"').strip("'")
+            except:
+              pass
+      ldapProto = ldapDefaults.get("LDAP_PROTO", "ldap://")
+      ldapHost = ldapDefaults.get("LDAP_HOST", "ds.example.com")
+      ldapPort = ldapDefaults.get("LDAP_PORT", "3268")
+      ldapType = ldapDefaults.get("LDAP_SERVER_TYPE", "winldap")
+      if (ldapType == "openldap"):
+        ldapUri = 'DC=example,DC=com?uid?sub?(objectClass=posixAccount)'
+        ldapGroupAttr = "memberUid"
+        ldapGroupAttrIsDN = "off"
+      else:
+        ldapUri = 'DC=example,DC=com?sAMAccountName?sub?(objectClass=person)'
+        ldapGroupAttr = "member"
+        ldapGroupAttrIsDN = "on"
+      with open(ldapConfFile, 'w') as f:
+        f.write('# This is a sample configuration for the ldap_server section of nginx.conf.\n')
+        f.write('# Yours will vary depending on how your Active Directory/LDAP server is configured.\n')
+        f.write('# See https://github.com/kvspb/nginx-auth-ldap#available-config-parameters for options.\n\n')
+        f.write('ldap_server ad_server {\n')
+        f.write('  url "{}{}:{}/{}";\n\n'.format(ldapProto, ldapHost, ldapPort, ldapUri))
+        f.write('  binddn "bind_dn";\n')
+        f.write('  binddn_passwd "bind_dn_password";\n\n')
+        f.write('  group_attribute {};\n'.format(ldapGroupAttr))
+        f.write('  group_attribute_is_dn {};\n'.format(ldapGroupAttrIsDN))
+        f.write('  require group "CN=malcolm,OU=groups,DC=example,DC=com";\n')
+        f.write('  require valid_user;\n')
+        f.write('  satisfy all;\n')
+        f.write('}\n\n')
+        f.write('auth_ldap_cache_enabled on;\n')
+        f.write('auth_ldap_cache_expiration_time 10000;\n')
+        f.write('auth_ldap_cache_size 1000;\n')
+      os.chmod(ldapConfFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+
+    # populate htadmin config file
+    with open(os.path.join(MalcolmPath, os.path.join('htadmin', 'config.ini')), 'w') as f:
+      f.write('; HTAdmin config file.\n\n')
+      f.write('[application]\n')
+      f.write('; Change this to customize your title:\n')
+      f.write('app_title = Malcolm User Management\n\n')
+      f.write('; htpasswd file\n')
+      f.write('secure_path  = ./config/htpasswd\n')
+      f.write('; metadata file\n')
+      f.write('metadata_path  = ./config/metadata\n\n')
+      f.write('; administrator user/password (htpasswd -b -c -B ...)\n')
+      f.write('admin_user = {}\n\n'.format(username))
+      f.write('; username field quality checks\n')
+      f.write(';\n')
+      f.write('min_username_len = 4\n')
+      f.write('max_username_len = 12\n\n')
+      f.write('; Password field quality checks\n')
+      f.write(';\n')
+      f.write('min_password_len = 6\n')
+      f.write('max_password_len = 20\n\n')
+
+    # touch the metadata file
+    open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
 
   # generate HTTPS self-signed certificates
   if YesOrNo('(Re)generate self-signed certificates for HTTPS access', default=True):
@@ -517,7 +524,7 @@ def authSetup(wipe=False):
   # create and populate keystore for remote
   if YesOrNo('Store username/password for forwarding Logstash events to a secondary, external Elasticsearch instance', default=False):
 
-    # prompt usernamd and password
+    # prompt username and password
     esPassword = None
     esPasswordConfirm = None
     esUsername = AskForString("External Elasticsearch username")
@@ -567,6 +574,60 @@ def authSetup(wipe=False):
         os.chdir(MalcolmPath)
     else:
       raise Exception('Failed to determine logstash image from {}'.format(args.composeFile))
+
+  # Open Distro for Elasticsearch authenticate sender account credentials
+  # https://opendistro.github.io/for-elasticsearch-docs/docs/alerting/monitors/#authenticate-sender-account
+  if YesOrNo('Store username/password for email alert sender account', default=False):
+
+    # prompt username and password
+    emailPassword = None
+    emailPasswordConfirm = None
+    emailUsername = AskForString("Open Distro alerting destination name")
+    emailUsername = AskForString("Email account username")
+
+    while True:
+      emailPassword = AskForPassword("{} password: ".format(emailUsername))
+      emailPasswordConfirm = AskForPassword("{} password (again): ".format(emailUsername))
+      if (emailPassword == emailPasswordConfirm):
+        break
+      eprint("Passwords do not match")
+
+    # use the elasticsearch image to create and/or populate the keystore
+
+    esImage = None
+    esPath = os.path.join(MalcolmPath, os.path.join('elasticsearch'))
+    composeFileLines = list()
+    with open(args.composeFile, 'r') as f:
+      composeFileLines = [x for x in f.readlines() if 'image: malcolmnetsec/elasticsearch' in x]
+    if (len(composeFileLines) > 0) and (len(composeFileLines[0]) > 0):
+      imageLineValues = composeFileLines[0].split()
+      if (len(imageLineValues) > 1):
+        esImage = imageLineValues[1]
+
+    # TODO:
+    # if esImage is not None:
+    #   os.chdir(esPath)
+    #   try:
+    #     dockerCmd = [dockerBin,
+    #                  'run',
+    #                  '--rm',
+    #                  '--entrypoint',
+    #                  '/bin/bash',
+    #                  '-v', '{}:/usr/share/logstash/config:rw'.format(esPath),
+    #                  '-w', '/usr/share/logstash/config',
+    #                  '-u', 'logstash',
+    #                  '-e', 'EXT_USERNAME={}'.format(emailUsername),
+    #                  '-e', 'EXT_PASSWORD={}'.format(emailPassword),
+    #                  esImage,
+    #                  '/usr/local/bin/set_es_external_keystore.sh']
+
+    #     err, out = run_process(dockerCmd, stderr=True, debug=args.debug)
+    #     if (err != 0) or not os.path.isfile('logstash.keystore'):
+    #       raise Exception('Unable to generate logstash keystore: {}'.format(out))
+    #   finally:
+    #     os.chdir(MalcolmPath)
+    # else:
+    #   raise Exception('Failed to determine elasticsearch image from {}'.format(args.composeFile))
 
 
 ###################################################################################################
