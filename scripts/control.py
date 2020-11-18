@@ -376,8 +376,11 @@ def start():
   # touch the metadata file
   open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
 
-  # if the elasticsearch keystore doesn't exist, create an empty one (this will fail if it already exists, which we ignore)
-  keystore_op('elasticsearch', 'create')
+  # if the elasticsearch and logstash keystore don't exist exist, create empty ones
+  if not os.path.isfile(os.path.join(MalcolmPath, os.path.join('elasticsearch', 'elasticsearch.keystore'))):
+    keystore_op('elasticsearch', 'create')
+  if not os.path.isfile(os.path.join(MalcolmPath, os.path.join('logstash', os.path.join('certs', 'logstash.keystore')))):
+    keystore_op('logstash', 'create')
 
   # make sure permissions are set correctly for the nginx worker processes
   for authFile in [os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')),

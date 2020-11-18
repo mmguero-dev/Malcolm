@@ -200,7 +200,7 @@ services:
       - 9001
       - 9600
     volumes:
-      # - ./logstash/certs/logstash.keystore:/usr/share/logstash/config/logstash.keystore:ro
+      - ./logstash/certs/logstash.keystore:/usr/share/logstash/config/logstash.keystore:rw
       - ./logstash/certs/ca.crt:/certs/ca.crt:ro
       - ./logstash/certs/server.crt:/certs/server.crt:ro
       - ./logstash/certs/server.key:/certs/server.key:ro
