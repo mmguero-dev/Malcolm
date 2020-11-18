@@ -701,7 +701,7 @@ In either case, you **must** run `./scripts/auth_setup` before starting Malcolm 
     * certificate authority, certificate, and key files to be copied to and used by the remote log forwarder are located in the `filebeat/certs/` directory
 * specify whether or not to store the username/password for forwarding Logstash events to a secondary, external Elasticsearch instance (see the `ES_EXTERNAL_HOSTS`, `ES_EXTERNAL_SSL`, and `ES_EXTERNAL_SSL_CERTIFICATE_VERIFICATION` environment variables above)
     * these parameters are stored securely in the Logstash keystore file `logstash/certs/logstash.keystore`
-* specify whether or not to store the username/password for [email alert senders](https://opendistro.github.io/for-elasticsearch-docs/docs/alerting/monitors/#authenticate-sender-account)
+* specify whether or not to [store the username/password](https://opendistro.github.io/for-elasticsearch-docs/docs/alerting/monitors/#authenticate-sender-account) for [email alert senders](https://opendistro.github.io/for-elasticsearch-docs/docs/alerting/monitors/#create-destinations)
     * these parameters are stored securely in the Elasticsearch keystore file `elasticsearch/elasticsearch.keystore`
 
 ##### <a name="AuthBasicAccountManagement"></a>Local account management
