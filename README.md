@@ -361,17 +361,22 @@ Then, go take a walk or something since it will be a while. When you're done, yo
 ```
 $ ./scripts/malcolm_appliance_packager.sh 
 You must set a username and password for Malcolm, and self-signed X.509 certificates will be generated
+
+Store administrator username/password for local Malcolm access? (Y/n): 
+
 Administrator username: analyst
 analyst password: 
 analyst password (again): 
 
-(Re)generate self-signed certificates for HTTPS access [Y/n]? 
+(Re)generate self-signed certificates for HTTPS access (Y/n): 
 
-(Re)generate self-signed certificates for a remote log forwarder [Y/n]? 
+(Re)generate self-signed certificates for a remote log forwarder (Y/n): 
 
-Store username/password for forwarding Logstash events to a secondary, external Elasticsearch instance [y/N]? 
+Store username/password for forwarding Logstash events to a secondary, external Elasticsearch instance (y/N): 
+
+Store username/password for email alert sender account (y/N): 
+
 Packaged Malcolm to "/home/user/tmp/malcolm_20190513_101117_f0d052c.tar.gz"
-
 
 Do you need to package docker images also [y/N]? y
 This might take a few minutes...
@@ -1349,6 +1354,35 @@ Restarting Logstash may take several minutes, after which log ingestion will be 
 
 See [Index State Management](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/) in the Open Distro for Elasticsearch documentation.
 
+## <a name="Alerting"></a>Alerting
+
+See [Alerting](https://opendistro.github.io/for-elasticsearch-docs/docs/alerting/) in the Open Distro for Elasticsearch documentation.
+
+When using an email account to send alerts, you must [authenticate each sender account](https://opendistro.github.io/for-elasticsearch-docs/docs/alerting/monitors/#authenticate-sender-account) before you can send an email. The [`auth_setup`](#AuthSetup) script can be used to securely store the email account credentials:
+
+```
+./scripts/auth_setup 
+
+Store administrator username/password for local Malcolm access? (Y/n): n
+
+(Re)generate self-signed certificates for HTTPS access (Y/n): n
+
+(Re)generate self-signed certificates for a remote log forwarder (Y/n): n
+
+Store username/password for forwarding Logstash events to a secondary, external Elasticsearch instance (y/N): n
+
+Store username/password for email alert sender account (y/N): y
+
+Open Distro alerting destination name: destination_alpha
+
+Email account username: analyst@example.org
+analyst@example.org password: 
+analyst@example.org password (again): 
+Email alert sender account variables stored: opendistro.alerting.destination.email.destination_alpha.password, opendistro.alerting.destination.email.destination_alpha.username
+```
+
+This action should only be performed while Malcolm is [stopped](#StopAndRestart): otherwise the credentials will not be stored correctly.
+
 ## <a name="OtherBeats"></a>Using Beats to forward host logs to Malcolm
 
 Because Malcolm uses components of the open source data analysis platform [Elastic Stack](https://www.elastic.co/elastic-stack), it can accept various host logs sent from [Beats](https://www.elastic.co/beats/#the-beats-family), Elastic Stack's lightweight data shippers. See [./scripts/beats](./scripts/beats) for more information.
@@ -1743,15 +1777,19 @@ At this point you should **reboot your computer** so that the new system setting
 Now we need to [set up authentication](#AuthSetup) and generate some unique self-signed SSL certificates. You can replace `analyst` in this example with whatever username you wish to use to log in to the Malcolm web interface.
 ```
 user@host:~/Malcolm$ ./scripts/auth_setup
-Username: analyst
-analyst password:
-analyst password (again):
+Store administrator username/password for local Malcolm access? (Y/n): 
 
-(Re)generate self-signed certificates for HTTPS access [Y/n]? y
+Administrator username: analyst
+analyst password: 
+analyst password (again): 
 
-(Re)generate self-signed certificates for a remote log forwarder [Y/n]? y
+(Re)generate self-signed certificates for HTTPS access (Y/n): 
 
-Store username/password for forwarding Logstash events to a secondary, external Elasticsearch instance [y/N]? n
+(Re)generate self-signed certificates for a remote log forwarder (Y/n): 
+
+Store username/password for forwarding Logstash events to a secondary, external Elasticsearch instance (y/N): 
+
+Store username/password for email alert sender account (y/N): 
 ```
 
 For now, rather than [build Malcolm from scratch](#Build), we'll pull images from [Docker Hub](https://hub.docker.com/u/malcolmnetsec):
