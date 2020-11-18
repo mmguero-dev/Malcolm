@@ -456,11 +456,6 @@ class Installer(object):
           elif 'ES_EXTERNAL_SSL' in line:
             # enable/disable SSL certificate verification for external Elasticsearch instance
             line = re.sub(r'(#\s*)?(ES_EXTERNAL_SSL\s*:\s*)(\S+)', fr"\g<2>{'''true''' if externalEsSsl else '''false'''}", line)
-          elif (len(externalEsHost) > 0) and re.match(r'^\s*#.+:/usr/share/logstash/config/logstash.keystore(:r[ow])?\s*$', line):
-            # make sure logstash.keystore is shared (volume mapping is not commented out)
-            leadingSpaces = len(line) - len(line.lstrip())
-            if leadingSpaces <= 0: leadingSpaces = 6
-            line = f"{' ' * leadingSpaces}{line.lstrip().lstrip('#').lstrip()}"
           elif logstashOpen and serviceStartLine and (currentService == 'logstash'):
             # exposing logstash port 5044 to the world
             print(line)

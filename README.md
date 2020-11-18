@@ -77,6 +77,7 @@ In short, Malcolm provides an easily deployable network analysis tool suite for 
         + [Defining hostname and CIDR subnet names interface](#NameMapUI)
         + [Applying mapping changes](#ApplyMapping)
     - [Elasticsearch index management](#IndexManagement)
+    - [Alerting](#Alerting)
 * [Using Beats to forward host logs to Malcolm](#OtherBeats)
 * [Malcolm installer ISO](#ISO)
     * [Installation](#ISOInstallation)
@@ -801,7 +802,7 @@ Malcolm can be configured to be automatically restarted when the Docker system d
 
 ### <a name="Wipe"></a>Clearing Malcolm’s data
 
-Run `./scripts/wipe` to stop the Malcolm instance and wipe its Elasticsearch database (including [index snapshots](#IndexManagement)).
+Run `./scripts/wipe` to stop the Malcolm instance and wipe its Elasticsearch database (**including** [index snapshots and management policies](#IndexManagement) and [alerting configuration](#Alerting)).
 
 ## <a name="Upload"></a>Capture file and log archive upload
 
