@@ -53,6 +53,7 @@ def keystore_op(service, *keystore_args, **run_process_kwargs):
   global dockerComposeBin
 
   err = -1
+  results = []
 
   # the elastic containers all follow the same naming pattern for these executables
   keystoreBinProc = f"/usr/share/{service}/bin/{service}-keystore"
@@ -162,9 +163,9 @@ def keystore_op(service, *keystore_args, **run_process_kwargs):
         dockerCmd[:] = [x for x in dockerCmd if x]
 
         # execute the command, passing through run_process_kwargs to run_process as expanded keyword arguments
-        err, out = run_process(dockerCmd, stderr=True, debug=args.debug, **run_process_kwargs)
+        err, results = run_process(dockerCmd, debug=args.debug, **run_process_kwargs)
         if (err != 0) or (not os.path.isfile(localKeystore)):
-          raise Exception(f'Unable to generate keystore file for {service}: {out}')
+          raise Exception(f'Error processing command {service} keystore: {results}')
 
       else:
         raise Exception(f'Unable formulate keystore command for {service} in {args.composeFile}')
@@ -176,18 +177,18 @@ def keystore_op(service, *keystore_args, **run_process_kwargs):
     if (err == 0):
       err = -1
 
-    # don't be so whiny if the "create" failed just because it already existed
+    # don't be so whiny if the "create" failed just because it already existed or a 'remove' failed on a nonexistant item
     if ((not args.debug) and
         list(keystore_args) and
         (len(list(keystore_args)) > 0) and
-        (list(keystore_args)[0].lower() == 'create') and
+        (list(keystore_args)[0].lower() in ('create', 'remove')) and
         localKeystorePreExists):
       pass
     else:
       eprint(e)
 
   # success = (error == 0)
-  return (err == 0)
+  return (err == 0), results
 
 ###################################################################################################
 def status():
@@ -669,41 +670,20 @@ def authSetup(wipe=False):
         break
       eprint("Passwords do not match")
 
-    # use the logstash image to run set_es_external_keystore to generate the keystore
-
-    logstashImage = None
-    composeFileLines = list()
-    with open(args.composeFile, 'r') as f:
-      composeFileLines = [x for x in f.readlines() if 'image: malcolmnetsec/logstash' in x]
-    if (len(composeFileLines) > 0) and (len(composeFileLines[0]) > 0):
-      imageLineValues = composeFileLines[0].split()
-      if (len(imageLineValues) > 1):
-        logstashImage = imageLineValues[1]
-
-    if logstashImage is not None:
-      with pushd(logstashPath):
-        if os.path.isfile('logstash.keystore'):
-          os.remove('logstash.keystore')
-
-        dockerCmd = [dockerBin,
-                     'run',
-                     '--rm',
-                     '--entrypoint',
-                     '/bin/bash',
-                     '-v', f'{logstashPath}:/usr/share/logstash/config:rw',
-                     '-w', '/usr/share/logstash/config',
-                     '-u', 'logstash',
-                     '-e', f'EXT_USERNAME={esUsername}',
-                     '-e', f'EXT_PASSWORD={esPassword}',
-                     logstashImage,
-                     '/usr/local/bin/set_es_external_keystore.sh']
-
-        err, out = run_process(dockerCmd, stderr=True, debug=args.debug)
-        if (err != 0) or not os.path.isfile('logstash.keystore'):
-          raise Exception(f'Unable to generate logstash keystore: {out}')
-
+    # create logstash keystore file, don't complain if it already exists, and set the keystore items
+    keystore_op('logstash', 'create', stdin='N')
+    keystore_op('logstash', 'remove', 'ES_EXTERNAL_USER', '--force')
+    keystore_op('logstash', 'add', 'ES_EXTERNAL_USER', '--stdin', '--force', stdin=esUsername)
+    keystore_op('logstash', 'remove', 'ES_EXTERNAL_PASSWORD', '--force')
+    keystore_op('logstash', 'add', 'ES_EXTERNAL_PASSWORD', '--stdin', '--force', stdin=esPassword)
+    success, results = keystore_op('logstash', 'list')
+    results = [x for x in results if x and (not x.upper().startswith('WARNING')) and (not x.upper().startswith('KEYSTORE'))]
+    if success and ('ES_EXTERNAL_USER' in results) and ('ES_EXTERNAL_PASSWORD' in results):
+      eprint(f"External Elasticsearch instance variables stored: {', '.join(results)}")
     else:
-      raise Exception(f'Failed to determine logstash image from {args.composeFile}')
+      eprint("Failed to store external Elasticsearch instance variables:\n")
+      eprint("\n".join(results))
+
 
   # Open Distro for Elasticsearch authenticate sender account credentials
   # https://opendistro.github.io/for-elasticsearch-docs/docs/alerting/monitors/#authenticate-sender-account
@@ -712,7 +692,7 @@ def authSetup(wipe=False):
     # prompt username and password
     emailPassword = None
     emailPasswordConfirm = None
-    emailUsername = AskForString("Open Distro alerting destination name")
+    emailDestination = AskForString("Open Distro alerting destination name")
     emailUsername = AskForString("Email account username")
 
     while True:
@@ -722,43 +702,22 @@ def authSetup(wipe=False):
         break
       eprint("Passwords do not match")
 
-    # use the elasticsearch image to create and/or populate the keystore
+    # create elasticsearch keystore file, don't complain if it already exists, and set the keystore items
+    usernameKey = f'opendistro.alerting.destination.email.{emailDestination}.username'
+    passwordKey = f'opendistro.alerting.destination.email.{emailDestination}.password'
 
-    esImage = None
-    esPath = os.path.join(MalcolmPath, os.path.join('elasticsearch'))
-    composeFileLines = list()
-    with open(args.composeFile, 'r') as f:
-      composeFileLines = [x for x in f.readlines() if 'image: malcolmnetsec/elasticsearch' in x]
-    if (len(composeFileLines) > 0) and (len(composeFileLines[0]) > 0):
-      imageLineValues = composeFileLines[0].split()
-      if (len(imageLineValues) > 1):
-        esImage = imageLineValues[1]
-
-    # TODO:
-    # if esImage is not None:
-    #   os.chdir(esPath)
-    #   try:
-    #     dockerCmd = [dockerBin,
-    #                  'run',
-    #                  '--rm',
-    #                  '--entrypoint',
-    #                  '/bin/bash',
-    #                  '-v', f'{esPath}:/usr/share/logstash/config:rw',
-    #                  '-w', '/usr/share/logstash/config',
-    #                  '-u', 'logstash',
-    #                  '-e', f'EXT_USERNAME={emailUsername}',
-    #                  '-e', f'EXT_PASSWORD={emailPassword}',
-    #                  esImage,
-    #                  '/usr/local/bin/set_es_external_keystore.sh']
-
-    #     err, out = run_process(dockerCmd, stderr=True, debug=args.debug)
-    #     if (err != 0) or not os.path.isfile('logstash.keystore'):
-    #       raise Exception(f'Unable to generate logstash keystore: {out}')
-    #   finally:
-    #     os.chdir(MalcolmPath)
-    # else:
-    #   raise Exception(f'Failed to determine elasticsearch image from {args.composeFile}')
-
+    keystore_op('elasticsearch', 'create', stdin='N')
+    keystore_op('elasticsearch', 'remove', usernameKey)
+    keystore_op('elasticsearch', 'add', usernameKey, '--stdin', stdin=emailUsername)
+    keystore_op('elasticsearch', 'remove', passwordKey)
+    keystore_op('elasticsearch', 'add', passwordKey, '--stdin', stdin=emailPassword)
+    success, results = keystore_op('elasticsearch', 'list')
+    results = [x for x in results if x and (not x.upper().startswith('WARNING')) and (not x.upper().startswith('KEYSTORE'))]
+    if success and (usernameKey in results) and (passwordKey in results):
+      eprint(f"Email alert sender account variables stored: {', '.join(results)}")
+    else:
+      eprint("Failed to store email alert sender account variables:\n")
+      eprint("\n".join(results))
 
 ###################################################################################################
 # main
