@@ -55,6 +55,9 @@ def InstallerAskForString(question, default=None, forceInteraction=False):
   global args
   return AskForString(question, default=default, forceInteraction=forceInteraction, acceptDefault=args.acceptDefaults)
 
+def TrueOrFalseQuote(expression):
+  return "'{}'".format('true' if expression else 'false')
+
 ###################################################################################################
 class Installer(object):
 
@@ -389,13 +392,13 @@ class Installer(object):
             line = re.sub(r'(PGID\s*:\s*)(\S+)', fr"\g<1>{pgid}", line)
           elif 'NGINX_BASIC_AUTH' in line:
             # basic (useBasicAuth=true) vs ldap (useBasicAuth=false)
-            line = re.sub(r'(NGINX_BASIC_AUTH\s*:\s*)(\S+)', fr"\g<1>{'''true''' if useBasicAuth else '''false'''}", line)
+            line = re.sub(r'(NGINX_BASIC_AUTH\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(useBasicAuth)}", line)
           elif 'NGINX_LDAP_TLS_STUNNEL_PROTOCOL' in line:
             # ldap server type (windldap|openldap) for StartTLS
             line = re.sub(r'(NGINX_LDAP_TLS_STUNNEL_PROTOCOL\s*:\s*)(\S+)', fr"\g<1>'{ldapServerType}'", line)
           elif 'NGINX_LDAP_TLS_STUNNEL' in line:
             # StartTLS vs. ldap:// or ldaps://
-            line = re.sub(r'(NGINX_LDAP_TLS_STUNNEL\s*:\s*)(\S+)', fr"\g<1>{'''true''' if ((not useBasicAuth) and ldapStartTLS) else '''false'''}", line)
+            line = re.sub(r'(NGINX_LDAP_TLS_STUNNEL\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(((not useBasicAuth) and ldapStartTLS))}", line)
           elif 'ZEEK_EXTRACTOR_MODE' in line:
             # zeek file extraction mode
             line = re.sub(r'(ZEEK_EXTRACTOR_MODE\s*:\s*)(\S+)', fr"\g<1>'{fileCarveMode}'", line)
@@ -407,22 +410,22 @@ class Installer(object):
             line = re.sub(r'(VTOT_API2_KEY\s*:\s*)(\S+)', fr"\g<1>'{vtotApiKey}'", line)
           elif 'EXTRACTED_FILE_ENABLE_YARA' in line:
             # file scanning via yara
-            line = re.sub(r'(EXTRACTED_FILE_ENABLE_YARA\s*:\s*)(\S+)', fr"\g<1>{'''true''' if yaraScan else '''false'''}", line)
+            line = re.sub(r'(EXTRACTED_FILE_ENABLE_YARA\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(yaraScan)}", line)
           elif 'EXTRACTED_FILE_ENABLE_CAPA' in line:
             # PE file scanning via capa
-            line = re.sub(r'(EXTRACTED_FILE_ENABLE_CAPA\s*:\s*)(\S+)', fr"\g<1>{'''true''' if capaScan else '''false'''}", line)
+            line = re.sub(r'(EXTRACTED_FILE_ENABLE_CAPA\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(capaScan)}", line)
           elif 'EXTRACTED_FILE_ENABLE_CLAMAV' in line:
             # file scanning via clamav
-            line = re.sub(r'(EXTRACTED_FILE_ENABLE_CLAMAV\s*:\s*)(\S+)', fr"\g<1>{'''true''' if clamAvScan else '''false'''}", line)
+            line = re.sub(r'(EXTRACTED_FILE_ENABLE_CLAMAV\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(clamAvScan)}", line)
           elif 'EXTRACTED_FILE_ENABLE_FRESHCLAM' in line:
             # clamav updates via freshclam
-            line = re.sub(r'(EXTRACTED_FILE_ENABLE_FRESHCLAM\s*:\s*)(\S+)', fr"\g<1>{'''true''' if clamAvUpdate else '''false'''}", line)
+            line = re.sub(r'(EXTRACTED_FILE_ENABLE_FRESHCLAM\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(clamAvUpdate)}", line)
           elif 'PCAP_ENABLE_NETSNIFF' in line:
             # capture pcaps via netsniff-ng
-            line = re.sub(r'(PCAP_ENABLE_NETSNIFF\s*:\s*)(\S+)', fr"\g<1>{'''true''' if pcapNetSniff else '''false'''}", line)
+            line = re.sub(r'(PCAP_ENABLE_NETSNIFF\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(pcapNetSniff)}", line)
           elif 'PCAP_ENABLE_TCPDUMP' in line:
             # capture pcaps via tcpdump
-            line = re.sub(r'(PCAP_ENABLE_TCPDUMP\s*:\s*)(\S+)', fr"\g<1>{'''true''' if pcapTcpDump else '''false'''}", line)
+            line = re.sub(r'(PCAP_ENABLE_TCPDUMP\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(pcapTcpDump)}", line)
           elif 'PCAP_IFACE' in line:
             # capture interface(s)
             line = re.sub(r'(PCAP_IFACE\s*:\s*)(\S+)', fr"\g<1>'{pcapIface}'", line)
@@ -434,28 +437,28 @@ class Installer(object):
             line = re.sub(r'(-Xm[sx])(\w+)', fr'\g<1>{lsMemory}', line)
           elif 'ZEEK_AUTO_ANALYZE_PCAP_FILES' in line:
             # automatic pcap analysis with Zeek
-            line = re.sub(r'(ZEEK_AUTO_ANALYZE_PCAP_FILES\s*:\s*)(\S+)', fr"\g<1>{'''true''' if autoZeek else '''false'''}", line)
+            line = re.sub(r'(ZEEK_AUTO_ANALYZE_PCAP_FILES\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(autoZeek)}", line)
           elif 'LOGSTASH_REVERSE_DNS' in line:
             # automatic local reverse dns lookup
-            line = re.sub(r'(LOGSTASH_REVERSE_DNS\s*:\s*)(\S+)', fr"\g<1>{'''true''' if reverseDns else '''false'''}", line)
+            line = re.sub(r'(LOGSTASH_REVERSE_DNS\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(reverseDns)}", line)
           elif 'LOGSTASH_OUI_LOOKUP' in line:
             # automatic MAC OUI lookup
-            line = re.sub(r'(LOGSTASH_OUI_LOOKUP\s*:\s*)(\S+)', fr"\g<1>{'''true''' if autoOui else '''false'''}", line)
+            line = re.sub(r'(LOGSTASH_OUI_LOOKUP\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(autoOui)}", line)
           elif 'FREQ_LOOKUP' in line:
             # freq.py string randomness calculations
-            line = re.sub(r'(FREQ_LOOKUP\s*:\s*)(\S+)', fr"\g<1>{'''true''' if autoFreq else '''false'''}", line)
+            line = re.sub(r'(FREQ_LOOKUP\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(autoFreq)}", line)
           elif 'BEATS_SSL' in line:
             # enable/disable beats SSL
-            line = re.sub(r'(BEATS_SSL\s*:\s*)(\S+)', fr"\g<1>{'''true''' if logstashOpen and logstashSsl else '''false'''}", line)
+            line = re.sub(r'(BEATS_SSL\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(logstashOpen and logstashSsl)}", line)
           elif 'ES_EXTERNAL_HOSTS' in line:
             # enable/disable forwarding Logstash to external Elasticsearch instance
             line = re.sub(r'(#\s*)?(ES_EXTERNAL_HOSTS\s*:\s*)(\S+)', fr"\g<2>'{externalEsHost}'", line)
           elif 'ES_EXTERNAL_SSL_CERTIFICATE_VERIFICATION' in line:
             # enable/disable SSL certificate verification for external Elasticsearch instance
-            line = re.sub(r'(#\s*)?(ES_EXTERNAL_SSL_CERTIFICATE_VERIFICATION\s*:\s*)(\S+)', fr"\g<2>{'''true''' if externalEsSsl and externalEsSslVerify else '''false'''}", line)
+            line = re.sub(r'(#\s*)?(ES_EXTERNAL_SSL_CERTIFICATE_VERIFICATION\s*:\s*)(\S+)', fr"\g<2>{TrueOrFalseQuote(externalEsSsl and externalEsSslVerify)}", line)
           elif 'ES_EXTERNAL_SSL' in line:
             # enable/disable SSL certificate verification for external Elasticsearch instance
-            line = re.sub(r'(#\s*)?(ES_EXTERNAL_SSL\s*:\s*)(\S+)', fr"\g<2>{'''true''' if externalEsSsl else '''false'''}", line)
+            line = re.sub(r'(#\s*)?(ES_EXTERNAL_SSL\s*:\s*)(\S+)', fr"\g<2>{TrueOrFalseQuote(externalEsSsl)}", line)
           elif logstashOpen and serviceStartLine and (currentService == 'logstash'):
             # exposing logstash port 5044 to the world
             print(line)
