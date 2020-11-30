@@ -482,6 +482,8 @@ Various other environment variables inside of `docker-compose.yml` can be tweake
 
 * `ES_EXTERNAL_SSL_CERTIFICATE_VERIFICATION` – if set to `true`, Logstash will require full SSL certificate validation; this may fail if using self-signed certificates (default `false`)
 
+* `ISM_SNAPSHOT_DISABLED` - if set to `False`, daily snapshots (backups) will be made of the previous day's Elasticsearch log index; see [Elasticsearch index management](#IndexManagement)
+
 * `AUTO_TAG` – if set to `true`, Malcolm will automatically create Arkime sessions and Zeek logs with tags based on the filename, as described in [Tagging](#Tagging) (default `true`)
 
 * `BEATS_SSL` – if set to `true`, Logstash will use require encrypted communications for any external Beats-based forwarders from which it will accept logs; if Malcolm is being used as a standalone tool then this can safely be set to `false`, but if external log feeds are to be accepted then setting it to true is recommended (default `false`)
@@ -1355,6 +1357,12 @@ Restarting Logstash may take several minutes, after which log ingestion will be 
 
 See [Index State Management](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/) in the Open Distro for Elasticsearch documentation.
 
+Certain common index state management policies can be configured and enabled via environment variable:
+
+* [snapshot](https://opendistro.github.io/for-elasticsearch-docs/docs/elasticsearch/snapshot-restore/) (back up) the previous day's Elasticsearch index once daily; by default snapshots are stored locally under the `./elasticsearch-backup/` directory mounted as a volume into the `elasticsearch` container
+
+This behavior can also be modified by running [`./scripts/install.py --configure`](#ConfigAndTuning).
+
 Elasticsearch index management only deals with disk space consumed by Elasticsearch indices: it does not have anything to do with PCAP file storage. The `MANAGE_PCAP_FILES` environment variable in the [`docker-compose.yml`](#DockerComposeYml) file can be used to allow Arkime to prune old PCAP files based on available disk space.
 
 ## <a name="Alerting"></a>Alerting
@@ -1713,6 +1721,10 @@ Restart Malcolm upon system or Docker daemon restart? (y/N): y
 Select Malcolm restart behavior ('no', 'on-failure', 'always', 'unless-stopped'): unless-stopped
 
 Authenticate against Lightweight Directory Access Protocol (LDAP) server? (y/N): n
+
+Create daily snapshots (backups) of Elasticsearch indices? (y/N): n
+
+Store snapshots locally in /home/user/Malcolm/elasticsearch-backup? (Y/n): y
 
 Periodically close old Elasticsearch indices? (Y/n): y
 

@@ -70,6 +70,11 @@ x-zeek-variables: &zeek-variables
   ZEEK_DISABLE_WIREGUARD : ''
   ZEEK_DISABLE_WIREGUARD_TRANSPORT_PACKETS : 'true'
 
+x-kibana-helper-variables: &kibana-helper-variables
+  ISM_SNAPSHOT_DISABLED : 'True'
+  ISM_SNAPSHOT_REPO : 'logs'
+  ISM_SNAPSHOT_COMPRESSED : 'false'
+
 x-logstash-variables: &logstash-variables
   LOGSTASH_OUI_LOOKUP  : 'true'
   LOGSTASH_REVERSE_DNS : 'false'
