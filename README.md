@@ -482,8 +482,6 @@ Various other environment variables inside of `docker-compose.yml` can be tweake
 
 * `ES_EXTERNAL_SSL_CERTIFICATE_VERIFICATION` – if set to `true`, Logstash will require full SSL certificate validation; this may fail if using self-signed certificates (default `false`)
 
-* `ISM_SNAPSHOT_DISABLED` - if set to `False`, daily snapshots (backups) will be made of the previous day's Elasticsearch log index; see [Elasticsearch index management](#IndexManagement)
-
 * `AUTO_TAG` – if set to `true`, Malcolm will automatically create Arkime sessions and Zeek logs with tags based on the filename, as described in [Tagging](#Tagging) (default `true`)
 
 * `BEATS_SSL` – if set to `true`, Logstash will use require encrypted communications for any external Beats-based forwarders from which it will accept logs; if Malcolm is being used as a standalone tool then this can safely be set to `false`, but if external log feeds are to be accepted then setting it to true is recommended (default `false`)
@@ -1355,7 +1353,7 @@ Restarting Logstash may take several minutes, after which log ingestion will be 
 
 ## <a name="IndexManagement"></a>Elasticsearch index management
 
-See [Index State Management](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/) in the Open Distro for Elasticsearch documentation.
+See [Index State Management](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/) in the Open Distro for Elasticsearch documentation on Index State Management [policies](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/policies/), [managed indices](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/managedindices/), [settings](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/settings/) and [APIs](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/api/).
 
 Certain common index state management policies can be configured and enabled via environment variable:
 

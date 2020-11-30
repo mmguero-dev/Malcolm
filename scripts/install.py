@@ -283,9 +283,9 @@ class Installer(object):
       except:
         pass
 
-    indexSnapshots = InstallerYesOrNo('Create daily snapshots (backups) of Elasticsearch indices?', default=False)
-    indexSnapshotDir = './elasticsearch-backup'
-    if indexSnapshots:
+    indexSnapshotDir = None
+    if InstallerYesOrNo('Configure snapshot repository for Elasticsearch index state management?', default=False):
+      indexSnapshotDir = './elasticsearch-backup'
       if not InstallerYesOrNo('Store snapshots locally in {}?'.format(os.path.join(malcolm_install_path, 'elasticsearch-backup')), default=True):
         while True:
           indexSnapshotDir = InstallerAskForString('Enter Elasticsearch index snapshot directory')
@@ -460,9 +460,6 @@ class Installer(object):
           elif 'BEATS_SSL' in line:
             # enable/disable beats SSL
             line = re.sub(r'(BEATS_SSL\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(logstashOpen and logstashSsl)}", line)
-          elif 'ISM_SNAPSHOT_DISABLED' in line:
-            # set count for index state management snapshot enable/disable
-            line = re.sub(r'(ISM_SNAPSHOT_DISABLED\s*:\s*)(\S+)', r'\g<1>{}'.format("'False'" if indexSnapshots else "'True'"), line)
           elif (currentService == 'elasticsearch') and re.match(r'^\s*-.+:/opt/elasticsearch/backup(:.+)?\s*$', line) and (indexSnapshotDir is not None) and os.path.isdir(indexSnapshotDir):
             # elasticsearch backup directory
             volumeParts = line.strip().lstrip('-').lstrip().split(':')
