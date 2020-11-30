@@ -1355,12 +1355,6 @@ Restarting Logstash may take several minutes, after which log ingestion will be 
 
 See [Index State Management](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/) in the Open Distro for Elasticsearch documentation on Index State Management [policies](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/policies/), [managed indices](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/managedindices/), [settings](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/settings/) and [APIs](https://opendistro.github.io/for-elasticsearch-docs/docs/ism/api/).
 
-Certain common index state management policies can be configured and enabled via environment variable:
-
-* [snapshot](https://opendistro.github.io/for-elasticsearch-docs/docs/elasticsearch/snapshot-restore/) (back up) the previous day's Elasticsearch index once daily; by default snapshots are stored locally under the `./elasticsearch-backup/` directory mounted as a volume into the `elasticsearch` container
-
-This behavior can also be modified by running [`./scripts/install.py --configure`](#ConfigAndTuning).
-
 Elasticsearch index management only deals with disk space consumed by Elasticsearch indices: it does not have anything to do with PCAP file storage. The `MANAGE_PCAP_FILES` environment variable in the [`docker-compose.yml`](#DockerComposeYml) file can be used to allow Arkime to prune old PCAP files based on available disk space.
 
 ## <a name="Alerting"></a>Alerting
@@ -1720,33 +1714,9 @@ Select Malcolm restart behavior ('no', 'on-failure', 'always', 'unless-stopped')
 
 Authenticate against Lightweight Directory Access Protocol (LDAP) server? (y/N): n
 
-Create daily snapshots (backups) of Elasticsearch indices? (y/N): n
+Configure snapshot repository for Elasticsearch index state management? (y/N): n
 
 Store snapshots locally in /home/user/Malcolm/elasticsearch-backup? (Y/n): y
-
-Periodically close old Elasticsearch indices? (Y/n): y
-
-Indices older than 5 years will be periodically closed. Is this OK? (Y/n): n
-
-Enter index close threshold (e.g., 90 days, 2 years, etc.): 1 years
-
-Indices older than 1 years will be periodically closed. Is this OK? (Y/n): y
-
-Periodically delete old Elasticsearch indices? (Y/n): y
-
-Indices older than 10 years will be periodically deleted. Is this OK? (Y/n): n
-
-Enter index delete threshold (e.g., 90 days, 2 years, etc.): 5 years
-
-Indices older than 5 years will be periodically deleted. Is this OK? (Y/n): y
-
-Periodically delete the oldest Elasticsearch indices when the database exceeds a certain size? (Y/n): y
-
-Indices will be deleted when the database exceeds 10000 gigabytes. Is this OK? (Y/n): n
-
-Enter index threshold in gigabytes: 100
-
-Indices will be deleted when the database exceeds 100 gigabytes. Is this OK? (Y/n): y
 
 Automatically analyze all PCAP files with Zeek? (y/N): y
 
