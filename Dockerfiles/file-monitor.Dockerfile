@@ -79,6 +79,12 @@ ENV CAPA_URL "https://github.com/fireeye/capa"
 ENV CAPA_RULES_URL "https://github.com/fireeye/capa-rules"
 ENV CAPA_RULES_DIR "/capa-rules"
 
+ENV SUPERCRONIC_VERSION "0.1.12"
+ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-amd64"
+ENV SUPERCRONIC "supercronic-linux-amd64"
+ENV SUPERCRONIC_SHA1SUM "048b95b48b708983effb2e5c935a1ef8483d9e3e"
+ENV SUPERCRONIC_CRONTAB "/etc/crontab"
+
 RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list && \
     apt-get update && \
     apt-get install --no-install-recommends -y -q \
@@ -119,6 +125,11 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
       python3-zmq && \
     pip3 install clamd supervisor yara-python python-magic psutil && \
     pip2 install flare-capa && \
+    curl -fsSLO "$SUPERCRONIC_URL" && \
+      echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - && \
+      chmod +x "$SUPERCRONIC" && \
+      mv "$SUPERCRONIC" "/usr/local/bin/${SUPERCRONIC}" && \
+      ln -s "/usr/local/bin/${SUPERCRONIC}" /usr/local/bin/supercronic && \
     mkdir -p "${SRC_BASE_DIR}" && \
     cd "${SRC_BASE_DIR}" && \
       curl -sSL "${YARA_URL}" | tar xzf - -C "${SRC_BASE_DIR}" && \
@@ -173,7 +184,7 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
       useradd -m --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} ${PUSER} && \
       usermod -a -G tty ${PUSER} && \
     chown -R ${PUSER}:${PGROUP} /var/log/clamav "${CLAMAV_RULES_DIR}" "${CAPA_RULES_DIR}" "${YARA_RULES_DIR}" "${YARA_RULES_SRC_DIR}" && \
-    chmod -R 750 /var/log/clamav "${CLAMAV_RULES_DIR}" "${CAPA_RULES_DIR}" "${YARA_RULES_DIR}" "${YARA_RULES_SRC_DIR}" && \
+    find /var/log/clamav "${CLAMAV_RULES_DIR}" "${CAPA_RULES_DIR}" "${YARA_RULES_DIR}" "${YARA_RULES_SRC_DIR}" -type d -exec chmod 750 "{}" \; && \
     sed -i 's/^Foreground .*$/Foreground true/g' /etc/clamav/clamd.conf && \
       sed -i "s/^User .*$/User ${PUSER}/g" /etc/clamav/clamd.conf && \
       sed -i "s|^LocalSocket .*$|LocalSocket $CLAMD_SOCKET_FILE|g" /etc/clamav/clamd.conf && \
@@ -189,13 +200,15 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
       ln -r -s /usr/local/bin/zeek_carve_scanner.py /usr/local/bin/clam_scan.py && \
       ln -r -s /usr/local/bin/zeek_carve_scanner.py /usr/local/bin/yara_scan.py && \
       ln -r -s /usr/local/bin/zeek_carve_scanner.py /usr/local/bin/capa_scan.py && \
-      ln -r -s /usr/local/bin/zeek_carve_scanner.py /usr/local/bin/malass_scan.py
+      ln -r -s /usr/local/bin/zeek_carve_scanner.py /usr/local/bin/malass_scan.py && \
+      (echo -e "0 */6 * * * /usr/local/bin/capa-rules-update.sh\n0 */6 * * * /usr/local/bin/yara-rules-update.sh" > ${SUPERCRONIC_CRONTAB})
 
 ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD shared/bin/zeek_carve_*.py /usr/local/bin/
 ADD shared/bin/malass_client.py /usr/local/bin/
 ADD file-monitor/supervisord.conf /etc/supervisord.conf
 ADD file-monitor/docker-entrypoint.sh /docker-entrypoint.sh
+ADD file-monitor/*update.sh /usr/local/bin/
 
 WORKDIR /data/zeek/extract_files
 
