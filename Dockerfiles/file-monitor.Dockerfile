@@ -201,7 +201,7 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
       ln -r -s /usr/local/bin/zeek_carve_scanner.py /usr/local/bin/yara_scan.py && \
       ln -r -s /usr/local/bin/zeek_carve_scanner.py /usr/local/bin/capa_scan.py && \
       ln -r -s /usr/local/bin/zeek_carve_scanner.py /usr/local/bin/malass_scan.py && \
-      (echo -e "0 */6 * * * /usr/local/bin/capa-rules-update.sh\n0 */6 * * * /usr/local/bin/yara-rules-update.sh" > ${SUPERCRONIC_CRONTAB})
+      echo -e "0 */6 * * * /usr/local/bin/capa-rules-update.sh\n0 */6 * * * /usr/local/bin/yara-rules-update.sh" > ${SUPERCRONIC_CRONTAB}
 
 ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD shared/bin/zeek_carve_*.py /usr/local/bin/
