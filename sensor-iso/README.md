@@ -8,7 +8,7 @@ Hedgehog Linux is a Debian-based operating system built to
 * monitor network interfaces
 * capture packets to PCAP files
 * detect file transfers in network traffic and extract and scan those files for threats
-* generate and forward Zeek logs, Arkime sessions, and other information to [Malcolm](https://github.com/idaholab/malcolm)
+* generate and forward Zeek logs, Arkime sessions and other information to [Malcolm](https://github.com/idaholab/malcolm)
 
 ### <a name="TableOfContents"></a>Table of Contents
 
@@ -388,7 +388,7 @@ zeek:zeekctl                     RUNNING   pid 14433, uptime 8 days, 20:22:32
 
 # <a name="ISOBuild"></a>Appendix A - Generating the ISO
 
-Official downloads of the Hedgehog Linux installer ISO are not provided: however, it can be built easily on an internet-connected Linux host running current versions of [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/).
+Official downloads of the Hedgehog Linux installer ISO are not provided: however, it can be built easily on an internet-connected Linux host running current versions of [VirtualBox](https://www.virtualbox.org/) and [Vagrant](https://www.vagrantup.com/) (with the [`vagrant-reload`](https://github.com/aidanns/vagrant-reload) plugin).
 
 To perform a clean build the Hedgehog Linux installer ISO, navigate to your local [Malcolm](https://github.com/idaholab/Malcolm/) working copy and run:
 
