@@ -41,7 +41,7 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
     go run bootstrap.go
 
 ENV BEATS=metricbeat
-ENV BEATS_VERSION=7.9.1
+ENV BEATS_VERSION=7.10.0
 
 ADD ./build.sh /build.sh
 RUN [ "chmod", "+x", "/build.sh" ]

@@ -1,4 +1,4 @@
-FROM amazon/opendistro-for-elasticsearch:1.11.0
+FROM amazon/opendistro-for-elasticsearch:1.12.0
 
 # Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm.netsec@gmail.com"
