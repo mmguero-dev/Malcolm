@@ -49,7 +49,7 @@ USER root
 #   mkdir ./kibana &&\
 #   mv ./kbn_sankey_vis-* ./kibana/sankey_vis && \
 #   cd ./kibana/sankey_vis && \
-#   sed -i "s/7\.6\.3/7\.9\.1/g" ./package.json && \
+#   sed -i "s/7\.6\.3/7\.10\.0/g" ./package.json && \
 #   npm install && \
 #   cd /tmp && \
 #   zip -r sankey_vis.zip kibana --exclude ./kibana/sankey_vis/.git\* && \
@@ -72,7 +72,7 @@ RUN yum install -y epel-release && \
       mkdir ./kibana &&\
       mv ./kibana-plugin-drilldownmenu-* ./kibana/kibana-plugin-drilldownmenu && \
       cd ./kibana/kibana-plugin-drilldownmenu && \
-      sed -i "s/7\.6\.2/7\.9\.1/g" ./package.json && \
+      sed -i "s/7\.6\.2/7\.10\.0/g" ./package.json && \
       npm install && \
       cd /tmp && \
       zip -r drilldown.zip kibana --exclude ./kibana/kibana-plugin-drilldownmenu/.git\* && \
