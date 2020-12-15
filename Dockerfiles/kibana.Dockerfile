@@ -64,7 +64,7 @@ RUN yum install -y epel-release && \
       usermod -a -G tty ${PUSER} && \
     cd /tmp && \
       # Malcolm manages authentication and encryption via NGINX reverse proxy
-      /usr/share/kibana/bin/kibana-plugin remove opendistro_security --allow-root && \
+      /usr/share/kibana/bin/kibana-plugin remove opendistroSecurityKibana --allow-root && \
     curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
     cd /tmp && \
       echo "Installing Drilldown menu plugin..." && \
