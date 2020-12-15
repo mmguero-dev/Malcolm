@@ -57,30 +57,30 @@ USER root
 #   /usr/share/kibana/bin/kibana-plugin install file:///tmp/sankey_vis.zip --allow-root && \
 #   rm -rf /tmp/kibana /tmp/*sankey* && \
 
+# curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
+# cd /tmp && \
+#   echo "Installing Drilldown menu plugin..." && \
+#   unzip /tmp/kibana-drilldown.zip && \
+#   mkdir ./kibana &&\
+#   mv ./kibana-plugin-drilldownmenu-* ./kibana/kibana-plugin-drilldownmenu && \
+#   cd ./kibana/kibana-plugin-drilldownmenu && \
+#   sed -i "s/7\.6\.2/7\.10\.0/g" ./package.json && \
+#   npm install && \
+#   cd /tmp && \
+#   zip -r drilldown.zip kibana --exclude ./kibana/kibana-plugin-drilldownmenu/.git\* && \
+#   cd /usr/share/kibana/plugins && \
+#   /usr/share/kibana/bin/kibana-plugin install file:///tmp/drilldown.zip --allow-root && \
+#   rm -rf /tmp/kibana /tmp/*drilldown* && \
+# cd /tmp && \
+#     rm -rf /tmp/npm-*
+
 RUN yum install -y epel-release && \
       yum update -y && \
       yum install -y curl git npm patch psmisc zip unzip && \
       yum clean all && \
       usermod -a -G tty ${PUSER} && \
-    cd /tmp && \
       # Malcolm manages authentication and encryption via NGINX reverse proxy
-      /usr/share/kibana/bin/kibana-plugin remove opendistroSecurityKibana --allow-root && \
-    curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
-    cd /tmp && \
-      echo "Installing Drilldown menu plugin..." && \
-      unzip /tmp/kibana-drilldown.zip && \
-      mkdir ./kibana &&\
-      mv ./kibana-plugin-drilldownmenu-* ./kibana/kibana-plugin-drilldownmenu && \
-      cd ./kibana/kibana-plugin-drilldownmenu && \
-      sed -i "s/7\.6\.2/7\.10\.0/g" ./package.json && \
-      npm install && \
-      cd /tmp && \
-      zip -r drilldown.zip kibana --exclude ./kibana/kibana-plugin-drilldownmenu/.git\* && \
-      cd /usr/share/kibana/plugins && \
-      /usr/share/kibana/bin/kibana-plugin install file:///tmp/drilldown.zip --allow-root && \
-      rm -rf /tmp/kibana /tmp/*drilldown* && \
-    cd /tmp && \
-      rm -rf /tmp/npm-*
+      /usr/share/kibana/bin/kibana-plugin remove opendistroSecurityKibana --allow-root
 
 ADD kibana/kibana.yml /usr/share/kibana/config/kibana.yml
 
