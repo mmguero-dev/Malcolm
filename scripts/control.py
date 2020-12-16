@@ -219,6 +219,8 @@ def logs():
       | throttling\s+index
       | but\s+there\s+are\s+no\s+living\s+connections
       | saved_objects
+      | retry\.go.+(send\s+unwait|done$)
+      | (async|output)\.go.+(reset\s+by\s+peer|Connecting\s+to\s+backoff|backoff.+established$)
       | \b(d|es)?stats\.json
       | /_ns_/nstest\.html
       | esindices/list
