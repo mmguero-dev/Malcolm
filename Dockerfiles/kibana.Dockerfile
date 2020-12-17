@@ -80,7 +80,9 @@ RUN yum install -y epel-release && \
       yum clean all && \
       usermod -a -G tty ${PUSER} && \
       # Malcolm manages authentication and encryption via NGINX reverse proxy
-      /usr/share/kibana/bin/kibana-plugin remove opendistroSecurityKibana --allow-root
+      /usr/share/kibana/bin/kibana-plugin remove opendistroSecurityKibana --allow-root && \
+      # https://github.com/opendistro-for-elasticsearch/kibana-reports/issues/259
+      /usr/share/kibana/bin/kibana-plugin remove opendistroReportsKibana --allow-root
 
 ADD kibana/kibana.yml /usr/share/kibana/config/kibana.yml
 

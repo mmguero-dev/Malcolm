@@ -12,6 +12,7 @@ kibana.defaultAppId: "dashboard/${KIBANA_DEFAULT_DASHBOARD}"
 newsfeed.enabled: false
 telemetry.optIn: false
 telemetry.enabled: false
+security.showInsecureClusterWarning: false
 
 # offline region map
 map.regionmap:
