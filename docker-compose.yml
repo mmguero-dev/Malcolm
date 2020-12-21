@@ -71,6 +71,11 @@ x-zeek-variables: &zeek-variables
   ZEEK_DISABLE_WIREGUARD_TRANSPORT_PACKETS : 'true'
 
 x-kibana-helper-variables: &kibana-helper-variables
+  ISM_POLICY_NAME : 'session_index_policy'
+  ISM_SNAPSHOT_AGE : '1d'
+  ISM_COLD_AGE : '30d'
+  ISM_CLOSE_AGE : '60d'
+  ISM_DELETE_AGE : '365d'
   ISM_SNAPSHOT_REPO : 'logs'
   ISM_SNAPSHOT_COMPRESSED : 'false'
 
@@ -169,6 +174,8 @@ services:
       - elasticsearch
     expose:
       - 28991
+    volumes:
+      - ./index-management-policy.json:/data/index-management-policy.json:ro
   kibana:
     build:
       context: .

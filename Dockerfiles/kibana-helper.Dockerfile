@@ -55,7 +55,7 @@ ADD kibana/zeek_template.json /data/zeek_template.json
 ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD shared/bin/elastic_search_status.sh /data/
 
-RUN apk --no-cache add bash python3 py3-pip curl procps psmisc npm shadow && \
+RUN apk --no-cache add bash python3 py3-pip curl procps psmisc npm shadow jq && \
     npm install -g http-server && \
     pip3 install supervisor && \
     curl -fsSLO "$SUPERCRONIC_URL" && \
@@ -67,8 +67,9 @@ RUN apk --no-cache add bash python3 py3-pip curl procps psmisc npm shadow && \
       adduser -D -H -u ${DEFAULT_UID} -h /nonexistant -s /sbin/nologin -G ${PGROUP} -g ${PUSER} ${PUSER} ; \
       addgroup ${PUSER} tty ; \
       addgroup ${PUSER} shadow ; \
-    chown -R ${PUSER}:${PGROUP} /opt/kibana/dashboards /opt/maps && \
-    chmod 755 /data/*.sh /data/*.py && \
+    mkdir -p /data/init && \
+    chown -R ${PUSER}:${PGROUP} /opt/kibana/dashboards /opt/maps /data/init && \
+    chmod 755 /data/*.sh /data/*.py /data/init && \
     chmod 400 /opt/maps/* && \
     (echo -e "*/2 * * * * /data/kibana-create-moloch-sessions-index.sh\n0 10 * * * /data/kibana_index_refresh.py --kibana \"$KIBANA_URL\" --elastic \"$ELASTICSEARCH_URL\" --template zeek_template" > ${SUPERCRONIC_CRONTAB})
 
@@ -77,6 +78,8 @@ EXPOSE $KIBANA_OFFLINE_REGION_MAPS_PORT
 ENTRYPOINT ["/usr/local/bin/docker-uid-gid-setup.sh"]
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf", "-n"]
+
+VOLUME ["/data/init"]
 
 # to be populated at build-time:
 ARG BUILD_DATE
