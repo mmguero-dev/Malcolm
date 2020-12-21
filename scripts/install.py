@@ -284,14 +284,49 @@ class Installer(object):
         pass
 
     indexSnapshotDir = None
-    if InstallerYesOrNo('Configure snapshot repository for Elasticsearch index state management?', default=False):
-      indexSnapshotDir = './elasticsearch-backup'
-      if not InstallerYesOrNo('Store snapshots locally in {}?'.format(os.path.join(malcolm_install_path, 'elasticsearch-backup')), default=True):
-        while True:
-          indexSnapshotDir = InstallerAskForString('Enter Elasticsearch index snapshot directory')
-          if (len(indexSnapshotDir) > 1) and os.path.isdir(indexSnapshotDir):
-            indexSnapshotDir = os.path.realpath(indexSnapshotDir)
-            break
+    indexSnapshotCompressed = False
+    indexSnapshotAge = '0'
+    indexColdAge = '0'
+    indexCloseAge = '0'
+    indexDeleteAge = '0'
+
+    if InstallerYesOrNo('Configure Elasticsearch index state management?', default=False):
+
+      # configure snapshots
+      if InstallerYesOrNo('Configure index snapshots?', default=False):
+
+        # snapshot repository directory and compression
+        indexSnapshotDir = './elasticsearch-backup'
+        if not InstallerYesOrNo('Store snapshots locally in {}?'.format(os.path.join(malcolm_install_path, 'elasticsearch-backup')), default=True):
+          while True:
+            indexSnapshotDir = InstallerAskForString('Enter Elasticsearch index snapshot directory')
+            if (len(indexSnapshotDir) > 1) and os.path.isdir(indexSnapshotDir):
+              indexSnapshotDir = os.path.realpath(indexSnapshotDir)
+              break
+        indexSnapshotCompressed = InstallerYesOrNo('Compress index snapshots?', default=False)
+
+        # index age for snapshot
+        indexSnapshotAge = ''
+        while (not re.match(r'^\d+[dhms]$', indexSnapshotAge)) and (indexSnapshotAge != '0'):
+          indexSnapshotAge = InstallerAskForString('Enter index age for snapshot (e.g., 1d)')
+
+      # cold state age
+      if InstallerYesOrNo('Mark indices read-only as they age?', default=False):
+        indexColdAge = ''
+        while (not re.match(r'^\d+[dhms]$', indexColdAge)) and (indexColdAge != '0'):
+          indexColdAge = InstallerAskForString('Enter index age for "read-only" transition (e.g., 30d)')
+
+      # close state age
+      if InstallerYesOrNo('Close indices as they age?', default=False):
+        indexCloseAge = ''
+        while (not re.match(r'^\d+[dhms]$', indexCloseAge)) and (indexCloseAge != '0'):
+          indexCloseAge = InstallerAskForString('Enter index age for "close" transition (e.g., 60d)')
+
+      # delete state age
+      if InstallerYesOrNo('Delete indices as they age?', default=False):
+        indexDeleteAge = ''
+        while (not re.match(r'^\d+[dhms]$', indexDeleteAge)) and (indexDeleteAge != '0'):
+          indexDeleteAge = InstallerAskForString('Enter index age for "delete" transition (e.g., 365d)')
 
     autoZeek = InstallerYesOrNo('Automatically analyze all PCAP files with Zeek?', default=True)
     reverseDns = InstallerYesOrNo('Perform reverse DNS lookup locally for source and destination IP addresses in Zeek logs?', default=False)
@@ -465,6 +500,21 @@ class Installer(object):
             volumeParts = line.strip().lstrip('-').lstrip().split(':')
             volumeParts[0] = indexSnapshotDir
             line = "{}- {}".format(serviceIndent * 3, ':'.join(volumeParts))
+          elif 'ISM_SNAPSHOT_AGE' in line:
+            # elasticsearch index state management snapshot age
+            line = re.sub(r'(ISM_SNAPSHOT_AGE\s*:\s*)(\S+)', fr"\g<1>'{indexSnapshotAge}'", line)
+          elif 'ISM_COLD_AGE' in line:
+            # elasticsearch index state management cold (read-only) age
+            line = re.sub(r'(ISM_COLD_AGE\s*:\s*)(\S+)', fr"\g<1>'{indexColdAge}'", line)
+          elif 'ISM_CLOSE_AGE' in line:
+            # elasticsearch index state management close age
+            line = re.sub(r'(ISM_CLOSE_AGE\s*:\s*)(\S+)', fr"\g<1>'{indexCloseAge}'", line)
+          elif 'ISM_DELETE_AGE' in line:
+            # elasticsearch index state management close age
+            line = re.sub(r'(ISM_DELETE_AGE\s*:\s*)(\S+)', fr"\g<1>'{indexDeleteAge}'", line)
+          elif 'ISM_SNAPSHOT_COMPRESSED' in line:
+            # elasticsearch index state management snapshot compression
+            line = re.sub(r'(ISM_SNAPSHOT_COMPRESSED\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(indexSnapshotCompressed)}", line)
           elif 'ES_EXTERNAL_HOSTS' in line:
             # enable/disable forwarding Logstash to external Elasticsearch instance
             line = re.sub(r'(#\s*)?(ES_EXTERNAL_HOSTS\s*:\s*)(\S+)', fr"\g<2>'{externalEsHost}'", line)
