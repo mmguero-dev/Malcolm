@@ -42,6 +42,8 @@ def main():
   parser.add_argument('--node', dest='node', metavar='<str>', type=str, default=None, help='Node IDs or names')
   parser.add_argument('-l', '--limit', dest='limit', metavar='<str>', type=str, default=None, help='Index pattern size limit (e.g., 100gb, 25%, ...)')
   parser.add_argument('-n', '--dry-run', dest='dryrun', type=str2bool, nargs='?', const=True, default=False, help="Dry run")
+  parser.add_argument('-p', '--primary', dest='primaryTotals', type=str2bool, nargs='?', const=True, default=False, help="Perform totals based on primaries (vs. totals)")
+  parser.add_argument('--name-sort', dest='nameSorted', type=str2bool, nargs='?', const=True, default=False, help="Sort indices by name (vs. creation date)")
   try:
     parser.error = parser.exit
     args = parser.parse_args()
@@ -127,21 +129,51 @@ def main():
   esInfoResponse = requests.get(f'{args.elasticUrl}/{args.index}/_stats/store')
   esInfo = esInfoResponse.json()
   try:
-    totalSizeInMegabytes = esInfo['_all']['total']['store']['size_in_bytes'] // 1000000
+    totalSizeInMegabytes = esInfo['_all']['primaries' if args.primaryTotals else 'total']['store']['size_in_bytes'] // 1000000
   except Exception as e:
-    totalSizeInMegabytes = 0
-    if debug:
-      eprint('Error getting {args.index} size_in_bytes: {e}')
+    raise Exception('Error getting {args.index} size_in_bytes: {e}')
   if debug:
     eprint(f'Total {args.index} megabytes: is {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))}')
 
   if (totalSizeInMegabytes > limitMegabytes):
     # the indices have outgrown their bounds, we need to delete the oldest
-    eprint(f'{args.index} indices occupy {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))} ({humanfriendly.format_size(humanfriendly.parse_size(f"{limitMegabytes}mb"))} allowed)')
+
+    if debug:
+      eprint(f'{len(esInfo)} {args.index} indices occupy {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))} ({humanfriendly.format_size(humanfriendly.parse_size(f"{limitMegabytes}mb"))} allowed)')
+
+    # get list of indexes in index pattern and sort by creation date
+    esInfoResponse = requests.get(f'{args.elasticUrl}/_cat/indices/{args.index}',
+                                  params={'format':'json',
+                                          'h':'i,id,status,health,rep,creation.date,pri.store.size,store.size'})
+    esInfo = sorted(esInfoResponse.json(), key=lambda k: k['i' if args.nameSorted else 'creation.date'])
+
+    # determine how many megabytes need to be deleted and which of the oldest indices will cover that
+    indicesToDelete = []
+    needsDeletedMb = totalSizeInMegabytes-limitMegabytes
+    sizeKey = 'pri.store.size' if args.primaryTotals else 'store.size'
+    for index in esInfo:
+      indexSizeMb = humanfriendly.parse_size(index[sizeKey]) // 1000000
+      if (needsDeletedMb > 0):
+        indicesToDelete.append(index)
+        needsDeletedMb = needsDeletedMb-indexSizeMb
+      else:
+        break
+
+    if (len(indicesToDelete) > 0):
+      eprint(f'{"Would delete" if args.dryrun else "Deleting"} {humanfriendly.format_size(humanfriendly.parse_size(f"{sum([humanfriendly.parse_size(index[sizeKey]) // 1000000 for index in indicesToDelete])}mb"))} in {len(indicesToDelete)} indices ({indicesToDelete[0]["i"]} to {indicesToDelete[-1]["i"]} ordered by {"name" if args.nameSorted else "creation date"})')
+
+      if not args.dryrun:
+        for index in indicesToDelete:
+          esDeleteResponse = requests.delete(f'{args.elasticUrl}/{index["i"]}')
+          eprint(f'DELETE {index["i"]} ({humanfriendly.format_size(humanfriendly.parse_size(index[sizeKey]))}): {requests.status_codes._codes[esDeleteResponse.status_code][0]}')
+
+    else:
+      # no indexes to delete
+      eprint(f'Nothing to do: could not determine list of {args.index} indices to delete')
 
   else:
     # we haven't hit the limit, nothing to do
-    eprint(f'Nothing to do: {args.index} indices occupy {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))} of {humanfriendly.format_size(humanfriendly.parse_size(f"{limitMegabytes}mb"))} allowed')
+    eprint(f'Nothing to do: {len(esInfo["indices"])} {args.index} indices occupy {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))} of {humanfriendly.format_size(humanfriendly.parse_size(f"{limitMegabytes}mb"))} allowed')
 
 
 if __name__ == '__main__':
