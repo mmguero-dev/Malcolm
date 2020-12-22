@@ -163,20 +163,20 @@ def main():
         break
 
     if (len(indicesToDelete) > 0):
-      eprint(f'{"Would delete" if args.dryrun else "Deleting"} {humanfriendly.format_size(humanfriendly.parse_size(f"{sum([humanfriendly.parse_size(index[sizeKey]) // 1000000 for index in indicesToDelete])}mb"))} in {len(indicesToDelete)} indices ({indicesToDelete[0]["i"]} to {indicesToDelete[-1]["i"]} ordered by {"name" if args.nameSorted else "creation date"})')
+      print(f'{"Would delete" if args.dryrun else "Deleting"} {humanfriendly.format_size(humanfriendly.parse_size(f"{sum([humanfriendly.parse_size(index[sizeKey]) // 1000000 for index in indicesToDelete])}mb"))} in {len(indicesToDelete)} indices ({indicesToDelete[0]["i"]} to {indicesToDelete[-1]["i"]} ordered by {"name" if args.nameSorted else "creation date"})')
 
       if not args.dryrun:
         for index in indicesToDelete:
           esDeleteResponse = requests.delete(f'{args.elasticUrl}/{index["i"]}')
-          eprint(f'DELETE {index["i"]} ({humanfriendly.format_size(humanfriendly.parse_size(index[sizeKey]))}): {requests.status_codes._codes[esDeleteResponse.status_code][0]}')
+          print(f'DELETE {index["i"]} ({humanfriendly.format_size(humanfriendly.parse_size(index[sizeKey]))}): {requests.status_codes._codes[esDeleteResponse.status_code][0]}')
 
     else:
       # no indexes to delete
-      eprint(f'Nothing to do: could not determine list of {args.index} indices to delete')
+      print(f'Nothing to do: could not determine list of {args.index} indices to delete')
 
   else:
     # we haven't hit the limit, nothing to do
-    eprint(f'Nothing to do: {totalIndices} {args.index} indices occupy {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))} of {humanfriendly.format_size(humanfriendly.parse_size(f"{limitMegabytes}mb"))} allowed')
+    print(f'Nothing to do: {totalIndices} {args.index} indices occupy {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))} of {humanfriendly.format_size(humanfriendly.parse_size(f"{limitMegabytes}mb"))} allowed')
 
 
 if __name__ == '__main__':
