@@ -57,7 +57,7 @@ ADD shared/bin/elastic_search_status.sh /data/
 
 RUN apk --no-cache add bash python3 py3-pip curl procps psmisc npm shadow jq && \
     npm install -g http-server && \
-    pip3 install supervisor && \
+    pip3 install supervisor humanfriendly && \
     curl -fsSLO "$SUPERCRONIC_URL" && \
       echo "${SUPERCRONIC_SHA1SUM}  ${SUPERCRONIC}" | sha1sum -c - && \
       chmod +x "$SUPERCRONIC" && \
