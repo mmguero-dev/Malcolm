@@ -65,6 +65,7 @@ def main():
   if debug:
     eprint(f'Elasticsearch version is {elasticVersion}')
 
+  totalIndices = 0
   limitMegabytes = None
   limitPercent = None
   if args.limit is not None:
@@ -130,6 +131,7 @@ def main():
   esInfo = esInfoResponse.json()
   try:
     totalSizeInMegabytes = esInfo['_all']['primaries' if args.primaryTotals else 'total']['store']['size_in_bytes'] // 1000000
+    totalIndices = len(esInfo["indices"])
   except Exception as e:
     raise Exception('Error getting {args.index} size_in_bytes: {e}')
   if debug:
@@ -146,6 +148,7 @@ def main():
                                   params={'format':'json',
                                           'h':'i,id,status,health,rep,creation.date,pri.store.size,store.size'})
     esInfo = sorted(esInfoResponse.json(), key=lambda k: k['i' if args.nameSorted else 'creation.date'])
+    totalIndices = len(esInfo)
 
     # determine how many megabytes need to be deleted and which of the oldest indices will cover that
     indicesToDelete = []
@@ -173,7 +176,7 @@ def main():
 
   else:
     # we haven't hit the limit, nothing to do
-    eprint(f'Nothing to do: {len(esInfo["indices"])} {args.index} indices occupy {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))} of {humanfriendly.format_size(humanfriendly.parse_size(f"{limitMegabytes}mb"))} allowed')
+    eprint(f'Nothing to do: {totalIndices} {args.index} indices occupy {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))} of {humanfriendly.format_size(humanfriendly.parse_size(f"{limitMegabytes}mb"))} allowed')
 
 
 if __name__ == '__main__':
