@@ -163,9 +163,11 @@ def main():
         break
 
     if (len(indicesToDelete) > 0):
+      # we've determined we can free up space from the index pattern
       print(f'{"Would delete" if args.dryrun else "Deleting"} {humanfriendly.format_size(humanfriendly.parse_size(f"{sum([humanfriendly.parse_size(index[sizeKey]) // 1000000 for index in indicesToDelete])}mb"))} in {len(indicesToDelete)} indices ({indicesToDelete[0]["i"]} to {indicesToDelete[-1]["i"]} ordered by {"name" if args.nameSorted else "creation date"})')
 
       if not args.dryrun:
+        # delete the indices to free up the space indicated
         for index in indicesToDelete:
           esDeleteResponse = requests.delete(f'{args.elasticUrl}/{index["i"]}')
           print(f'DELETE {index["i"]} ({humanfriendly.format_size(humanfriendly.parse_size(index[sizeKey]))}): {requests.status_codes._codes[esDeleteResponse.status_code][0]}')
