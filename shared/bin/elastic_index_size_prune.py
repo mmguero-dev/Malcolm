@@ -13,7 +13,6 @@ import sys
 debug = False
 scriptName = os.path.basename(__file__)
 scriptPath = os.path.dirname(os.path.realpath(__file__))
-origPath = os.getcwd()
 
 ###################################################################################################
 # print to stderr
