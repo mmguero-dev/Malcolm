@@ -34,19 +34,19 @@ def str2bool(v):
 def main():
   global debug
 
-  parser = argparse.ArgumentParser(description=scriptName, add_help=False, usage='{} <arguments>'.format(scriptName))
-  parser.add_argument('-v', '--verbose', dest='debug', type=str2bool, nargs='?', const=True, default=False, help="Verbose output")
-  parser.add_argument('-i', '--index', dest='index', metavar='<str>', type=str, default='sessions2-*', help='Index pattern')
-  parser.add_argument('-e', '--elastic', dest='elasticUrl', metavar='<protocol://host:port>', type=str, default='http://localhost:9200', help='Elasticsearch URL')
-  parser.add_argument('--node', dest='node', metavar='<str>', type=str, default=None, help='Node IDs or names')
-  parser.add_argument('-l', '--limit', dest='limit', metavar='<str>', type=str, default=None, help='Index pattern size limit (e.g., 100gb, 25%, ...)')
-  parser.add_argument('-n', '--dry-run', dest='dryrun', type=str2bool, nargs='?', const=True, default=False, help="Dry run")
-  parser.add_argument('-p', '--primary', dest='primaryTotals', type=str2bool, nargs='?', const=True, default=False, help="Perform totals based on primaries (vs. totals)")
-  parser.add_argument('--name-sort', dest='nameSorted', type=str2bool, nargs='?', const=True, default=False, help="Sort indices by name (vs. creation date)")
+  parser = argparse.ArgumentParser(description=scriptName, add_help=True, usage='{} <arguments>'.format(scriptName))
+  parser.add_argument('-v', '--verbose', dest='debug', type=str2bool, nargs='?', const=True, default=str2bool(os.getenv('ELASTICSEARCH_INDEX_SIZE_PRUNE_DEBUG', default='False')), help="Verbose output")
+  parser.add_argument('-i', '--index', dest='index', metavar='<str>', type=str, default=os.getenv('ELASTICSEARCH_INDEX_SIZE_PRUNE_INDEX', 'sessions2-*'), help='Index pattern')
+  parser.add_argument('-e', '--elastic', dest='elasticUrl', metavar='<protocol://host:port>', type=str, default=os.getenv('ELASTICSEARCH_URL', 'http://elasticsearch:9200'), help='Elasticsearch URL')
+  parser.add_argument('--node', dest='node', metavar='<str>', type=str, default=os.getenv('ELASTICSEARCH_INDEX_SIZE_PRUNE_NODE', ''), help='Node IDs or names')
+  parser.add_argument('-l', '--limit', dest='limit', metavar='<str>', type=str, default=os.getenv('ELASTICSEARCH_INDEX_SIZE_PRUNE_LIMIT', '0'), help='Index pattern size limit (e.g., 100gb, 25%, ...)')
+  parser.add_argument('-n', '--dry-run', dest='dryrun', type=str2bool, nargs='?', const=True, default=str2bool(os.getenv('ELASTICSEARCH_INDEX_SIZE_PRUNE_DRY_RUN', default='False')), help="Dry run")
+  parser.add_argument('-p', '--primary', dest='primaryTotals', type=str2bool, nargs='?', const=True, default=str2bool(os.getenv('ELASTICSEARCH_INDEX_SIZE_PRUNE_PRIMARY', default='False')), help="Perform totals based on primaries (vs. totals)")
+  parser.add_argument('--name-sort', dest='nameSorted', type=str2bool, nargs='?', const=True, default=str2bool(os.getenv('ELASTICSEARCH_INDEX_SIZE_PRUNE_NAME_SORT', default='False')), help="Sort indices by name (vs. creation date)")
   try:
     parser.error = parser.exit
     args = parser.parse_args()
-  except SystemExit:
+  except Exception as e:
     parser.print_help()
     exit(2)
 
@@ -57,6 +57,10 @@ def main():
     eprint("Arguments: {}".format(args))
   else:
     sys.tracebacklimit = 0
+
+  # short-circuit without printing anything else
+  if (args.limit == '0'):
+    return
 
   esInfoResponse = requests.get(args.elasticUrl)
   esInfo = esInfoResponse.json()
@@ -71,7 +75,7 @@ def main():
     if args.limit.isdigit():
       # assume megabytes
       limitMegabytes = int(args.limit)
-    elif re.match(r'^\d+(\.\d+)?[kmgtp]?b?$', args.limit):
+    elif re.match(r'^\d+(\.\d+)?\s*[kmgtp]?b?$', args.limit):
       # parse human-friendly entered size
       limitMegabytes = humanfriendly.parse_size(f"{args.limit}{'' if args.limit.endswith('b') else 'b'}") // 1000000
     elif args.limit.endswith('%'):
@@ -84,7 +88,7 @@ def main():
 
     # get allocation statistics for node(s) to do percentage calculation
     esDiskUsageStats = []
-    esInfoResponse = requests.get(f'{args.elasticUrl}/_cat/allocation{f"/{args.node}" if args.node is not None else ""}?format=json')
+    esInfoResponse = requests.get(f'{args.elasticUrl}/_cat/allocation{f"/{args.node}" if args.node else ""}?format=json')
     esInfo = esInfoResponse.json()
 
     # normalize allocation statistics' sizes (eg., 100mb) into bytes
@@ -92,7 +96,7 @@ def main():
       esDiskUsageStats = []
       for stat in esInfo:
         if ('node' in stat) and (stat['node'] != 'UNASSIGNED'):
-          esDiskUsageStats.append({key:humanfriendly.parse_size(value) if re.match(r'^\d+(\.\d+)?[kmgtp]?b$', value) else value for (key,value) in stat.items()})
+          esDiskUsageStats.append({key:humanfriendly.parse_size(value) if re.match(r'^\d+(\.\d+)?\s*[kmgtp]?b$', value) else value for (key,value) in stat.items()})
 
     if debug:
       eprint(json.dumps(esDiskUsageStats))
@@ -132,7 +136,7 @@ def main():
     totalSizeInMegabytes = esInfo['_all']['primaries' if args.primaryTotals else 'total']['store']['size_in_bytes'] // 1000000
     totalIndices = len(esInfo["indices"])
   except Exception as e:
-    raise Exception('Error getting {args.index} size_in_bytes: {e}')
+    raise Exception(f'Error getting {args.index} size_in_bytes: {e}')
   if debug:
     eprint(f'Total {args.index} megabytes: is {humanfriendly.format_size(humanfriendly.parse_size(f"{totalSizeInMegabytes}mb"))}')
 

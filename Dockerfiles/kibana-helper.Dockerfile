@@ -54,6 +54,7 @@ ADD kibana/supervisord.conf /etc/supervisord.conf
 ADD kibana/zeek_template.json /data/zeek_template.json
 ADD shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD shared/bin/elastic_search_status.sh /data/
+ADD shared/bin/elastic_index_size_prune.py /data/
 
 RUN apk --no-cache add bash python3 py3-pip curl procps psmisc npm shadow jq && \
     npm install -g http-server && \
@@ -71,7 +72,7 @@ RUN apk --no-cache add bash python3 py3-pip curl procps psmisc npm shadow jq && 
     chown -R ${PUSER}:${PGROUP} /opt/kibana/dashboards /opt/maps /data/init && \
     chmod 755 /data/*.sh /data/*.py /data/init && \
     chmod 400 /opt/maps/* && \
-    (echo -e "*/2 * * * * /data/kibana-create-moloch-sessions-index.sh\n0 10 * * * /data/kibana_index_refresh.py --kibana \"$KIBANA_URL\" --elastic \"$ELASTICSEARCH_URL\" --template zeek_template" > ${SUPERCRONIC_CRONTAB})
+    (echo -e "*/2 * * * * /data/kibana-create-moloch-sessions-index.sh\n0 10 * * * /data/kibana_index_refresh.py --template zeek_template\n*/20 * * * * /data/elastic_index_size_prune.py" > ${SUPERCRONIC_CRONTAB})
 
 EXPOSE $KIBANA_OFFLINE_REGION_MAPS_PORT
 

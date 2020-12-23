@@ -289,6 +289,8 @@ class Installer(object):
     indexColdAge = '0'
     indexCloseAge = '0'
     indexDeleteAge = '0'
+    indexPruneSizeLimit = '0'
+    indexPruneNameSort = False
 
     if InstallerYesOrNo('Configure Elasticsearch index state management?', default=False):
 
@@ -327,6 +329,13 @@ class Installer(object):
         indexDeleteAge = ''
         while (not re.match(r'^\d+[dhms]$', indexDeleteAge)) and (indexDeleteAge != '0'):
           indexDeleteAge = InstallerAskForString('Enter index age for "delete" transition (e.g., 365d)')
+
+      # delete based on index pattern size
+      if InstallerYesOrNo('Delete the oldest indices when the database exceeds a certain size?', default=False):
+        indexPruneSizeLimit = ''
+        while (re.match(r'^\d+(\.\d+)?\s*[kmgtp%]?b?$', indexPruneSizeLimit)) and (indexPruneSizeLimit != '0'):
+          InstallerAskForString('Enter index threshold (e.g., 250GB, 1TB, 60%, etc.)')
+        indexPruneNameSort = InstallerYesOrNo('Determine oldest indices by name (instead of creation time)?', default=True)
 
     autoZeek = InstallerYesOrNo('Automatically analyze all PCAP files with Zeek?', default=True)
     reverseDns = InstallerYesOrNo('Perform reverse DNS lookup locally for source and destination IP addresses in Zeek logs?', default=False)
@@ -515,6 +524,12 @@ class Installer(object):
           elif 'ISM_SNAPSHOT_COMPRESSED' in line:
             # elasticsearch index state management snapshot compression
             line = re.sub(r'(ISM_SNAPSHOT_COMPRESSED\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(indexSnapshotCompressed)}", line)
+          elif 'ELASTICSEARCH_INDEX_SIZE_PRUNE_LIMIT' in line:
+            # delete based on index pattern size
+            line = re.sub(r'(ELASTICSEARCH_INDEX_SIZE_PRUNE_LIMIT\s*:\s*)(\S+)', fr"\g<1>'{indexPruneSizeLimit}'", line)
+          elif 'ELASTICSEARCH_INDEX_SIZE_PRUNE_NAME_SORT' in line:
+            # delete based on index pattern size (sorted by name vs. creation time)
+            line = re.sub(r'(ELASTICSEARCH_INDEX_SIZE_PRUNE_NAME_SORT\s*:\s*)(\S+)', fr"\g<1>{TrueOrFalseQuote(indexPruneNameSort)}", line)
           elif 'ES_EXTERNAL_HOSTS' in line:
             # enable/disable forwarding Logstash to external Elasticsearch instance
             line = re.sub(r'(#\s*)?(ES_EXTERNAL_HOSTS\s*:\s*)(\S+)', fr"\g<2>'{externalEsHost}'", line)

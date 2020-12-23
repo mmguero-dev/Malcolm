@@ -71,13 +71,15 @@ x-zeek-variables: &zeek-variables
   ZEEK_DISABLE_WIREGUARD_TRANSPORT_PACKETS : 'true'
 
 x-kibana-helper-variables: &kibana-helper-variables
+  ELASTICSEARCH_INDEX_SIZE_PRUNE_LIMIT : '0'
+  ELASTICSEARCH_INDEX_SIZE_PRUNE_NAME_SORT : 'false'
+  ISM_CLOSE_AGE : '60d'
+  ISM_COLD_AGE : '30d'
+  ISM_DELETE_AGE : '365d'
   ISM_POLICY_NAME : 'session_index_policy'
   ISM_SNAPSHOT_AGE : '1d'
-  ISM_COLD_AGE : '30d'
-  ISM_CLOSE_AGE : '60d'
-  ISM_DELETE_AGE : '365d'
-  ISM_SNAPSHOT_REPO : 'logs'
   ISM_SNAPSHOT_COMPRESSED : 'false'
+  ISM_SNAPSHOT_REPO : 'logs'
 
 x-logstash-variables: &logstash-variables
   LOGSTASH_OUI_LOOKUP  : 'true'
@@ -161,10 +163,10 @@ services:
       ELASTICSEARCH_URL : 'http://elasticsearch:9200'
       KIBANA_URL : 'http://kibana:5601/kibana'
       VIRTUAL_HOST : 'kibana-helper.malcolm.local'
-      CREATE_ES_ARKIME_SESSION_INDEX : 'true'
       ARKIME_INDEX_PATTERN : 'sessions2-*'
       ARKIME_INDEX_PATTERN_ID : 'sessions2-*'
       ARKIME_INDEX_TIME_FIELD : 'firstPacket'
+      CREATE_ES_ARKIME_SESSION_INDEX : 'true'
     depends_on:
       - elasticsearch
     expose:
