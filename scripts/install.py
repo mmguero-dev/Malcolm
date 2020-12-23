@@ -333,8 +333,8 @@ class Installer(object):
       # delete based on index pattern size
       if InstallerYesOrNo('Delete the oldest indices when the database exceeds a certain size?', default=False):
         indexPruneSizeLimit = ''
-        while (re.match(r'^\d+(\.\d+)?\s*[kmgtp%]?b?$', indexPruneSizeLimit)) and (indexPruneSizeLimit != '0'):
-          InstallerAskForString('Enter index threshold (e.g., 250GB, 1TB, 60%, etc.)')
+        while (not re.match(r'^\d+(\.\d+)?\s*[kmgtp%]?b?$', indexPruneSizeLimit, flags=re.IGNORECASE)) and (indexPruneSizeLimit != '0'):
+          indexPruneSizeLimit = InstallerAskForString('Enter index threshold (e.g., 250GB, 1TB, 60%, etc.)')
         indexPruneNameSort = InstallerYesOrNo('Determine oldest indices by name (instead of creation time)?', default=True)
 
     autoZeek = InstallerYesOrNo('Automatically analyze all PCAP files with Zeek?', default=True)

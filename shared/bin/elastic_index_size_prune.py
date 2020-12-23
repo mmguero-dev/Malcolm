@@ -75,9 +75,9 @@ def main():
     if args.limit.isdigit():
       # assume megabytes
       limitMegabytes = int(args.limit)
-    elif re.match(r'^\d+(\.\d+)?\s*[kmgtp]?b?$', args.limit):
+    elif re.match(r'^\d+(\.\d+)?\s*[kmgtp]?b?$', args.limit, flags=re.IGNORECASE):
       # parse human-friendly entered size
-      limitMegabytes = humanfriendly.parse_size(f"{args.limit}{'' if args.limit.endswith('b') else 'b'}") // 1000000
+      limitMegabytes = humanfriendly.parse_size(f"{args.limit}{'' if args.limit.lower().endswith('b') else 'b'}") // 1000000
     elif args.limit.endswith('%'):
       # percentage (must calculate megabytes based on /_cat/allocation below)
       limitPercent = int(args.limit[:-1])
@@ -96,7 +96,7 @@ def main():
       esDiskUsageStats = []
       for stat in esInfo:
         if ('node' in stat) and (stat['node'] != 'UNASSIGNED'):
-          esDiskUsageStats.append({key:humanfriendly.parse_size(value) if re.match(r'^\d+(\.\d+)?\s*[kmgtp]?b$', value) else value for (key,value) in stat.items()})
+          esDiskUsageStats.append({key:humanfriendly.parse_size(value) if re.match(r'^\d+(\.\d+)?\s*[kmgtp]?b$', value, flags=re.IGNORECASE) else value for (key,value) in stat.items()})
 
     if debug:
       eprint(json.dumps(esDiskUsageStats))
