@@ -179,6 +179,12 @@ services:
       - 28991
     volumes:
       - ./index-management-policy.json:/data/index-management-policy.json:ro
+    healthcheck:
+      test: ["CMD", "supervisorctl", "status", "cron", "maps"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 30s
   kibana:
     build:
       context: .
