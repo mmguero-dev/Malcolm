@@ -70,8 +70,6 @@ ZKG_GITHUB_URLS=(
   https://github.com/0xl3x1/zeek-EternalSafety
   https://github.com/0xxon/cve-2020-0601
   https://github.com/0xxon/cve-2020-13777
-  https://github.com/amzn/zeek-plugin-bacnet
-  https://github.com/amzn/zeek-plugin-enip
   https://github.com/amzn/zeek-plugin-profinet
   https://github.com/amzn/zeek-plugin-s7comm
   https://github.com/amzn/zeek-plugin-tds
@@ -93,6 +91,27 @@ for i in ${ZKG_GITHUB_URLS[@]}; do
 done
 
 cat /root/.zkg/logs/* || true
+
+# DHS/INL ICS parsers
+ICSNPP_FULL_PARSERS=(
+  zeek_bacnet_parser
+  zeek_bsap_ip_parser
+  zeek_bsap_serial_parser
+  zeek_enip_parser
+)
+SRC_DIR="$(clone_github_repo "https://github.com/cisagov/ICSNPP")"
+if [[ -d "$SRC_DIR" ]]; then
+  CWD="$(pwd)"
+  for FULL_PARSER in ${ICSNPP_FULL_PARSERS[@]}; do
+    cd "$SRC_DIR"/"$FULL_PARSER" && \
+      ./configure --bro-dist="$ZEEK_DIST_DIR" --install-root="$ZEEK_PLUGIN_DIR" && \
+      make && \
+      make install
+  done
+  cp "$SRC_DIR"/zeek_dnp3_parser/*.zeek /opt/zeek/share/zeek/base/protocols/dnp3/
+  cp "$SRC_DIR"/zeek_modbus_parser/*.zeek /opt/zeek/share/zeek/base/protocols/modbus/
+  cd "$CWD"
+fi
 
 SRC_DIR="$(clone_github_repo "https://github.com/salesforce/GQUIC_Protocol_Analyzer")"
 if [[ -d "$SRC_DIR" ]]; then
