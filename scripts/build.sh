@@ -64,6 +64,8 @@ BUILD_DATE="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 MALCOLM_VERSION="$($GREP -P "^\s+image:\s*malcolm" "$CONFIG_FILE" | awk '{print $2}' | cut -d':' -f2 | uniq -c | sort -nr | awk '{print $2}' | head -n 1)"
 VCS_REVISION="$(git rev-parse --short HEAD 2>/dev/null || echo unknown)"
 
+[[ ! -f ./auth.env ]] && touch ./auth.env
+
 # MaxMind now requires a (free) license key to download the free versions of their GeoIP databases.
 if [ ${#MAXMIND_GEOIP_DB_LICENSE_KEY} -gt 1 ]; then
   # prefer a local environment variable
@@ -93,11 +95,11 @@ FILES_IN_IMAGES=(
   "/usr/share/logstash/config/oui-logstash.txt;logstash"
   "/etc/ip_protocol_numbers.yaml;logstash"
   "/etc/ja3.yaml;logstash"
-  "/data/moloch/etc/GeoLite2-ASN.mmdb;moloch"
-  "/data/moloch/etc/GeoLite2-Country.mmdb;moloch"
-  "/data/moloch/etc/ipv4-address-space.csv;moloch"
-  "/data/moloch/etc/oui.txt;moloch"
-  "/data/moloch/bin/moloch-capture;moloch"
+  "/data/moloch/etc/GeoLite2-ASN.mmdb;arkime"
+  "/data/moloch/etc/GeoLite2-Country.mmdb;arkime"
+  "/data/moloch/etc/ipv4-address-space.csv;arkime"
+  "/data/moloch/etc/oui.txt;arkime"
+  "/data/moloch/bin/moloch-capture;arkime"
   "/var/www/html/list.min.js;name-map-ui"
   "/var/www/html/jquery.min.js;name-map-ui"
   "/opt/zeek/bin/zeek;zeek"

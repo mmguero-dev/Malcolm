@@ -31,7 +31,7 @@ from collections import defaultdict, namedtuple
 from malcolm_common import *
 
 ###################################################################################################
-DOCKER_COMPOSE_INSTALL_VERSION="1.26.2"
+DOCKER_COMPOSE_INSTALL_VERSION="1.27.4"
 
 DEB_GPG_KEY_FINGERPRINT = '0EBFCD88' # used to verify GPG key for Docker Debian repository
 
@@ -68,8 +68,9 @@ def InstallerAskForString(question, default=None, forceInteraction=False):
 class Installer(object):
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  def __init__(self, debug=False):
+  def __init__(self, debug=False, configOnly=False):
     self.debug = debug
+    self.configOnly = configOnly
 
     self.platform = platform.system()
     self.scriptUser = getpass.getuser()
@@ -375,7 +376,7 @@ class Installer(object):
     yaraScan = False
     capaScan = False
     clamAvScan = False
-    clamAvUpdate = False
+    ruleUpdate = False
 
     if InstallerYesOrNo('Enable file extraction with Zeek?', default=False):
       while fileCarveMode not in allowedFileCarveModes:
@@ -385,7 +386,6 @@ class Installer(object):
       if fileCarveMode is not None:
         if InstallerYesOrNo('Scan extracted files with ClamAV?', default=False):
           clamAvScan = True
-          clamAvUpdate = InstallerYesOrNo('Download updated ClamAV virus signatures periodically?', default=True)
         if InstallerYesOrNo('Scan extracted files with Yara?', default=False):
           yaraScan = True
         if InstallerYesOrNo('Scan extracted PE files with Capa?', default=False):
@@ -393,6 +393,7 @@ class Installer(object):
         if InstallerYesOrNo('Lookup extracted file hashes with VirusTotal?', default=False):
           while (len(vtotApiKey) <= 1):
             vtotApiKey = InstallerAskForString('Enter VirusTotal API key')
+        ruleUpdate = InstallerYesOrNo('Download updated scanner signatures periodically?', default=True)
 
     if fileCarveMode not in allowedFileCarveModes:
       fileCarveMode = allowedFileCarveModes[0]
@@ -483,8 +484,8 @@ class Installer(object):
             # file scanning via clamav
             line = re.sub(r'(EXTRACTED_FILE_ENABLE_CLAMAV\s*:\s*)(\S+)', r'\g<1>{}'.format("'true'" if clamAvScan else "'false'"), line)
           elif 'EXTRACTED_FILE_ENABLE_FRESHCLAM' in line:
-            # clamav updates via freshclam
-            line = re.sub(r'(EXTRACTED_FILE_ENABLE_FRESHCLAM\s*:\s*)(\S+)', r'\g<1>{}'.format("'true'" if clamAvUpdate else "'false'"), line)
+            # rule updates (yara/capa via git, clamav via freshclam)
+            line = re.sub(r'(EXTRACTED_FILE_UPDATE_RULES\s*:\s*)(\S+)', r'\g<1>{}'.format("'true'" if ruleUpdate else "'false'"), line)
           elif 'PCAP_ENABLE_NETSNIFF' in line:
             # capture pcaps via netsniff-ng
             line = re.sub(r'(PCAP_ENABLE_NETSNIFF\s*:\s*)(\S+)', r'\g<1>{}'.format("'true'" if pcapNetSniff else "'false'"), line)
@@ -590,11 +591,11 @@ class Installer(object):
 class LinuxInstaller(Installer):
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  def __init__(self, debug=False):
+  def __init__(self, debug=False, configOnly=False):
     if PY3:
-      super().__init__(debug)
+      super().__init__(debug, configOnly)
     else:
-      super(LinuxInstaller, self).__init__(debug)
+      super(LinuxInstaller, self).__init__(debug, configOnly)
 
     self.distro = None
     self.codename = None
@@ -673,14 +674,14 @@ class LinuxInstaller(Installer):
     elif (self.distro == PLATFORM_LINUX_FEDORA) or (self.distro == PLATFORM_LINUX_CENTOS):
       self.requiredPackages.extend(['httpd-tools', 'make', 'openssl'])
 
-    # on Linux this script requires root, or sudo
+    # on Linux this script requires root, or sudo, unless we're in local configuration-only mode
     if os.getuid() == 0:
       self.scriptUser = "root"
       self.sudoCmd = []
     else:
       self.sudoCmd = ["sudo", "-n"]
       err, out = self.run_process(['whoami'], privileged=True)
-      if (err != 0) or (len(out) == 0) or (out[0] != 'root'):
+      if ((err != 0) or (len(out) == 0) or (out[0] != 'root')) and (not self.configOnly):
         raise Exception('{} must be run as root, or {} must be available'.format(ScriptName, self.sudoCmd))
 
     # determine command to use to query if a package is installed
@@ -1015,7 +1016,7 @@ class LinuxInstaller(Installer):
                                     ['[Manager]',
                                      'DefaultLimitNOFILE=65535:65535',
                                      'DefaultLimitMEMLOCK=infinity']),
-                        ConfigLines(['bionic', 'cosmic', 'disco', 'eoan', 'stretch', 'buster', 'sid', 'fedora'],
+                        ConfigLines(['bionic', 'cosmic', 'disco', 'eoan', 'focal', 'groovy', 'stretch', 'buster', 'bullseye', 'sid', 'fedora'],
                                     '/etc/security/limits.d/limits.conf',
                                     '',
                                     '/etc/security/limits.d/limits.conf increases the allowed maximums for file handles and memlocked segments',
@@ -1044,11 +1045,11 @@ class LinuxInstaller(Installer):
 class MacInstaller(Installer):
 
   #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  def __init__(self, debug=False):
+  def __init__(self, debug=False, configOnly=False):
     if PY3:
-      super().__init__(debug)
+      super().__init__(debug, configOnly)
     else:
-      super(MacInstaller, self).__init__(debug)
+      super(MacInstaller, self).__init__(debug, configOnly)
 
     self.sudoCmd = []
 
@@ -1309,20 +1310,23 @@ def main():
 
   installerPlatform = platform.system()
   if installerPlatform == PLATFORM_LINUX:
-    installer = LinuxInstaller(debug=args.debug)
+    installer = LinuxInstaller(debug=args.debug, configOnly=args.configOnly)
   elif installerPlatform == PLATFORM_MAC:
-    installer = MacInstaller(debug=args.debug)
+    installer = MacInstaller(debug=args.debug, configOnly=args.configOnly)
   elif installerPlatform == PLATFORM_WINDOWS:
     raise Exception('{} is not yet supported on {}'.format(ScriptName, installerPlatform))
-    installer = WindowsInstaller(debug=args.debug)
+    installer = WindowsInstaller(debug=args.debug, configOnly=args.configOnly)
 
   success = False
   installPath = None
-  if (not args.configOnly) and hasattr(installer, 'install_required_packages'): success = installer.install_required_packages()
-  if (not args.configOnly) and hasattr(installer, 'install_docker'): success = installer.install_docker()
-  if (not args.configOnly) and hasattr(installer, 'install_docker_compose'): success = installer.install_docker_compose()
-  if hasattr(installer, 'tweak_system_files'): success = installer.tweak_system_files()
-  if (not args.configOnly) and hasattr(installer, 'install_docker_images'): success = installer.install_docker_images(imageFile)
+
+  if (not args.configOnly):
+    if hasattr(installer, 'install_required_packages'): success = installer.install_required_packages()
+    if hasattr(installer, 'install_docker'): success = installer.install_docker()
+    if hasattr(installer, 'install_docker_compose'): success = installer.install_docker_compose()
+    if hasattr(installer, 'tweak_system_files'): success = installer.tweak_system_files()
+    if hasattr(installer, 'install_docker_images'): success = installer.install_docker_images(imageFile)
+
   if args.configOnly or (args.configFile and os.path.isfile(args.configFile)):
     if not args.configFile:
       for testPath in [origPath, ScriptPath, os.path.realpath(os.path.join(ScriptPath, ".."))]:
@@ -1333,8 +1337,10 @@ def main():
     success = (installPath is not None) and os.path.isdir(installPath)
     if args.debug:
       eprint("Malcolm installation detected at {}".format(installPath))
+
   elif hasattr(installer, 'install_malcolm_files'):
     success, installPath = installer.install_malcolm_files(malcolmFile)
+
   if (installPath is not None) and os.path.isdir(installPath) and hasattr(installer, 'tweak_malcolm_runtime'):
     installer.tweak_malcolm_runtime(installPath, expose_logstash_default=args.exposeLogstash, restart_mode_default=args.malcolmAutoRestart)
     eprint("\nMalcolm has been installed to {}. See README.md for more information.".format(installPath))

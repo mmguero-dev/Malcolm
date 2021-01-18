@@ -8,12 +8,12 @@ Hedgehog Linux is a trimmed-down Debian Linux with several common tools preinsta
     - [netsniff-ng](#netsniff)
         + [Compiling netsniff-ng from source](#netsniffCompile)
     - [tcpdump](#tcpdump)
-    - [Moloch](#Moloch)
-        + [Compiling Moloch from source](#molochCompile)
-        + [Moloch configuration](#molochConfig)
+    - [Arkime](#Arkime)
+        + [Compiling Arkime from source](#molochCompile)
+        + [Arkime configuration](#molochConfig)
             * [`config.ini` and command-line parameters](#molochConfigIni)
             * [capture rules](#molochRules)
-            * [Moloch viewer](#molochViewer)
+            * [Arkime viewer](#molochViewer)
 * [Zeek](#Zeek)
     - [Compiling Zeek from source](#ZeekCompile)
     - [Third party plugins](#ZeekThirdParty)
@@ -105,21 +105,21 @@ $ /usr/sbin/tcpdump \
 
 `tcpdump` is generally installed via your distribution's package management system (`apt`, `yum`, etc.).
 
-## <a name="Moloch"></a>Moloch
+## <a name="Arkime"></a>Arkime
 
-[Moloch](https://molo.ch/) [moloch-capture](https://github.com/aol/moloch/tree/master/capture) is a tool for traffic capture which also performs network protocol parsing and metadata insertion into an Elasticsearch instance for review using the Moloch viewer interface.
+[Arkime](https://molo.ch/) [moloch-capture](https://github.com/arkime/arkime/tree/master/capture) is a tool for traffic capture which also performs network protocol parsing and metadata insertion into an Elasticsearch instance for review using the Arkime viewer interface.
 
-`moloch-capture` can be [downloaded](https://molo.ch/downloads) in the form of official Moloch package builds or built from source.
+`moloch-capture` can be [downloaded](https://molo.ch/downloads) in the form of official Arkime package builds or built from source.
 
-### <a name="molochCompile"></a>Compiling Moloch from source
+### <a name="molochCompile"></a>Compiling Arkime from source
 
-At the time of writing, the [current stable release](https://github.com/aol/moloch/blob/master/CHANGELOG) of Moloch is [v2.4.1](https://github.com/aol/moloch/releases/tag/v2.4.1). The following bash script was used to install Moloch's build dependencies, download Moloch, build a Debian .deb package using [fpm](https://github.com/jordansissel/fpm) and install it. In building Hedgehog Linux, the building of this .deb is done inside a Docker container dedicated to that purpose.
+At the time of writing, the [current stable release](https://github.com/arkime/arkime/blob/master/CHANGELOG) of Arkime is [v2.7.1](https://github.com/arkime/arkime/releases/tag/v2.7.1). The following bash script was used to install Arkime's build dependencies, download Arkime, build a Debian .deb package using [fpm](https://github.com/jordansissel/fpm) and install it. In building Hedgehog Linux, the building of this .deb is done inside a Docker container dedicated to that purpose.
 
 ```bash
 #!/bin/bash
 
-MOLOCH_VERSION="2.4.1"
-MOLOCHDIR="/opt/moloch"
+ARKIME_VERSION="2.7.1"
+ARKIMEDIR="/opt/moloch"
 
 OUTPUT_DIR="/tmp"
 unset VERBOSE
@@ -139,33 +139,33 @@ fi
 apt-get -q update
 
 mkdir -p /opt
-curl -L -o /tmp/moloch.tar.gz "https://github.com/aol/moloch/archive/v$MOLOCH_VERSION.tar.gz"
+curl -L -o /tmp/moloch.tar.gz "https://github.com/arkime/arkime/archive/v$ARKIME_VERSION.tar.gz"
 
 cd /tmp
 tar -xvf "moloch.tar.gz"
 rm -f "moloch.tar.gz"
 
-cd "./moloch-"$MOLOCH_VERSION
+cd "./moloch-"$ARKIME_VERSION
 
-export PATH="$MOLOCHDIR/bin:/tmp/moloch-$MOLOCH_VERSION/node_modules/.bin:${PATH}"
+export PATH="$ARKIMEDIR/bin:/tmp/moloch-$ARKIME_VERSION/node_modules/.bin:${PATH}"
 
-./easybutton-build.sh --dir "$MOLOCHDIR"
+./easybutton-build.sh --dir "$ARKIMEDIR"
 
 npm -g config set user root
 
 make install
 
-cp -r ./capture/plugins/lua/samples "$MOLOCHDIR"/lua
+cp -r ./capture/plugins/lua/samples "$ARKIMEDIR"/lua
 
-npm install license-checker; release/notice.txt.pl $MOLOCHDIR NOTICE release/CAPTURENOTICE > $MOLOCHDIR/NOTICE.txt
+npm install license-checker; release/notice.txt.pl $ARKIMEDIR NOTICE release/CAPTURENOTICE > $ARKIMEDIR/NOTICE.txt
 
 ETC_FILES=$(shopt -s nullglob dotglob; echo /moloch-etc/*)
 if (( ${#ETC_FILES} )) ; then
-  mkdir -p $MOLOCHDIR/etc
-  cp -r /moloch-etc/* $MOLOCHDIR/etc/
+  mkdir -p $ARKIMEDIR/etc
+  cp -r /moloch-etc/* $ARKIMEDIR/etc/
 fi
 
-fpm -s dir -t deb -n moloch -x opt/moloch/logs -x opt/moloch/raw -v $MOLOCH_VERSION --iteration 1 --template-scripts --after-install "release/afterinstall.sh" --url "http://molo.ch" --description "Moloch Full Packet System" -d libwww-perl -d libjson-perl -d ethtool -d libyaml-dev "$MOLOCHDIR"
+fpm -s dir -t deb -n moloch -x opt/moloch/logs -x opt/moloch/raw -v $ARKIME_VERSION --iteration 1 --template-scripts --after-install "release/afterinstall.sh" --url "http://molo.ch" --description "Arkime Full Packet System" -d libwww-perl -d libjson-perl -d ethtool -d libyaml-dev "$ARKIMEDIR"
 
 ls -l *.deb && mv -v *.deb "$OUTPUT_DIR"/
 
@@ -179,10 +179,10 @@ set +e
 ```
 
 * Notes:
-    - Moloch is installed to `/opt/moloch` in this configuration
-    - Please read the Moloch's [documentation](https://molo.ch/learn), particularly the [FAQ](https://molo.ch/faq) and [Settings](https://molo.ch/settings) pages, for more information
+    - Arkime is installed to `/opt/moloch` in this configuration
+    - Please read the Arkime's [documentation](https://molo.ch/learn), particularly the [FAQ](https://molo.ch/faq) and [Settings](https://molo.ch/settings) pages, for more information
 
-### <a name="molochConfig"></a>Moloch configuration
+### <a name="molochConfig"></a>Arkime configuration
 
 #### <a name="molochConfigIni"></a>config.ini and command-line parameters
 
@@ -198,7 +198,7 @@ Below is an example of the a `config.ini` similar to that used on Hedgehog Linux
 elasticsearch=http://192.168.0.1:9200
 rotateIndex=daily
 passwordSecret=HZyP53ddho8ASebg
-httpRealm=Moloch
+httpRealm=Arkime
 interface=enp8s0
 pcapDir=/tmp
 maxFileSizeG=2
@@ -239,7 +239,7 @@ logFileCreation=true
 logHTTPConnections=false
 
 ### High Performance settings
-# https://github.com/aol/moloch/wiki/Settings#High_Performance_Settings
+# https://github.com/arkime/arkime/wiki/Settings#High_Performance_Settings
 magicMode=basic
 pcapReadMethod=tpacketv3
 tpacketv3NumThreads=2
@@ -260,7 +260,7 @@ $ /opt/moloch/bin/moloch-capture
   -c /opt/moloch/etc/config.ini
   -o pcapDir="$PCAP_PATH"
   -o bpf="$CAPTURE_FILTER"
-  -o packetThreads=$MOLOCH_PACKET_THREADS
+  -o packetThreads=$ARKIME_PACKET_THREADS
   -o dropUser=sensor
   -o dropGroup=netdev
   -o geoLite2Country=/opt/moloch/etc/GeoLite2-Country.mmdb
@@ -270,13 +270,13 @@ $ /opt/moloch/bin/moloch-capture
   -o rulesFiles=/opt/moloch/etc/rules.yml
   -o parsersDir=/opt/moloch/parsers
   -o pluginsDir=/opt/moloch/plugins
-  --node "$MOLOCH_NODE_NAME"
-  --host "$MOLOCH_NODE_HOST"
+  --node "$ARKIME_NODE_NAME"
+  --host "$ARKIME_NODE_HOST"
 ```
 
 #### <a name="molochRules"></a>capture rules
 
-Moloch allows [defining capture rules](https://molo.ch/rulesformat) to limit what is stored in PCAP and what is logged to the Elasticsearch database. Hedgehog Linux uses some rules similar to those examples in the [High Performance Settings](https://molo.ch/settings#high-performance-settings) page in the Moloch documentation in order to maximize performance and tune PCAP storage utilization.
+Arkime allows [defining capture rules](https://molo.ch/rulesformat) to limit what is stored in PCAP and what is logged to the Elasticsearch database. Hedgehog Linux uses some rules similar to those examples in the [High Performance Settings](https://molo.ch/settings#high-performance-settings) page in the Arkime documentation in order to maximize performance and tune PCAP storage utilization.
 
 ```
 ---
@@ -306,9 +306,9 @@ rules:
       _dontSaveSPI: 1
 ```
 
-#### <a name="molochViewer"></a>Moloch viewer
+#### <a name="molochViewer"></a>Arkime viewer
 
-In order for a remote Moloch viewer instance to retrieve PCAP payloads from the host running `moloch-capture`, the capture host must also be running an instance of Moloch viewer which accepts connections (by default) on port 8005. Moloch viewer uses the same [`config.ini`](#molochConfigIni) as `moloch-capture` and can be run like this:
+In order for a remote Arkime viewer instance to retrieve PCAP payloads from the host running `moloch-capture`, the capture host must also be running an instance of Arkime viewer which accepts connections (by default) on port 8005. Arkime viewer uses the same [`config.ini`](#molochConfigIni) as `moloch-capture` and can be run like this:
 
 ```bash
 $ /opt/moloch/bin/node /opt/moloch/viewer/viewer.js
@@ -317,7 +317,7 @@ $ /opt/moloch/bin/node /opt/moloch/viewer/viewer.js
   -o viewPort=8005
 ```
 
-This may require opening a firewall port to the host running Moloch viewer to allow remote connections to this port from the main Moloch viewer instance.
+This may require opening a firewall port to the host running Arkime viewer to allow remote connections to this port from the main Arkime viewer instance.
 
 # <a name="Zeek"></a>Zeek
 
@@ -366,16 +366,27 @@ Where possible, [`zkg`](https://docs.zeek.org/projects/package-manager/en/stable
 
 Hedgehog Linux utilizest he following third party Zeek packages:
 
-* Amazon.com, Inc.'s [ICS protocol](https://github.com/amzn?q=zeek) analyzers
+* some of Amazon.com, Inc.'s [ICS protocol](https://github.com/amzn?q=zeek) analyzers
+* Andrew Klaus's [Sniffpass](https://github.com/cybera/zeek-sniffpass) plugin for detecting cleartext passwords in HTTP POST requests
+* Andrew Klaus's [zeek-httpattacks](https://github.com/precurse/zeek-httpattacks) plugin for detecting noncompliant HTTP requests
+* ICS protocol analyzers for Zeek published by [DHS CISA](https://github.com/cisagov/ICSNPP) and [Idaho National Lab](https://github.com/idaholab/ICSNPP)
 * Corelight's [bro-xor-exe](https://github.com/corelight/bro-xor-exe-plugin) plugin
-* Corelight's [community ID](https://github.com/corelight/bro-community-id) flow hashing plugin
+* Corelight's ["bad neighbor" (CVE-2020-16898)](https://github.com/corelight/CVE-2020-16898) plugin    
+* Corelight's [callstranger-detector](https://github.com/corelight/callstranger-detector) plugin
+* Corelight's [community ID](https://github.com/corelight/zeek-community-id) flow hashing plugin
+* Corelight's [ripple20](https://github.com/corelight/ripple20) plugin
+* Corelight's [SIGred](https://github.com/corelight/SIGred) plugin
+* Corelight's [Zerologon](https://github.com/corelight/zerologon) plugin
 * J-Gras' [Zeek::AF_Packet](https://github.com/J-Gras/zeek-af_packet-plugin) plugin
+* Johanna Amann's [CVE-2020-0601](https://github.com/0xxon/cve-2020-0601) ECC certificate validation plugin and [CVE-2020-13777](https://github.com/0xxon/cve-2020-13777) GnuTLS unencrypted session ticket detection plugin
 * Lexi Brent's [EternalSafety](https://github.com/0xl3x1/zeek-EternalSafety) plugin
 * MITRE Cyber Analytics Repository's [Bro/Zeek ATT&CK-Based Analytics (BZAR)](https://github.com/mitre-attack/car/tree/master/implementations) script
 * Salesforce's [gQUIC](https://github.com/salesforce/GQUIC_Protocol_Analyzer) analyzer
 * Salesforce's [HASSH](https://github.com/salesforce/hassh) SSH fingerprinting plugin
 * Salesforce's [JA3](https://github.com/salesforce/ja3) TLS fingerprinting plugin
 * SoftwareConsultingEmporium's [Bro::LDAP](https://github.com/SoftwareConsultingEmporium/ldap-analyzer) analyzer
+* Verizon Media's [spicy-noise](https://github.com/theparanoids/spicy-noise) WireGuard analyzer plugin
+* Zeek's [Spicy](https://github.com/zeek/spicy) plugin framework
 
 ### <a name="ZeekThirdPartyBash"></a>bash script to install third party plugins for Zeek
 
@@ -383,6 +394,8 @@ While not all of the aforementioned plugins install correctly with zkg, this bas
 
 ```bash
 #!/bin/bash
+
+# Copyright (c) 2020 Battelle Energy Alliance, LLC.  All rights reserved.
 
 if [ -z "$BASH_VERSION" ]; then
   echo "Wrong interpreter, please run \"$0\" with bash"
@@ -439,9 +452,9 @@ function clone_github_repo() {
     SRC_DIR="$SRC_BASE_DIR"/"$(echo "$REPO_URL" | sed 's|.*/||')"
     rm -rf "$SRC_DIR"
     if [[ -n $REPO_LATEST_RELEASE ]]; then
-      git -c core.askpass=true clone --branch "$REPO_LATEST_RELEASE" --depth 1 "$REPO_URL" "$SRC_DIR" >/dev/null 2>&1
+      git -c core.askpass=true clone --branch "$REPO_LATEST_RELEASE" --recursive "$REPO_URL" "$SRC_DIR" >/dev/null 2>&1
     else
-      git -c core.askpass=true clone --depth 1 "$REPO_URL" "$SRC_DIR" >/dev/null 2>&1
+      git -c core.askpass=true clone --recursive "$REPO_URL" "$SRC_DIR" >/dev/null 2>&1
     fi
     [ $? -eq 0 ] && echo "$SRC_DIR" || echo "cloning \"$REPO_URL\" failed" >&2
   fi
@@ -449,14 +462,21 @@ function clone_github_repo() {
 
 # install Zeek packages that insatll nicely using zkg
 ZKG_GITHUB_URLS=(
-  https://github.com/amzn/zeek-plugin-bacnet
-  https://github.com/amzn/zeek-plugin-enip
+  https://github.com/0xxon/cve-2020-0601
+  https://github.com/0xxon/cve-2020-13777
   https://github.com/amzn/zeek-plugin-profinet
   https://github.com/amzn/zeek-plugin-s7comm
   https://github.com/amzn/zeek-plugin-tds
-  https://github.com/corelight/bro-community-id
-  https://github.com/corelight/bro-xor-exe-plugin
+  https://github.com/corelight/callstranger-detector
+  https://github.com/corelight/CVE-2020-16898
+  https://github.com/corelight/ripple20
+  https://github.com/corelight/SIGRed
+  https://github.com/corelight/zeek-community-id
+  https://github.com/corelight/zerologon
+  https://github.com/cybera/zeek-sniffpass
   https://github.com/0xl3x1/zeek-EternalSafety
+  https://github.com/mitre-attack/bzar
+  https://github.com/precurse/zeek-httpattacks
   https://github.com/salesforce/hassh
   https://github.com/salesforce/ja3
 )
@@ -465,23 +485,22 @@ for i in ${ZKG_GITHUB_URLS[@]}; do
   [[ -d "$SRC_DIR" ]] && zkg install --force --skiptests "$SRC_DIR"
 done
 
-# install Zeek packages that need to be copied manually
-MANUAL_COPY_GITHUB_URLS_AND_SCRIPT_PATHS=(
-  "https://github.com/mitre-attack/car|implementations/bzar/scripts|bzar"
-)
-for i in ${MANUAL_COPY_GITHUB_URLS_AND_SCRIPT_PATHS[@]}; do
-  URL="$(echo "$i" | cut -d'|' -f1)"
-  SCRIPT_SRC_SUBDIR="$(echo "$i" | cut -d'|' -f2)"
-  SCRIPT_DST_SUBDIR="$(echo "$i" | cut -d'|' -f3)"
-  SRC_DIR="$(clone_github_repo "$URL")"
-  if [[ -d "$SRC_DIR" ]] && [[ -d "$SRC_DIR"/"$SCRIPT_SRC_SUBDIR" ]]; then
-    PLUGIN_DIR="$ZEEK_SCRIPTS_DIR"/"$SCRIPT_DST_SUBDIR"
-    mkdir -p "$PLUGIN_DIR"
-    cp -v "$SRC_DIR"/"$SCRIPT_SRC_SUBDIR"/* "$PLUGIN_DIR"/
-  fi
-done
-
 # manual build processes that don't fit the other patterns
+
+# DHS/INL ICS parsers
+SRC_DIR="$(clone_github_repo "https://github.com/cisagov/ICSNPP")"
+if [[ -d "$SRC_DIR" ]]; then
+  CWD="$(pwd)"
+  for FULL_PARSER in zeek_bacnet_parser zeek_enip_parser; do
+    cd "$SRC_DIR"/"$FULL_PARSER" && \
+      ./configure --bro-dist="$ZEEK_DIST_DIR" --install-root="$ZEEK_PLUGIN_DIR" && \
+      make && \
+      make install
+  done
+  cp "$SRC_DIR"/zeek_dnp3_parser/*.zeek /opt/zeek/share/zeek/base/protocols/dnp3/
+  cp "$SRC_DIR"/zeek_modbus_parser/*.zeek /opt/zeek/share/zeek/base/protocols/modbus/
+  cd "$CWD"
+fi
 
 SRC_DIR="$(clone_github_repo "https://github.com/salesforce/GQUIC_Protocol_Analyzer")"
 if [[ -d "$SRC_DIR" ]]; then
@@ -501,20 +520,50 @@ SRC_DIR="$(clone_github_repo "https://github.com/J-Gras/zeek-af_packet-plugin")"
 if [[ -d "$SRC_DIR" ]]; then
   CWD="$(pwd)"
   cd "$SRC_DIR" && \
-    ./configure --with-kernel=/usr --bro-dist="$ZEEK_DIST_DIR" --install-root="$ZEEK_PLUGIN_DIR" && \
+    ./configure --with-kernel=/usr --zeek-dist="$ZEEK_DIST_DIR" --install-root="$ZEEK_PLUGIN_DIR" && \
     make && \
     make install
   cd "$CWD"
 fi
 
-SRC_DIR="$(clone_github_repo "https://github.com/SoftwareConsultingEmporium/ldap-analyzer")"
+MANUAL_BRO_GITHUB_URLS=(
+  https://github.com/SoftwareConsultingEmporium/ldap-analyzer
+  https://github.com/corelight/bro-xor-exe-plugin
+)
+for i in ${MANUAL_BRO_GITHUB_URLS[@]}; do
+  SRC_DIR="$(clone_github_repo "$i")"
+  if [[ -d "$SRC_DIR" ]]; then
+    CWD="$(pwd)"
+    cd "$SRC_DIR" && \
+      ./configure --bro-dist="$ZEEK_DIST_DIR" --install-root="$ZEEK_PLUGIN_DIR" && \
+      make && \
+      make install
+    cd "$CWD"
+  fi
+done
+
+# install Spicy
+SRC_DIR="$(clone_github_repo "https://github.com/zeek/spicy")"
 if [[ -d "$SRC_DIR" ]]; then
   CWD="$(pwd)"
   cd "$SRC_DIR" && \
-    ./configure --bro-dist="$ZEEK_DIST_DIR" --install-root="$ZEEK_PLUGIN_DIR" && \
-    make && \
-    make install
+    ./configure --generator=Ninja --prefix=/opt/spicy --with-zeek=/opt/zeek --enable-ccache && \
+    ninja -C build install
   cd "$CWD"
+fi
+
+if /opt/zeek/bin/zeek -N | grep -q Zeek::Spicy; then
+  SRC_DIR="$(clone_github_repo "https://github.com/theparanoids/spicy-noise")"
+  if [[ -d "$SRC_DIR" ]]; then
+    CWD="$(pwd)"
+    cd "$SRC_DIR" && \
+      /opt/spicy/bin/spicyz -o spicy-noise.hlto spicy-noise.spicy spicy-noise.evt && \
+      cp -f ./spicy-noise.hlto ./zeek/spicy-noise.hlto && \
+      chmod 644 ./zeek/spicy-noise.hlto && \
+      echo '@load /opt/zeek/share/zeek/site/spicy-noise/spicy-noise.hlto' >> ./zeek/__load__.zeek && \
+      cp -vr ./zeek /opt/zeek/share/zeek/site/spicy-noise && \
+    cd "$CWD"
+  fi
 fi
 ```
 

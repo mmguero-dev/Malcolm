@@ -21,28 +21,28 @@ ENV PUSER_PRIV_DROP true
 ENV TERM xterm
 
 ARG ELASTICSEARCH_URL="http://elasticsearch:9200"
-ARG CREATE_ES_MOLOCH_SESSION_INDEX="true"
-ARG MOLOCH_INDEX_PATTERN="sessions2-*"
-ARG MOLOCH_INDEX_PATTERN_ID="sessions2-*"
-ARG MOLOCH_INDEX_TIME_FIELD="firstPacket"
+ARG CREATE_ES_ARKIME_SESSION_INDEX="true"
+ARG ARKIME_INDEX_PATTERN="sessions2-*"
+ARG ARKIME_INDEX_PATTERN_ID="sessions2-*"
+ARG ARKIME_INDEX_TIME_FIELD="firstPacket"
 ARG KIBANA_DEFAULT_DASHBOARD="0ad3d7c2-3441-485e-9dfe-dbb22e84e576"
 ARG KIBANA_OFFLINE_REGION_MAPS="false"
 ARG KIBANA_OFFLINE_REGION_MAPS_PORT="28991"
 
-ENV CREATE_ES_MOLOCH_SESSION_INDEX $CREATE_ES_MOLOCH_SESSION_INDEX
-ENV MOLOCH_INDEX_PATTERN $MOLOCH_INDEX_PATTERN
-ENV MOLOCH_INDEX_PATTERN_ID $MOLOCH_INDEX_PATTERN_ID
-ENV MOLOCH_INDEX_TIME_FIELD $MOLOCH_INDEX_TIME_FIELD
+ENV CREATE_ES_ARKIME_SESSION_INDEX $CREATE_ES_ARKIME_SESSION_INDEX
+ENV ARKIME_INDEX_PATTERN $ARKIME_INDEX_PATTERN
+ENV ARKIME_INDEX_PATTERN_ID $ARKIME_INDEX_PATTERN_ID
+ENV ARKIME_INDEX_TIME_FIELD $ARKIME_INDEX_TIME_FIELD
 ENV KIBANA_DEFAULT_DASHBOARD $KIBANA_DEFAULT_DASHBOARD
 ENV KIBANA_OFFLINE_REGION_MAPS $KIBANA_OFFLINE_REGION_MAPS
 ENV KIBANA_OFFLINE_REGION_MAPS_PORT $KIBANA_OFFLINE_REGION_MAPS_PORT
 ENV PATH="/data:${PATH}"
 ENV ELASTICSEARCH_URL $ELASTICSEARCH_URL
 
-ENV SUPERCRONIC_VERSION "0.1.11"
+ENV SUPERCRONIC_VERSION "0.1.12"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-amd64"
 ENV SUPERCRONIC "supercronic-linux-amd64"
-ENV SUPERCRONIC_SHA1SUM "a2e2d47078a8dafc5949491e5ea7267cc721d67c"
+ENV SUPERCRONIC_SHA1SUM "048b95b48b708983effb2e5c935a1ef8483d9e3e"
 ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 USER root
@@ -81,7 +81,7 @@ RUN sed -i "s/d\.name\.split/d\.name\.toString()\.split/" /usr/share/kibana/src/
       curl -sSL -o /tmp/kibana-drilldown.zip "https://codeload.github.com/mmguero-dev/kibana-plugin-drilldownmenu/zip/master" && \
     yum install -y epel-release && \
       yum update -y && \
-      yum install -y curl inotify-tools npm patch psmisc python-requests python-setuptools zip unzip && \
+      yum install -y curl inotify-tools git npm patch psmisc python-requests python-setuptools zip unzip && \
       yum clean all && \
       easy_install supervisor && \
       npm install -g http-server && \

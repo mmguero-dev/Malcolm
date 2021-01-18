@@ -55,10 +55,10 @@ ENV CURATOR_SNAPSHOT_REPO $CURATOR_SNAPSHOT_REPO
 ENV CURATOR_SNAPSHOT_COMPRESSED $CURATOR_SNAPSHOT_COMPRESSED
 ENV CURATOR_SNAPSHOT_DISABLED $CURATOR_SNAPSHOT_DISABLED
 
-ENV SUPERCRONIC_VERSION "0.1.11"
+ENV SUPERCRONIC_VERSION "0.1.12"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-amd64"
 ENV SUPERCRONIC "supercronic-linux-amd64"
-ENV SUPERCRONIC_SHA1SUM "a2e2d47078a8dafc5949491e5ea7267cc721d67c"
+ENV SUPERCRONIC_SHA1SUM "048b95b48b708983effb2e5c935a1ef8483d9e3e"
 ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 ENV CURATOR_VERSION "5.8.1"
@@ -71,15 +71,20 @@ RUN sed -i "s/buster main/buster main contrib non-free/g" /etc/apt/sources.list 
     apt-get  -y -q install \
       build-essential \
       curl \
+      libyaml-0-2 \
+      libyaml-dev \
       procps \
       psmisc \
       python3 \
       python3-dev \
+      python3-wheel \
       python3-pip && \
-    pip3 install elasticsearch-curator==${CURATOR_VERSION} && \
+      # from https://github.com/elastic/curator/issues/1496#issuecomment-715262708
+      python3 -m pip install "boto3<1.16" "botocore<1.19" && \
+      python3 -m pip install elasticsearch-curator==${CURATOR_VERSION} && \
     groupadd --gid ${DEFAULT_GID} ${PUSER} && \
       useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} ${PUSER} && \
-    apt-get -q -y --purge remove guile-2.2-libs python3-dev build-essential && \
+    apt-get -q -y --purge remove guile-2.2-libs python3-dev build-essential libyaml-dev && \
       apt-get -q -y autoremove && \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
