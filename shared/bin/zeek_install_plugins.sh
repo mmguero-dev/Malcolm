@@ -117,7 +117,6 @@ if [[ -d "$SRC_DIR" ]]; then
 fi
 
 MANUAL_BRO_GITHUB_URLS=(
-  https://github.com/SoftwareConsultingEmporium/ldap-analyzer
   https://github.com/corelight/bro-xor-exe-plugin
 )
 for i in ${MANUAL_BRO_GITHUB_URLS[@]}; do
@@ -132,13 +131,14 @@ for i in ${MANUAL_BRO_GITHUB_URLS[@]}; do
   fi
 done
 
-ICSNPP_PACKAGES_GITHUB_URLS=(
+MANUAL_ZEEK_GITHUB_URLS=(
   https://github.com/cisagov/icsnpp-bacnet
   https://github.com/cisagov/icsnpp-bsap-ip
   https://github.com/cisagov/icsnpp-bsap-serial
   https://github.com/cisagov/icsnpp-enip
+  https://github.com/mmguero-dev/ldap-analyzer
 )
-for i in ${ICSNPP_PACKAGES_GITHUB_URLS[@]}; do
+for i in ${MANUAL_ZEEK_GITHUB_URLS[@]}; do
   SRC_DIR="$(clone_github_repo "$i")"
   if [[ -d "$SRC_DIR" ]]; then
     CWD="$(pwd)"
@@ -170,6 +170,8 @@ if [[ -d "$SRC_DIR" ]]; then
 fi
 
 if /opt/zeek/bin/zeek -N | grep -q Zeek::Spicy; then
+
+  # spicy-noise
   SRC_DIR="$(clone_github_repo "https://github.com/theparanoids/spicy-noise")"
   if [[ -d "$SRC_DIR" ]]; then
     CWD="$(pwd)"
@@ -178,7 +180,19 @@ if /opt/zeek/bin/zeek -N | grep -q Zeek::Spicy; then
       cp -f ./spicy-noise.hlto ./zeek/spicy-noise.hlto && \
       chmod 644 ./zeek/spicy-noise.hlto && \
       echo '@load /opt/zeek/share/zeek/site/spicy-noise/spicy-noise.hlto' >> ./zeek/__load__.zeek && \
-      cp -vr ./zeek /opt/zeek/share/zeek/site/spicy-noise && \
+      cp -vr ./zeek /opt/zeek/share/zeek/site/spicy-noise
     cd "$CWD"
   fi
+
+  # spicy-tftp
+  SRC_DIR="$(clone_github_repo "https://github.com/zeek/spicy-tftp")"
+  if [[ -d "$SRC_DIR" ]]; then
+    CWD="$(pwd)"
+    cd "$SRC_DIR" && \
+      ./configure --with-spicy=/opt/spicy --zeek-dist="$ZEEK_DIST_DIR" --install-root="$ZEEK_PLUGIN_DIR"
+      make && \
+      make install
+    cd "$CWD"
+  fi
+
 fi

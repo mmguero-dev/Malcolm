@@ -12,5 +12,6 @@ pip3 install --no-compile --no-cache-dir --force-reinstall --upgrade \
   magic-wormhole \
   netifaces \
   psutil \
+  pycryptodome \
   pythondialog \
   requests[security]
