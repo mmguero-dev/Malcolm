@@ -2,6 +2,8 @@
 
 Here's a step-by-step example of getting [Malcolm from GitHub]({{ site.github.repository_url }}/tree/{{ site.github.build_revision }}), configuring your system and your Malcolm instance, and running it on a system running Ubuntu Linux. Your mileage may vary depending on your individual system configuration, but this should be a good starting point.
 
+For a more in-depth guide convering installing both Malcolm and a [Hedgehog Linux](hedgehog.md) sensor using the [Malcolm installer ISO](malcolm-iso.md#ISO) and [Hedgehog Linux installer ISO](hedgehog-installation.md#HedgehogInstallation), see **[End-to-end Malcolm and Hedgehog Linux ISO Installation](malcolm-hedgehog-e2e-iso-install.md#InstallationExample)**.
+
 The commands in this example should be executed as a non-root user.
 
 You can use `git` to clone Malcolm into a local working copy, or you can download and extract the artifacts from the [latest release]({{ site.github.repository_url }}/releases).
@@ -263,26 +265,26 @@ Pulling zeek              ... done
 
 user@host:~/Malcolm$ docker images
 REPOSITORY                                                     TAG               IMAGE ID       CREATED      SIZE
-ghcr.io/idaholab/malcolm/api                                              23.04.0           xxxxxxxxxxxx   3 days ago   158MB
-ghcr.io/idaholab/malcolm/arkime                                           23.04.0           xxxxxxxxxxxx   3 days ago   816MB
-ghcr.io/idaholab/malcolm/dashboards                                       23.04.0           xxxxxxxxxxxx   3 days ago   1.02GB
-ghcr.io/idaholab/malcolm/dashboards-helper                                23.04.0           xxxxxxxxxxxx   3 days ago   184MB
-ghcr.io/idaholab/malcolm/file-monitor                                     23.04.0           xxxxxxxxxxxx   3 days ago   588MB
-ghcr.io/idaholab/malcolm/file-upload                                      23.04.0           xxxxxxxxxxxx   3 days ago   259MB
-ghcr.io/idaholab/malcolm/filebeat-oss                                     23.04.0           xxxxxxxxxxxx   3 days ago   624MB
-ghcr.io/idaholab/malcolm/freq                                             23.04.0           xxxxxxxxxxxx   3 days ago   132MB
-ghcr.io/idaholab/malcolm/htadmin                                          23.04.0           xxxxxxxxxxxx   3 days ago   242MB
-ghcr.io/idaholab/malcolm/logstash-oss                                     23.04.0           xxxxxxxxxxxx   3 days ago   1.35GB
-ghcr.io/idaholab/malcolm/name-map-ui                                      23.04.0           xxxxxxxxxxxx   3 days ago   143MB
-ghcr.io/idaholab/malcolm/netbox                                           23.04.0           xxxxxxxxxxxx   3 days ago   1.01GB
-ghcr.io/idaholab/malcolm/nginx-proxy                                      23.04.0           xxxxxxxxxxxx   3 days ago   121MB
-ghcr.io/idaholab/malcolm/opensearch                                       23.04.0           xxxxxxxxxxxx   3 days ago   1.17GB
-ghcr.io/idaholab/malcolm/pcap-capture                                     23.04.0           xxxxxxxxxxxx   3 days ago   121MB
-ghcr.io/idaholab/malcolm/pcap-monitor                                     23.04.0           xxxxxxxxxxxx   3 days ago   213MB
-ghcr.io/idaholab/malcolm/postgresql                                       23.04.0           xxxxxxxxxxxx   3 days ago   268MB
-ghcr.io/idaholab/malcolm/redis                                            23.04.0           xxxxxxxxxxxx   3 days ago   34.2MB
-ghcr.io/idaholab/malcolm/suricata                                         23.04.0           xxxxxxxxxxxx   3 days ago   278MB
-ghcr.io/idaholab/malcolm/zeek                                             23.04.0           xxxxxxxxxxxx   3 days ago   1GB
+ghcr.io/idaholab/malcolm/api                                              23.04.1           xxxxxxxxxxxx   3 days ago   158MB
+ghcr.io/idaholab/malcolm/arkime                                           23.04.1           xxxxxxxxxxxx   3 days ago   816MB
+ghcr.io/idaholab/malcolm/dashboards                                       23.04.1           xxxxxxxxxxxx   3 days ago   1.02GB
+ghcr.io/idaholab/malcolm/dashboards-helper                                23.04.1           xxxxxxxxxxxx   3 days ago   184MB
+ghcr.io/idaholab/malcolm/file-monitor                                     23.04.1           xxxxxxxxxxxx   3 days ago   588MB
+ghcr.io/idaholab/malcolm/file-upload                                      23.04.1           xxxxxxxxxxxx   3 days ago   259MB
+ghcr.io/idaholab/malcolm/filebeat-oss                                     23.04.1           xxxxxxxxxxxx   3 days ago   624MB
+ghcr.io/idaholab/malcolm/freq                                             23.04.1           xxxxxxxxxxxx   3 days ago   132MB
+ghcr.io/idaholab/malcolm/htadmin                                          23.04.1           xxxxxxxxxxxx   3 days ago   242MB
+ghcr.io/idaholab/malcolm/logstash-oss                                     23.04.1           xxxxxxxxxxxx   3 days ago   1.35GB
+ghcr.io/idaholab/malcolm/name-map-ui                                      23.04.1           xxxxxxxxxxxx   3 days ago   143MB
+ghcr.io/idaholab/malcolm/netbox                                           23.04.1           xxxxxxxxxxxx   3 days ago   1.01GB
+ghcr.io/idaholab/malcolm/nginx-proxy                                      23.04.1           xxxxxxxxxxxx   3 days ago   121MB
+ghcr.io/idaholab/malcolm/opensearch                                       23.04.1           xxxxxxxxxxxx   3 days ago   1.17GB
+ghcr.io/idaholab/malcolm/pcap-capture                                     23.04.1           xxxxxxxxxxxx   3 days ago   121MB
+ghcr.io/idaholab/malcolm/pcap-monitor                                     23.04.1           xxxxxxxxxxxx   3 days ago   213MB
+ghcr.io/idaholab/malcolm/postgresql                                       23.04.1           xxxxxxxxxxxx   3 days ago   268MB
+ghcr.io/idaholab/malcolm/redis                                            23.04.1           xxxxxxxxxxxx   3 days ago   34.2MB
+ghcr.io/idaholab/malcolm/suricata                                         23.04.1           xxxxxxxxxxxx   3 days ago   278MB
+ghcr.io/idaholab/malcolm/zeek                                             23.04.1           xxxxxxxxxxxx   3 days ago   1GB
 ```
 
 Finally, we can start Malcolm. When Malcolm starts it will stream informational and debug messages to the console. If you wish, you can safely close the console or use `Ctrl+C` to stop these messages; Malcolm will continue running in the background.
