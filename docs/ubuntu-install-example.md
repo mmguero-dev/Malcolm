@@ -8,11 +8,11 @@ The commands in this example should be executed as a non-root user.
 
 You can use `git` to clone Malcolm into a local working copy, or you can download and extract the artifacts from the [latest release]({{ site.github.repository_url }}/releases).
 
-To install Malcolm from the latest Malcolm release, browse to the [Malcolm releases page on GitHub]({{ site.github.repository_url }}/releases) and download at a minimum `install.py` and the `malcolm_YYYYMMDD_HHNNSS_xxxxxxx.tar.gz` file, then navigate to your downloads directory:
+To install Malcolm from the latest Malcolm release, browse to the [Malcolm releases page on GitHub]({{ site.github.repository_url }}/releases) and download at a minimum the files ending in `.py` and the `malcolm_YYYYMMDD_HHNNSS_xxxxxxx.tar.gz` file, then navigate to your downloads directory:
 ```
 user@host:~$ cd Downloads/
 user@host:~/Downloads$ ls
-malcolm_common.py install.py  malcolm_20190611_095410_ce2d8de.tar.gz
+malcolm_common.py malcolm_kubernetes.py malcolm_utils.py install.py  malcolm_20190611_095410_ce2d8de.tar.gz
 ```
 
 If you are obtaining Malcolm using `git` instead, run the following command to clone Malcolm into a local working copy:
@@ -83,12 +83,12 @@ vm.dirty_ratio= appears to be missing from /etc/sysctl.conf, append it? (Y/n): y
 /etc/security/limits.d/limits.conf does not exist, create it? (Y/n): y
 ```
 
-If you are configuring Malcolm from within a git working copy, `install.py` will now exit. Run `install.py` again like you did at the beginning of the example, only remove the `sudo` and add `--configure` to run `install.py` in "configuration only" mode.
+If you are configuring Malcolm from within a git working copy, `install.py` will now exit. Run `./scripts/configure` to continue with configuration:
 ```
-user@host:~/Malcolm$ ./scripts/install.py --configure
+user@host:~/Malcolm$ ./scripts/configure
 ```
 
-Alternately, if you are configuring Malcolm from the release tarball you will be asked if you would like to extract the contents of the tarball and to specify the installation directory and `install.py` will continue:
+Alternately, if you are configuring Malcolm from the release tarball you will be asked if you would like to extract the contents of the tarball and to specify the installation directory and Malcolm configuration will continue:
 ```
 Extract Malcolm runtime files from /home/user/Downloads/malcolm_20190611_095410_ce2d8de.tar.gz (Y/n): y
 
@@ -121,7 +121,10 @@ Will Malcolm be running behind another reverse proxy (Traefik, Caddy, etc.)? (y/
 
 Specify external Docker network name (or leave blank for default networking) (): 
 
-Authenticate against Lightweight Directory Access Protocol (LDAP) server? (y/N): n
+1: Basic
+2: Lightweight Directory Access Protocol (LDAP)
+3: None
+Select authentication method (Basic): 1
 
 Store PCAP, log and index files locally under /home/user/Malcolm? (Y/n): y
 
@@ -192,8 +195,6 @@ Should Malcolm capture live network traffic to PCAP files for analysis with Arki
 
 Capture packets using netsniff-ng? (Y/n): y   
 
-Capture packets using tcpdump? (y/N): n
-
 Should Arkime delete PCAP files based on available storage (see https://arkime.com/faq#pcap-deletion)? (y/N): y
 
 Should Malcolm analyze live network traffic with Suricata? (y/N): y
@@ -226,7 +227,7 @@ Administrator username: analyst
 analyst password:
 analyst password (again):
 
-Additional local accounts can be created at https://localhost:488/ when Malcolm is running
+Additional local accounts can be created at https://localhost/auth/ when Malcolm is running
 
 (Re)generate self-signed certificates for HTTPS access (Y/n): y 
 
@@ -251,7 +252,6 @@ Pulling filebeat          ... done
 Pulling freq              ... done
 Pulling htadmin           ... done
 Pulling logstash          ... done
-Pulling name-map-ui       ... done
 Pulling netbox            ... done
 Pulling netbox-postgresql ... done
 Pulling netbox-redis      ... done
@@ -265,26 +265,25 @@ Pulling zeek              ... done
 
 user@host:~/Malcolm$ docker images
 REPOSITORY                                                     TAG               IMAGE ID       CREATED      SIZE
-ghcr.io/idaholab/malcolm/api                                              23.04.1           xxxxxxxxxxxx   3 days ago   158MB
-ghcr.io/idaholab/malcolm/arkime                                           23.04.1           xxxxxxxxxxxx   3 days ago   816MB
-ghcr.io/idaholab/malcolm/dashboards                                       23.04.1           xxxxxxxxxxxx   3 days ago   1.02GB
-ghcr.io/idaholab/malcolm/dashboards-helper                                23.04.1           xxxxxxxxxxxx   3 days ago   184MB
-ghcr.io/idaholab/malcolm/file-monitor                                     23.04.1           xxxxxxxxxxxx   3 days ago   588MB
-ghcr.io/idaholab/malcolm/file-upload                                      23.04.1           xxxxxxxxxxxx   3 days ago   259MB
-ghcr.io/idaholab/malcolm/filebeat-oss                                     23.04.1           xxxxxxxxxxxx   3 days ago   624MB
-ghcr.io/idaholab/malcolm/freq                                             23.04.1           xxxxxxxxxxxx   3 days ago   132MB
-ghcr.io/idaholab/malcolm/htadmin                                          23.04.1           xxxxxxxxxxxx   3 days ago   242MB
-ghcr.io/idaholab/malcolm/logstash-oss                                     23.04.1           xxxxxxxxxxxx   3 days ago   1.35GB
-ghcr.io/idaholab/malcolm/name-map-ui                                      23.04.1           xxxxxxxxxxxx   3 days ago   143MB
-ghcr.io/idaholab/malcolm/netbox                                           23.04.1           xxxxxxxxxxxx   3 days ago   1.01GB
-ghcr.io/idaholab/malcolm/nginx-proxy                                      23.04.1           xxxxxxxxxxxx   3 days ago   121MB
-ghcr.io/idaholab/malcolm/opensearch                                       23.04.1           xxxxxxxxxxxx   3 days ago   1.17GB
-ghcr.io/idaholab/malcolm/pcap-capture                                     23.04.1           xxxxxxxxxxxx   3 days ago   121MB
-ghcr.io/idaholab/malcolm/pcap-monitor                                     23.04.1           xxxxxxxxxxxx   3 days ago   213MB
-ghcr.io/idaholab/malcolm/postgresql                                       23.04.1           xxxxxxxxxxxx   3 days ago   268MB
-ghcr.io/idaholab/malcolm/redis                                            23.04.1           xxxxxxxxxxxx   3 days ago   34.2MB
-ghcr.io/idaholab/malcolm/suricata                                         23.04.1           xxxxxxxxxxxx   3 days ago   278MB
-ghcr.io/idaholab/malcolm/zeek                                             23.04.1           xxxxxxxxxxxx   3 days ago   1GB
+ghcr.io/idaholab/malcolm/api                                   23.04.1           xxxxxxxxxxxx   3 days ago   158MB
+ghcr.io/idaholab/malcolm/arkime                                23.04.1           xxxxxxxxxxxx   3 days ago   816MB
+ghcr.io/idaholab/malcolm/dashboards                            23.04.1           xxxxxxxxxxxx   3 days ago   1.02GB
+ghcr.io/idaholab/malcolm/dashboards-helper                     23.04.1           xxxxxxxxxxxx   3 days ago   184MB
+ghcr.io/idaholab/malcolm/file-monitor                          23.04.1           xxxxxxxxxxxx   3 days ago   588MB
+ghcr.io/idaholab/malcolm/file-upload                           23.04.1           xxxxxxxxxxxx   3 days ago   259MB
+ghcr.io/idaholab/malcolm/filebeat-oss                          23.04.1           xxxxxxxxxxxx   3 days ago   624MB
+ghcr.io/idaholab/malcolm/freq                                  23.04.1           xxxxxxxxxxxx   3 days ago   132MB
+ghcr.io/idaholab/malcolm/htadmin                               23.04.1           xxxxxxxxxxxx   3 days ago   242MB
+ghcr.io/idaholab/malcolm/logstash-oss                          23.04.1           xxxxxxxxxxxx   3 days ago   1.35GB
+ghcr.io/idaholab/malcolm/netbox                                23.04.1           xxxxxxxxxxxx   3 days ago   1.01GB
+ghcr.io/idaholab/malcolm/nginx-proxy                           23.04.1           xxxxxxxxxxxx   3 days ago   121MB
+ghcr.io/idaholab/malcolm/opensearch                            23.04.1           xxxxxxxxxxxx   3 days ago   1.17GB
+ghcr.io/idaholab/malcolm/pcap-capture                          23.04.1           xxxxxxxxxxxx   3 days ago   121MB
+ghcr.io/idaholab/malcolm/pcap-monitor                          23.04.1           xxxxxxxxxxxx   3 days ago   213MB
+ghcr.io/idaholab/malcolm/postgresql                            23.04.1           xxxxxxxxxxxx   3 days ago   268MB
+ghcr.io/idaholab/malcolm/redis                                 23.04.1           xxxxxxxxxxxx   3 days ago   34.2MB
+ghcr.io/idaholab/malcolm/suricata                              23.04.1           xxxxxxxxxxxx   3 days ago   278MB
+ghcr.io/idaholab/malcolm/zeek                                  23.04.1           xxxxxxxxxxxx   3 days ago   1GB
 ```
 
 Finally, we can start Malcolm. When Malcolm starts it will stream informational and debug messages to the console. If you wish, you can safely close the console or use `Ctrl+C` to stop these messages; Malcolm will continue running in the background.
@@ -296,9 +295,8 @@ In a few minutes, Malcolm services will be accessible via the following URLs:
   - OpenSearch Dashboards: https://localhost/dashboards/
   - PCAP upload (web): https://localhost/upload/
   - PCAP upload (sftp): sftp://username@127.0.0.1:8022/files/
-  - Host and subnet name mapping editor: https://localhost/name-map-ui/
   - NetBox: https://localhost/netbox/  
-  - Account management: https://localhost:488/
+  - Account management: https://localhost/auth/
   - Documentation: https://localhost/readme/
 
 NAME                           COMMAND                  SERVICE              STATUS               PORTS
@@ -311,7 +309,6 @@ malcolm-filebeat-1             "/usr/local/bin/dock…"   filebeat             r
 malcolm-freq-1                 "/usr/local/bin/dock…"   freq                 running (starting)   …
 malcolm-htadmin-1              "/usr/local/bin/dock…"   htadmin              running (starting)   …
 malcolm-logstash-1             "/usr/local/bin/dock…"   logstash             running (starting)   …
-malcolm-name-map-ui-1          "/usr/local/bin/dock…"   name-map-ui          running (starting)   …
 malcolm-netbox-1               "/usr/bin/tini -- /u…"   netbox               running (starting)   …
 malcolm-netbox-postgres-1      "/usr/bin/docker-uid…"   netbox-postgres      running (starting)   …
 malcolm-netbox-redis-1         "/sbin/tini -- /usr/…"   netbox-redis         running (starting)   …

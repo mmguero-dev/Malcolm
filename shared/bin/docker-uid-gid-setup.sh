@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# attempt to set ulimits (as root)
+if [[ "${PUSER_RLIMIT_UNLOCK:-false}" == "true" ]] && command -v ulimit >/dev/null 2>&1; then
+  ulimit -c 0 >/dev/null 2>&1
+  ulimit -l unlimited >/dev/null 2>&1
+  ulimit -m unlimited >/dev/null 2>&1
+  ulimit -v unlimited >/dev/null 2>&1
+  ulimit -x unlimited >/dev/null 2>&1
+  ulimit -n 65535 >/dev/null 2>&1
+  ulimit -u 262144 >/dev/null 2>&1
+fi
+
 set -e
 
 unset ENTRYPOINT_CMD
@@ -25,7 +36,7 @@ if [[ -n ${CONFIG_MAP_DIR} ]] && command -v rsync >/dev/null 2>&1; then
   awk '{print gsub("/","/"), $0}' | sort -n | cut -d' ' -f2- | \
   while read CMDIR; do
 
-    rsync --recursive --mkpath --copy-links \
+    rsync --recursive --copy-links \
           "--usermap=*:${PUID:-${DEFAULT_UID}}" \
           "--groupmap=*:${PGID:-${DEFAULT_GID}}" \
           --exclude='..*' --exclude="${CONFIG_MAP_DIR}"/ --exclude=.dockerignore --exclude=.gitignore \
@@ -55,8 +66,9 @@ else
   CONFIG_MAP_FIND_PRUNE_ARGS=()
 fi # check for CONFIG_MAP_DIR and rsync
 
-# change user/group ownership of any files/directories belonging to the original IDs
 set +e
+
+# change user/group ownership of any files/directories belonging to the original IDs
 if [[ -n ${PUID} ]] && [[ "${PUID}" != "${DEFAULT_UID}" ]]; then
   find / -path /sys -prune -o -path /proc -prune -o -user ${DEFAULT_UID} -exec chown -f ${PUID} "{}" \; 2>/dev/null
 fi
@@ -126,7 +138,6 @@ if [[ -n ${PUSER_CA_TRUST} ]] && command -v openssl >/dev/null 2>&1; then
   command -v update-ca-certificates >/dev/null 2>&1 && update-ca-certificates >/dev/null 2>&1
   command -v update-ca-trust >/dev/null 2>&1 && update-ca-trust extract >/dev/null 2>&1
 fi
-set -e
 
 # determine if we are now dropping privileges to exec ENTRYPOINT_CMD
 if [[ "$PUSER_PRIV_DROP" == "true" ]]; then
@@ -137,14 +148,23 @@ else
   USER_HOME="${HOME:-/root}"
 fi
 
-# execute the entrypoint command specified
+# attempt to set ulimits (as user) and execute the entrypoint command specified
 su -s /bin/bash -p ${EXEC_USER} << EOF
 export USER="${EXEC_USER}"
 export HOME="${USER_HOME}"
 whoami
 id
-if [ ! -z "${ENTRYPOINT_CMD}" ]; then
-  if [ -z "${ENTRYPOINT_ARGS}" ]; then
+if [[ "${PUSER_RLIMIT_UNLOCK:-false}" == "true" ]] && command -v ulimit >/dev/null 2>&1; then
+  ulimit -c 0 >/dev/null 2>&1
+  ulimit -l unlimited >/dev/null 2>&1
+  ulimit -m unlimited >/dev/null 2>&1
+  ulimit -v unlimited >/dev/null 2>&1
+  ulimit -x unlimited >/dev/null 2>&1
+  ulimit -n 65535 >/dev/null 2>&1
+  ulimit -u 262144 >/dev/null 2>&1
+fi
+if [[ ! -z "${ENTRYPOINT_CMD}" ]]; then
+  if [[ -z "${ENTRYPOINT_ARGS}" ]]; then
     "${ENTRYPOINT_CMD}"
   else
     "${ENTRYPOINT_CMD}" $(printf "%q " "${ENTRYPOINT_ARGS[@]}")
