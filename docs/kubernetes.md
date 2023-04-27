@@ -247,8 +247,8 @@ $ ./scripts/start -f /path/to/kubeconfig.yml
 
 The Kubernetes resources under the `malcolm` namespace (its pods, storage volumes, containers, etc.) will be initialized and started using the [Kubernetes API](https://kubernetes.io/docs/concepts/overview/kubernetes-api/), including:
 
-* creating [ConfigMap objects](https://kubernetes.io/docs/concepts/configuration/configmap/) from Malcolm's [environment variable files](malcolm-config.md#MalcolmConfigEnvVars)
-* creating [ConfigMap objects](https://kubernetes.io/docs/concepts/configuration/configmap/) from other configuration files stored locally below the Malcolm directory
+* creating [ConfigMap objects](https://kubernetes.io/docs/concepts/configuration/configmap/) and [Secret objects](https://kubernetes.io/docs/concepts/configuration/secret/) from Malcolm's [environment variable files](malcolm-config.md#MalcolmConfigEnvVars)
+* creating [ConfigMap objects](https://kubernetes.io/docs/concepts/configuration/configmap/) and [Secret objects](https://kubernetes.io/docs/concepts/configuration/secret/) from other configuration files stored locally below the Malcolm directory
 * deploying the objects defined in the [Kubernetes manifests]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/) in `./kubernetes`
 
 After a few moments you can check the status of the deployment:
@@ -340,6 +340,8 @@ $ ./scripts/configure -f /path/to/kubeconfig.yaml
 Malcolm processes will run as UID 1000 and GID 1000. Is this OK? (Y/n): y
 
 Should Malcolm use and maintain its own OpenSearch instance? (Y/n): y
+
+Compress OpenSearch index snapshots? (y/N): n
 
 Forward Logstash logs to a secondary remote OpenSearch instance? (y/N): n
 

@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: netbox-container
-        image: ghcr.io/idaholab/malcolm/netbox:kubernetes
+        image: ghcr.io/mmguero-dev/malcolm/netbox:development
         imagePullPolicy: Always
         stdin: false
         tty: true
@@ -59,6 +59,8 @@ spec:
               name: netbox-common-env
           - configMapRef:
               name: netbox-env
+          - secretRef:
+              name: netbox-secret-env
         env:
           - name: VIRTUAL_HOST
             value: "netbox.malcolm.local"
