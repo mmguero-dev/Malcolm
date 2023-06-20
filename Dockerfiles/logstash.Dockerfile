@@ -31,6 +31,7 @@ ARG LOGSTASH_OPENSEARCH_OUTPUT_PIPELINE_ADDRESSES=internal-os,external-os
 ARG LOGSTASH_NETBOX_ENRICHMENT=false
 ARG LOGSTASH_NETBOX_ENRICHMENT_VERBOSE=false
 ARG LOGSTASH_NETBOX_ENRICHMENT_LOOKUP_SERVICE=true
+ARG LOGSTASH_NETBOX_AUTO_POPULATE=false
 
 ENV LOGSTASH_ENRICHMENT_PIPELINE $LOGSTASH_ENRICHMENT_PIPELINE
 ENV LOGSTASH_PARSE_PIPELINE_ADDRESSES $LOGSTASH_PARSE_PIPELINE_ADDRESSES
@@ -40,6 +41,7 @@ ENV LOGSTASH_OPENSEARCH_OUTPUT_PIPELINE_ADDRESSES $LOGSTASH_OPENSEARCH_OUTPUT_PI
 ENV LOGSTASH_NETBOX_ENRICHMENT $LOGSTASH_NETBOX_ENRICHMENT
 ENV LOGSTASH_NETBOX_ENRICHMENT_VERBOSE $LOGSTASH_NETBOX_ENRICHMENT_VERBOSE
 ENV LOGSTASH_NETBOX_ENRICHMENT_LOOKUP_SERVICE $LOGSTASH_NETBOX_ENRICHMENT_LOOKUP_SERVICE
+ENV LOGSTASH_NETBOX_AUTO_POPULATE $LOGSTASH_NETBOX_AUTO_POPULATE
 
 USER root
 
@@ -61,6 +63,7 @@ RUN set -x && \
     export JAVA_HOME=/usr/share/logstash/jdk && \
     /usr/share/logstash/vendor/jruby/bin/jruby -S gem install bundler && \
     echo "gem 'lru_cache'" >> /usr/share/logstash/Gemfile && \
+    echo "gem 'fuzzy-string-match'" >> /usr/share/logstash/Gemfile && \
     /usr/share/logstash/bin/ruby -S bundle install && \
     logstash-plugin install --preserve logstash-filter-translate logstash-filter-cidr logstash-filter-dns \
                                        logstash-filter-json logstash-filter-prune logstash-filter-http \

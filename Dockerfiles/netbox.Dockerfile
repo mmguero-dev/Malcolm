@@ -1,4 +1,4 @@
-FROM netboxcommunity/netbox:latest
+FROM ghcr.io/netbox-community/netbox:v3.5.3
 
 # Copyright (c) 2023 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -22,17 +22,17 @@ ENV PUSER "boxer"
 ENV PGROUP "boxer"
 ENV PUSER_PRIV_DROP true
 
-ENV SUPERCRONIC_VERSION "0.2.24"
+ENV SUPERCRONIC_VERSION "0.2.25"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-amd64"
 ENV SUPERCRONIC "supercronic-linux-amd64"
-ENV SUPERCRONIC_SHA1SUM "6817299e04457e5d6ec4809c72ee13a43e95ba41"
+ENV SUPERCRONIC_SHA1SUM "642f4f5a2b67f3400b5ea71ff24f18c0a7d77d49"
 ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 ENV NETBOX_DEVICETYPE_LIBRARY_URL "https://codeload.github.com/netbox-community/devicetype-library/tar.gz/master"
 
 ARG NETBOX_DEVICETYPE_LIBRARY_PATH="/opt/netbox-devicetype-library"
 ARG NETBOX_DEFAULT_SITE=Malcolm
-ARG NETBOX_CRON=false
+ARG NETBOX_CRON=true
 
 ENV BASE_PATH netbox
 ENV NETBOX_DEVICETYPE_LIBRARY_PATH $NETBOX_DEVICETYPE_LIBRARY_PATH

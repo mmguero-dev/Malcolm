@@ -5,6 +5,7 @@ end
 def register(params)
   require 'date'
   require 'faraday'
+  require 'fuzzystringmatch'
   require 'json'
   require 'lru_redux'
 
@@ -79,6 +80,70 @@ def register(params)
 
   # hash of lookup types (from @lookup_type), each of which contains the respective looked-up values
   @cache_hash = LruRedux::ThreadSafeCache.new(params.fetch("lookup_cache_size", 512))
+
+  # these are used for autopopulation only, not lookup/enrichment
+
+  # autopopulate - either specified directly or read from ENV via autopopulate_env
+  #   false - do not autopopulate netbox inventory when uninventoried devices are observed
+  #   true - autopopulate netbox inventory when uninventoried devices are observed (not recommended)
+  #
+  # For now this is only done for devices/virtual machines, not for services or network segments.
+  _autopopulate_str = params["autopopulate"]
+  _autopopulate_env = params["autopopulate_env"]
+  if _autopopulate_str.nil? and !_autopopulate_env.nil?
+    _autopopulate_str = ENV[_autopopulate_env]
+  end
+  @autopopulate = [1, true, '1', 'true', 't', 'on', 'enabled'].include?(_autopopulate_str.to_s.downcase)
+
+  # fields for device autopopulation
+  @source_hostname = params["source_hostname"]
+  @source_oui = params["source_oui"]
+  @source_segment = params["source_segment"]
+
+  # default manufacturer, device role and device type if not specified, either specified directly or read from ENVs
+  @default_manuf = params["default_manuf"]
+  _default_manuf_env = params["default_manuf_env"]
+  if @default_manuf.nil? and !_default_manuf_env.nil?
+    @default_manuf = ENV[_default_manuf_env]
+  end
+  if !@default_manuf.nil? && @default_manuf.empty? then
+    @default_manuf = nil
+  end
+
+  @default_dtype = params["default_dtype"]
+  _default_dtype_env = params["default_dtype_env"]
+  if @default_dtype.nil? and !_default_dtype_env.nil?
+    @default_dtype = ENV[_default_dtype_env]
+  end
+  if !@default_dtype.nil? && @default_dtype.empty? then
+    @default_dtype = nil
+  end
+
+  @default_drole = params["default_drole"]
+  _default_drole_env = params["default_drole_env"]
+  if @default_drole.nil? and !_default_drole_env.nil?
+    @default_drole = ENV[_default_drole_env]
+  end
+  if !@default_drole.nil? && @default_drole.empty? then
+    @default_drole = nil
+  end
+
+  _autopopulate_fuzzy_threshold_str = params["autopopulate_fuzzy_threshold"]
+  _autopopulate_fuzzy_threshold_str_env = params["autopopulate_fuzzy_threshold_env"]
+  if _autopopulate_fuzzy_threshold_str.nil? and !_autopopulate_fuzzy_threshold_str_env.nil?
+    _autopopulate_fuzzy_threshold_str = ENV[_autopopulate_fuzzy_threshold_str_env]
+  end
+  if _autopopulate_fuzzy_threshold_str.nil? || _autopopulate_fuzzy_threshold_str.empty? then
+    @autopopulate_fuzzy_threshold = 0.75
+  else
+    @autopopulate_fuzzy_threshold = _autopopulate_fuzzy_threshold_str.to_f
+  end
+
+  # case-insensitive hash of OUIs (https://standards-oui.ieee.org/) to Manufacturers (https://demo.netbox.dev/static/docs/core-functionality/device-types/)
+  @manuf_hash = LruRedux::ThreadSafeCache.new(params.fetch("manuf_cache_size", 2048))
+
+  # end of autopopulation arguments
+
 end
 
 def filter(event)
@@ -96,6 +161,14 @@ def filter(event)
   _lookup_type = @lookup_type
   _lookup_site = @lookup_site
   _lookup_service_port = (@lookup_service ? event.get("#{@lookup_service_port_source}") : nil).to_i
+  _autopopulate = @autopopulate
+  _autopopulate_hostname = @source_hostname
+  _autopopulate_oui = @source_oui
+  _autopopulate_segment = @source_segment
+  _autopopulate_default_manuf = @default_manuf
+  _autopopulate_default_drole = @default_drole
+  _autopopulate_default_dtype = @default_dtype
+  _autopopulate_fuzzy_threshold = @autopopulate_fuzzy_threshold
   _result = @cache_hash.getset(_lookup_type){
               LruRedux::TTL::ThreadSafeCache.new(@cache_size, @cache_ttl)
             }.getset(_key){
@@ -197,6 +270,25 @@ def filter(event)
                     else
                       break
                     end
+
+                    if _autopopulate and (_query[:offset] == 0)
+                      # TODO: no results found, autopopulate enabled
+
+                      # match/look up manufacturer based on OUI
+                      if !_autopopulate_oui.nil? && !_autopopulate_oui&.empty? then
+                        _autopopulate_manuf = @manuf_hash.getset(_autopopulate_oui) {
+                          _manuf = Hash.new
+                          # TODO: compare manufacturers vs. input and get closest match
+                          _manuf
+                        }
+                      else
+                        # no OUI specified, set default ("unspecified") manufacturer
+                        _autopopulate_manuf = { :name => _autopopulate_default_manuf,
+                                                :match => 1.0 }
+                      end
+
+                    end
+
                   end
                 rescue Faraday::Error
                   # give up aka do nothing
