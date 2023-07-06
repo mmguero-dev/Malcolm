@@ -63,7 +63,9 @@ RUN set -x && \
     export JAVA_HOME=/usr/share/logstash/jdk && \
     /usr/share/logstash/vendor/jruby/bin/jruby -S gem install bundler && \
     echo "gem 'lru_cache'" >> /usr/share/logstash/Gemfile && \
+    echo "gem 'deep_merge'" >> /usr/share/logstash/Gemfile && \
     echo "gem 'fuzzy-string-match'" >> /usr/share/logstash/Gemfile && \
+    echo "gem 'stringex'" >> /usr/share/logstash/Gemfile && \
     /usr/share/logstash/bin/ruby -S bundle install && \
     logstash-plugin install --preserve logstash-filter-translate logstash-filter-cidr logstash-filter-dns \
                                        logstash-filter-json logstash-filter-prune logstash-filter-http \
@@ -100,15 +102,8 @@ RUN bash -c "chmod --silent 755 /usr/local/bin/*.sh /usr/local/bin/*.py || true"
              /usr/share/logstash/config/bootstrap \
              /usr/share/logstash/config/persist && \
     chown --silent -R ${PUSER}:root \
-        /usr/share/logstash/config/logstash*.yml \
-        /usr/share/logstash/config/bootstrap \
-        /usr/share/logstash/config/persist \
-        /usr/share/logstash/malcolm-pipelines \
-        /usr/share/logstash/malcolm-patterns \
-        /usr/share/logstash/malcolm-ruby \
+        /usr/share/logstash \
         /logstash-persistent-queue && \
-    # trying to see if things still work if these are owned by root (to avoid a costly chown on container startup)
-    chown --silent -R root:root /usr/share/logstash/vendor/* && \
     echo "Retrieving and parsing Wireshark manufacturer database..." && \
     python3 /usr/local/bin/manuf-oui-parse.py -o /etc/vendor_macs.yaml && \
     echo "Retrieving JA3 fingerprint lists..." && \

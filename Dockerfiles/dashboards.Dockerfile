@@ -134,9 +134,7 @@ RUN yum upgrade -y && \
         cd /usr/share/opensearch-dashboards/plugins && \
         /usr/share/opensearch-dashboards/bin/opensearch-dashboards-plugin install file:///tmp/transformVis.zip --allow-root && \
         rm -rf /tmp/transformVis /tmp/opensearch-dashboards && \
-    chown --silent -R root:root /usr/share/opensearch-dashboards/plugins/* \
-                                /usr/share/opensearch-dashboards/node_modules/* \
-                                /usr/share/opensearch-dashboards/src/* && \
+    chown --silent -R ${PUSER}:${PGROUP} /usr/share/opensearch-dashboards && \
     chmod +x /usr/bin/tini && \
     yum clean all && \
     rm -rf /var/cache/yum
