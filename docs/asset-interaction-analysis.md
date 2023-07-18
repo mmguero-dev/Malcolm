@@ -92,9 +92,15 @@ The following elements of the NetBox data model are used by Malcolm for Asset In
 
 ## <a name="NetBoxPopPassive"></a>Populate NetBox inventory via passively-gathered network traffic metadata
 
-If the `LOGSTASH_NETBOX_AUTO_POPULATE` [environment variable in `./config/logstash.env`](malcolm-config.md#MalcolmConfigEnvVars) is set to `true`, [uninventoried](#NetBoxCompare) devices observed in known network segments will be automatically created in the NetBox inventory based on the information available.
+If the `LOGSTASH_NETBOX_AUTO_POPULATE` [environment variable in `./config/logstash.env`](malcolm-config.md#MalcolmConfigEnvVars) is set to `true`, [uninventoried](#NetBoxCompare) devices with private IP addresses (as defined in [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) and [RFC 4193](https://datatracker.ietf.org/doc/html/rfc4193)) observed in known network segments will be automatically created in the NetBox inventory based on the information available. This value is set to `true` by answering **Y** to "Should Malcolm automatically populate NetBox inventory based on observed network traffic?" during [configuration](malcolm-config.md#ConfigAndTuning).
 
 However, careful consideration should be made before enabling this feature: the purpose of an asset management system is to document the intended state of a network: with Malcolm configured to populate NetBox with the live network state, a network misconfiguration fault could result in an **incorrect documented configuration**.
+
+Devices created using this autopopulate method will have their `status` field set to `staged`. It is recommended that users periodically review automatically-created devices for correctness and to fill in known details that couldn't be determined from network traffic. For example, the `manufacturer` field for automatically-created devices will be set based on the organizational unique identifier (OUI) determined from the first three bytes of the observed MAC address, which may not be accurate if the device's traffic was observed across a router. If possible, observed hostnames will be used in the naming of the automatically-created devices, falling back to the device manufacturer otherwise (e.g., `MYHOSTNAME @ 10.10.0.123` vs. `Schweitzer Engineering @ 10.10.0.123`).
+
+Since device autocreation is based on IP address, information about network segments (including [virtual routing and forwarding (VRF)](https://docs.netbox.dev/en/stable/models/ipam/vrf/) and [prefixes](https://docs.netbox.dev/en/stable/models/ipam/prefix/)) must be first [manually specified](#NetBoxPopManual) in NetBox in order for devices to be automatically populated.
+
+Although network devices can be automatically created using this method, [services](https://demo.netbox.dev/static/docs/core-functionality/services/#service-templates) should inventoried manually. The **Uninventoried Observed Services** visualization in the [**Zeek Known Summary** dashboard](dashboards.md#DashboardsVisualizations) can help users review network services to be created in NetBox.
 
 See [idaholab/Malcolm#135](https://github.com/idaholab/Malcolm/issues/135) for more information on this feature.
 

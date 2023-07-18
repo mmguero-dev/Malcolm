@@ -41,14 +41,14 @@ Building the ISO may take 30 minutes or more depending on the system. As the bui
 
 ```
 …
-Finished, created "/malcolm-build/malcolm-iso/malcolm-23.06.0.iso"
+Finished, created "/malcolm-build/malcolm-iso/malcolm-23.07.0.iso"
 …
 ```
 
-By default, Malcolm's Docker images are not packaged with the installer ISO. Malcolm assumes instead that users will pull the [latest images](https://github.com/orgs/idaholab/packages?repo_name=Malcolm) with a `docker-compose pull` command as described in the [Quick start](quickstart.md#QuickStart) section. To build an ISO with the latest Malcolm images included, follow the directions to create [pre-packaged installation files](development.md#Packager), which include a tarball with a name such as `malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.gz`. Then, pass that images tarball to the ISO build script with a `-d`, like this:
+By default, Malcolm's Docker images are not packaged with the installer ISO. Malcolm assumes instead that users will pull the [latest images](https://github.com/orgs/idaholab/packages?repo_name=Malcolm) with a `docker-compose pull` command as described in the [Quick start](quickstart.md#QuickStart) section. To build an ISO with the latest Malcolm images included, follow the directions to create [pre-packaged installation files](development.md#Packager), which include a tarball with a name such as `malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz`. Then, pass that images tarball to the ISO build script with a `-d`, like this:
 
 ```
-$ ./malcolm-iso/build_via_vagrant.sh -f -d malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.gz
+$ ./malcolm-iso/build_via_vagrant.sh -f -d malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz
 …
 ```
 
