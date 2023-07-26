@@ -1,4 +1,4 @@
-FROM debian:11-slim AS build
+FROM debian:12-slim AS build
 
 # Copyright (c) 2023 Battelle Energy Alliance, LLC.  All rights reserved.
 
@@ -49,7 +49,7 @@ RUN apt-get -q update && \
         swig \
         wget \
         zlib1g-dev && \
-  pip3 install --no-cache-dir beautifulsoup4 && \
+  python3 -m pip install --break-system-packages --no-cache-dir beautifulsoup4 && \
   cd /opt && \
     git clone --recurse-submodules --branch="$ARKIME_VERSION" "$ARKIME_URL" "./arkime-"$ARKIME_VERSION && \
     cd "./arkime-"$ARKIME_VERSION && \
@@ -71,7 +71,7 @@ RUN apt-get -q update && \
     rm -f ${ARKIME_DIR}/wiseService/source.* ${ARKIME_DIR}/etc/*.systemd.service && \
     bash -c "file ${ARKIME_DIR}/bin/* ${ARKIME_DIR}/node-v*/bin/* | grep 'ELF 64-bit' | sed 's/:.*//' | xargs -l -r strip -v --strip-unneeded"
 
-FROM debian:11-slim
+FROM debian:12-slim
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
@@ -133,7 +133,7 @@ ENV PCAP_MONITOR_HOST $PCAP_MONITOR_HOST
 
 COPY --from=build $ARKIME_DIR $ARKIME_DIR
 
-RUN sed -i "s/bullseye main/bullseye main contrib non-free/g" /etc/apt/sources.list && \
+RUN sed -i "s/main$/main contrib non-free/g" /etc/apt/sources.list.d/debian.sources && \
     apt-get -q update && \
     apt-get -y -q --no-install-recommends upgrade && \
     apt-get install -q -y --no-install-recommends \
@@ -148,14 +148,13 @@ RUN sed -i "s/bullseye main/bullseye main contrib non-free/g" /etc/apt/sources.l
       libkrb5-3 \
       libmaxminddb0 \
       libpcap0.8 \
-      libssl1.0 \
+      libssl3 \
       libtool \
       libwww-perl \
       libyaml-0-2 \
       libzmq5 \
       procps \
       psmisc \
-      python \
       python3 \
       python3-pip \
       python3-setuptools \
@@ -168,11 +167,11 @@ RUN sed -i "s/bullseye main/bullseye main contrib non-free/g" /etc/apt/sources.l
       wget \
       tini \
       tar gzip unzip cpio bzip2 lzma xz-utils p7zip-full unrar zlib1g && \
-    pip3 install --no-cache-dir beautifulsoup4 pyzmq watchdog && \
+    python3 -m pip install --break-system-packages --no-cache-dir beautifulsoup4 pyzmq watchdog && \
     ln -sfr $ARKIME_DIR/bin/npm /usr/local/bin/npm && \
       ln -sfr $ARKIME_DIR/bin/node /usr/local/bin/node && \
       ln -sfr $ARKIME_DIR/bin/npx /usr/local/bin/npx && \
-    apt-get -q -y --purge remove gcc gcc-10 cpp cpp-10 libssl-dev && \
+    apt-get -q -y --purge remove gcc gcc-12 cpp cpp-12 libssl-dev && \
       apt-get -q -y autoremove && \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

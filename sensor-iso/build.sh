@@ -3,7 +3,7 @@
 IMAGE_NAME=hedgehog
 IMAGE_PUBLISHER=idaholab
 IMAGE_VERSION=1.0.0
-IMAGE_DISTRIBUTION=bullseye
+IMAGE_DISTRIBUTION=bookworm
 
 BUILD_ERROR_CODE=1
 
@@ -56,12 +56,6 @@ if [ -d "$WORKDIR" ]; then
 
   chown -R root:root *
 
-  # if fasttrack.debian.net is down, use mirror.linux.pizza instead
-  FASTTRACK_MIRROR=$(( curl -fsSL -o /dev/null "https://fasttrack.debian.net/debian-fasttrack/" 2>/dev/null && echo "fasttrack.debian.net" ) || ( curl -fsSL -o /dev/null "https://mirror.linux.pizza/debian-fasttrack/" 2>/dev/null && echo "mirror.linux.pizza" ))
-  if [[ -n "$FASTTRACK_MIRROR" ]] && [[ "$FASTTRACK_MIRROR" != "fasttrack.debian.net" ]]; then
-    sed -i "s/fasttrack.debian.net/$FASTTRACK_MIRROR/g" ./config/archives/fasttrack.list.*
-  fi
-
   if [[ -f "$SCRIPT_PATH/shared/version.txt" ]]; then
     SHARED_IMAGE_VERSION="$(cat "$SCRIPT_PATH/shared/version.txt" | head -n 1)"
     [[ -n $SHARED_IMAGE_VERSION ]] && IMAGE_VERSION="$SHARED_IMAGE_VERSION"
@@ -80,7 +74,7 @@ if [ -d "$WORKDIR" ]; then
     echo "#!/bin/sh" >> ./config/hooks/normal/0168-pip-sensor-interface-installs.hook.chroot
     echo "export LC_ALL=C.UTF-8" >> ./config/hooks/normal/0168-pip-sensor-interface-installs.hook.chroot
     echo "export LANG=C.UTF-8" >> ./config/hooks/normal/0168-pip-sensor-interface-installs.hook.chroot
-    echo -n "pip3 install --system --no-compile --no-cache-dir --force-reinstall --upgrade" >> ./config/hooks/normal/0168-pip-sensor-interface-installs.hook.chroot
+    echo -n "python3 -m pip install --break-system-packages --no-compile --no-cache-dir --force-reinstall --upgrade" >> ./config/hooks/normal/0168-pip-sensor-interface-installs.hook.chroot
     while read LINE; do
       echo -n -e " \\\\\n  $LINE" >> ./config/hooks/normal/0168-pip-sensor-interface-installs.hook.chroot
     done <"$SCRIPT_PATH/interface/requirements.txt"
@@ -187,8 +181,8 @@ if [ -d "$WORKDIR" ]; then
     --apt-secure true \
     --apt-source-archives false \
     --architectures amd64 \
-    --archive-areas 'main contrib non-free' \
-    --backports true \
+    --archive-areas 'main contrib non-free non-free-firmware' \
+    --backports false \
     --binary-images iso-hybrid \
     --bootappend-install "auto=true locales=en_US.UTF-8 keyboard-layouts=us" \
     --bootappend-live "boot=live components username=sensor nosplash random.trust_cpu=on elevator=deadline cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem systemd.unified_cgroup_hierarchy=1" \
@@ -196,7 +190,7 @@ if [ -d "$WORKDIR" ]; then
     --debian-installer live \
     --debian-installer-distribution $IMAGE_DISTRIBUTION \
     --debian-installer-gui false \
-    --debootstrap-options "--include=apt-transport-https,bc,ca-certificates,gnupg,debian-archive-keyring,fasttrack-archive-keyring,jq,openssl --no-merged-usr" \
+    --debootstrap-options "--include=apt-transport-https,bc,ca-certificates,gnupg,debian-archive-keyring,jq,openssl --no-merged-usr" \
     --distribution $IMAGE_DISTRIBUTION \
     --image-name "$IMAGE_NAME" \
     --iso-application "$IMAGE_NAME" \
@@ -205,7 +199,7 @@ if [ -d "$WORKDIR" ]; then
     --linux-flavours "amd64:amd64" \
     --linux-packages "linux-image linux-headers" \
     --memtest none \
-    --parent-archive-areas 'main contrib non-free' \
+    --parent-archive-areas 'main contrib non-free non-free-firmware' \
     --parent-debian-installer-distribution $IMAGE_DISTRIBUTION \
     --parent-distribution $IMAGE_DISTRIBUTION \
     --security true \

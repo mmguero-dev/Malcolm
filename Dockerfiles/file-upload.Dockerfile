@@ -1,4 +1,4 @@
-FROM debian:11-slim AS build
+FROM debian:12-slim AS build
 
 # Copyright (c) 2023 Battelle Energy Alliance, LLC.  All rights reserved.
 
@@ -21,7 +21,7 @@ RUN apt-get -q update && \
     rm -rf /jQuery-File-Upload/*.html /jQuery-File-Upload/test/ /jQuery-File-Upload/server/gae-go/ \
            /jQuery-File-Upload/server/gae-python/
 
-FROM debian:11-slim AS runtime
+FROM debian:12-slim AS runtime
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
@@ -46,7 +46,7 @@ ENV PUSER_PRIV_DROP false
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
-ARG PHP_VERSION=7.4
+ARG PHP_VERSION=8.2
 ENV PHP_VERSION $PHP_VERSION
 
 ARG SITE_NAME="Capture File and Log Archive Upload"
