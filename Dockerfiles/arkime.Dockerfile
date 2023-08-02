@@ -33,6 +33,7 @@ RUN apt-get -q update && \
         libkrb5-dev \
         libmaxminddb-dev \
         libpcap0.8-dev \
+        libpcre3-dev \
         libssl-dev \
         libtool \
         libwww-perl \
@@ -49,7 +50,7 @@ RUN apt-get -q update && \
         swig \
         wget \
         zlib1g-dev && \
-  python3 -m pip install --break-system-packages --no-cache-dir beautifulsoup4 && \
+  python3 -m pip install --break-system-packages --no-cache-dir beautifulsoup4 meson && \
   cd /opt && \
     git clone --recurse-submodules --branch="$ARKIME_VERSION" "$ARKIME_URL" "./arkime-"$ARKIME_VERSION && \
     cd "./arkime-"$ARKIME_VERSION && \
@@ -148,6 +149,7 @@ RUN sed -i "s/main$/main contrib non-free/g" /etc/apt/sources.list.d/debian.sour
       libkrb5-3 \
       libmaxminddb0 \
       libpcap0.8 \
+      libpcre3 \
       libssl3 \
       libtool \
       libwww-perl \
@@ -163,9 +165,9 @@ RUN sed -i "s/main$/main contrib non-free/g" /etc/apt/sources.list.d/debian.sour
       rsync \
       sudo \
       supervisor \
+      tini \
       vim-tiny \
       wget \
-      tini \
       tar gzip unzip cpio bzip2 lzma xz-utils p7zip-full unrar zlib1g && \
     python3 -m pip install --break-system-packages --no-cache-dir beautifulsoup4 pyzmq watchdog && \
     ln -sfr $ARKIME_DIR/bin/npm /usr/local/bin/npm && \
@@ -205,7 +207,7 @@ RUN [ ${#MAXMIND_GEOIP_DB_LICENSE_KEY} -gt 1 ] && for DB in ASN Country City; do
       rm -f "GeoLite2-$DB*"; \
     done; \
   curl -s -S -L -o $ARKIME_DIR/etc/ipv4-address-space.csv "https://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.csv" && \
-  curl -s -S -L -o $ARKIME_DIR/etc/oui.txt "https://raw.githubusercontent.com/wireshark/wireshark/master/manuf"
+  curl -s -S -L -o $ARKIME_DIR/etc/oui.txt "https://gitlab.com/wireshark/wireshark/raw/release-4.0/manuf"
 
 RUN groupadd --gid $DEFAULT_GID $PGROUP && \
     useradd -M --uid $DEFAULT_UID --gid $DEFAULT_GID --home $ARKIME_DIR $PUSER && \

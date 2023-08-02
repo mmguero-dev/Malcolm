@@ -1,4 +1,6 @@
 accountsservice
+aide
+aide-common
 apparmor
 apparmor-profiles
 apparmor-utils
@@ -84,6 +86,7 @@ libpam-pwquality
 libpcre2-16-0
 libpcre2-32-0
 libpcre2-8-0
+libpcre3
 libtool
 libtsan0
 libubsan1
