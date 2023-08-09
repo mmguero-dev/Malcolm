@@ -751,7 +751,8 @@ class Installer(object):
                 indexDirFull,
                 indexSnapshotDirFull,
                 os.path.join(pcapDirFull, 'processed'),
-                os.path.join(pcapDirFull, 'upload'),
+                os.path.join(pcapDirFull, os.path.join('upload', 'tmp')),
+                os.path.join(pcapDirFull, os.path.join('upload', 'variants')),
                 os.path.join(suricataLogDirFull, 'live'),
                 os.path.join(zeekLogDirFull, 'current'),
                 os.path.join(zeekLogDirFull, 'live'),
@@ -1165,12 +1166,6 @@ class Installer(object):
             EnvValue(
                 os.path.join(args.configDir, 'netbox-common.env'),
                 'NETBOX_REDIS_DISABLED',
-                TrueOrFalseNoQuote(not netboxEnabled),
-            ),
-            # enable/disable netbox (redis cache)
-            EnvValue(
-                os.path.join(args.configDir, 'netbox-common.env'),
-                'NETBOX_REDIS_CACHE_DISABLED',
                 TrueOrFalseNoQuote(not netboxEnabled),
             ),
             # HTTPS (nginxSSL=True) vs unencrypted HTTP (nginxSSL=False)
