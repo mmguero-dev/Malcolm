@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: upload-container
-        image: ghcr.io/mmguero-dev/malcolm/file-upload:development
+        image: ghcr.io/idaholab/malcolm/file-upload:23.08.0
         imagePullPolicy: Always
         stdin: false
         tty: true
@@ -73,7 +73,7 @@ spec:
             subPath: "upload"
       initContainers:
       - name: upload-dirinit-container
-        image: ghcr.io/mmguero-dev/malcolm/dirinit:development
+        image: ghcr.io/idaholab/malcolm/dirinit:23.08.0
         imagePullPolicy: Always
         stdin: false
         tty: true
@@ -82,7 +82,7 @@ spec:
               name: process-env
         env:
           - name: PUSER_MKDIR
-            value: "/data/pcap:upload/tmp,upload/variants"
+            value: "/data/pcap:upload/tmp/spool,upload/variants"
         volumeMounts:
           - name: upload-pcap-volume
             mountPath: "/data/pcap"
