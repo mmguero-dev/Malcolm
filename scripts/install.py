@@ -885,10 +885,21 @@ class Installer(object):
             'Download updated Suricata signatures periodically?', default=args.suricataRuleUpdate
         )
         autoZeek = InstallerYesOrNo('Automatically analyze all PCAP files with Zeek?', default=args.autoZeek)
-        zeekICSBestGuess = autoZeek and InstallerYesOrNo(
-            'Should Malcolm use "best guess" to identify potential OT/ICS traffic with Zeek?',
-            default=args.zeekICSBestGuess,
+
+        zeekIcs = InstallerYesOrNo(
+            'Is Malcolm being used to monitor an Operational Technology/Industrial Control Systems (OT/ICS) network?',
+            default=args.zeekIcs,
         )
+
+        zeekICSBestGuess = (
+            autoZeek
+            and zeekIcs
+            and InstallerYesOrNo(
+                'Should Malcolm use "best guess" to identify potential OT/ICS traffic with Zeek?',
+                default=args.zeekICSBestGuess,
+            )
+        )
+
         reverseDns = InstallerYesOrNo(
             'Perform reverse DNS lookup locally for source and destination IP addresses in logs?',
             default=args.reverseDns,
@@ -1144,13 +1155,13 @@ class Installer(object):
         # modify values in .env files in args.configDir
 
         # first, if the args.configDir is completely empty, then populate from defaults
-        defaultConfigDir = os.path.join(malcolm_install_path, 'config')
+        examplesConfigDir = os.path.join(malcolm_install_path, 'config')
         if (
-            os.path.isdir(defaultConfigDir)
-            and (not same_file_or_dir(defaultConfigDir, args.configDir))
+            os.path.isdir(examplesConfigDir)
+            and (not same_file_or_dir(examplesConfigDir, args.configDir))
             and (not os.listdir(args.configDir))
         ):
-            for defaultEnvExampleFile in glob.glob(os.path.join(defaultConfigDir, '*.env.example')):
+            for defaultEnvExampleFile in glob.glob(os.path.join(examplesConfigDir, '*.env.example')):
                 shutil.copy2(defaultEnvExampleFile, args.configDir)
 
         # if a specific config/*.env file doesn't exist, use the *.example.env files as defaults
@@ -1486,6 +1497,12 @@ class Installer(object):
                 os.path.join(args.configDir, 'zeek.env'),
                 'EXTRACTED_FILE_UPDATE_RULES',
                 TrueOrFalseNoQuote(fileScanRuleUpdate),
+            ),
+            # disable/enable ICS analyzers
+            EnvValue(
+                os.path.join(args.configDir, 'zeek.env'),
+                'ZEEK_DISABLE_ICS_ALL',
+                '' if zeekIcs else TrueOrFalseNoQuote(not zeekIcs),
             ),
             # disable/enable ICS best guess
             EnvValue(
@@ -3225,6 +3242,16 @@ def main():
         help="Automatically analyze all PCAP files with Zeek",
     )
     analysisArgGroup.add_argument(
+        '--zeek-ics',
+        dest='zeekIcs',
+        type=str2bool,
+        metavar="true|false",
+        nargs='?',
+        const=True,
+        default=False,
+        help="Malcolm is being used to monitor an Industrial Control Systems (ICS) or Operational Technology (OT) network",
+    )
+    analysisArgGroup.add_argument(
         '--zeek-ics-best-guess',
         dest='zeekICSBestGuess',
         type=str2bool,
@@ -3556,10 +3583,11 @@ def main():
             success = installer.tweak_system_files()
         if (orchMode is OrchestrationFramework.DOCKER_COMPOSE) and hasattr(installer, 'install_docker_images'):
             success = installer.install_docker_images(imageFile)
+        if (orchMode is OrchestrationFramework.DOCKER_COMPOSE) and hasattr(installer, 'install_malcolm_files'):
+            success, installPath = installer.install_malcolm_files(malcolmFile, args.configDir is None)
 
     # if .env directory is unspecified, use the default ./config directory
-    defaultConfigDir = args.configDir is None
-    if defaultConfigDir:
+    if args.configDir is None:
         args.configDir = os.path.join(MalcolmPath, 'config')
     try:
         os.makedirs(args.configDir)
@@ -3604,9 +3632,6 @@ def main():
         success = (installPath is not None) and os.path.isdir(installPath)
         if args.debug:
             eprint(f"Malcolm installation detected at {installPath}")
-
-    elif hasattr(installer, 'install_malcolm_files'):
-        success, installPath = installer.install_malcolm_files(malcolmFile, defaultConfigDir)
 
     if (installPath is not None) and os.path.isdir(installPath) and hasattr(installer, 'tweak_malcolm_runtime'):
         installer.tweak_malcolm_runtime(installPath)
