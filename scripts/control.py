@@ -46,6 +46,9 @@ from malcolm_common import (
     PLATFORM_WINDOWS,
     posInt,
     ProcessLogLine,
+    PROFILE_HEDGEHOG,
+    PROFILE_KEY,
+    PROFILE_MALCOLM,
     ScriptPath,
     UserInputDefaultsBehavior,
     YAMLDynamic,
@@ -184,7 +187,7 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
     keystoreBinProc = f"/usr/share/{service}/bin/{service}-keystore"
     uidGidDict = GetUidGidFromEnv(args.configDir)
 
-    if orchMode is OrchestrationFramework.DOCKER_COMPOSE:
+    if (orchMode is OrchestrationFramework.DOCKER_COMPOSE) and (args.composeProfile == PROFILE_MALCOLM):
         # if we're using docker-uid-gid-setup.sh to drop privileges as we spin up a container
         dockerUidGuidSetup = "/usr/local/bin/docker-uid-gid-setup.sh"
 
@@ -227,7 +230,9 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
 
                 # determine if Malcolm is running; if so, we'll use docker-compose exec, other wise we'll use docker run
                 err, out = run_process(
-                    [dockerComposeBin, '-f', args.composeFile, 'ps', '-q', service], env=osEnv, debug=args.debug
+                    [dockerComposeBin, '--profile', args.composeProfile, '-f', args.composeFile, 'ps', '-q', service],
+                    env=osEnv,
+                    debug=args.debug,
                 )
                 out[:] = [x for x in out if x]
                 if (err == 0) and (len(out) > 0):
@@ -236,6 +241,8 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
                     # assemble the service-keystore command
                     dockerCmd = [
                         dockerComposeBin,
+                        '--profile',
+                        args.composeProfile,
                         '-f',
                         args.composeFile,
                         'exec',
@@ -373,8 +380,14 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
                 dbgStr = f"{podname}: {cmd}({run_process_kwargs['stdin'][:80] + bool(run_process_kwargs['stdin'][80:]) * '...' if 'stdin' in run_process_kwargs and run_process_kwargs['stdin'] else ''}) returned {deep_get(podResults, ['err'], 1)}: {deep_get(podResults, ['output'], 'unknown')}"
                 eprint(dbgStr)
 
+    elif args.composeProfile == PROFILE_HEDGEHOG:
+        # keystore operation doesn't mean anything in hedgehog mode, just return "Ok"
+        err = 0
+
     else:
-        raise Exception(f'{sys._getframe().f_code.co_name} does not yet support {orchMode}')
+        raise Exception(
+            f'{sys._getframe().f_code.co_name} does not yet support {orchMode} with profile {args.composeProfile}'
+        )
 
     return (err == 0), results
 
@@ -391,7 +404,9 @@ def status():
         osEnv['TMPDIR'] = MalcolmTmpPath
 
         err, out = run_process(
-            [dockerComposeBin, '-f', args.composeFile, 'ps', args.service][: 5 if args.service is not None else -1],
+            [dockerComposeBin, '--profile', args.composeProfile, '-f', args.composeFile, 'ps', args.service][
+                : 7 if args.service is not None else -1
+            ],
             env=osEnv,
             debug=args.debug,
         )
@@ -459,13 +474,15 @@ def netboxBackup(backupFileName=None):
 
     uidGidDict = GetUidGidFromEnv(args.configDir)
 
-    if orchMode is OrchestrationFramework.DOCKER_COMPOSE:
+    if (orchMode is OrchestrationFramework.DOCKER_COMPOSE) and (args.composeProfile == PROFILE_MALCOLM):
         # docker-compose use local temporary path
         osEnv = os.environ.copy()
         osEnv['TMPDIR'] = MalcolmTmpPath
 
         dockerCmd = [
             dockerComposeBin,
+            '--profile',
+            args.composeProfile,
             '-f',
             args.composeFile,
             'exec',
@@ -530,7 +547,9 @@ def netboxBackup(backupFileName=None):
         backupMediaFileName = None
 
     else:
-        raise Exception(f'{sys._getframe().f_code.co_name} does not yet support {orchMode}')
+        raise Exception(
+            f'{sys._getframe().f_code.co_name} does not yet support {orchMode} with profile {args.composeProfile}'
+        )
 
     return backupFileName, backupMediaFileName
 
@@ -544,13 +563,15 @@ def netboxRestore(backupFileName=None):
     if backupFileName and os.path.isfile(backupFileName):
         uidGidDict = GetUidGidFromEnv(args.configDir)
 
-        if orchMode is OrchestrationFramework.DOCKER_COMPOSE:
+        if (orchMode is OrchestrationFramework.DOCKER_COMPOSE) and (args.composeProfile == PROFILE_MALCOLM):
             # docker-compose use local temporary path
             osEnv = os.environ.copy()
             osEnv['TMPDIR'] = MalcolmTmpPath
 
             dockerCmdBase = [
                 dockerComposeBin,
+                '--profile',
+                args.composeProfile,
                 '-f',
                 args.composeFile,
                 'exec',
@@ -682,7 +703,9 @@ def netboxRestore(backupFileName=None):
             # TODO: can't restore netbox/media directory via kubernetes at the moment
 
         else:
-            raise Exception(f'{sys._getframe().f_code.co_name} does not yet support {orchMode}')
+            raise Exception(
+                f'{sys._getframe().f_code.co_name} does not yet support {orchMode} with profile {args.composeProfile}'
+            )
 
 
 ###################################################################################################
@@ -704,7 +727,9 @@ def logs():
         osEnv['COMPOSE_HTTP_TIMEOUT'] = '100000000'
 
         err, out = run_process(
-            [dockerComposeBin, '-f', args.composeFile, 'ps', args.service][: 5 if args.service is not None else -1],
+            [dockerComposeBin, '--profile', args.composeProfile, '-f', args.composeFile, 'ps', args.service][
+                : 7 if args.service is not None else -1
+            ],
             env=osEnv,
             debug=args.debug,
         )
@@ -712,6 +737,8 @@ def logs():
 
         cmd = [
             dockerComposeBin,
+            '--profile',
+            args.composeProfile,
             '-f',
             args.composeFile,
             'logs',
@@ -719,7 +746,7 @@ def logs():
             str(args.logLineCount) if args.logLineCount else 'all',
             '-f',
             args.service,
-        ][: 8 if args.service else -1]
+        ][: 10 if args.service else -1]
 
     elif orchMode is OrchestrationFramework.KUBERNETES:
         if which("stern"):
@@ -805,7 +832,9 @@ def stop(wipe=False):
         # if stop.sh is being called with wipe.sh (after the docker-compose file)
         # then also remove named and anonymous volumes (not external volumes, of course)
         err, out = run_process(
-            [dockerComposeBin, '-f', args.composeFile, 'down', '--volumes'][: 5 if wipe else -1],
+            [dockerComposeBin, '--profile', args.composeProfile, '-f', args.composeFile, 'down', '--volumes'][
+                : 7 if wipe else -1
+            ],
             env=osEnv,
             debug=args.debug,
         )
@@ -1032,7 +1061,9 @@ def start():
 
         # start docker
         err, out = run_process(
-            [dockerComposeBin, '-f', args.composeFile, 'up', '--detach'], env=osEnv, debug=args.debug
+            [dockerComposeBin, '--profile', args.composeProfile, '-f', args.composeFile, 'up', '--detach'],
+            env=osEnv,
+            debug=args.debug,
         )
         if err != 0:
             eprint("Malcolm failed to start\n")
@@ -1276,8 +1307,9 @@ def authSetup():
                     (usernamePrevious is not None) and (usernamePrevious != username)
                 ) or args.cmdAuthSetupNonInteractive:
                     htpasswdLines = list()
-                    with open(htpasswdFile, 'r') as f:
-                        htpasswdLines = f.readlines()
+                    if os.path.isfile(htpasswdFile):
+                        with open(htpasswdFile, 'r') as f:
+                            htpasswdLines = f.readlines()
                     with open(htpasswdFile, 'w') as f:
                         if args.cmdAuthSetupNonInteractive and username and args.authPasswordHtpasswd:
                             f.write(f'{username}:{args.authPasswordHtpasswd}')
@@ -1883,6 +1915,16 @@ def main():
         default=os.getenv('MALCOLM_CONFIG_DIR', None),
         help="Directory containing Malcolm's .env files",
     )
+    parser.add_argument(
+        '-p',
+        '--profile',
+        required=False,
+        dest='composeProfile',
+        metavar='<string>',
+        type=str,
+        default=None,
+        help='docker-compose profile to enable',
+    )
 
     operationsGroup = parser.add_argument_group('Runtime Control')
     operationsGroup.add_argument(
@@ -2180,7 +2222,11 @@ def main():
             err, out = run_process([dockerBin, 'info'], debug=args.debug)
             if err != 0:
                 raise Exception(f'{ScriptName} requires docker, please run install.py')
-            err, out = run_process([dockerComposeBin, '-f', args.composeFile, 'version'], env=osEnv, debug=args.debug)
+            err, out = run_process(
+                [dockerComposeBin, '--profile', PROFILE_MALCOLM, '-f', args.composeFile, 'version'],
+                env=osEnv,
+                debug=args.debug,
+            )
             if err != 0:
                 raise Exception(f'{ScriptName} requires docker-compose, please run install.py')
 
@@ -2198,6 +2244,26 @@ def main():
                 raise Exception(
                     f'{ScriptName} requires the official Python client library for kubernetes for {orchMode} mode'
                 )
+
+        # identify running profile
+        runProfileSrc = ''
+        if not args.composeProfile:
+            profileEnvFile = os.path.join(args.configDir, 'process.env')
+            try:
+                if os.path.isfile(profileEnvFile):
+                    args.composeProfile = dotenvImported.get_key(profileEnvFile, PROFILE_KEY)
+                    runProfileSrc = os.path.basename(profileEnvFile)
+                elif args.debug:
+                    runProfileSrc = 'process.env not found'
+            except Exception as e:
+                runProfileSrc = f'exception ({e})'
+        elif args.debug:
+            runProfileSrc = 'specified'
+        if not args.composeProfile:
+            args.composeProfile = PROFILE_MALCOLM
+            runProfileSrc = 'default'
+        if args.debug:
+            eprint(f"Run profile ({runProfileSrc}): {args.composeProfile}")
 
         # identify openssl binary
         opensslBin = 'openssl.exe' if ((pyPlatform == PLATFORM_WINDOWS) and which('openssl.exe')) else 'openssl'
