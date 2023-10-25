@@ -26,8 +26,8 @@ OPENSEARCH_SECONDARY=${OPENSEARCH_SECONDARY:-""}
 # is the argument to automatically create this index enabled?
 if [[ "$CREATE_OS_ARKIME_SESSION_INDEX" = "true" ]] ; then
 
-  # give OpenSearch time to start before configuring dashboards
-  /data/opensearch_status.sh >/dev/null 2>&1
+  # give OpenSearch time to start and Arkime to get its template created before configuring dashboards
+  /data/opensearch_status.sh -l arkime_sessions3_template >/dev/null 2>&1
 
   for LOOP in primary secondary; do
 
@@ -81,7 +81,7 @@ if [[ "$CREATE_OS_ARKIME_SESSION_INDEX" = "true" ]] ; then
       # have we not not already created the index pattern?
       if [[ "$LOOP" != "primary" ]] || ! curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --fail -XGET "$DASHB_URL/api/saved_objects/index-pattern/$INDEX_PATTERN_ID" ; then
 
-        echo "OpenSearch ($LOOP) is running at \"${OPENSEARCH_URL_TO_USE}\"!"
+        echo "$DATASTORE_TYPE ($LOOP) is running at \"${OPENSEARCH_URL_TO_USE}\"!"
 
         # register the repo name/path for opensearch snapshots (but don't count this an unrecoverable failure)
         if [[ "$LOOP" == "primary" ]] && [[ "$OPENSEARCH_LOCAL" == "true" ]]; then
@@ -191,7 +191,7 @@ if [[ "$CREATE_OS_ARKIME_SESSION_INDEX" = "true" ]] ; then
               -d"{\"attributes\":{\"title\":\"$IDX_NAME\",\"timeFieldName\":\"$IDX_TIME_FIELD\"}}" 2>&1 || true
           done
 
-          echo "Importing OpenSearch Dashboards saved objects..."
+          echo "Importing $DATASTORE_TYPE Dashboards saved objects..."
 
           # install default dashboards
           for i in /opt/dashboards/*.json; do
@@ -206,37 +206,36 @@ if [[ "$CREATE_OS_ARKIME_SESSION_INDEX" = "true" ]] ; then
             curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/dashboards/import?force=true" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d "@$i"
           done
 
-          # set dark theme (or not)
-          [[ "$DARK_MODE" == "true" ]] && DARK_MODE_ARG='{"value":true}' || DARK_MODE_ARG='{"value":false}'
-          curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings/theme:darkMode" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d "$DARK_MODE_ARG"
+          echo "$DATASTORE_TYPE Dashboards saved objects import complete!"
 
-          # set default dashboard
-          curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings/defaultRoute" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d "{\"value\":\"/app/dashboards#/view/${DEFAULT_DASHBOARD}\"}"
+          if [[ "$DATASTORE_TYPE" == "opensearch" ]]; then
+            # some features and tweaks like anomaly detection, alerting, etc. only exist in opensearch
 
-          # set default query time range
-          curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d \
-            '{"changes":{"timepicker:timeDefaults":"{\n  \"from\": \"now-24h\",\n  \"to\": \"now\",\n  \"mode\": \"quick\"}"}}'
+            # set dark theme (or not)
+            [[ "$DARK_MODE" == "true" ]] && DARK_MODE_ARG='{"value":true}' || DARK_MODE_ARG='{"value":false}'
+            curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings/theme:darkMode" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d "$DARK_MODE_ARG"
 
-          # turn off telemetry
-          [[ "$DATASTORE_TYPE" == "opensearch" ]] && \
+            # set default dashboard
+            curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings/defaultRoute" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d "{\"value\":\"/app/dashboards#/view/${DEFAULT_DASHBOARD}\"}"
+
+            # set default query time range
+            curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d \
+              '{"changes":{"timepicker:timeDefaults":"{\n  \"from\": \"now-24h\",\n  \"to\": \"now\",\n  \"mode\": \"quick\"}"}}'
+
+            # turn off telemetry
             curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/telemetry/v2/optIn" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d '{"enabled":false}'
 
-          # pin filters by default
-          curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings/filters:pinnedByDefault" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d '{"value":true}'
+            # pin filters by default
+            curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings/filters:pinnedByDefault" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d '{"value":true}'
 
-          # enable in-session storage
-          curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings/state:storeInSessionStorage" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d '{"value":true}'
-
-          echo "OpenSearch Dashboards saved objects import complete!"
-
-          # features like anomaly detection, alerting, etc. only exist in opensearch
-          if [[ "$DATASTORE_TYPE" == "opensearch" ]]; then
+            # enable in-session storage
+            curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$DASHB_URL/api/$DASHBOARDS_URI_PATH/settings/state:storeInSessionStorage" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d '{"value":true}'
 
             # before we go on to create the anomaly detectors, we need to wait for actual arkime_sessions3-* documents
             /data/opensearch_status.sh -w >/dev/null 2>&1
             sleep 60
 
-            echo "Creating OpenSearch anomaly detectors..."
+            echo "Creating $DATASTORE_TYPE anomaly detectors..."
 
             # Create anomaly detectors here
             for i in /opt/anomaly_detectors/*.json; do
@@ -264,9 +263,9 @@ if [[ "$CREATE_OS_ARKIME_SESSION_INDEX" = "true" ]] ; then
               curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XDELETE "$OPENSEARCH_URL_TO_USE/_plugins/_anomaly_detection/detectors/$DUMMY_DETECTOR_ID" -H "$XSRF_HEADER:true" -H 'Content-type:application/json'
             fi
 
-            echo "OpenSearch anomaly detectors creation complete!"
+            echo "$DATASTORE_TYPE anomaly detectors creation complete!"
 
-            echo "Creating OpenSearch alerting objects..."
+            echo "Creating $DATASTORE_TYPE alerting objects..."
 
             # Create notification/alerting objects here
 
@@ -280,7 +279,7 @@ if [[ "$CREATE_OS_ARKIME_SESSION_INDEX" = "true" ]] ; then
               curl "${CURL_CONFIG_PARAMS[@]}" -L --silent --output /dev/null --show-error -XPOST "$OPENSEARCH_URL_TO_USE/_plugins/_alerting/monitors" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d "@$i"
             done
 
-            echo "OpenSearch alerting objects creation complete!"
+            echo "$DATASTORE_TYPE alerting objects creation complete!"
 
           fi # DATASTORE_TYPE == opensearch
         fi # stuff to only do for primary

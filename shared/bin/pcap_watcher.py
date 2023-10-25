@@ -40,6 +40,7 @@ import watch_common
 from collections import defaultdict
 from multiprocessing.pool import ThreadPool
 
+from urllib.parse import urlparse
 from urllib3.exceptions import NewConnectionError
 
 from watchdog.observers import Observer
@@ -59,13 +60,19 @@ ARKIME_FILE_SIZE_FIELD = "filesize"
 ###################################################################################################
 pdbFlagged = False
 args = None
-opensearchHttpAuth = None
 scriptName = os.path.basename(__file__)
 scriptPath = os.path.dirname(os.path.realpath(__file__))
 origPath = os.getcwd()
 shuttingDown = [False]
 DEFAULT_NODE_NAME = os.getenv('PCAP_NODE_NAME', 'malcolm')
-DatabaseClass = None
+DatabaseClass, DatabaseInitArgs, SearchClass, ConnectionError, ConnectionTimeout, AuthenticationException = (
+    None,
+    None,
+    None,
+    None,
+    None,
+    None,
+)
 
 
 ###################################################################################################
@@ -73,8 +80,13 @@ DatabaseClass = None
 class EventWatcher:
     def __init__(self, logger=None):
         global args
-        global opensearchHttpAuth
         global shuttingDown
+        global DatabaseClass
+        global DatabaseInitArgs
+        global SearchClass
+        global ConnectionError
+        global ConnectionTimeout
+        global AuthenticationException
 
         super().__init__()
 
@@ -91,17 +103,11 @@ class EventWatcher:
             while (not connected) and (not shuttingDown[0]):
                 try:
                     try:
-                        self.logger.info(f"{scriptName}:\tconnecting to OpenSearch {args.opensearchUrl}...")
-
+                        self.logger.info(f"{scriptName}:\tconnecting to {args.opensearchMode} {args.opensearchUrl}...")
                         self.openSearchClient = DatabaseClass(
                             hosts=[args.opensearchUrl],
-                            http_auth=opensearchHttpAuth,
-                            verify_certs=args.opensearchSslVerify,
-                            ssl_assert_hostname=False,
-                            ssl_show_warn=False,
-                            request_timeout=1,
+                            **DatabaseInitArgs,
                         )
-
                         self.logger.debug(f"{scriptName}:\t{self.openSearchClient.cluster.health()}")
 
                         self.openSearchClient.cluster.health(
@@ -120,12 +126,13 @@ class EventWatcher:
                         ConnectionTimeout,
                         ConnectionRefusedError,
                         NewConnectionError,
+                        AuthenticationException,
                     ) as connError:
-                        self.logger.error(f"{scriptName}:\tOpenSearch connection error: {connError}")
+                        self.logger.error(f"{scriptName}:\t{args.opensearchMode} connection error: {connError}")
 
                 except Exception as genericError:
                     self.logger.error(
-                        f"{scriptName}:\tUnexpected exception while connecting to OpenSearch: {genericError}"
+                        f"{scriptName}:\tUnexpected exception while connecting to {args.opensearchMode}: {genericError}"
                     )
 
                 if (not connected) and args.opensearchWaitForHealth:
@@ -138,7 +145,7 @@ class EventWatcher:
             # if requested, wait for at least "yellow" health in the cluster for the "files" index
             while connected and args.opensearchWaitForHealth and (not healthy) and (not shuttingDown[0]):
                 try:
-                    self.logger.info(f"{scriptName}:\twaiting for OpenSearch to be healthy")
+                    self.logger.info(f"{scriptName}:\twaiting for {args.opensearchMode} to be healthy")
                     self.openSearchClient.cluster.health(
                         index=ARKIME_FILES_INDEX,
                         wait_for_status='yellow',
@@ -151,8 +158,9 @@ class EventWatcher:
                     ConnectionTimeout,
                     ConnectionRefusedError,
                     NewConnectionError,
+                    AuthenticationException,
                 ) as connError:
-                    self.logger.debug(f"{scriptName}:\tOpenSearch health check: {connError}")
+                    self.logger.debug(f"{scriptName}:\t{args.opensearchMode} health check: {connError}")
 
                 if not healthy:
                     time.sleep(1)
@@ -177,6 +185,8 @@ class EventWatcher:
     # set up event processor to append processed events from to the event queue
     def processFile(self, pathname):
         global args
+        global DatabaseClass
+        global SearchClass
 
         self.logger.info(f"{scriptName}:\t👓\t{pathname}")
 
@@ -197,7 +207,7 @@ class EventWatcher:
                 fileIsDuplicate = False
                 if self.useOpenSearch:
                     s = (
-                        self.openSearchClient.search(index=ARKIME_FILES_INDEX)
+                        SearchClass(using=self.openSearchClient, index=ARKIME_FILES_INDEX)
                         .filter("term", node=args.nodeName)
                         .query("wildcard", name=f"*{os.path.sep}{relativePath}")
                     )
@@ -257,9 +267,14 @@ def pdb_handler(sig, frame):
 # main
 def main():
     global args
-    global opensearchHttpAuth
     global pdbFlagged
     global shuttingDown
+    global DatabaseClass
+    global DatabaseInitArgs
+    global SearchClass
+    global ConnectionError
+    global ConnectionTimeout
+    global AuthenticationException
 
     parser = argparse.ArgumentParser(description=scriptName, add_help=False, usage='{} <arguments>'.format(scriptName))
     parser.add_argument('--verbose', '-v', action='count', default=1, help='Increase verbosity (e.g., -v, -vv, etc.)')
@@ -288,7 +303,7 @@ def main():
         metavar='<STR>',
         type=str,
         default=os.getenv('OPENSEARCH_URL', None),
-        help='OpenSearch connection string for querying Arkime files index to ignore duplicates',
+        help='OpenSearch/Elasticsearch connection string for querying Arkime files index to ignore duplicates',
     )
     parser.add_argument(
         '--opensearch-curlrc',
@@ -296,7 +311,7 @@ def main():
         metavar='<filename>',
         type=str,
         default=os.getenv('OPENSEARCH_CREDS_CONFIG_FILE', '/var/local/curlrc/.opensearch.primary.curlrc'),
-        help='cURL.rc formatted file containing OpenSearch connection parameters',
+        help='cURL.rc formatted file containing OpenSearch/Elasticsearch connection parameters',
     )
     parser.add_argument(
         '--opensearch-ssl-verify',
@@ -305,7 +320,7 @@ def main():
         nargs='?',
         const=True,
         default=str2bool(os.getenv('OPENSEARCH_SSL_CERTIFICATE_VERIFICATION', default='False')),
-        help="Verify SSL certificates for OpenSearch",
+        help="Verify SSL certificates for OpenSearch/Elasticsearch",
     )
     parser.add_argument(
         '--opensearch-mode',
@@ -324,7 +339,7 @@ def main():
     parser.add_argument(
         '--opensearch-wait',
         dest='opensearchWaitForHealth',
-        help="Wait for OpenSearch to be healthy before starting",
+        help="Wait for OpenSearch/Elasticsearch to be healthy before starting",
         metavar='true|false',
         type=str2bool,
         nargs='?',
@@ -426,25 +441,37 @@ def main():
     if args.verbose > logging.DEBUG:
         sys.tracebacklimit = 0
 
-    if args.opensearchMode == malcolm_utils.DatabaseMode.ElasticsearchRemote:
-        from opensearchpy import OpenSearch as DatabaseClass
-        from opensearchpy.exceptions import ConnectionError, ConnectionTimeout
-    else:
-        from elasticsearch import Elasticsearch as DatabaseClass
-        from elasticsearch.exceptions import ConnectionError, ConnectionTimeout
-
     opensearchIsLocal = (args.opensearchMode == malcolm_utils.DatabaseMode.OpenSearchLocal) or (
         args.opensearchUrl == 'http://opensearch:9200'
     )
     opensearchCreds = ParseCurlFile(args.opensearchCurlRcFile) if (not opensearchIsLocal) else defaultdict(lambda: None)
+
     if not args.opensearchUrl:
         if opensearchIsLocal:
             args.opensearchUrl = 'http://opensearch:9200'
         elif 'url' in opensearchCreds:
             args.opensearchUrl = opensearchCreds['url']
-    opensearchHttpAuth = (
-        f"{opensearchCreds['user']}:{opensearchCreds['password']}" if opensearchCreds['user'] is not None else None
-    )
+
+    DatabaseInitArgs = {}
+    if args.opensearchMode == malcolm_utils.DatabaseMode.ElasticsearchRemote:
+        from elasticsearch import Elasticsearch as DatabaseClass
+        from elasticsearch_dsl import Search as SearchClass
+        from elasticsearch.exceptions import ConnectionError, ConnectionTimeout, AuthenticationException
+
+        if opensearchCreds['user'] is not None:
+            DatabaseInitArgs['basic_auth'] = (opensearchCreds['user'], opensearchCreds['password'])
+    else:
+        from opensearchpy import OpenSearch as DatabaseClass, Search as SearchClass
+        from opensearchpy.exceptions import ConnectionError, ConnectionTimeout, AuthenticationException
+
+        if opensearchCreds['user'] is not None:
+            DatabaseInitArgs['http_auth'] = (opensearchCreds['user'], opensearchCreds['password'])
+
+    DatabaseInitArgs['request_timeout'] = 1
+    if urlparse(args.opensearchUrl).scheme == 'https':
+        DatabaseInitArgs['verify_certs'] = args.opensearchSslVerify
+        DatabaseInitArgs['ssl_assert_hostname'] = False
+        DatabaseInitArgs['ssl_show_warn'] = False
 
     # handle sigint and sigterm for graceful shutdown
     signal.signal(signal.SIGINT, shutdown_handler)

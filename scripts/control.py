@@ -1074,11 +1074,13 @@ def start():
         if CheckPersistentStorageDefs(
             namespace=args.namespace,
             malcolmPath=MalcolmPath,
+            profile=args.composeProfile,
         ):
             startResults = StartMalcolm(
                 namespace=args.namespace,
                 malcolmPath=MalcolmPath,
                 configPath=args.configDir,
+                profile=args.composeProfile,
             )
 
             if dictsearch(startResults, 'error'):
@@ -1167,13 +1169,13 @@ def authSetup():
         ),
         (
             'remoteos',
-            "Configure remote primary or secondary OpenSearch instance",
+            "Configure remote primary or secondary OpenSearch/Elasticsearch instance",
             False,
             False,
         ),
         (
             'email',
-            "Store username/password for email alert sender account",
+            "Store username/password for OpenSearch Alerting email sender account",
             False,
             False,
         ),
@@ -1189,12 +1191,18 @@ def authSetup():
             or (args.cmdAuthSetupNonInteractive and args.authGenNetBoxPasswords),
         ),
         (
+            'arkime',
+            "Store password hash secret for Arkime viewer cluster",
+            False,
+            False,
+        ),
+        (
             'txfwcerts',
             "Transfer self-signed client certificates to a remote log forwarder",
             False,
             False,
         ),
-    )[: 8 if txRxScript else -1]
+    )[: 9 if txRxScript else -1]
 
     authMode = (
         ChooseOne(
@@ -1632,7 +1640,7 @@ def authSetup():
                 for instance in ['primary', 'secondary']:
                     openSearchCredFileName = os.path.join(MalcolmPath, f'.opensearch.{instance}.curlrc')
                     if YesOrNo(
-                        f'Store username/password for {instance} remote OpenSearch instance?',
+                        f'Store username/password for {instance} remote OpenSearch/Elasticsearch instance?',
                         default=False,
                         defaultBehavior=defaultBehavior,
                     ):
@@ -1643,10 +1651,12 @@ def authSetup():
                         esPassword = None
                         esPasswordConfirm = None
 
-                        loopBreaker = CountUntilException(MaxAskForValueCount, 'Invalid OpenSearch username')
+                        loopBreaker = CountUntilException(
+                            MaxAskForValueCount, 'Invalid OpenSearch/Elasticsearch username'
+                        )
                         while loopBreaker.increment():
                             esUsername = AskForString(
-                                "OpenSearch username",
+                                "OpenSearch/Elasticsearch username",
                                 default=prevCurlContents['user'],
                                 defaultBehavior=defaultBehavior,
                             )
@@ -1654,7 +1664,9 @@ def authSetup():
                                 break
                             eprint("Username is blank (or contains a colon, which is not allowed)")
 
-                        loopBreaker = CountUntilException(MaxAskForValueCount, 'Invalid OpenSearch password')
+                        loopBreaker = CountUntilException(
+                            MaxAskForValueCount, 'Invalid OpenSearch/Elasticsearch password'
+                        )
                         while loopBreaker.increment():
                             esPassword = AskForPassword(
                                 f"{esUsername} password: ",
@@ -1683,8 +1695,8 @@ def authSetup():
                             eprint("Passwords do not match")
 
                         esSslVerify = YesOrNo(
-                            'Require SSL certificate validation for OpenSearch communication?',
-                            default=(not (('k' in prevCurlContents) or ('insecure' in prevCurlContents))),
+                            'Require SSL certificate validation for OpenSearch/Elasticsearch communication?',
+                            default=False,
                             defaultBehavior=defaultBehavior,
                         )
 
@@ -1833,6 +1845,49 @@ def authSetup():
 
                     os.chmod('netbox-secret.env', stat.S_IRUSR | stat.S_IWUSR)
 
+            elif authItem[0] == 'arkime':
+                # prompt password
+                arkimePassword = None
+                arkimePasswordConfirm = None
+
+                loopBreaker = CountUntilException(MaxAskForValueCount, 'Invalid password hash secret')
+                while loopBreaker.increment():
+                    arkimePassword = AskForPassword(
+                        f"Arkime password hash secret: ",
+                        default='',
+                        defaultBehavior=defaultBehavior,
+                    )
+                    arkimePasswordConfirm = AskForPassword(
+                        f"Arkime password hash secret (again): ",
+                        default='',
+                        defaultBehavior=defaultBehavior,
+                    )
+                    if arkimePassword and (arkimePassword == arkimePasswordConfirm):
+                        break
+                    eprint("Passwords do not match")
+
+                if (not arkimePassword) and args.cmdAuthSetupNonInteractive and args.authArkimePassword:
+                    arkimePassword = args.authArkimePassword
+
+                with pushd(args.configDir):
+                    if (not os.path.isfile('arkime-secret.env')) and (os.path.isfile('arkime-secret.env.example')):
+                        shutil.copy2('arkime-secret.env.example', 'arkime-secret.env')
+
+                    with fileinput.FileInput('arkime-secret.env', inplace=True, backup=None) as envFile:
+                        for line in envFile:
+                            line = line.rstrip("\n")
+
+                            if arkimePassword and line.startswith('ARKIME_PASSWORD_SECRET'):
+                                line = re.sub(
+                                    r'(ARKIME_PASSWORD_SECRET\s*=\s*)(\S+)',
+                                    fr"\g<1>{arkimePassword}",
+                                    line,
+                                )
+
+                            print(line)
+
+                    os.chmod('arkime-secret.env', stat.S_IRUSR | stat.S_IWUSR)
+
             elif authItem[0] == 'txfwcerts':
                 DisplayMessage(
                     'Run configure-capture on the remote log forwarder, select "Configure Forwarding," then "Receive client SSL files..."',
@@ -1972,7 +2027,7 @@ def main():
         dest='namespace',
         metavar='<string>',
         type=str,
-        default='malcolm',
+        default=os.getenv('MALCOLM_NAMESPACE', 'malcolm'),
         help="Kubernetes namespace",
     )
     kubernetesGroup.add_argument(
@@ -2034,6 +2089,15 @@ def main():
         type=str,
         default='',
         help='Administrator password hash from "htpasswd -n -B username | cut -d: -f2" (for --auth-noninteractive)',
+    )
+    authSetupGroup.add_argument(
+        '--auth-arkime-password',
+        dest='authArkimePassword',
+        required=False,
+        metavar='<string>',
+        type=str,
+        default='Malcolm',
+        help='Password hash secret for Arkime viewer cluster (for --auth-noninteractive)',
     )
     authSetupGroup.add_argument(
         '--auth-generate-webcerts',
