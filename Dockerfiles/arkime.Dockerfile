@@ -1,6 +1,6 @@
 FROM debian:12-slim AS build
 
-# Copyright (c) 2023 Battelle Energy Alliance, LLC.  All rights reserved.
+# Copyright (c) 2024 Battelle Energy Alliance, LLC.  All rights reserved.
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
@@ -93,7 +93,6 @@ ENV DEFAULT_GID $DEFAULT_GID
 ENV PUSER "arkime"
 ENV PGROUP "arkime"
 ENV PUSER_PRIV_DROP true
-ENV PUSER_RLIMIT_UNLOCK true
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
@@ -216,7 +215,7 @@ RUN [ ${#MAXMIND_GEOIP_DB_LICENSE_KEY} -gt 1 ] && for DB in ASN Country City; do
       rm -f "GeoLite2-$DB*"; \
     done; \
   curl -s -S -L -o $ARKIME_DIR/etc/ipv4-address-space.csv "https://www.iana.org/assignments/ipv4-address-space/ipv4-address-space.csv" && \
-  curl -s -S -L -o $ARKIME_DIR/etc/oui.txt "https://gitlab.com/wireshark/wireshark/raw/release-4.0/manuf"
+  curl -s -S -L -o $ARKIME_DIR/etc/oui.txt "https://www.wireshark.org/download/automated/data/manuf"
 
 RUN groupadd --gid $DEFAULT_GID $PGROUP && \
     useradd -M --uid $DEFAULT_UID --gid $DEFAULT_GID --home $ARKIME_DIR $PUSER && \
