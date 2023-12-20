@@ -210,25 +210,56 @@ services:
       - ./config/upload-common.env
       - ./config/auth.env
       - ./config/arkime.env
+      - ./config/arkime-offline.env
       - ./config/arkime-secret.env
     environment:
       VIRTUAL_HOST : 'arkime.malcolm.local'
     depends_on:
       - opensearch
-    ports:
-      - "127.0.0.1:8005:8005"
     volumes:
       - ./nginx/ca-trust:/var/local/ca-trust:ro
       - ./.opensearch.primary.curlrc:/var/local/curlrc/.opensearch.primary.curlrc:ro
+      - ./arkime/rules:/opt/arkime/rules:ro
       - ./pcap:/data/pcap
-      - ./arkime-logs:/opt/arkime/logs
-      - ./arkime-raw:/opt/arkime/raw
     healthcheck:
       test: ["CMD", "curl", "--insecure", "--silent", "--fail", "https://localhost:8005/_ns_/nstest.html"]
       interval: 90s
       timeout: 30s
       retries: 3
       start_period: 210s
+  arkime-live:
+    image: ghcr.io/idaholab/malcolm/arkime:23.12.1
+    profiles: ["malcolm", "hedgehog"]
+    logging: *default-logging
+    restart: "no"
+    stdin_open: false
+    tty: true
+    network_mode: host
+    cap_add:
+      # IPC_LOCK - to lock memory, preventing swapping
+      - IPC_LOCK
+      # SYS_RESOURCE - for increasing memlock limits
+      - SYS_RESOURCE
+      # NET_ADMIN and NET_RAW - to turn on promiscuous mode and capture raw packets
+      - NET_ADMIN
+      - NET_RAW
+      # SYS_NICE - to set process nice values, real-time scheduling policies, I/O scheduling
+      - SYS_NICE
+    env_file:
+      - ./config/process.env
+      - ./config/ssl.env
+      - ./config/opensearch.env
+      - ./config/upload-common.env
+      - ./config/pcap-capture.env
+      - ./config/auth.env
+      - ./config/arkime.env
+      - ./config/arkime-live.env
+      - ./config/arkime-secret.env
+    volumes:
+      - ./nginx/ca-trust:/var/local/ca-trust:ro
+      - ./.opensearch.primary.curlrc:/var/local/curlrc/.opensearch.primary.curlrc:ro
+      - ./arkime/rules:/opt/arkime/rules:ro
+      - ./pcap:/data/pcap
   zeek:
     image: ghcr.io/idaholab/malcolm/zeek:23.12.1
     profiles: ["malcolm", "hedgehog"]
@@ -239,9 +270,6 @@ services:
     hostname: zeek
     networks:
       - default
-    cap_add:
-      # SYS_NICE - to set process nice values, real-timescheduling policies, I/O scheduling
-      - SYS_NICE
     env_file:
       - ./config/process.env
       - ./config/ssl.env
@@ -276,7 +304,7 @@ services:
       # NET_ADMIN and NET_RAW - to turn on promiscuous mode and capture raw packets
       - NET_ADMIN
       - NET_RAW
-      # SYS_NICE - to set process nice values and scheduling policies for capture
+      # SYS_NICE - to set process nice values, real-time scheduling policies, I/O scheduling
       - SYS_NICE
     env_file:
       - ./config/process.env
@@ -302,9 +330,6 @@ services:
     hostname: suricata
     networks:
       - default
-    cap_add:
-      # SYS_NICE - to set process nice values, real-timescheduling policies, I/O scheduling
-      - SYS_NICE
     env_file:
       - ./config/process.env
       - ./config/ssl.env
@@ -332,6 +357,10 @@ services:
     tty: true
     network_mode: host
     cap_add:
+      # IPC_LOCK - to lock memory, preventing swapping
+      - IPC_LOCK
+      # SYS_RESOURCE - for increasing memlock limits
+      - SYS_RESOURCE
       # NET_ADMIN and NET_RAW - to turn on promiscuous mode and capture raw packets
       - NET_ADMIN
       - NET_RAW
@@ -394,6 +423,8 @@ services:
       - IPC_LOCK
       # SYS_RESOURCE - for increasing memlock limits
       - SYS_RESOURCE
+      # SYS_ADMIN - for netsniff-ng to set the disc I/O scheduler policy
+      - SYS_ADMIN
       # NET_ADMIN and NET_RAW - to turn on promiscuous mode and capture raw packets
       - NET_ADMIN
       - NET_RAW

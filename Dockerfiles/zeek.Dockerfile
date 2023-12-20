@@ -93,10 +93,10 @@ ENV PGROUP "zeeker"
 # a final check in docker_entrypoint.sh before startup
 ENV PUSER_PRIV_DROP false
 
-ENV SUPERCRONIC_VERSION "0.2.28"
+ENV SUPERCRONIC_VERSION "0.2.29"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-amd64"
 ENV SUPERCRONIC "supercronic-linux-amd64"
-ENV SUPERCRONIC_SHA1SUM "fe1a81a8a5809deebebbd7a209a3b97e542e2bcd"
+ENV SUPERCRONIC_SHA1SUM "cd48d45c4b10f3f0bfdd3a57d054cd05ac96812b"
 ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
 # for download and install
@@ -132,7 +132,6 @@ RUN export DEBARCH=$(dpkg --print-architecture) && \
       clang \
       cmake \
       curl \
-      ethtool \
       file \
       flex \
       git \
@@ -223,7 +222,6 @@ ADD zeek/config/*.txt ${ZEEK_DIR}/share/zeek/site/
 ADD zeek/scripts/docker_entrypoint.sh /usr/local/bin/
 ADD shared/bin/zeek_intel_setup.sh ${ZEEK_DIR}/bin/
 ADD shared/bin/zeekdeploy.sh ${ZEEK_DIR}/bin/
-ADD shared/bin/nic-capture-setup.sh /usr/local/bin/
 
 # sanity checks to make sure the plugins installed and copied over correctly
 # these ENVs should match the number of third party scripts/plugins installed by zeek_install_plugins.sh
@@ -244,10 +242,10 @@ RUN mkdir -p /tmp/logs && \
 RUN groupadd --gid ${DEFAULT_GID} ${PUSER} && \
     useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} --home /nonexistant ${PUSER} && \
     usermod -a -G tty ${PUSER} && \
-    chown root:${PGROUP} /sbin/ethtool "${ZEEK_DIR}"/bin/zeek "${ZEEK_DIR}"/bin/capstats && \
-      setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /sbin/ethtool && \
-      setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip CAP_IPC_LOCK+eip' "${ZEEK_DIR}"/bin/zeek && \
-      setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip CAP_IPC_LOCK+eip' "${ZEEK_DIR}"/bin/capstats && \
+    cp "${ZEEK_DIR}"/bin/zeek "${ZEEK_DIR}"/bin/zeek-offline && \
+    chown root:${PGROUP} "${ZEEK_DIR}"/bin/zeek "${ZEEK_DIR}"/bin/capstats && \
+      setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' "${ZEEK_DIR}"/bin/zeek && \
+      setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' "${ZEEK_DIR}"/bin/capstats && \
     touch "${SUPERCRONIC_CRONTAB}" && \
     chown -R ${DEFAULT_UID}:${DEFAULT_GID} "${ZEEK_DIR}"/share/zeek/site/intel "${SUPERCRONIC_CRONTAB}" && \
     ln -sfr /usr/local/bin/pcap_processor.py /usr/local/bin/pcap_zeek_processor.py && \
@@ -268,6 +266,8 @@ ARG ZEEK_INTEL_REFRESH_THREADS=2
 ARG ZEEK_INTEL_FEED_SINCE=
 ARG ZEEK_EXTRACTOR_MODE=none
 ARG ZEEK_EXTRACTOR_PATH=/zeek/extract_files
+ARG ZEEK_INTEL_PATH=/opt/zeek/share/zeek/site/intel
+ARG ZEEK_CUSTOM_PATH=/opt/zeek/share/zeek/site/custom
 ARG PCAP_PIPELINE_VERBOSITY=""
 ARG PCAP_MONITOR_HOST=pcap-monitor
 ARG ZEEK_LIVE_CAPTURE=false
@@ -276,6 +276,7 @@ ARG ZEEK_ROTATED_PCAP=false
 ARG PCAP_IFACE=lo
 ARG PCAP_IFACE_TWEAK=false
 ARG PCAP_FILTER=
+ARG PCAP_NODE_NAME=malcolm
 
 ENV AUTO_TAG $AUTO_TAG
 ENV ZEEK_PCAP_PROCESSOR $ZEEK_PCAP_PROCESSOR
@@ -288,6 +289,8 @@ ENV ZEEK_INTEL_REFRESH_THREADS $ZEEK_INTEL_REFRESH_THREADS
 ENV ZEEK_INTEL_FEED_SINCE $ZEEK_INTEL_FEED_SINCE
 ENV ZEEK_EXTRACTOR_MODE $ZEEK_EXTRACTOR_MODE
 ENV ZEEK_EXTRACTOR_PATH $ZEEK_EXTRACTOR_PATH
+ENV ZEEK_INTEL_PATH $ZEEK_INTEL_PATH
+ENV ZEEK_CUSTOM_PATH $ZEEK_CUSTOM_PATH
 ENV PCAP_PIPELINE_VERBOSITY $PCAP_PIPELINE_VERBOSITY
 ENV PCAP_MONITOR_HOST $PCAP_MONITOR_HOST
 ENV ZEEK_LIVE_CAPTURE $ZEEK_LIVE_CAPTURE
@@ -295,6 +298,7 @@ ENV ZEEK_ROTATED_PCAP $ZEEK_ROTATED_PCAP
 ENV PCAP_IFACE $PCAP_IFACE
 ENV PCAP_IFACE_TWEAK $PCAP_IFACE_TWEAK
 ENV PCAP_FILTER $PCAP_FILTER
+ENV PCAP_NODE_NAME $PCAP_NODE_NAME
 
 # environment variables for zeek runtime tweaks (used in local.zeek)
 ARG ZEEK_DISABLE_HASH_ALL_FILES=
