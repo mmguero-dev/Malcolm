@@ -10,7 +10,6 @@
 import argparse
 import hashlib
 import os
-import pyminizip
 import sys
 from Crypto.Cipher import AES
 from datetime import datetime
@@ -68,62 +67,62 @@ class HTTPHandler(SimpleHTTPRequestHandler):
         global args
 
         fullpath = self.translate_path(self.path)
+        fileBaseName = os.path.basename(fullpath)
 
         if os.path.isdir(fullpath):
             # directory listing
             SimpleHTTPRequestHandler.do_GET(self)
 
-        elif os.path.isfile(fullpath) or os.path.islink(fullpath):
-            if args.zip:
-                # ZIP file
-                self.send_response(200)
-                self.send_header('Content-type', "application/zip")
-                self.send_header('Content-Disposition', f'attachment; filename={os.path.basename(fullpath)}.zip')
-                self.end_headers()
+        else:
+            if args.recursive and (not os.path.isfile(fullpath)) and (not os.path.islink(fullpath)):
+                for root, dirs, files in os.walk(os.path.dirname(fullpath)):
+                    if fileBaseName in files:
+                        fullpath = os.path.join(root, fileBaseName)
+                        break
 
-                if args.key:
-                    # password-protected ZIP file (temporarily persisted to disk)
-                    with temporary_filename(suffix='.zip') as tmpFileName:
-                        pyminizip.compress(fullpath, None, tmpFileName, args.key, 1)
-                        with open(tmpFileName, 'rb') as f:
-                            while chunk := f.read(65536):
-                                self.wfile.write(chunk)
+            if os.path.isfile(fullpath) or os.path.islink(fullpath):
+                if args.zip:
+                    # ZIP file (streamed, AES-encrypted with password or unencrypted)
+                    self.send_response(200)
+                    self.send_header('Content-type', "application/zip")
+                    self.send_header('Content-Disposition', f'attachment; filename={fileBaseName}.zip')
+                    self.end_headers()
 
-                else:
-                    # unprotected ZIP file (streamed)
-                    for chunk in stream_zip(LocalFilesForZip([fullpath])):
+                    for chunk in stream_zip(LocalFilesForZip([fullpath]), password=args.key if args.key else None):
                         self.wfile.write(chunk)
 
-            elif args.key:
-                # openssl-compatible encrypted file
-                self.send_response(200)
-                self.send_header('Content-type', 'application/octet-stream')
-                self.send_header('Content-Disposition', f'attachment; filename={os.path.basename(fullpath)}.encrypted')
-                self.end_headers()
-                salt = os.urandom(PKCS5_SALT_LEN)
-                key, iv = EVP_BytesToKey(EVP_KEY_SIZE, AES.block_size, hashlib.sha256, salt, args.key.encode('utf-8'))
-                cipher = AES.new(key, AES.MODE_CBC, iv)
-                encrypted = b""
-                encrypted += OPENSSL_ENC_MAGIC
-                encrypted += salt
-                self.wfile.write(encrypted)
-                with open(fullpath, 'rb') as f:
-                    padding = b''
-                    while True:
-                        chunk = f.read(cipher.block_size)
-                        if len(chunk) < cipher.block_size:
-                            remaining = cipher.block_size - len(chunk)
-                            padding = bytes([remaining] * remaining)
-                        self.wfile.write(cipher.encrypt(chunk + padding))
-                        if padding:
-                            break
+                elif args.key:
+                    # openssl-compatible encrypted file
+                    self.send_response(200)
+                    self.send_header('Content-type', 'application/octet-stream')
+                    self.send_header('Content-Disposition', f'attachment; filename={fileBaseName}.encrypted')
+                    self.end_headers()
+                    salt = os.urandom(PKCS5_SALT_LEN)
+                    key, iv = EVP_BytesToKey(
+                        EVP_KEY_SIZE, AES.block_size, hashlib.sha256, salt, args.key.encode('utf-8')
+                    )
+                    cipher = AES.new(key, AES.MODE_CBC, iv)
+                    encrypted = b""
+                    encrypted += OPENSSL_ENC_MAGIC
+                    encrypted += salt
+                    self.wfile.write(encrypted)
+                    with open(fullpath, 'rb') as f:
+                        padding = b''
+                        while True:
+                            chunk = f.read(cipher.block_size)
+                            if len(chunk) < cipher.block_size:
+                                remaining = cipher.block_size - len(chunk)
+                                padding = bytes([remaining] * remaining)
+                            self.wfile.write(cipher.encrypt(chunk + padding))
+                            if padding:
+                                break
+
+                else:
+                    # original file, unencrypted
+                    SimpleHTTPRequestHandler.do_GET(self)
 
             else:
-                # unencrypted file
-                SimpleHTTPRequestHandler.do_GET(self)
-
-        else:
-            self.send_error(404, "Not Found")
+                self.send_error(404, "Not Found")
 
 
 ###################################################################################################
@@ -151,6 +150,7 @@ def main():
 
     defaultDebug = os.getenv('EXTRACTED_FILE_HTTP_SERVER_DEBUG', 'false')
     defaultZip = os.getenv('EXTRACTED_FILE_HTTP_SERVER_ZIP', 'false')
+    defaultRecursive = os.getenv('EXTRACTED_FILE_HTTP_SERVER_RECURSIVE', 'false')
     defaultPort = int(os.getenv('EXTRACTED_FILE_HTTP_SERVER_PORT', 8440))
     defaultKey = os.getenv('EXTRACTED_FILE_HTTP_SERVER_KEY', 'infected')
     defaultDir = os.getenv('EXTRACTED_FILE_HTTP_SERVER_PATH', orig_path)
@@ -206,6 +206,17 @@ def main():
         default=defaultZip,
         metavar='true|false',
         help=f"Zip file ({defaultZip})",
+    )
+    parser.add_argument(
+        '-r',
+        '--recursive',
+        dest='recursive',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=defaultRecursive,
+        metavar='true|false',
+        help=f"Recursively look for requested file if not found",
     )
     try:
         parser.error = parser.exit

@@ -401,6 +401,7 @@ Enable file extraction with Zeek? (y / N): y
 3: mapped
 4: all
 5: interesting
+6: notcommtxt
 
 Select file extraction behavior (none): 5
 1: quarantined
@@ -535,15 +536,8 @@ logstash | [2023-04-24T21:00:34,470][INFO ][logstash.agent           ] Pipelines
 
 Started Malcolm
 
-Malcolm services can be accessed via the following URLs:
+Malcolm services can be accessed at https://192.168.56.10/
 ------------------------------------------------------------------------------
-  - Arkime: https://192.168.56.10/
-  - OpenSearch Dashboards: https://192.168.56.10/dashboards/
-  - PCAP upload (web): https://192.168.56.10/upload/
-  - NetBox: https://192.168.56.10/netbox/
-  - Account management: https://192.168.56.10/auth/
-  - Documentation: https://192.168.56.10/readme/
-
 ```
 
 Check the status of the Malcolm deployment with `./scripts/status`:

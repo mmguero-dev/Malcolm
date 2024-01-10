@@ -6,6 +6,7 @@ To specify which files should be extracted, the following values are acceptable 
 
 * `none`: no file extraction
 * `interesting`: extraction of files with mime types of common attack vectors
+* `notcommtxt`: extraction of all files except common plain text files
 * `mapped`: extraction of files with recognized mime types
 * `known`: extraction of files for which any mime type can be determined
 * `all`: extract all files
@@ -25,7 +26,7 @@ The `EXTRACTED_FILE_PRESERVATION` [environment variable in `zeek.env`](malcolm-c
 * `all`: preserve flagged files in `./zeek-logs/extract_files/quarantine` and all other extracted files in `./zeek-logs/extract_files/preserved`
 * `none`: preserve no extracted files
 
-The `EXTRACTED_FILE_HTTP_SERVER_…` [environment variables in `zeek.env`](malcolm-config.md#MalcolmConfigEnvVars) configure access to the Zeek-extracted files path through the means of a simple HTTPS directory server accessible at **https://localhost/extracted-files/** if connecting locally. Beware that Zeek-extracted files may contain malware. As such, these files may be optionally ZIP archived (with or without a password) or encrypted (to be decrypted using `openssl`, e.g., `openssl enc -aes-256-cbc -d -in example.exe.encrypted -out example.exe`) upon download. In other words:
+The `EXTRACTED_FILE_HTTP_SERVER_…` [environment variables in `zeek.env` and `zeek-secret.env`](malcolm-config.md#MalcolmConfigEnvVars) configure access to the Zeek-extracted files path through the means of a simple HTTPS directory server accessible at **https://localhost/extracted-files/** if connecting locally. Beware that Zeek-extracted files may contain malware. As such, these files may be optionally ZIP archived (without a password or password-protected according to the [WinZip AES encryption specification](https://www.winzip.com/en/support/aes-encryption/)) or encrypted (to be decrypted using `openssl`, e.g., `openssl enc -aes-256-cbc -d -in example.exe.encrypted -out example.exe`) upon download. In other words:
 
 * to disable the extracted files server:
     - `EXTRACTED_FILE_HTTP_SERVER_ENABLE=false`
@@ -34,7 +35,7 @@ The `EXTRACTED_FILE_HTTP_SERVER_…` [environment variables in `zeek.env`](malco
     - downloaded files are zipped, without a password:
         + `EXTRACTED_FILE_HTTP_SERVER_ZIP=true`
         + `EXTRACTED_FILE_HTTP_SERVER_KEY=`
-    - downloaded files are zipped, with a password:
+    - downloaded files are zipped, [AES-encrypted](https://www.winzip.com/en/support/aes-encryption/) with a password:
         + `EXTRACTED_FILE_HTTP_SERVER_ZIP=true`
         + `EXTRACTED_FILE_HTTP_SERVER_KEY=xxxxxxxxxxxxx`
     - downloaded files are OpenSSL AES-256-CBC-compatibly encrypted:
