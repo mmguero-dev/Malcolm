@@ -612,7 +612,7 @@ class Installer(object):
                 databaseModeChoice = InstallerChooseOne(
                     'Select primary Malcolm document store',
                     choices=[
-                        (x, allowedDatabaseModes[x][1], x == DATABASE_MODE_LABELS[DatabaseMode.OpenSearchLocal])
+                        (x, allowedDatabaseModes[x][1], x == args.opensearchPrimaryMode)
                         for x in list(allowedDatabaseModes.keys())
                     ],
                 )
@@ -1038,7 +1038,7 @@ class Installer(object):
                         'Enter index threshold (e.g., 250GB, 1TB, 60%, etc.)', default=args.indexPruneSizeLimit
                     )
                 indexPruneNameSort = InstallerYesOrNo(
-                    'Determine oldest indices by name (instead of creation time)?', default=True
+                    'Determine oldest indices by name (instead of creation time)?', default=False
                 )
 
             # let Arkime delete old PCAP files based on available storage
@@ -1416,21 +1416,14 @@ class Installer(object):
 
         # modify values in .env files in args.configDir
 
-        # first, if the args.configDir is completely empty, then populate from defaults
-        examplesConfigDir = os.path.join(malcolm_install_path, 'config')
-        if (
-            os.path.isdir(examplesConfigDir)
-            and (not same_file_or_dir(examplesConfigDir, args.configDir))
-            and (not os.listdir(args.configDir))
-        ):
-            for defaultEnvExampleFile in glob.glob(os.path.join(examplesConfigDir, '*.env.example')):
-                shutil.copy2(defaultEnvExampleFile, args.configDir)
-
-        # if a specific config/*.env file doesn't exist, use the *.example.env files as defaults
-        for envExampleFile in glob.glob(os.path.join(args.configDir, '*.env.example')):
-            envFile = envExampleFile[: -len('.example')]
-            if not os.path.isfile(envFile):
-                shutil.copyfile(envExampleFile, envFile)
+        # if a specific *.env file doesn't exist, use the config/*.example.env files as defaults
+        if os.path.isdir(examplesConfigDir := os.path.join(malcolm_install_path, 'config')):
+            for envExampleFile in glob.glob(os.path.join(examplesConfigDir, '*.env.example')):
+                envFile = os.path.join(args.configDir, os.path.basename(envExampleFile[: -len('.example')]))
+                if not os.path.isfile(envFile):
+                    if args.debug:
+                        eprint(f"Creating {envFile} from {envExampleFile}")
+                    shutil.copyfile(envExampleFile, envFile)
 
         # define environment variables to be set in .env files
         EnvValue = namedtuple("EnvValue", ["envFile", "key", "value"], rename=False)
@@ -3488,16 +3481,6 @@ def main():
         const=True,
         default=False,
         help="Expose Filebeat TCP port to external hosts",
-    )
-    openPortsArgGroup.add_argument(
-        '--arkime-viewer-expose',
-        dest='exposeArkimeViewer',
-        type=str2bool,
-        metavar="true|false",
-        nargs='?',
-        const=True,
-        default=False,
-        help="Expose Arkime viewer to external hosts for PCAP payload retrieval",
     )
     openPortsArgGroup.add_argument(
         '--sftp-expose',
