@@ -1,0 +1,5 @@
+raspi_*.img
+raspi_*.gz
+raspi_*.log
+raspi_*.yaml
+shared/
