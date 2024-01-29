@@ -8,6 +8,7 @@ import sys
 sys.dont_write_bytecode = True
 
 import argparse
+import datetime
 import errno
 import fileinput
 import getpass
@@ -145,27 +146,39 @@ def shutdown_handler(signum, frame):
 
 
 ###################################################################################################
-def checkEnvFilesExist():
+def checkEnvFilesAndValues():
     global args
-
-    # first, if the configDir is completely empty, then populate from defaults
-    defaultConfigDir = os.path.join(MalcolmPath, 'config')
-    if (
-        (args.configDir is not None)
-        and os.path.isdir(args.configDir)
-        and os.path.isdir(defaultConfigDir)
-        and (not same_file_or_dir(defaultConfigDir, args.configDir))
-        and (not os.listdir(args.configDir))
-    ):
-        for defaultEnvExampleFile in glob.glob(os.path.join(defaultConfigDir, '*.env.example')):
-            shutil.copy2(defaultEnvExampleFile, args.configDir)
+    global dotenvImported
 
     # if a specific config/*.env file doesn't exist, use the *.example.env files as defaults
-    envExampleFiles = glob.glob(os.path.join(args.configDir, '*.env.example'))
-    for envExampleFile in envExampleFiles:
-        envFile = envExampleFile[: -len('.example')]
-        if not os.path.isfile(envFile):
-            shutil.copyfile(envExampleFile, envFile)
+    if os.path.isdir(examplesConfigDir := os.path.join(MalcolmPath, 'config')):
+        for envExampleFile in glob.glob(os.path.join(examplesConfigDir, '*.env.example')):
+            envFile = os.path.join(args.configDir, os.path.basename(envExampleFile[: -len('.example')]))
+            if not os.path.isfile(envFile):
+                if args.debug:
+                    eprint(f"Creating {envFile} from {os.path.basename(envExampleFile)}")
+                shutil.copyfile(envExampleFile, envFile)
+
+        # now, example the .env and .env.example file for individual values, and create any that are
+        # in the .example file but missing in the .env file
+        for envFile in glob.glob(os.path.join(args.configDir, '*.env')):
+            envExampleFile = os.path.join(examplesConfigDir, os.path.basename(envFile) + '.example')
+            if os.path.isfile(envExampleFile):
+                envValues = dotenvImported.dotenv_values(envFile)
+                exampleValues = dotenvImported.dotenv_values(envExampleFile)
+                missingVars = list(set(exampleValues.keys()).difference(set(envValues.keys())))
+                if missingVars:
+                    if args.debug:
+                        eprint(f"Missing {missingVars} in {envFile} from {os.path.basename(envExampleFile)}")
+                    with open(envFile, "a") as envFileHandle:
+                        print('', file=envFileHandle)
+                        print('', file=envFileHandle)
+                        print(
+                            f'# missing variables created from {os.path.basename(envExampleFile)} at {str(datetime.datetime.now())}',
+                            file=envFileHandle,
+                        )
+                        for missingVar in missingVars:
+                            print(f"{missingVar}={exampleValues[missingVar]}", file=envFileHandle)
 
 
 ###################################################################################################
@@ -2350,7 +2363,7 @@ def main():
 
         # the compose file references various .env files in just about every operation this script does,
         # so make sure they exist right off the bat
-        checkEnvFilesExist()
+        checkEnvFilesAndValues()
 
         # stop Malcolm (and wipe data if requestsed)
         if args.cmdRestart or args.cmdStop or args.cmdWipe:

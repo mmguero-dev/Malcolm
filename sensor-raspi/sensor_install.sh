@@ -46,7 +46,7 @@ BUILD_DEPS='automake checkinstall libjansson-dev libmagic-dev libnl-genl-3-dev l
 BUILD_DEPS+='meson ninja-build python3-dev ruby ruby-dev ruby-rubygems '
 
 # Build dependencies we're leaving in place after installation (for building new Zeek plugins in the wild, mostly)
-BUILD_DEPS_KEEP='build-essential ccache clang cmake flex gcc git libc++-dev libc++abi-dev libfl-dev libgoogle-perftools-dev '
+BUILD_DEPS_KEEP='build-essential ccache cmake flex gcc g++ git libfl-dev libgoogle-perftools-dev '
 BUILD_DEPS_KEEP+='libgoogle-perftools4 libkrb5-3 libkrb5-dev libmaxminddb-dev libpcap-dev libssl-dev libtcmalloc-minimal4 '
 BUILD_DEPS_KEEP+='make patch pkg-config python3-git python3-pip python3-semantic-version python3-setuptools python3-venv swig wget zlib1g-dev '
 
@@ -271,10 +271,12 @@ clean_up() {
     apt-get autoremove -y
     apt-get clean
 
-    # Ensure locale and term are set
-    echo 'TERM=xterm-256color' >> /etc/environment
+    # Ensure locale, term, and console are setup correct
+    echo 'TERM=linux' >> /etc/environment
     locale-gen en_US.UTF-8 en.UTF-8
     update-locale LANG=en_US.UTF-8 LANGUAGE=en.UTF-8
+    sed -i -e 's/CHARMAP=.*/CHARMAP="UTF-8"/' -e 's/CODESET=.*/CODESET="Lat15"/' /etc/default/console-setup
+    dpkg-reconfigure console-setup
 
     umount -A -f /dev/pts /run /dev /proc /sys
 
@@ -324,7 +326,7 @@ install_deps() {
     declare -a graphical_deps=( aide aide-common efibootmgr fonts-dejavu fuseext2 fusefat fuseiso gdb )
     graphical_deps+=( gparted gdebi  google-perftools gvfs gvfs-daemons gvfs-fuse ghostscript ghostscript-x )
     graphical_deps+=( hfsplus hfsprogs hfsutils htpdate libgtk2.0-bin menu neofetch pmount rar )
-    graphical_deps+=( ssh-askpass tmux udisks2 upower user-setup xbitmaps zenity zenity-common )
+    graphical_deps+=( ssh-askpass udisks2 upower user-setup xbitmaps zenity zenity-common )
     graphical_deps+=( libsmbclient samba-common samba-common-bin samba-dsdb-modules samba-libs smbclient )
 
     deps=$(echo ${deps} ${graphical_deps[@]} | tr ' ' '\n' | sort | uniq -u | tr '\n' ' ')
@@ -415,7 +417,6 @@ install_hooks() {
     local hooks_dir='/opt/hooks'
 
     if [[ $BUILD_GUI -eq 0 ]]; then
-        rm -f "${hooks_dir}"/*firefox-install.hook.chroot
         rm -f "${hooks_dir}"/*login.hook.chroot
         rm -f "${hooks_dir}"/*stig-scripts.hook.chroot
     fi
