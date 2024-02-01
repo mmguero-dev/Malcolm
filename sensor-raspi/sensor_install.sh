@@ -271,8 +271,7 @@ clean_up() {
     apt-get autoremove -y
     apt-get clean
 
-    # Ensure locale, term, and console are setup correct
-    echo 'TERM=linux' >> /etc/environment
+    # Ensure locale and console are setup correctly
     locale-gen en_US.UTF-8 en.UTF-8
     update-locale LANG=en_US.UTF-8 LANGUAGE=en.UTF-8
     sed -i -e 's/CHARMAP=.*/CHARMAP="UTF-8"/' -e 's/CODESET=.*/CODESET="Lat15"/' /etc/default/console-setup
@@ -404,7 +403,7 @@ install_files() {
     echo 'ipv6.disable=1' > /etc/default/raspi-extra-cmdline
 
     # Add RPI hostname to /etc/hosts
-    echo "127.0.0.1 $(hostname)" >> /etc/hosts
+    echo "127.0.1.1 $(head -n 1 /etc/hostname)" >> /etc/hosts
 
     # mark as first run
     touch "${SENSOR_DIR}"/firstrun
