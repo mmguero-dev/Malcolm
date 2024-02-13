@@ -132,6 +132,8 @@ Select authentication method (Basic): 1
 
 Store PCAP, log and index files locally under /home/user/Malcolm? (Y / n): y
 
+Enable index management policies (ILM/ISM) in Arkime? (y / N): n
+
 Should Malcolm delete the oldest database indices and/or PCAP files based on available storage? n
 
 Automatically analyze all PCAP files with Suricata? (Y / n): y

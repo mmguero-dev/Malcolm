@@ -1,14 +1,14 @@
 name: sensor-raspi-build-docker-wrap-push-ghcr
 
 on:
-  push:
-    branches:
-      - main
-      - development
-    paths:
-      - '.trigger_raspi_workflow_build'
+  # push:
+  #   branches:
+  #     - main
+  #     - development
+  #   paths:
+  #     - '.trigger_raspi_workflow_build'
   workflow_dispatch:
-  repository_dispatch:
+  # repository_dispatch:
 
 jobs:
   build:
@@ -71,7 +71,7 @@ jobs:
       -
         name: Extract Malcolm version
         shell: bash
-        run: echo "mversion=$(grep -P "^\s+image:.*/malcolm/" docker-compose.yml | awk '{print $2}' | cut -d':' -f2 | uniq -c | sort -nr | awk '{print $2}' | head -n 1)" >> $GITHUB_OUTPUT
+        run: echo "mversion=$(grep -P "^\s+image:.*/malcolm/" docker-compose-dev.yml | awk '{print $2}' | cut -d':' -f2 | uniq -c | sort -nr | awk '{print $2}' | head -n 1)" >> $GITHUB_OUTPUT
         id: extract_malcolm_version
       -
         name: Build image

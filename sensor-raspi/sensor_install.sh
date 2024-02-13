@@ -32,7 +32,7 @@ SHARED_DIR='/opt/buildshared'
 WORK_DIR="$(mktemp -d -t hedgehog-XXXXXX)"
 SENSOR_DIR='/opt/sensor'
 
-BEATS_VER="8.12.0"
+BEATS_VER="8.12.1"
 BEATS_OSS="-oss"
 
 # Option to build from sources if desired
@@ -43,7 +43,7 @@ BUILD_ZEEK_FROM_SOURCE=0
 
 # Build time dependencies for arkime, htpdate, capa, and yara
 BUILD_DEPS='automake checkinstall libjansson-dev libmagic-dev libnl-genl-3-dev libtool '
-BUILD_DEPS+='meson ninja-build python3-dev ruby ruby-dev ruby-rubygems '
+BUILD_DEPS+='meson ninja-build python3-dev re2c ruby ruby-dev ruby-rubygems '
 
 # Build dependencies we're leaving in place after installation (for building new Zeek plugins in the wild, mostly)
 BUILD_DEPS_KEEP='build-essential ccache cmake flex gcc g++ git libfl-dev libgoogle-perftools-dev '
@@ -59,7 +59,7 @@ BUILD_ERROR_CODE=1
 build_arkime_src(){
 
     arkime_repo='https://github.com/arkime/arkime.git'
-    arkime_ver='4.6.0'
+    arkime_ver='5.0.0'
     arkime_dir='/opt/arkime'
     build_jobs=$((PROC_CNT/2))
 
@@ -70,7 +70,7 @@ build_arkime_src(){
     mkdir -p "${WORK_DIR}/arkime" && cd "$_"
     git clone --recurse-submodules --branch="v${arkime_ver}" "$arkime_repo" ./
 
-    for patch_file in /opt/patches/*; do
+    for patch_file in /opt/patches/*.patch; do
         patch -p 1 -r - --no-backup-if-mismatch < $patch_file || true
     done
 
@@ -78,8 +78,6 @@ build_arkime_src(){
 
     sed -i "s/MAKE=make/MAKE='make -j${build_jobs}'/" easybutton-build.sh
     ./easybutton-build.sh --dir "$arkime_dir"
-
-    npm -g config set user root
 
     make install -j${build_jobs}
 
