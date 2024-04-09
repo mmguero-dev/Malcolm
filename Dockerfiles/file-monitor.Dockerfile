@@ -34,6 +34,9 @@ ARG EXTRACTED_FILE_SCANNER_START_SLEEP=10
 ARG EXTRACTED_FILE_LOGGER_START_SLEEP=5
 ARG EXTRACTED_FILE_MIN_BYTES=64
 ARG EXTRACTED_FILE_MAX_BYTES=134217728
+ARG EXTRACTED_FILE_PRUNE_THRESHOLD_MAX_SIZE=1TB
+ARG EXTRACTED_FILE_PRUNE_THRESHOLD_TOTAL_DISK_USAGE_PERCENT=0
+ARG EXTRACTED_FILE_PRUNE_INTERVAL_SECONDS=300
 ARG VTOT_API2_KEY=0
 ARG VTOT_REQUESTS_PER_MINUTE=4
 ARG EXTRACTED_FILE_ENABLE_CLAMAV=false
@@ -65,6 +68,9 @@ ENV EXTRACTED_FILE_SCANNER_START_SLEEP $EXTRACTED_FILE_SCANNER_START_SLEEP
 ENV EXTRACTED_FILE_LOGGER_START_SLEEP $EXTRACTED_FILE_LOGGER_START_SLEEP
 ENV EXTRACTED_FILE_MIN_BYTES $EXTRACTED_FILE_MIN_BYTES
 ENV EXTRACTED_FILE_MAX_BYTES $EXTRACTED_FILE_MAX_BYTES
+ENV EXTRACTED_FILE_PRUNE_THRESHOLD_MAX_SIZE $EXTRACTED_FILE_PRUNE_THRESHOLD_MAX_SIZE
+ENV EXTRACTED_FILE_PRUNE_THRESHOLD_TOTAL_DISK_USAGE_PERCENT $EXTRACTED_FILE_PRUNE_THRESHOLD_TOTAL_DISK_USAGE_PERCENT
+ENV EXTRACTED_FILE_PRUNE_INTERVAL_SECONDS $EXTRACTED_FILE_PRUNE_INTERVAL_SECONDS
 ENV VTOT_API2_KEY $VTOT_API2_KEY
 ENV VTOT_REQUESTS_PER_MINUTE $VTOT_REQUESTS_PER_MINUTE
 ENV EXTRACTED_FILE_ENABLE_CLAMAV $EXTRACTED_FILE_ENABLE_CLAMAV
@@ -134,7 +140,7 @@ RUN sed -i "s/main$/main contrib non-free/g" /etc/apt/sources.list.d/debian.sour
       pkg-config \
       tini \
       unzip && \
-    apt-get  -y -q install \
+    apt-get -y -q install \
       inotify-tools \
       libzmq5 \
       psmisc \
@@ -148,6 +154,7 @@ RUN sed -i "s/main$/main contrib non-free/g" /etc/apt/sources.list.d/debian.sour
     python3 -m pip install --break-system-packages --no-compile --no-cache-dir \
       clamd \
       dominate \
+      humanfriendly \
       psutil \
       pycryptodome \
       python-magic \
@@ -230,6 +237,7 @@ RUN /usr/bin/freshclam freshclam --config-file=/etc/clamav/freshclam.conf
 USER root
 
 COPY --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
+COPY --chmod=755 shared/bin/prune_files.sh /usr/local/bin/
 COPY --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/
 COPY --chmod=755 shared/bin/zeek_carve*.py /usr/local/bin/
 COPY --chmod=755 shared/bin/extracted_files_http_server.py /usr/local/bin/
