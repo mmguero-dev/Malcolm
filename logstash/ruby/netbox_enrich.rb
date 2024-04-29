@@ -95,6 +95,13 @@ def register(
   end
   @verbose = [1, true, '1', 'true', 't', 'on', 'enabled'].include?(_verbose_str.to_s.downcase)
 
+  _debug_str = params["debug"]
+  _debug_env = params["debug_env"]
+  if _debug_str.nil? && !_debug_env.nil?
+    _debug_str = ENV[_debug_env]
+  end
+  @debug = [1, true, '1', 'true', 't', 'on', 'enabled'].include?(_debug_str.to_s.downcase)
+
   # connection URL for netbox
   @netbox_url = params.fetch("netbox_url", "http://netbox:8080/netbox/api").delete_suffix("/")
   @netbox_url_suffix = "/netbox/api"
@@ -287,10 +294,12 @@ def filter(
   _key.each do |ip_key|
 
     _lookup_hash = @cache_hash.getset(@lookup_type){ LruRedux::TTL::ThreadSafeCache.new(@cache_size, @cache_ttl) }
-    _result = _lookup_hash.getset(ip_key){ netbox_lookup(:event=>event, :ip_key=>ip_key) }
+    _result = _lookup_hash.getset(ip_key){ netbox_lookup(:event=>event, :ip_key=>ip_key) }.dup
 
     if !_result.nil?
 
+      # we've done a lookup and got (or autopopulated) our answer, however, if this is a device lookup and
+      #   either the hostname-unknown or manufacturer-unknown is set, we should see if we can update it
       if (_tags = _result.fetch(:tags, nil)) &&
          @autopopulate &&
          (@lookup_type == :ip_device) &&
@@ -300,22 +309,30 @@ def filter(
          _tags.any? {|tag| tag[:slug] == @device_tag_autopopulated[:slug]}
       then
         _updated_result = nil
-        if _tags.any? {|tag| tag[:slug] == @device_tag_hostname_unknown[:slug]} &&
-          _autopopulate_hostname = event.get("#{@source_hostname}") &&
-          !_autopopulate_hostname.to_s.empty?
+        _autopopulate_hostname = event.get("#{@source_hostname}").to_s
+        _autopopulate_mac = event.get("#{@source_mac}").to_s.downcase
+        _autopopulate_oui = event.get("#{@source_oui}").to_s
+        if ((_tags.any? {|tag| tag[:slug] == @device_tag_hostname_unknown[:slug]} &&
+             (!_autopopulate_hostname.empty? && !_autopopulate_hostname.end_with?('.in-addr.arpa'))) ||
+            (_tags.any? {|tag| tag[:slug] == @device_tag_manufacturer_unknown[:slug]} &&
+              ((!_autopopulate_mac.empty? && (_autopopulate_mac != 'ff:ff:ff:ff:ff:ff') && (_autopopulate_mac != '00:00:00:00:00:00')) ||
+               !_autopopulate_oui.empty?)))
         then
           # the hostname-unknown tag is set, but we appear to have a hostname
           #   from the event. we need to update the record in netbox (set the new hostname
           #   from this value and remove the tag) and in the result
-          _updated_result = netbox_lookup(:event=>event, :ip_key=>ip_key, :previous_result=>_result)
-          # puts('tried to update (1): %{result}' % { result: JSON.generate(_updated_result) })
-        end
-        if _tags.any? {|tag| tag[:slug] == @device_tag_manufacturer_unknown[:slug]}
+          # OR
           # the manufacturer-unknown tag is set, but we appear to have an OUI or MAC address
           #   from the event. we need to update the record in netbox (determine the manufacturer
           #   from this value and remove the tag) and in the result
           _updated_result = netbox_lookup(:event=>event, :ip_key=>ip_key, :previous_result=>_result)
-          # puts('tried to update (2): %{result}' % { result: JSON.generate(_updated_result) })
+          puts('filter tried to patch %{name} for "%{tags}" ("%{host}", "%{mac}", "%{oui}"): %{result}' % {
+                name: ip_key,
+                tags: _tags.map{ |hash| hash[:slug] }.join('|'),
+                host: _autopopulate_hostname,
+                mac: _autopopulate_mac,
+                oui: _autopopulate_oui,
+                result: JSON.generate(_updated_result) }) if @debug
         end
         _lookup_hash[ip_key] = (_result = _updated_result) if _updated_result
       end
@@ -462,14 +479,17 @@ def lookup_or_create_site(
              _site_create_response.has_key?(:id)
           then
              _site = _site_create_response
+          elsif @debug
+            puts('lookup_or_create_site (%{name}): _site_create_response: %{result}' % { name: site_name, result: JSON.generate(_site_create_response) })
           end
         end
 
-      rescue Faraday::Error
+      rescue Faraday::Error => e
         # give up aka do nothing
+        puts "lookup_or_create_site (#{site_name}): #{e.message}" if @debug
       end
       _site
-    }
+    }.dup
   else
     nil
   end
@@ -479,44 +499,49 @@ def lookup_manuf(
   oui,
   nb
 )
-  @manuf_hash.getset(oui) {
-    _fuzzy_matcher = FuzzyStringMatch::JaroWinkler.create( :pure )
-    _oui_cleaned = clean_manuf_string(oui.to_s)
-    _manufs = Array.new
-    # fetch the manufacturers to do the comparison. this is a lot of work
-    # and not terribly fast but once the hash it populated it shouldn't happen too often
-    _query = { :offset => 0,
-               :limit => @page_size }
-    begin
-      while true do
-        if (_manufs_response = nb.get('dcim/manufacturers/', _query).body) &&
-           _manufs_response.is_a?(Hash)
-        then
-          _tmp_manufs = _manufs_response.fetch(:results, [])
-          _tmp_manufs.each do |_manuf|
-            _tmp_name = _manuf.fetch(:name, _manuf.fetch(:display, nil))
-            _tmp_distance = _fuzzy_matcher.getDistance(clean_manuf_string(_tmp_name.to_s), _oui_cleaned)
-            if (_tmp_distance >= @autopopulate_fuzzy_threshold) then
-              _manufs << { :name => _tmp_name,
-                           :id => _manuf.fetch(:id, nil),
-                           :url => _manuf.fetch(:url, nil),
-                           :match => _tmp_distance,
-                           :vm => false }
+  if !oui.to_s.empty?
+    @manuf_hash.getset(oui) {
+      _fuzzy_matcher = FuzzyStringMatch::JaroWinkler.create( :pure )
+      _oui_cleaned = clean_manuf_string(oui.to_s)
+      _manufs = Array.new
+      # fetch the manufacturers to do the comparison. this is a lot of work
+      # and not terribly fast but once the hash it populated it shouldn't happen too often
+      _query = { :offset => 0,
+                 :limit => @page_size }
+      begin
+        while true do
+          if (_manufs_response = nb.get('dcim/manufacturers/', _query).body) &&
+             _manufs_response.is_a?(Hash)
+          then
+            _tmp_manufs = _manufs_response.fetch(:results, [])
+            _tmp_manufs.each do |_manuf|
+              _tmp_name = _manuf.fetch(:name, _manuf.fetch(:display, nil))
+              _tmp_distance = _fuzzy_matcher.getDistance(clean_manuf_string(_tmp_name.to_s), _oui_cleaned)
+              if (_tmp_distance >= @autopopulate_fuzzy_threshold) then
+                _manufs << { :name => _tmp_name,
+                             :id => _manuf.fetch(:id, nil),
+                             :url => _manuf.fetch(:url, nil),
+                             :match => _tmp_distance,
+                             :vm => false }
+              end
             end
+            _query[:offset] += _tmp_manufs.length()
+            break unless (_tmp_manufs.length() >= @page_size)
+          else
+            break
           end
-          _query[:offset] += _tmp_manufs.length()
-          break unless (_tmp_manufs.length() >= @page_size)
-        else
-          break
         end
+      rescue Faraday::Error => e
+        # give up aka do nothing
+        puts "lookup_manuf (#{oui}): #{e.message}" if @debug
       end
-    rescue Faraday::Error
-      # give up aka do nothing
-    end
-    # return the manuf with the highest match
-    # puts('0. %{key}: %{matches}' % { key: _autopopulate_oui_cleaned, matches: JSON.generate(_manufs) })-]
-    !_manufs&.empty? ? _manufs.max_by{|k| k[:match] } : nil
-  }
+      # return the manuf with the highest match
+      # puts('0. %{key}: %{matches}' % { key: _autopopulate_oui_cleaned, matches: JSON.generate(_manufs) })-]
+      !_manufs&.empty? ? _manufs.max_by{|k| k[:match] } : nil
+    }.dup
+  else
+    nil
+  end
 end
 
 def lookup_or_create_manuf_and_dtype(
@@ -529,96 +554,106 @@ def lookup_or_create_manuf_and_dtype(
   _dtype = nil
   _manuf = nil
 
-  # match/look up manufacturer based on OUI
-  if !_oui.nil? && !_oui.empty?
-    _oui = _oui.first() unless !_oui.is_a?(Array)
-    # does it look like a VM or a regular device?
-    if @vm_namesarray.include?(_oui.downcase)
-      # looks like this is probably a virtual machine
-      _manuf = { :name => _oui,
-                 :match => 1.0,
-                 :vm => true,
-                 :id => nil }
-    else
-      # looks like this is not a virtual machine (or we can't tell) so assume it's a regular device
-      _manuf = lookup_manuf(_oui, nb)
-    end # virtual machine vs. regular device
-  end # oui specified
+  begin
+    # match/look up manufacturer based on OUI
+    if !_oui.nil? && !_oui.empty?
+      _oui = _oui.first() unless !_oui.is_a?(Array)
+      # does it look like a VM or a regular device?
+      if @vm_namesarray.include?(_oui.downcase)
+        # looks like this is probably a virtual machine
+        _manuf = { :name => _oui,
+                   :match => 1.0,
+                   :vm => true,
+                   :id => nil }
+      else
+        # looks like this is not a virtual machine (or we can't tell) so assume it's a regular device
+        _manuf = lookup_manuf(_oui, nb)
+      end # virtual machine vs. regular device
+    end # oui specified
 
-  # puts('1. %{key}: %{found}' % { key: oui, found: JSON.generate(_manuf) })
-  if !_manuf.is_a?(Hash)
-    # no match was found at ANY match level (empty database or no OUI specified), set default ("unspecified") manufacturer
-    _manuf = { :name => (@autopopulate_create_manuf && !_oui.nil? && !_oui.empty?) ? _oui : default_manuf,
-               :match => 0.0,
-               :vm => false,
-               :id => nil}
-  end
-  # puts('2. %{key}: %{found}' % { key: _oui, found: JSON.generate(_manuf) })
-
-  if !_manuf[:vm]
-
-    if !_manuf.fetch(:id, nil)&.nonzero?
-      # the manufacturer was default (not found) so look it up first
-      _query = { :offset => 0,
-                 :limit => 1,
-                 :name => _manuf[:name] }
-      if (_manufs_response = nb.get('dcim/manufacturers/', _query).body) &&
-         _manufs_response.is_a?(Hash) &&
-         (_tmp_manufs = _manufs_response.fetch(:results, [])) &&
-         (_tmp_manufs.length() > 0)
-      then
-         _manuf[:id] = _tmp_manufs.first.fetch(:id, nil)
-         _manuf[:match] = 1.0
-      end
+    # puts('1. %{key}: %{found}' % { key: oui, found: JSON.generate(_manuf) })
+    if !_manuf.is_a?(Hash)
+      # no match was found at ANY match level (empty database or no OUI specified), set default ("unspecified") manufacturer
+      _manuf = { :name => (@autopopulate_create_manuf && !_oui.nil? && !_oui.empty?) ? _oui : default_manuf,
+                 :match => 0.0,
+                 :vm => false,
+                 :id => nil}
     end
-    # puts('3. %{key}: %{found}' % { key: _oui, found: JSON.generate(_manuf) })
+    # puts('2. %{key}: %{found}' % { key: _oui, found: JSON.generate(_manuf) })
 
-    if !_manuf.fetch(:id, nil)&.nonzero?
-      # the manufacturer is still not found, create it
-      _manuf_data = { :name => _manuf[:name],
-                      :tags => [ @device_tag_autopopulated ],
-                      :slug => _manuf[:name].to_url }
-      if (_manuf_create_response = nb.post('dcim/manufacturers/', _manuf_data.to_json, @nb_headers).body) &&
-         _manuf_create_response.is_a?(Hash)
-      then
-         _manuf[:id] = _manuf_create_response.fetch(:id, nil)
-         _manuf[:match] = 1.0
-      end
-      # puts('4. %{key}: %{created}' % { key: _manuf, created: JSON.generate(_manuf_create_response) })
-    end
+    if !_manuf[:vm]
 
-    # at this point we *must* have the manufacturer ID
-    if _manuf.fetch(:id, nil)&.nonzero?
-
-      # make sure the desired device type also exists, look it up first
-      _query = { :offset => 0,
-                 :limit => 1,
-                 :manufacturer_id => _manuf[:id],
-                 :model => default_dtype }
-      if (_dtypes_response = nb.get('dcim/device-types/', _query).body) &&
-         _dtypes_response.is_a?(Hash) &&
-         (_tmp_dtypes = _dtypes_response.fetch(:results, [])) &&
-         (_tmp_dtypes.length() > 0)
-      then
-         _dtype = _tmp_dtypes.first
-      end
-
-      if _dtype.nil?
-        # the device type is not found, create it
-        _dtype_data = { :manufacturer => _manuf[:id],
-                        :model => default_dtype,
-                        :tags => [ @device_tag_autopopulated ],
-                        :slug => default_dtype.to_url }
-        if (_dtype_create_response = nb.post('dcim/device-types/', _dtype_data.to_json, @nb_headers).body) &&
-           _dtype_create_response.is_a?(Hash) &&
-           _dtype_create_response.has_key?(:id)
+      if !_manuf.fetch(:id, nil)&.nonzero?
+        # the manufacturer was default (not found) so look it up first
+        _query = { :offset => 0,
+                   :limit => 1,
+                   :name => _manuf[:name] }
+        if (_manufs_response = nb.get('dcim/manufacturers/', _query).body) &&
+           _manufs_response.is_a?(Hash) &&
+           (_tmp_manufs = _manufs_response.fetch(:results, [])) &&
+           (_tmp_manufs.length() > 0)
         then
-           _dtype = _dtype_create_response
+           _manuf[:id] = _tmp_manufs.first.fetch(:id, nil)
+           _manuf[:match] = 1.0
         end
       end
+      # puts('3. %{key}: %{found}' % { key: _oui, found: JSON.generate(_manuf) })
 
-    end # _manuf :id check
-  end # _manuf is not a VM
+      if !_manuf.fetch(:id, nil)&.nonzero?
+        # the manufacturer is still not found, create it
+        _manuf_data = { :name => _manuf[:name],
+                        :tags => [ @device_tag_autopopulated ],
+                        :slug => _manuf[:name].to_url }
+        if (_manuf_create_response = nb.post('dcim/manufacturers/', _manuf_data.to_json, @nb_headers).body) &&
+           _manuf_create_response.is_a?(Hash)
+        then
+           _manuf[:id] = _manuf_create_response.fetch(:id, nil)
+           _manuf[:match] = 1.0
+        elsif @debug
+          puts('lookup_or_create_manuf_and_dtype (%{name}): _manuf_create_response: %{result}' % { name: _manuf[:name], result: JSON.generate(_manuf_create_response) })
+        end
+        # puts('4. %{key}: %{created}' % { key: _manuf, created: JSON.generate(_manuf_create_response) })
+      end
+
+      # at this point we *must* have the manufacturer ID
+      if _manuf.fetch(:id, nil)&.nonzero?
+
+        # make sure the desired device type also exists, look it up first
+        _query = { :offset => 0,
+                   :limit => 1,
+                   :manufacturer_id => _manuf[:id],
+                   :model => default_dtype }
+        if (_dtypes_response = nb.get('dcim/device-types/', _query).body) &&
+           _dtypes_response.is_a?(Hash) &&
+           (_tmp_dtypes = _dtypes_response.fetch(:results, [])) &&
+           (_tmp_dtypes.length() > 0)
+        then
+           _dtype = _tmp_dtypes.first
+        end
+
+        if _dtype.nil?
+          # the device type is not found, create it
+          _dtype_data = { :manufacturer => _manuf[:id],
+                          :model => default_dtype,
+                          :tags => [ @device_tag_autopopulated ],
+                          :slug => default_dtype.to_url }
+          if (_dtype_create_response = nb.post('dcim/device-types/', _dtype_data.to_json, @nb_headers).body) &&
+             _dtype_create_response.is_a?(Hash) &&
+             _dtype_create_response.has_key?(:id)
+          then
+             _dtype = _dtype_create_response
+          elsif @debug
+            puts('lookup_or_create_manuf_and_dtype (%{name}: _dtype_create_response: %{result}' % { name: default_dtype, result: JSON.generate(_dtype_create_response) })
+          end
+        end
+
+      end # _manuf :id check
+    end # _manuf is not a VM
+
+  rescue Faraday::Error => e
+    # give up aka do nothing
+    puts "lookup_or_create_manuf_and_dtype (#{oui}): #{e.message}" if @debug
+  end
 
   return _dtype, _manuf
 
@@ -662,8 +697,9 @@ def lookup_prefixes(
         break
       end
     end
-  rescue Faraday::Error
+  rescue Faraday::Error => e
     # give up aka do nothing
+    puts "lookup_prefixes (#{ip_str}): #{e.message}" if @debug
   end
 
   prefixes
@@ -700,14 +736,17 @@ def lookup_or_create_role(
              _role_create_response.has_key?(:id)
           then
              _role = _role_create_response
+          elsif @debug
+            puts('lookup_or_create_role (%{name}): _role_create_response: %{result}' % { name: role_name, result: JSON.generate(_role_create_response) })
           end
         end
 
-      rescue Faraday::Error
+      rescue Faraday::Error => e
         # give up aka do nothing
+        puts "lookup_or_create_role (#{role_name}): #{e.message}" if @debug
       end
       _role
-    }
+    }.dup
   else
     nil
   end
@@ -784,8 +823,9 @@ def lookup_devices(
         break
       end
     end # while true
-  rescue Faraday::Error
+  rescue Faraday::Error => e
     # give up aka do nothing
+    puts "lookup_devices (#{ip_str}, #{lookup_site}): #{e.message}" if @debug
   end
   _devices
 end
@@ -832,7 +872,7 @@ def autopopulate_devices(
        _autopopulate_role&.fetch(:id, nil)&.nonzero?
     then
 
-      if _autopopulate_manuf[:vm]
+      if _autopopulate_manuf&.fetch(:vm, false)
         # a virtual machine
         _device_name = autopopulate_hostname.to_s.empty? ? "#{_autopopulate_manuf[:name]} @ #{ip_str}" : autopopulate_hostname
         _device_data = { :name => _device_name,
@@ -844,11 +884,13 @@ def autopopulate_devices(
            _device_create_response.has_key?(:id)
         then
            _autopopulate_device = _device_create_response
+        elsif @debug
+          puts('autopopulate_devices (VM: %{name}): _device_create_response: %{result}' % { name: _device_name, result: JSON.generate(_device_create_response) })
         end
 
       else
         # a regular non-vm device: at this point we *must* have the manufacturer ID and device type ID
-        if _autopopulate_manuf.fetch(:id, nil)&.nonzero? &&
+        if _autopopulate_manuf&.fetch(:id, nil)&.nonzero? &&
            _autopopulate_dtype&.fetch(:id, nil)&.nonzero?
         then
 
@@ -872,6 +914,8 @@ def autopopulate_devices(
              _device_create_response.has_key?(:id)
           then
              _autopopulate_device = _device_create_response
+          elsif @debug
+            puts('autopopulate_devices (%{name}): _device_create_response: %{result}' % { name: _device_name, result: JSON.generate(_device_create_response) })
           end
 
         else
@@ -888,8 +932,9 @@ def autopopulate_devices(
       _autopopulate_role = nil
     end # site and role are valid
 
-  rescue Faraday::Error
+  rescue Faraday::Error => e
     # give up aka do nothing
+    puts "autopopulate_devices (#{ip_str}): #{e.message}" if @debug
   end
 
   return _autopopulate_device,
@@ -936,9 +981,12 @@ def autopopulate_prefixes(
                            :url => _new_prefix_create_response.fetch(:url, nil),
                            :tags => _new_prefix_create_response.fetch(:tags, nil),
                            :details => @verbose ? _new_prefix_create_response : nil }
+      elsif @debug
+        puts('autopopulate_prefixes: _new_prefix_create_response: %{result}' % { result: JSON.generate(_new_prefix_create_response) })
       end
-    rescue Faraday::Error
+    rescue Faraday::Error => e
       # give up aka do nothing
+      puts "autopopulate_prefixes (#{ip_obj.to_s}): #{e.message}" if @debug
     end
   end
   _prefix_data
@@ -968,6 +1016,8 @@ def create_device_interface(
      _interface_create_reponse.has_key?(:id)
   then
      _autopopulate_interface = _interface_create_reponse
+  elsif @debug
+    puts('create_device_interface (%{name}): _interface_create_reponse: %{result}' % { name: ip_str, result: JSON.generate(_interface_create_reponse) })
   end
 
   if !_autopopulate_interface.nil? && _autopopulate_interface.fetch(:id, nil)&.nonzero?
@@ -985,6 +1035,8 @@ def create_device_interface(
        _ip_create_reponse.has_key?(:id)
     then
        _autopopulate_ip = _ip_create_reponse
+    elsif @debug
+      puts('create_device_interface (%{name}): _ip_create_reponse: %{result}' % { name: _interface_address, result: JSON.generate(_ip_create_reponse) })
     end
   end # check if interface was created and has ID
 
@@ -995,7 +1047,9 @@ def create_device_interface(
        _ip_primary_reponse.is_a?(Hash) &&
        _ip_primary_reponse.has_key?(:id)
     then
-       _autopopulate_device = _ip_create_reponse
+       _autopopulate_device = _ip_primary_reponse
+    elsif @debug
+      puts('create_device_interface (%{name}): _ip_primary_reponse: %{result}' % { name: _interface_address, result: JSON.generate(_ip_primary_reponse) })
     end
   end # check if the IP address was created and has an ID
 
@@ -1024,6 +1078,7 @@ def netbox_lookup(
     _autopopulate_default_dtype = (@default_dtype.nil? || @default_dtype.empty?) ? "Unspecified" : @default_dtype
     _autopopulate_default_site =  (@lookup_site.nil? || @lookup_site.empty?) ? "default" : @lookup_site
     _autopopulate_hostname = event.get("#{@source_hostname}")
+    _autopopulate_hostname = nil if _autopopulate_hostname.to_s.end_with?('.in-addr.arpa')
     _autopopulate_mac = event.get("#{@source_mac}")
     _autopopulate_oui = event.get("#{@source_oui}")
 
@@ -1083,6 +1138,7 @@ def netbox_lookup(
         end # _autopopulate turned on and no results found
 
       elsif @autopopulate
+
         #################################################################################
         # update with new information on an existing device (i.e., from a previous call to netbox_lookup)
         _patched_device_data = Hash.new
@@ -1090,16 +1146,27 @@ def netbox_lookup(
         # get existing tags to update them to remove "unkown-..." values if needed
         _tags = previous_result.fetch(:tags, nil)&.flatten&.map{ |hash| { slug: hash[:slug] } }&.uniq
 
-        # API endpoint is different for VM vs real device
-        _is_vm = (previous_result.fetch(:device_type, nil)&.flatten&.any? {|dt| dt == @virtual_machine_device_type_name} ||
-                  (previous_result.has_key?(:url) && !previous_result[:url]&.empty? && previous_result[:url].any? { |u| u.include? "virtual-machines" }))
+        # API endpoints are different for VM vs real device
+        _was_vm = (previous_result.fetch(:device_type, nil)&.flatten&.any? {|dt| dt == @virtual_machine_device_type_name} ||
+                   (previous_result.has_key?(:url) && !previous_result[:url]&.empty? && previous_result[:url].any? { |u| u.include? "virtual-machines" }))
 
         # get previous device ID (should only be dealing with a single device)
         _previous_device_id = previous_result.fetch(:id, nil)&.flatten&.uniq
+
+        # puts('netbox_lookup maybe patching %{name} (%{id}, VM old: %{oldvm}) for "%{tags}" ("%{host}", "%{mac}", "%{oui}")' % {
+        #       name: ip_key,
+        #       id: _previous_device_id,
+        #       oldvm: _was_vm,
+        #       tags: _tags.is_a?(Array) ? _tags.map{ |hash| hash[:slug] }.join('|') : '',
+        #       host: _autopopulate_hostname.to_s,
+        #       mac: _autopopulate_mac.to_s,
+        #       oui: _autopopulate_oui.to_s }) if @debug
+
         if _previous_device_id.is_a?(Array) &&
           (_previous_device_id.length() == 1) &&
           (_previous_device_id = _previous_device_id.first)
         then
+          _previous_device_site = [previous_result.fetch(:site, nil)].flatten.uniq.first
 
           if !_autopopulate_hostname.to_s.empty? &&
              _tags&.any? {|tag| tag[:slug] == @device_tag_hostname_unknown[:slug]}
@@ -1133,17 +1200,73 @@ def netbox_lookup(
             _tags = _tags.filter{|tag| tag[:slug] != @device_tag_manufacturer_unknown[:slug]}
           end
 
-          if !_patched_device_data.empty? # we've got changes to make, so do it
-            _patched_device_data[:tags] = _tags
-            if (_patched_device_response = _nb.patch("#{_is_vm ? 'virtualization/virtual-machines' : 'dcim/devices'}/#{_previous_device_id}/", _patched_device_data.to_json, @nb_headers).body) &&
-               _patched_device_response.is_a?(Hash) &&
-               _patched_device_response.has_key?(:id)
-            then
-              # we've made the change to netbox, do a call to lookup_devices to get the formatted/updated data
-              #   (yeah, this is a *little* inefficient, but this should really only happen one extra time per device at most)
-               _devices = lookup_devices(ip_key, @lookup_site, _lookup_service_port, @netbox_url_base, @netbox_url_suffix, _nb)
-            end # _nb.patch succeeded
-          end # check _patched_device_data
+          # We could have created a device (without mac/OUI) based on hostname, and now only realize that
+          #   it's actually a VM. However, a device can't have been autopopulated as a VM and then later
+          #   "become" a device, since the only reason we'd have created it as a VM would be because
+          #   we saw the OUI (from real traffic) in @vm_namesarray in the first place.
+          _is_vm = _was_vm || (_autopopulate_manuf.is_a?(Hash) && (_autopopulate_manuf.fetch(:vm, false) == true))
+          _device_to_vm = ((_was_vm == false) && (_is_vm == true))
+
+          if !_patched_device_data.empty? || _device_to_vm
+            # we've got changes to make, so do it
+            _device_written = false
+
+            puts('netbox_lookup patching %{name} @ %{site} (%{id}, VM: %{wasvm}->%{isvm}) ("%{host}", "%{mac}", "%{oui}"): %{changes}' % {
+                  name: ip_key,
+                  site: _previous_device_site,
+                  id: _previous_device_id,
+                  wasvm: _was_vm,
+                  isvm: _is_vm,
+                  host: _autopopulate_hostname.to_s,
+                  mac: _autopopulate_mac.to_s,
+                  oui: _autopopulate_oui.to_s,
+                  changes: JSON.generate(_patched_device_data) }) if @debug
+
+            if _device_to_vm
+              # you can't "convert" a device to a VM, so we have to create a new VM then delete the old device
+              _vm_data = { :name => _patched_device_data.fetch(:name, [previous_result.fetch(:name, nil)])&.flatten&.uniq.first,
+                           :site => ((_previous_device_site_obj = lookup_or_create_site(_previous_device_site, _nb)) &&
+                                     _previous_device_site_obj.is_a?(Hash) &&
+                                     _previous_device_site_obj.has_key?(:id)) ? _previous_device_site_obj[:id] : { :slug => _previous_device_site.to_url },
+                           :tags => _tags,
+                           :status => @default_status }
+              if (_vm_create_response = _nb.post('virtualization/virtual-machines/', _vm_data.to_json, @nb_headers).body) &&
+                 _vm_create_response.is_a?(Hash) &&
+                 _vm_create_response.has_key?(:id)
+              then
+                _device_written = true
+                _autopopulate_device = _vm_create_response
+                # we've created the device as a VM, create_device_interface will be called below to create its interface
+
+                # now delete the old device entry
+                _old_device_delete_response = _nb.delete("dcim/devices/#{_previous_device_id}/")
+                puts('netbox_lookup (%{name}: dev.%{oldid} -> vm.%{newid}): _old_device_delete_response: %{success}' % {
+                     name: _vm_data[:name],
+                     oldid: _previous_device_id,
+                     newid: _vm_create_response[:id],
+                     success: _old_device_delete_response.success? }) if @debug
+              elsif @debug
+                puts('netbox_lookup (%{name}): _vm_create_response: %{result}' % { name: _vm_data[:name], result: JSON.generate(_vm_create_response) })
+              end
+
+            elsif (_is_vm == _was_vm)
+              # the type of object (vm vs. device) is the same as it was before, so we're just doing an update
+              _patched_device_data[:tags] = _tags
+              if (_patched_device_response = _nb.patch("#{_was_vm ? 'virtualization/virtual-machines' : 'dcim/devices'}/#{_previous_device_id}/", _patched_device_data.to_json, @nb_headers).body) &&
+                 _patched_device_response.is_a?(Hash) &&
+                 _patched_device_response.has_key?(:id)
+              then
+                _device_written = true
+              elsif @debug
+                puts('netbox_lookup (%{name}): _patched_device_response: %{result}' % { name: _previous_device_id, result: JSON.generate(_patched_device_response) })
+              end # _nb.patch succeeded
+            end # _is_vm vs _was_vm check
+
+            # we've made the change to netbox, do a call to lookup_devices to get the formatted/updated data
+            #   (yeah, this is a *little* inefficient, but this should really only happen one extra time per device at most)
+            _devices = lookup_devices(ip_key, @lookup_site, _lookup_service_port, @netbox_url_base, @netbox_url_suffix, _nb) if _device_written
+
+          end # check _patched_device_data, _device_to_vm
 
         end # check previous device ID is valid
       end # check on previous_result function argument
