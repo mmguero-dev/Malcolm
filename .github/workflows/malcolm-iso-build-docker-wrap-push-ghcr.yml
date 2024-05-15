@@ -8,6 +8,7 @@ on:
     paths:
       - 'malcolm-iso/**'
       - 'shared/bin/*'
+      - '!shared/bin/capa-build.sh'
       - '!shared/bin/configure-capture.py'
       - '!shared/bin/extracted_files_http_server.py'
       - '!shared/bin/web-ui-asset-download.sh'
@@ -32,7 +33,7 @@ jobs:
     steps:
       -
         name: Cancel previous run in progress
-        uses: styfle/cancel-workflow-action@0.12.0
+        uses: styfle/cancel-workflow-action@0.12.1
         with:
           ignore_sha: true
           all_but_latest: true
@@ -88,6 +89,11 @@ jobs:
         run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
         id: extract_branch
       -
+        name: Generate arch tag suffix
+        shell: bash
+        run: echo "archtag=$([[ "${{ matrix.platform }}" == 'linux/amd64' ]] && echo '' || ( echo -n '-' ; echo "${{ matrix.platform }}" | cut -d '/' -f 2) )" >> $GITHUB_OUTPUT
+        id: arch_tag_suffix
+      -
         name: Extract commit SHA
         shell: bash
         run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
@@ -122,6 +128,7 @@ jobs:
           popd
       -
         name: Run Trivy vulnerability scanner
+        if: ${{ matrix.platform == 'linux/amd64' }}
         id: trivy-scan
         uses: aquasecurity/trivy-action@master
         with:
@@ -136,8 +143,8 @@ jobs:
           exit-code: '0'
       -
         name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v2
-        if: always()
+        if: ${{ matrix.platform == 'linux/amd64' }}
+        uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
       -
@@ -153,4 +160,5 @@ jobs:
         with:
           context: ./malcolm-iso
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/malcolm/malcolm:${{ steps.extract_branch.outputs.branch }}
+          provenance: false
+          tags: ghcr.io/${{ github.repository_owner }}/malcolm/malcolm:${{ steps.extract_branch.outputs.branch }}${{ steps.arch_tag_suffix.outputs.archtag }}
