@@ -8,6 +8,8 @@ IMAGE_DISTRIBUTION=bookworm
 BEATS_VER="8.13.4"
 BEATS_OSS="-oss"
 
+ARKIME_VER="5.2.0"
+
 BUILD_ERROR_CODE=1
 
 if [ "$(id -u)" != "0" ]; then
@@ -171,8 +173,8 @@ if [ -d "$WORKDIR" ]; then
   docker rmi -f htpdate-build:latest
 
   # grab maxmind geoip database files, iana ipv4 address ranges, wireshark oui lists, etc.
-  mkdir -p "$SCRIPT_PATH/arkime/etc"
-  pushd "$SCRIPT_PATH/arkime/etc"
+  mkdir -p ./config/includes.chroot/opt/arkime/etc/
+  pushd ./config/includes.chroot/opt/arkime/etc/
   MAXMIND_GEOIP_DB_LICENSE_KEY=""
   if [[ -f "$SCRIPT_PATH/shared/maxmind_license.txt" ]]; then
     MAXMIND_GEOIP_DB_LICENSE_KEY="$(cat "$SCRIPT_PATH/shared/maxmind_license.txt" | head -n 1)"
@@ -188,8 +190,10 @@ if [ -d "$WORKDIR" ]; then
   curl -s -S -L -o oui.txt "https://www.wireshark.org/download/automated/data/manuf"
   popd >/dev/null 2>&1
 
-  # TODO: switch to release when it's actually out, or revert to source build
-  curl -s -S -L -o ./config/packages.chroot/arkime.deb "https://github.com/arkime/arkime/releases/download/last-commit/arkime-main_debian12_amd64.deb"
+  # download Arkime .deb package
+  curl -s -S -L \
+    -o ./config/packages.chroot/arkime_"${ARKIME_VER}"_amd64.deb \
+    "https://github.com/arkime/arkime/releases/download/v${ARKIME_VER}/arkime_${ARKIME_VER}-1.debian12_amd64.deb"
 
   # download Zeek .deb packages
   bash "$SCRIPT_PATH/shared/bin/zeek-deb-download.sh" -o ./config/packages.chroot/
