@@ -79,7 +79,6 @@ ZKG_GITHUB_URLS=(
   "https://github.com/cisagov/icsnpp-profinet-io-cm"
   "https://github.com/cisagov/icsnpp-s7comm"
   "https://github.com/cisagov/icsnpp-synchrophasor"
-  "https://github.com/cisagov/acid"
   "https://github.com/corelight/callstranger-detector"
   "https://github.com/corelight/CVE-2020-16898"
   "https://github.com/corelight/CVE-2021-31166"
@@ -103,12 +102,12 @@ ZKG_GITHUB_URLS=(
   "https://github.com/corelight/zeek-xor-exe-plugin|master"
   "https://github.com/corelight/zerologon"
   "https://github.com/cybera/zeek-sniffpass"
+  "https://github.com/FoxIO-LLC/ja4"
   "https://github.com/mmguero-dev/bzar"
   "https://github.com/ncsa/bro-is-darknet"
   "https://github.com/ncsa/bro-simple-scan"
   "https://github.com/precurse/zeek-httpattacks"
   "https://github.com/mmguero-dev/GQUIC_Protocol_Analyzer"
-  "https://github.com/salesforce/ja3"
   "https://github.com/zeek/spicy-dhcp"
   "https://github.com/zeek/spicy-dns"
   "https://github.com/zeek/spicy-http"
@@ -121,3 +120,8 @@ for i in ${ZKG_GITHUB_URLS[@]}; do
 done
 
 find "${ZEEK_DIR}"/lib/zeek/plugins/packages -type f -name "*.hlto" -exec chmod 755 "{}" \;
+
+# plugins/packages/scripts that don't play nicely or need to be coddled
+git clone \
+  --single-branch --depth 1 --recurse-submodules --shallow-submodules \
+  "https://github.com/cisagov/ACID" "${ZEEK_DIR}"/share/zeek/site/ACID
