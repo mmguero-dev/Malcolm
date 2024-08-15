@@ -100,6 +100,7 @@ if [ -d "$WORKDIR" ]; then
   mkdir -p "$MALCOLM_DEST_DIR/htadmin/"
   mkdir -p "$MALCOLM_DEST_DIR/logstash/certs/"
   mkdir -p "$MALCOLM_DEST_DIR/logstash/maps/"
+  mkdir -p "$MALCOLM_DEST_DIR/netbox/custom-plugins/requirements/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/media/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/postgres/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/redis/"
@@ -128,7 +129,6 @@ if [ -d "$WORKDIR" ]; then
   mkdir -p "$MALCOLM_DEST_DIR/zeek/intel/MISP/"
   mkdir -p "$MALCOLM_DEST_DIR/zeek/intel/STIX/"
   cp ./docker-compose.yml "$MALCOLM_DEST_DIR/docker-compose.yml"
-  cp ./net-map.json "$MALCOLM_DEST_DIR/"
   cp ./scripts/install.py "$MALCOLM_DEST_DIR/scripts/"
   cp ./scripts/control.py "$MALCOLM_DEST_DIR/scripts/"
   pushd "$MALCOLM_DEST_DIR/scripts/" >/dev/null 2>&1

@@ -36,7 +36,7 @@ spec:
     spec:
       containers:
       - name: netbox-container
-        image: ghcr.io/idaholab/malcolm/netbox:24.06.0
+        image: ghcr.io/idaholab/malcolm/netbox:24.08.0
         imagePullPolicy: Always
         stdin: false
         tty: true
@@ -77,10 +77,9 @@ spec:
         volumeMounts:
           - mountPath: /var/local/ca-trust/configmap
             name: netbox-var-local-catrust-volume
-          - mountPath: /usr/local/share/configmap
-            name: netbox-netmap-json-volume
           - mountPath: /etc/netbox/config/configmap
             name: netbox-config-volume
+          # TODO: custom-plugins
           - mountPath: /opt/netbox-preload/configmap
             name: netbox-preload-volume
           - mountPath: /opt/netbox/netbox/media
@@ -88,7 +87,7 @@ spec:
             subPath: netbox/media
       initContainers:
       - name: netbox-dirinit-container
-        image: ghcr.io/idaholab/malcolm/dirinit:24.06.0
+        image: ghcr.io/idaholab/malcolm/dirinit:24.08.0
         imagePullPolicy: Always
         stdin: false
         tty: true
@@ -105,9 +104,6 @@ spec:
         - name: netbox-var-local-catrust-volume
           configMap:
             name: var-local-catrust
-        - name: netbox-netmap-json-volume
-          configMap:
-            name: netbox-netmap-json
         - name: netbox-config-volume
           configMap:
             name: netbox-config

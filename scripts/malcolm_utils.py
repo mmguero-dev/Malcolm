@@ -176,9 +176,9 @@ def decapitalize(s):
 #
 # Example:
 #   d = {'meta': {'status': 'OK', 'status_code': 200}}
-#   DeepGet(d, ['meta', 'status_code'])          # => 200
-#   DeepGet(d, ['garbage', 'status_code'])       # => None
-#   DeepGet(d, ['meta', 'garbage'], default='-') # => '-'
+#   deep_get(d, ['meta', 'status_code'])          # => 200
+#   deep_get(d, ['garbage', 'status_code'])       # => None
+#   deep_get(d, ['meta', 'garbage'], default='-') # => '-'
 def deep_get(d, keys, default=None):
     k = get_iterable(keys)
     if d is None:
@@ -353,6 +353,23 @@ def isipaddress(value):
 
 
 ###################################################################################################
+# check a string or list to see if something is a private IP address or subnet
+def isprivateip(value):
+    result = True
+    try:
+        if isinstance(value, list) or isinstance(value, tuple) or isinstance(value, set):
+            for v in value:
+                result = result and ipaddress.ip_network(value).is_private
+                if not result:
+                    break
+        else:
+            result = ipaddress.ip_network(value).is_private
+    except Exception:
+        result = False
+    return result
+
+
+###################################################################################################
 # return the primary IP (the one with a default route) on the local box
 def get_primary_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -455,6 +472,18 @@ def pushd(directory):
         yield
     finally:
         os.chdir(prevDir)
+
+
+###################################################################################################
+# "chown -R" a file or directory
+def ChownRecursive(path, uid, gid):
+    os.chown(path, int(uid), int(gid))
+    if os.path.isdir(path):
+        for dirpath, dirnames, filenames in os.walk(path, followlinks=False):
+            for dname in dirnames:
+                os.chown(os.path.join(dirpath, dname), int(uid), int(gid))
+            for fname in filenames:
+                os.chown(os.path.join(dirpath, fname), int(uid), int(gid), follow_symlinks=False)
 
 
 ###################################################################################################
