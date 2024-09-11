@@ -73,11 +73,13 @@ Although the configuration script automates many of the following configuration 
     - The following variables control the OpenSearch indices to which network traffic metadata are written. Changing them from their defaults may cause logs from non-Arkime data sources (i.e., Zeek, Suricata) to not show up correctly in Arkime.
         + `MALCOLM_NETWORK_INDEX_PATTERN` - Index pattern for network traffic logs written via Logstash (default is `arkime_sessions3-*`)
         + `MALCOLM_NETWORK_INDEX_TIME_FIELD` - Default time field to use for network traffic logs in Logstash and Dashboards (default is `firstPacket`)
-        + `MALCOLM_NETWORK_INDEX_SUFFIX` - Suffix used to create index to which network traffic logs are written (supports [Ruby `strftime`](https://docs.ruby-lang.org/en/3.2/strftime_formatting_rdoc.html) strings in `％{}`) (e.g., hourly: `％{％y％m％dh％H}`, twice daily: `％{％P％y％m％d}`, daily (default): `％{％y％m％d}`, weekly: `％{％yw％U}`, monthly: `％{％ym％m}`)
+        + `MALCOLM_NETWORK_INDEX_SUFFIX` - Suffix used to create index to which network traffic logs are written
+            * supports [Ruby `strftime`](https://docs.ruby-lang.org/en/3.2/strftime_formatting_rdoc.html) strings in `％{}`) (e.g., hourly: `％{％y％m％dh％H}`, twice daily: `％{％P％y％m％d}`, daily (default): `％{％y％m％d}`, weekly: `％{％yw％U}`, monthly: `％{％ym％m}`
+            * supports expanding dot-delimited field names in `｛｛ ｝｝` (e.g., `｛｛event.provider｝｝％{％y％m％d}`)
     - The following variables control the OpenSearch indices to which other logs ([third-party logs](third-party-logs.md#ThirdPartyLogs), resource utilization reports from network sensors, etc.) are written.
         + `MALCOLM_OTHER_INDEX_PATTERN` - Index pattern for other logs written via Logstash (default is `malcolm_beats_*`)
         + `MALCOLM_OTHER_INDEX_TIME_FIELD` - Default time field to use for other logs in Logstash and Dashboards (default is `@timestamp`)
-        + `MALCOLM_OTHER_INDEX_SUFFIX` - Suffix used to create index to which other logs are written (supports [Ruby `strftime`](https://docs.ruby-lang.org/en/3.2/strftime_formatting_rdoc.html) strings in `％{}`) (default is `％{％y％m％d}`)
+        + `MALCOLM_OTHER_INDEX_SUFFIX` - Suffix used to create index to which other logs are written (with the same rules as `MALCOLM_NETWORK_INDEX_SUFFIX` above) (default is `％{％y％m％d}`)
 * **`pcap-capture.env`** - settings specific to capturing traffic for [live traffic analysis](live-analysis.md#LocalPCAP)
     - `PCAP_ENABLE_NETSNIFF` – if set to `true`, Malcolm will capture network traffic on the local network interface(s) indicated in `PCAP_IFACE` using [netsniff-ng](http://netsniff-ng.org/)
     - `PCAP_ENABLE_TCPDUMP` – if set to `true`, Malcolm will capture network traffic on the local network interface(s) indicated in `PCAP_IFACE` using [tcpdump](https://www.tcpdump.org/); there is no reason to enable *both* `PCAP_ENABLE_NETSNIFF` and `PCAP_ENABLE_TCPDUMP`

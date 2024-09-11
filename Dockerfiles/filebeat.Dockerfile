@@ -1,6 +1,6 @@
 ARG TARGETPLATFORM=linux/amd64
 
-FROM --platform=${TARGETPLATFORM} docker.elastic.co/beats/filebeat-oss:8.15.0
+FROM --platform=${TARGETPLATFORM} docker.elastic.co/beats/filebeat-oss:8.15.1
 
 # Copyright (c) 2024 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -62,7 +62,7 @@ ARG FILEBEAT_TCP_PARSE_DROP_FIELD=""
 ARG FILEBEAT_TCP_TAG="_malcolm_beats"
 ARG PCAP_NODE_NAME=malcolm
 
-ENV SUPERCRONIC_VERSION "0.2.30"
+ENV SUPERCRONIC_VERSION "0.2.31"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
@@ -95,13 +95,15 @@ RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
         psmisc \
         python3-pip \
         python3-setuptools \
+        python3.9 \
         rsync \
         tar \
         tini \
         unar \
         unzip \
         xz-utils && \
-    python3 -m pip install --no-compile --no-cache-dir patool entrypoint2 pyunpack python-magic ordered-set supervisor watchdog==4.0.2 && \
+    ln -s -f -r /usr/bin/python3.9 /usr/bin/python3 && \
+    python3.9 -m pip install --no-compile --no-cache-dir patool entrypoint2 pyunpack python-magic ordered-set supervisor watchdog==5.0.2 && \
     curl -fsSL -o /usr/local/bin/supercronic "${SUPERCRONIC_URL}${BINARCH}" && \
       chmod +x /usr/local/bin/supercronic && \
     curl -fsSL -o /usr/local/bin/yq "${YQ_URL}${BINARCH}" && \

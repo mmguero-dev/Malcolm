@@ -33,7 +33,7 @@ ENV PGROUP "suricata"
 ENV PUSER_PRIV_DROP false
 ENV PUSER_RLIMIT_UNLOCK true
 
-ENV SUPERCRONIC_VERSION "0.2.30"
+ENV SUPERCRONIC_VERSION "0.2.31"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
@@ -108,7 +108,7 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
     apt-get install -q -y --no-install-recommends -t bookworm-backports \
         suricata=${SURICATA_VERSION_PATTERN} \
         suricata-update && \
-    python3 -m pip install --break-system-packages --no-compile --no-cache-dir watchdog==4.0.2 && \
+    python3 -m pip install --break-system-packages --no-compile --no-cache-dir watchdog==5.0.2 && \
     curl -fsSL -o /usr/local/bin/supercronic "${SUPERCRONIC_URL}${BINARCH}" && \
       chmod +x /usr/local/bin/supercronic && \
     curl -fsSL -o /usr/bin/yq "${YQ_URL}${BINARCH}" && \
