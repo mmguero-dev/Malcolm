@@ -32,6 +32,7 @@ from malcolm_common import (
     AskForString,
     BoundPath,
     ChooseOne,
+    CONTAINER_RUNTIME_KEY,
     DetermineYamlFileFormat,
     DisplayMessage,
     DisplayProgramBox,
@@ -117,7 +118,7 @@ pyPlatform = platform.system()
 
 args = None
 dockerBin = None
-# dockerComposeBin might be e.g., ('docker', 'compose') or 'docker-compose',
+# dockerComposeBin might be e.g., ('docker', 'compose'), ('podman', 'compose'), or 'docker-compose', etc.
 #   it will be flattened in run_process
 dockerComposeBin = None
 dockerComposeYaml = None
@@ -213,7 +214,7 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
         # if we're using docker-uid-gid-setup.sh to drop privileges as we spin up a container
         dockerUidGuidSetup = "/usr/local/bin/docker-uid-gid-setup.sh"
 
-        # docker-compose use local temporary path
+        # compose use local temporary path
         osEnv = os.environ.copy()
         osEnv['TMPDIR'] = MalcolmTmpPath
 
@@ -300,6 +301,8 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
                             'run',
                             # remove the container when complete
                             '--rm',
+                            # if using podman, use --userns keep-id
+                            ['--userns', 'keep-id'] if dockerBin.startswith('podman') else '',
                             # if using stdin, indicate the container is "interactive", else noop
                             '-i' if ('stdin' in run_process_kwargs and run_process_kwargs['stdin']) else '',
                             # if     dropPriv, dockerUidGuidSetup will take care of dropping privileges for the correct UID/GID
@@ -2103,7 +2106,7 @@ def main():
         dest='runtimeBin',
         metavar='<string>',
         type=str,
-        default=os.getenv('MALCOLM_CONTAINER_RUNTIME', None),
+        default=os.getenv('MALCOLM_CONTAINER_RUNTIME', ''),
         help='Container runtime binary (e.g., docker, podman)',
     )
 
@@ -2394,11 +2397,28 @@ def main():
         osEnv['TMPDIR'] = MalcolmTmpPath
 
         if orchMode is OrchestrationFramework.DOCKER_COMPOSE:
-            # make sure docker and docker compose are available
-            if args.runtimeBin is not None:
+            # identify runtime engine
+            runtimeBinSrc = ''
+            if args.runtimeBin:
                 dockerBin = args.runtimeBin
+                runtimeBinSrc = 'specified'
             else:
+                processEnvFile = os.path.join(args.configDir, 'process.env')
+                try:
+                    if os.path.isfile(processEnvFile):
+                        dockerBin = dotenvImported.get_key(processEnvFile, CONTAINER_RUNTIME_KEY)
+                        runtimeBinSrc = os.path.basename(processEnvFile)
+                    else:
+                        runtimeBinSrc = 'process.env not found'
+                except Exception as e:
+                    runtimeBinSrc = f'exception ({e})'
+            if not dockerBin:
                 dockerBin = 'docker.exe' if ((pyPlatform == PLATFORM_WINDOWS) and which('docker.exe')) else 'docker'
+                runtimeBinSrc = 'default'
+            if args.debug:
+                eprint(f"Container runtime ({runtimeBinSrc}): {dockerBin}")
+
+            # make sure docker and docker compose are available
             err, out = run_process([dockerBin, 'info'], debug=args.debug)
             if err != 0:
                 raise Exception(f'{ScriptName} requires docker, please run install.py')

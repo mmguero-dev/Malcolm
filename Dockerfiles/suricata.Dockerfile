@@ -32,6 +32,8 @@ ENV PGROUP "suricata"
 # a final check in docker_entrypoint.sh before startup
 ENV PUSER_PRIV_DROP false
 ENV PUSER_RLIMIT_UNLOCK true
+# see PUSER_CHOWN at the bottom of the file (after the other environment variables it references)
+USER root
 
 ENV SUPERCRONIC_VERSION "0.2.31"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
@@ -179,9 +181,18 @@ ENV PCAP_IFACE_TWEAK $PCAP_IFACE_TWEAK
 ENV PCAP_FILTER $PCAP_FILTER
 ENV PCAP_NODE_NAME $PCAP_NODE_NAME
 
+# This is in part to handle an issue when running with rootless podman and
+#   "userns_mode: keep-id". It seems that anything defined as a VOLUME
+#   in the Dockerfile is getting set with an ownership of 999:999.
+#   This is to override that, although I'm not yet sure if there are
+#   other implications. See containers/podman#23347.
+# However, note that in this case (unlike most of the other Dockerfiles
+#   where I've put this workaround) in this case the PUSER_CHOWN was
+#   already being set like this, so even if I resolve that issue
+#   I probably don't want to remove this.
+ENV PUSER_CHOWN "$SURICATA_CONFIG_DIR;$SURICATA_CUSTOM_RULES_DIR;$SURICATA_CUSTOM_CONFIG_DIR;$SURICATA_LOG_DIR;$SURICATA_MANAGED_DIR;$SURICATA_RUN_DIR"
 
-ENV PUSER_CHOWN "$SURICATA_CONFIG_DIR;$SURICATA_MANAGED_DIR;$SURICATA_LOG_DIR;$SURICATA_RUN_DIR"
-
+# see PUSER_CHOWN comment above
 VOLUME ["$SURICATA_CONFIG_DIR"]
 VOLUME ["$SURICATA_CUSTOM_RULES_DIR"]
 VOLUME ["$SURICATA_CUSTOM_CONFIG_DIR"]
@@ -199,7 +210,6 @@ ENTRYPOINT ["/usr/bin/tini", \
             "/usr/local/bin/docker_entrypoint.sh"]
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf", "-n"]
-
 
 # to be populated at build-time:
 ARG BUILD_DATE
