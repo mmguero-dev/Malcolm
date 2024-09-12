@@ -1,6 +1,8 @@
 # <a name="HostSystemConfigLinux"></a>Linux host system configuration
 
-## Installing Docker
+## Docker
+
+### Installing Docker
 
 Docker installation instructions vary slightly by distribution. Please follow the links below to docker.com to find the instructions specific to your distribution:
 
@@ -21,7 +23,7 @@ Docker starts automatically on DEB-based distributions. On RPM-based distributio
 
 You can test Docker by running `docker info`, or (assuming you have internet access), `docker run --rm hello-world`.
 
-## Installing docker compose
+### Installing docker compose
 
 Please follow [this link](https://docs.docker.com/compose/install/) on docker.com for instructions on installing the Docker Compose plugin.
 
@@ -89,3 +91,7 @@ blockdev --setra 512 /dev/sda
 * If you are planning on using very large data sets, consider formatting the drive containing the `opensearch` volume as XFS.
 
 After making allthese changes, do a reboot for good measure!
+
+## Podman
+
+See [Docker vs. Podman](quickstart.md#DockerVPodman).
