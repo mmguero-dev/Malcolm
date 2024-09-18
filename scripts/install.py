@@ -1369,10 +1369,7 @@ class Installer(object):
                     diskUsageManagementPrompt = InstallerYesOrNo(
                         (
                             'Should Malcolm delete the oldest database indices and capture artifacts based on available storage?'
-                            if (
-                                (opensearchPrimaryMode == DatabaseMode.OpenSearchLocal)
-                                and (malcolmProfile == PROFILE_MALCOLM)
-                            )
+                            if (malcolmProfile == PROFILE_MALCOLM)
                             else 'Should Malcolm delete the oldest capture artifacts based on available storage?'
                         ),
                         default=args.arkimeManagePCAP
@@ -1384,14 +1381,10 @@ class Installer(object):
                     if diskUsageManagementPrompt:
 
                         # delete oldest indexes based on index pattern size
-                        if (
-                            (malcolmProfile == PROFILE_MALCOLM)
-                            and (opensearchPrimaryMode == DatabaseMode.OpenSearchLocal)
-                            and InstallerYesOrNo(
-                                'Delete the oldest indices when the database exceeds a certain size?',
-                                default=bool(args.indexPruneSizeLimit),
-                                extraLabel=BACK_LABEL,
-                            )
+                        if (malcolmProfile == PROFILE_MALCOLM) and InstallerYesOrNo(
+                            'Delete the oldest indices when the database exceeds a certain size?',
+                            default=bool(args.indexPruneSizeLimit),
+                            extraLabel=BACK_LABEL,
                         ):
                             indexPruneSizeLimit = ''
                             loopBreaker = CountUntilException(MaxAskForValueCount, 'Invalid index threshold')
@@ -2541,7 +2534,7 @@ class Installer(object):
                             deep_set(
                                 data,
                                 ['services', service, 'logging', 'driver'],
-                                'journald' if args.runtimeBin.startswith('podman') else 'local',
+                                'json-file' if args.runtimeBin.startswith('podman') else 'local',
                             )
 
                             # whether or not to restart services automatically (on boot, etc.)
@@ -3332,6 +3325,13 @@ class LinuxInstaller(Installer):
                 ['# maximum % of dirty system memory before committing everything', 'vm.dirty_ratio=80'],
             ),
             ConfigLines(
+                [],
+                '/etc/sysctl.conf',
+                'net.ipv4.tcp_retries2=',
+                'net.ipv4.tcp_retries2 defines the maximum number of TCP retransmissions',
+                ['# maximum number of TCP retransmissions', 'net.ipv4.tcp_retries2=5'],
+            ),
+            ConfigLines(
                 ['centos', 'core'],
                 '/etc/systemd/system.conf.d/limits.conf',
                 '',
@@ -3398,6 +3398,36 @@ class LinuxInstaller(Installer):
                             f"mkdir -p {os.path.dirname(config.filename)} && echo -n -e '{echoNewLineJoin}{echoNewLineJoin.join(config.lines)}{echoNewLineJoin}' >> '{config.filename}'",
                         ],
                         privileged=True,
+                    )
+
+        # tweak other kernel parameters
+
+        # cgroup accounting in GRUB_CMDLINE_LINUX in /etc/default/grub
+        if (
+            (grubFileName := '/etc/default/grub')
+            and os.path.isfile(grubFileName)
+            and (not [line.rstrip('\n') for line in open(grubFileName) if 'cgroup' in line.lower()])
+            and InstallerYesOrNo(
+                f'\ncgroup parameters appear to be missing from {grubFileName}, set them?',
+                default=True,
+            )
+        ):
+            err, out = self.run_process(
+                [
+                    'bash',
+                    '-c',
+                    f'sed -i \'s/^GRUB_CMDLINE_LINUX="/&cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem /\' {grubFileName}',
+                ],
+                privileged=True,
+            )
+            if err == 0:
+                if which('update-grub', debug=self.debug):
+                    err, out = self.run_process(['update-grub'], privileged=True)
+                elif which('update-grub2', debug=self.debug):
+                    err, out = self.run_process(['update-grub2'], privileged=True)
+                else:
+                    InstallerDisplayMessage(
+                        f"{grubFileName} has been modified, consult your distribution's documentation generate new grub config file"
                     )
 
 
@@ -4119,7 +4149,7 @@ def main():
         metavar='<string>',
         type=str2percent,
         default=0,
-        help=f'Delete zeek-extracted files when the file system exceeds this percentage full (e.g., 90%, etc.)',
+        help=f'Delete zeek-extracted files when the file system exceeds this percentage full (e.g., 90٪, etc.)',
     )
     storageArgGroup.add_argument(
         '--delete-index-threshold',

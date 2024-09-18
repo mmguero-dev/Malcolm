@@ -1,6 +1,4 @@
-ARG TARGETPLATFORM=linux/amd64
-
-FROM --platform=${TARGETPLATFORM} debian:12-slim AS npmget
+FROM debian:12-slim AS npmget
 
 # Copyright (c) 2024 Battelle Energy Alliance, LLC.  All rights reserved.
 
@@ -17,7 +15,7 @@ RUN apt-get -q update && \
       filepond-plugin-file-rename \
       @jcubic/tagger
 
-FROM --platform=${TARGETPLATFORM} debian:12-slim AS runtime
+FROM debian:12-slim AS runtime
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
@@ -58,7 +56,7 @@ ENV FILEPOND_SERVER_BRANCH $FILEPOND_SERVER_BRANCH
 ARG STALE_UPLOAD_DELETE_MIN=360
 ENV STALE_UPLOAD_DELETE_MIN $STALE_UPLOAD_DELETE_MIN
 
-ENV SUPERCRONIC_VERSION "0.2.31"
+ENV SUPERCRONIC_VERSION "0.2.32"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 

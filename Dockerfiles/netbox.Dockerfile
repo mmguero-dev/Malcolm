@@ -1,6 +1,4 @@
-ARG TARGETPLATFORM=linux/amd64
-
-FROM --platform=${TARGETPLATFORM} netboxcommunity/netbox:v4.0.11
+FROM netboxcommunity/netbox:v4.0.11
 
 # Copyright (c) 2024 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -27,7 +25,7 @@ ENV PGROUP "ubuntu"
 ENV PUSER_PRIV_DROP true
 USER root
 
-ENV SUPERCRONIC_VERSION "0.2.31"
+ENV SUPERCRONIC_VERSION "0.2.32"
 ENV SUPERCRONIC_URL "https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB "/etc/crontab"
 
