@@ -197,7 +197,7 @@ build_yara_src() {
 build_zeek() {
     # install zeek from debs from OpenSUSE
     mkdir -p /tmp/zeek-debs
-    /bin/bash /usr/local/bin/zeek-deb-download.sh -o /tmp/zeek-debs
+    /bin/bash /usr/local/bin/zeek-deb-download.sh -o /tmp/zeek-debs -f "$SHARED_DIR/zeek_url.txt"
     dpkg -i /tmp/zeek-debs/*.deb
 }
 
@@ -212,7 +212,7 @@ build_zeek_src() {
     export PYTHONUNBUFFERED=1
 
     zeek_url=https://github.com/zeek/zeek.git
-    zeek_version=7.0.2
+    zeek_version=7.0.3
     zeek_release=1
     zeek_dir=/opt/zeek
     # Zeek's build eats a ton of resources; prevent OOM from the killing build process
