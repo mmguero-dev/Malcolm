@@ -1072,7 +1072,7 @@ def start():
                 BoundPath("zeek", "/zeek/extract_files", False, None, None),
                 BoundPath("zeek", "/zeek/upload", False, None, None),
                 BoundPath("zeek", "/opt/zeek/share/zeek/site/custom", False, None, None),
-                BoundPath("zeek", "/opt/zeek/share/zeek/site/intel", False, ["MISP", "STIX"], None),
+                BoundPath("zeek", "/opt/zeek/share/zeek/site/intel", False, ["Mandiant", "MISP", "STIX"], None),
                 BoundPath("zeek-live", "/zeek/live", False, ["spool"], None),
                 BoundPath(
                     "filebeat", "/zeek", False, ["processed", "current", "live", "extract_files", "upload"], None
@@ -1341,7 +1341,7 @@ def authSetup():
             'netbox',
             "(Re)generate internal passwords for NetBox",
             False,
-            args.cmdAuthSetupNonInteractive and args.authGenNetBoxPasswords,
+            (not args.cmdAuthSetupNonInteractive) or args.authGenNetBoxPasswords,
             [],
         ),
         (

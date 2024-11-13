@@ -15,7 +15,7 @@ import warnings
 
 from collections import defaultdict, OrderedDict
 from collections.abc import Iterable
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Flask, jsonify, request
 from requests.auth import HTTPBasicAuth
 from urllib.parse import urlparse
@@ -169,15 +169,6 @@ missing_field_map['integer'] = 0
 missing_field_map['ip'] = '0.0.0.0'
 missing_field_map['long'] = 0
 
-logstash_default_pipelines = [
-    "malcolm-beats",
-    "malcolm-enrichment",
-    "malcolm-input",
-    "malcolm-output",
-    "malcolm-suricata",
-    "malcolm-zeek",
-]
-
 urllib3.disable_warnings()
 warnings.filterwarnings(
     "ignore",
@@ -239,14 +230,14 @@ else:
 
 if databaseMode == malcolm_utils.DatabaseMode.ElasticsearchRemote:
     import elasticsearch as DatabaseImport
-    from elasticsearch_dsl import Search as SearchClass
+    from elasticsearch_dsl import Search as SearchClass, A as AggregationClass
 
     DatabaseClass = DatabaseImport.Elasticsearch
     if opensearchHttpAuth:
         DatabaseInitArgs['basic_auth'] = opensearchHttpAuth
 else:
     import opensearchpy as DatabaseImport
-    from opensearchpy import Search as SearchClass
+    from opensearchpy import Search as SearchClass, A as AggregationClass
 
     DatabaseClass = DatabaseImport.OpenSearch
     if opensearchHttpAuth:
@@ -937,7 +928,7 @@ def ready():
     logstash_lumberjack
         true or false, the ready status of Logstash's lumberjack protocol listener
     logstash_pipelines
-        true or false, the ready status of Logstash's default pipelines
+        true or false, the ready status of Logstash's pipelines
     netbox
         true or false, the ready status of NetBox
     opensearch
@@ -998,9 +989,9 @@ def ready():
             print(f"{type(e).__name__}: {str(e)} getting freq status")
 
     try:
-        logstashStats = requests.get(f'{logstashUrl}/_node').json()
+        logstashHealth = requests.get(f'{logstashUrl}/_health_report').json()
     except Exception as e:
-        logstashStats = {}
+        logstashHealth = {}
         if debugApi:
             print(f"{type(e).__name__}: {str(e)} getting Logstash node status")
 
@@ -1012,7 +1003,7 @@ def ready():
             print(f"{type(e).__name__}: {str(e)} getting Logstash lumberjack listener status")
 
     try:
-        netboxStatus = requests.get(f'{netboxUrl}/api/status').json()
+        netboxStatus = requests.get(f'{netboxUrl}/plugins/netbox_healthcheck_plugin/healthcheck/?format=json').json()
     except Exception as e:
         netboxStatus = {}
         if debugApi:
@@ -1057,17 +1048,65 @@ def ready():
         filebeat_tcp=filebeatTcpJsonStatus,
         freq=freqStatus,
         logstash_lumberjack=logstashLJStatus,
-        logstash_pipelines=(malcolm_utils.deep_get(logstashStats, ["status"]) == "green")
-        and all(
-            pipeline in malcolm_utils.deep_get(logstashStats, ["pipelines"], {})
-            for pipeline in logstash_default_pipelines
+        logstash_pipelines=(malcolm_utils.deep_get(logstashHealth, ["status"]) == "green")
+        and (malcolm_utils.deep_get(logstashHealth, ["indicators", "pipelines", "status"]) == "green"),
+        netbox=bool(
+            isinstance(netboxStatus, dict)
+            and netboxStatus
+            and all(value == "working" for value in netboxStatus.values())
         ),
-        netbox=bool(malcolm_utils.deep_get(netboxStatus, ["netbox-version"])),
         opensearch=(malcolm_utils.deep_get(openSearchHealth, ["status"], 'red') != "red"),
         pcap_monitor=pcapMonitorStatus,
         zeek_extracted_file_logger=zeekExtractedFileLoggerStatus,
         zeek_extracted_file_monitor=zeekExtractedFileMonitorStatus,
     )
+
+
+@app.route(
+    f"{('/' + app.config['MALCOLM_API_PREFIX']) if app.config['MALCOLM_API_PREFIX'] else ''}/ingest-stats",
+    methods=['GET'],
+)
+def ingest_stats():
+    """Provide an aggregation of each log source (host.name) with it's latest event.ingested
+    time. This can be used to know the most recent time a document was written from each
+    network sensor.
+
+    Parameters
+    ----------
+    request : Request
+        Uses 'doctype' from request arguments
+    Returns
+    -------
+    fields
+        A dict where key is host.name and value is max(event.ingested) for that host
+    """
+    global databaseClient
+    global SearchClass
+    global AggregationClass
+
+    result = {}
+    try:
+        s = SearchClass(
+            using=databaseClient,
+            index=index_from_args(get_request_arguments(request)),
+        ).extra(size=0)
+
+        hostAgg = AggregationClass('terms', field='host.name')
+        maxIngestAgg = AggregationClass('max', field='event.ingested')
+        s.aggs.bucket('host_names', hostAgg).metric('max_event_ingested', maxIngestAgg)
+        response = s.execute()
+
+        result = {
+            bucket.key: datetime.fromtimestamp(bucket.max_event_ingested.value / 1000, timezone.utc)
+            .replace(microsecond=0)
+            .isoformat()
+            for bucket in response.aggregations.host_names.buckets
+        }
+    except Exception as e:
+        if debugApi:
+            print(f"{type(e).__name__}: \"{str(e)}\" getting ingest stats")
+
+    return jsonify(result)
 
 
 @app.route(
