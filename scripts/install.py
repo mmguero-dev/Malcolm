@@ -2383,13 +2383,6 @@ class Installer(object):
                 'NETBOX_POSTGRES_DISABLED',
                 TrueOrFalseNoQuote(not netboxEnabled),
             ),
-            # enable/disable netbox (redis)
-            EnvValue(
-                True,
-                os.path.join(args.configDir, 'netbox-common.env'),
-                'NETBOX_REDIS_DISABLED',
-                TrueOrFalseNoQuote(not netboxEnabled),
-            ),
             # HTTPS (nginxSSL=True) vs unencrypted HTTP (nginxSSL=False)
             EnvValue(
                 True,
@@ -2997,16 +2990,6 @@ class Installer(object):
                         ###################################
                         # nginx-proxy has got a lot going on
                         if 'nginx-proxy' in data['services']:
-
-                            # set nginx-proxy health check based on whether they're using HTTPS or not
-                            if 'healthcheck' in data['services']['nginx-proxy']:
-                                data['services']['nginx-proxy']['healthcheck']['test'] = [
-                                    "CMD",
-                                    "curl",
-                                    "--insecure",
-                                    "--silent",
-                                    f"{'https' if nginxSSL else 'http'}://localhost:443",
-                                ]
 
                             # set bind IPs and ports based on whether it should be externally exposed or not
                             if malcolmProfile == PROFILE_HEDGEHOG:
