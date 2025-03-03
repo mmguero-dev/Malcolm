@@ -120,6 +120,8 @@ if [[ -n "$SERVICE" ]]; then
             PORT=8440
         elif [[ "$SERVICE" == "freq" ]]; then
             PORT=10004
+        elif [[ "$SERVICE" == "keycloak" ]]; then
+            PORT=8080
         elif [[ "$SERVICE" == "logstash" ]]; then
             PORT=9600
         elif [[ "$SERVICE" == "netbox" ]]; then

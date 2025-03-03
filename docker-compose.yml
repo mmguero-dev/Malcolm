@@ -1230,6 +1230,38 @@ services:
       timeout: 15s
       retries: 3
       start_period: 60s
+  keycloak:
+    image: ghcr.io/idaholab/malcolm/keycloak:25.03.0
+    profiles: ["malcolm"]
+    logging:
+      driver: local
+      options:
+        max-size: 200m
+        max-file: 2
+        compress: "false"
+    restart: "no"
+    stdin_open: false
+    tty: true
+    hostname: keycloak
+    networks:
+    - default
+    env_file:
+    - ./config.seth/process.env
+    - ./config.seth/ssl.env
+    - ./config.seth/keycloak.env
+    volumes:
+    - type: bind
+      bind:
+        create_host_path: false
+      source: ./nginx/ca-trust
+      target: /var/local/ca-trust
+      read_only: true
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/container_health.sh"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 45s
   nginx-proxy:
     image: ghcr.io/idaholab/malcolm/nginx-proxy:25.03.0
     profiles: ["malcolm"]
