@@ -13,10 +13,10 @@ RUN mkdir -p /mnt/rootfs && \
 
 FROM quay.io/keycloak/keycloak:26.1.3 AS builder
 
-ENV KC_DB=dev-file
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=true
 ENV KC_HTTP_RELATIVE_PATH=/keycloak
+ENV KC_DB=postgres
 
 WORKDIR /opt/keycloak
 
@@ -69,7 +69,9 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
 COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/
+ADD --chmod=755 shared/bin/jdk-cacerts-auto-import.sh /usr/local/bin/
 ADD --chmod=755 container-health-scripts/keycloak.sh /usr/local/bin/container_health.sh
+ADD --chmod=755 keycloak/scripts/*.sh /usr/local/bin/
 
 ENV KC_HTTPS_CERTIFICATE_FILE "/opt/keycloak/conf/server.crt.pem"
 ENV KC_HTTPS_CERTIFICATE_KEY_FILE "/opt/keycloak/conf/server.key.pem"
@@ -81,7 +83,8 @@ ENTRYPOINT ["/usr/bin/tini", \
             "--", \
             "/usr/local/bin/docker-uid-gid-setup.sh", \
             "/usr/local/bin/service_check_passthrough.sh", \
-            "-s", "keycloak"]
+            "-s", "keycloak", \
+            "/usr/local/bin/docker-entrypoint.sh"]
 
 CMD ["/opt/keycloak/bin/kc.sh"]
 
