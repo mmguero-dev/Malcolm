@@ -47,7 +47,7 @@ ENTRYPOINT ["/sbin/tini", \
             "--", \
             "/usr/bin/docker-uid-gid-setup.sh", \
             "/usr/local/bin/service_check_passthrough.sh", \
-            "-s", "netbox-postgres"]
+            "-s", "postgres"]
 
 CMD ["/usr/bin/docker-entrypoint.sh", "postgres"]
 

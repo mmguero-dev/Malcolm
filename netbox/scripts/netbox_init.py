@@ -249,7 +249,7 @@ def main():
         '--postgres-host',
         dest='postgresHost',
         type=str,
-        default=os.getenv('DB_HOST', 'netbox-postgres'),
+        default=os.getenv('POSTGRES_HOST', 'postgres'),
         required=False,
         help="postgreSQL host for preloading an entire database dump .gz (specified with --preload-backup or loaded from the --preload directory)",
     )
@@ -257,7 +257,7 @@ def main():
         '--postgres-db',
         dest='postgresDB',
         type=str,
-        default=os.getenv('DB_NAME', 'netbox'),
+        default=os.getenv('POSTGRES_NETBOX_DB', 'netbox'),
         required=False,
         help="postgreSQL database name",
     )
@@ -265,7 +265,7 @@ def main():
         '--postgres-user',
         dest='postgresUser',
         type=str,
-        default=os.getenv('DB_USER', 'netbox'),
+        default=os.getenv('POSTGRES_NETBOX_USER', 'netbox'),
         required=False,
         help="postgreSQL user name",
     )
@@ -273,7 +273,7 @@ def main():
         '--postgres-password',
         dest='postgresPassword',
         type=str,
-        default=os.getenv('DB_PASSWORD', ''),
+        default=os.getenv('POSTGRES_NETBOX_PASSWORD', ''),
         required=False,
         help="postgreSQL password",
     )
