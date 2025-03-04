@@ -1,11 +1,6 @@
 # Copyright (c) 2025 Battelle Energy Alliance, LLC.  All rights reserved.
 
 ####################################################################################
-# thanks to:  nginx                       -  https://github.com/nginxinc/docker-nginx/blob/master/mainline/alpine/Dockerfile
-#             kvspb/nginx-auth-ldap       -  https://github.com/kvspb/nginx-auth-ldap
-#             tiredofit/docker-nginx-ldap -  https://github.com/tiredofit/docker-nginx-ldap/blob/master/Dockerfile
-
-####################################################################################
 # first build documentation with jekyll
 FROM ghcr.io/mmguero-dev/jekyll:latest as docbuild
 
@@ -87,14 +82,17 @@ ENV NGINX_LDAP_TLS_STUNNEL_CHECK_IP $NGINX_LDAP_TLS_STUNNEL_CHECK_IP
 ENV NGINX_LDAP_TLS_STUNNEL_VERIFY_LEVEL $NGINX_LDAP_TLS_STUNNEL_VERIFY_LEVEL
 
 # build latest nginx with nginx-auth-ldap
-ENV NGINX_VERSION=1.22.1
+ENV OPENRESTY_VERSION=1.27.1.1
+ENV LUA_RESTY_OPENIDC_VERSION=1.8.0
 ENV NGINX_AUTH_LDAP_BRANCH=master
 ENV NGINX_HTTP_SUB_FILTER_BRANCH=master
 
 # NGINX source
 ADD https://codeload.github.com/mmguero-dev/nginx-auth-ldap/tar.gz/$NGINX_AUTH_LDAP_BRANCH /nginx-auth-ldap.tar.gz
 ADD https://codeload.github.com/yaoweibin/ngx_http_substitutions_filter_module/tar.gz/$NGINX_HTTP_SUB_FILTER_BRANCH /ngx_http_substitutions_filter_module-master.tar.gz
-ADD http://nginx.org/download/nginx-$NGINX_VERSION.tar.gz /nginx.tar.gz
+ADD https://codeload.github.com/zmartzone/lua-resty-openidc/tar.gz/v$LUA_RESTY_OPENIDC_VERSION /lua-resty-openidc.tar.gz
+ADD https://openresty.org/download/openresty-$OPENRESTY_VERSION.tar.gz /openresty.tar.gz
+
 
 # component icons from original sources and stuff for offline landing page
 ADD https://opensearch.org/assets/brand/SVG/Logo/opensearch_logo_default.svg /usr/share/nginx/html/assets/img/
@@ -115,7 +113,7 @@ ADD 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/fonts/bootstrap-ico
 
 RUN set -x ; \
     CONFIG="\
-    --prefix=/etc/nginx \
+    --prefix=/usr/local/openresty \
     --sbin-path=/usr/sbin/nginx \
     --modules-path=/usr/lib/nginx/modules \
     --conf-path=/etc/nginx/nginx.conf \
@@ -144,6 +142,7 @@ RUN set -x ; \
     --with-http_xslt_module=dynamic \
     --with-http_geoip_module=dynamic \
     --with-http_perl_module=dynamic \
+    --with-luajit \
     --with-threads \
     --with-stream \
     --with-stream_ssl_module \
@@ -153,6 +152,7 @@ RUN set -x ; \
     --with-http_slice_module \
     --with-mail \
     --with-mail_ssl_module \
+    --with-pcre-jit \
     --with-compat \
     --with-file-aio \
     --with-http_v2_module \
@@ -168,26 +168,33 @@ RUN set -x ; \
   mkdir -p /var/cache/nginx ; \
   chown ${PUSER}:${PGROUP} /var/cache/nginx ; \
   apk add --no-cache --virtual .nginx-build-deps \
+    autoconf \
+    automake \
+    cmake \
+    g++ \
     gcc \
     geoip-dev \
     gnupg \
+    libbsd-dev \
     libc-dev \
-    openssl-dev \
+    libtool \
     libxslt-dev \
     linux-headers \
+    luajit-dev \
     make \
     openldap-dev \
+    openssl-dev \
     pcre-dev \
     perl-dev \
     tar \
     zlib-dev \
     ; \
     \
-  mkdir -p /usr/src/nginx-auth-ldap /usr/src/ngx_http_substitutions_filter_module /www /www/logs/nginx /var/log/nginx ; \
-  tar -zxC /usr/src -f /nginx.tar.gz ; \
+  mkdir -p /usr/src/lua-resty-openidc /usr/src/nginx-auth-ldap /usr/src/ngx_http_substitutions_filter_module /www /www/logs/nginx /var/log/nginx ; \
+  tar -zxC /usr/src -f /openresty.tar.gz ; \
   tar -zxC /usr/src/nginx-auth-ldap --strip=1 -f /nginx-auth-ldap.tar.gz ; \
   tar -zxC /usr/src/ngx_http_substitutions_filter_module --strip=1 -f /ngx_http_substitutions_filter_module-master.tar.gz ; \
-  cd /usr/src/nginx-$NGINX_VERSION ; \
+  cd /usr/src/openresty-$OPENRESTY_VERSION ; \
   ./configure $CONFIG --with-debug ; \
   make -j$(getconf _NPROCESSORS_ONLN) ; \
   mv objs/nginx objs/nginx-debug ; \
@@ -199,17 +206,19 @@ RUN set -x ; \
   make -j$(getconf _NPROCESSORS_ONLN) ; \
   make install ; \
   rm -rf /etc/nginx/html/ ; \
-  mkdir -p /etc/nginx/conf.d/ /etc/nginx/templates/ /etc/nginx/auth/ /usr/share/nginx/html/ ; \
+  mkdir -p /etc/nginx/conf.d/ /etc/nginx/templates/ /etc/nginx/auth/ /usr/share/nginx/html/ /usr/local/openresty/lualib/resty/lua-resty-openidc ; \
+  tar -zxC /usr/local/openresty/lualib/resty/lua-resty-openidc --strip=1 -f /lua-resty-openidc.tar.gz ; \
   install -m644 html/50x.html /usr/share/nginx/html/ ; \
   install -m755 objs/nginx-debug /usr/sbin/nginx-debug ; \
   install -m755 objs/ngx_http_xslt_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_xslt_filter_module-debug.so ; \
   install -m755 objs/ngx_http_geoip_module-debug.so /usr/lib/nginx/modules/ngx_http_geoip_module-debug.so ; \
   install -m755 objs/ngx_http_perl_module-debug.so /usr/lib/nginx/modules/ngx_http_perl_module-debug.so ; \
   install -m755 objs/ngx_stream_geoip_module-debug.so /usr/lib/nginx/modules/ngx_stream_geoip_module-debug.so ; \
+  ln -s /usr/local/openresty/bin/openresty /usr/sbin/nginx ; \
   ln -s ../../usr/lib/nginx/modules /etc/nginx/modules ; \
   strip /usr/sbin/nginx* ; \
   strip /usr/lib/nginx/modules/*.so ; \
-  rm -rf /usr/src/nginx-$NGINX_VERSION ; \
+  rm -rf /usr/src/openresty-$OPENRESTY_VERSION ; \
   \
   # Bring in gettext so we can get `envsubst`, then throw
   # the rest away. To do this, we need to install `gettext`
@@ -225,12 +234,25 @@ RUN set -x ; \
       | xargs -r apk info --installed \
       | sort -u \
   )" ; \
-  apk add --no-cache --virtual .nginx-rundeps $runDeps ca-certificates bash jq wget apache2-utils openldap shadow stunnel supervisor tini tzdata; \
+  apk add --no-cache --virtual .nginx-rundeps $runDeps \
+    apache2-utils \
+    bash \
+    ca-certificates \
+    jq \
+    libbsd \
+    luajit \
+    openldap \
+    shadow \
+    stunnel \
+    supervisor \
+    tini \
+    tzdata \
+    wget; \
   update-ca-certificates; \
   apk del .nginx-build-deps ; \
   apk del .gettext ; \
   mv /tmp/envsubst /usr/local/bin/ ; \
-  rm -rf /usr/src/* /var/tmp/* /var/cache/apk/* /nginx.tar.gz /nginx-auth-ldap.tar.gz /ngx_http_substitutions_filter_module-master.tar.gz; \
+  rm -rf /usr/src/* /var/tmp/* /var/cache/apk/* /openresty.tar.gz /lua-resty-openidc.gz /nginx-auth-ldap.tar.gz /ngx_http_substitutions_filter_module-master.tar.gz; \
   touch /etc/nginx/nginx_ldap.conf /etc/nginx/nginx_blank.conf && \
   find /usr/share/nginx/html/ -type d -exec chmod 755 "{}" \; && \
   find /usr/share/nginx/html/ -type f -exec chmod 644 "{}" \; && \

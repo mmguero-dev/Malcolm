@@ -8,11 +8,10 @@ NGINX_CONFD_DIR=/etc/nginx/conf.d
 
 # set up for HTTPS/HTTP and NGINX HTTP basic vs. LDAP/LDAPS/LDAP+StartTLS auth
 
-# "include" file that sets 'ssl on' and indicates the locations of the PEM files
+# "include" file that indicates the locations of the PEM files
 NGINX_SSL_ON_CONF=/etc/nginx/nginx_ssl_on_config.conf
-# "include" file that sets 'ssl off'
-NGINX_SSL_OFF_CONF=/etc/nginx/nginx_ssl_off_config.conf
-# "include" symlink name which, at runtime, will point to either the ON of OFF file
+
+# "include" symlink name which, at runtime, will point to either the ON or OFF file
 NGINX_SSL_CONF=/etc/nginx/nginx_ssl_config.conf
 
 # a blank file just to use as an "include" placeholder for the nginx's LDAP config when LDAP is not used
@@ -109,7 +108,7 @@ if [[ -z $NGINX_SSL ]] || [[ "$NGINX_SSL" != "false" ]]; then
   ln -sf "$NGINX_SSL_ON_CONF" "$NGINX_SSL_CONF"
 else
   # doing unencrypted HTTP (not recommended)
-  ln -sf "$NGINX_SSL_OFF_CONF" "$NGINX_SSL_CONF"
+  ln -sf "$NGINX_BLANK_CONF" "$NGINX_SSL_CONF"
 fi
 
 # NGINX_AUTH_MODE basic|ldap|keycloak|no_authentication
