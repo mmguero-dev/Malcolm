@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 
 if [[ "${KEYCLOAK_DISABLED:-false}" != "true" ]]; then
-  /usr/local/bin/jdk-cacerts-auto-import.sh
-
   export KC_BOOTSTRAP_ADMIN_USERNAME="${MALCOLM_USERNAME:-}"
   # TODO this is wrong, this is the hashed password, this is a placeholder only for now
   export KC_BOOTSTRAP_ADMIN_PASSWORD="${MALCOLM_PASSWORD:-}"

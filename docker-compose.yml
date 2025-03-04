@@ -1263,17 +1263,6 @@ services:
       source: ./nginx/ca-trust
       target: /var/local/ca-trust
       read_only: true
-    - type: bind
-      bind:
-        create_host_path: false
-      source: ./nginx/certs/key.pem
-      target: /opt/keycloak/conf/server.key.pem
-      read_only: true
-    - type: bind
-      bind:
-        create_host_path: false
-      source: ./nginx/certs/cert.pem
-      target: /opt/keycloak/conf/server.crt.pem
     healthcheck:
       test: ["CMD", "/usr/local/bin/container_health.sh"]
       interval: 60s

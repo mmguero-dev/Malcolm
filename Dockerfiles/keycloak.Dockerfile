@@ -70,12 +70,8 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
 COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/
-ADD --chmod=755 shared/bin/jdk-cacerts-auto-import.sh /usr/local/bin/
 ADD --chmod=755 container-health-scripts/keycloak.sh /usr/local/bin/container_health.sh
 ADD --chmod=755 keycloak/scripts/*.sh /usr/local/bin/
-
-ENV KC_HTTPS_CERTIFICATE_FILE "/opt/keycloak/conf/server.crt.pem"
-ENV KC_HTTPS_CERTIFICATE_KEY_FILE "/opt/keycloak/conf/server.key.pem"
 
 # see PUSER_CHOWN comment above
 VOLUME ["/var/local/ca-trust"]
