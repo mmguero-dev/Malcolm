@@ -21,6 +21,18 @@ NGINX_BLANK_CONF=/etc/nginx/nginx_blank.conf
 # "include" file for resolver directive
 NGINX_RESOLVER_CONF=/etc/nginx/nginx_system_resolver.conf
 
+# "include" file for /auth endpoint location
+NGINX_AUTH_LOCATION_CONF=/etc/nginx/nginx_auth_location.conf
+
+# "include" file for htadmin (basic) /auth endpoint location
+NGINX_AUTH_BASIC_LOCATION_CONF=/etc/nginx/nginx_auth_basic_location.conf
+
+# "include" file for keycloak /auth endpoint location
+NGINX_AUTH_KEYCLOAK_LOCATION_CONF=/etc/nginx/nginx_auth_keycloak_location.conf
+
+# "include" file for /auth endpoint location
+NGINX_AUTH_LOCATION_CONF=/etc/nginx/nginx_auth_location.conf
+
 # "include" file for auth_basic, prompt, and htpasswd location
 NGINX_BASIC_AUTH_CONF=/etc/nginx/nginx_auth_basic.conf
 
@@ -110,6 +122,9 @@ if [[ -z $NGINX_AUTH_MODE ]] || [[ "$NGINX_AUTH_MODE" == "basic" ]] || [[ "$NGIN
   # ldap configuration is empty
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_RUNTIME_LDAP_CONF"
 
+  # /auth location handling for htpasswd
+  ln -sf "$NGINX_AUTH_BASIC_LOCATION_CONF" "$NGINX_AUTH_LOCATION_CONF"
+
 elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]]; then
   # completely disabling authentication (not recommended)
 
@@ -118,6 +133,9 @@ elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]]; then
 
   # ldap configuration is empty
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_RUNTIME_LDAP_CONF"
+
+  # /auth location is empty
+  ln -sf "$NGINX_BLANK_CONF" "$NGINX_AUTH_LOCATION_CONF"
 
 elif [[ "$NGINX_AUTH_MODE" == "keycloak" ]]; then
   # Keycloak authentication
@@ -128,12 +146,17 @@ elif [[ "$NGINX_AUTH_MODE" == "keycloak" ]]; then
   # ldap configuration is empty
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_RUNTIME_LDAP_CONF"
 
+  # /auth location is empty
+  ln -sf "$NGINX_AUTH_KEYCLOAK_LOCATION_CONF" "$NGINX_AUTH_LOCATION_CONF"
 
 elif [[ "$NGINX_AUTH_MODE" == "ldap" ]] || [[ "$NGINX_AUTH_MODE" == "false" ]]; then
   # ldap authentication
 
   # point nginx_auth_rt.conf to nginx_auth_ldap.conf
   ln -sf "$NGINX_LDAP_AUTH_CONF" "$NGINX_RUNTIME_AUTH_CONF"
+
+  # /auth location is empty
+  ln -sf "$NGINX_BLANK_CONF" "$NGINX_AUTH_LOCATION_CONF"
 
   # parse URL information out of user ldap configuration
   # example:
