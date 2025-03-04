@@ -28,7 +28,7 @@ Although the configuration script automates many of the following configuration 
 * **`arkime-live.env`** - settings for live traffic capture with Arkime
     - See [**Tuning Arkime**](live-analysis.md#LiveAnalysisTuningArkime) for variables related to managing Arkime's performance and resource utilization during live capture.
 * **`auth-common.env`** - [authentication](authsetup.md)-related settings
-    - `NGINX_BASIC_AUTH` - if set to `true`, use [TLS-encrypted HTTP basic](authsetup.md#AuthBasicAccountManagement) authentication (default); if set to `false`, use [Lightweight Directory Access Protocol (LDAP)](authsetup.md#AuthLDAP) authentication
+    - `NGINX_AUTH_MODE` - valid values are `basic` (or `true` for legacy compatibility), use [TLS-encrypted HTTP basic](authsetup.md#AuthBasicAccountManagement) authentication (default); `ldap` (or `false` for legacy compatibility), use [Lightweight Directory Access Protocol (LDAP)](authsetup.md#AuthLDAP) authentication; `keycloak` for [authentication managed by Keycloak](authsetup.md#AuthKeycloak); `no_authentication` to disable authentication
 * **`auth.env`** - stores the Malcolm administrator's username and password hash for its nginx reverse proxy
 * **`beats-common.env`** - settings for interactions between [Logstash](https://www.elastic.co/products/logstash) and [Filebeat](https://www.elastic.co/products/beats/filebeat)
     - `BEATS_SSL` – if set to `true`, Logstash will use require encrypted communications for any external [Beats](https://www.elastic.co/guide/en/logstash/current/plugins-inputs-beats.html)-based forwarders from which it will accept logs (default `true`)

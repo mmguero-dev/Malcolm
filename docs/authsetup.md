@@ -4,6 +4,7 @@
     - [Local account management](#AuthBasicAccountManagement)
     - [Lightweight Directory Access Protocol (LDAP) authentication](#AuthLDAP)
         + [LDAP connection security](#AuthLDAPSecurity)
+    - [Keycloak](#AuthKeycloak)
     - [TLS certificates](#TLSCerts)
     - [Command-line arguments](#CommandLineConfig)
 * [Log Out of Malcolm](#LoggingOut)
@@ -14,9 +15,9 @@ With the local basic authentication method, user accounts are managed by Malcolm
 
 LDAP authentication are managed on a remote directory service, such as a [Microsoft Active Directory Domain Services](https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview) or [OpenLDAP](https://www.openldap.org/).
 
-Malcolm's authentication method is defined in the [`auth-common.env` configuration file](malcolm-config.md#MalcolmConfigEnvVars) file with the `NGINX_BASIC_AUTH` environment variable: `true` for local TLS-encrypted HTTP basic authentication, `false` for LDAP authentication and `no_authentication` to disable authentication completely.
+Malcolm's authentication method is defined in the [`auth-common.env` configuration file](malcolm-config.md#MalcolmConfigEnvVars) file with the `NGINX_AUTH_MODE` environment variable: valid values are `basic` (or `true` for legacy compatibility), to use [TLS-encrypted HTTP basic](#AuthBasicAccountManagement) authentication (default); `ldap` (or `false` for legacy compatibility) to use [Lightweight Directory Access Protocol (LDAP)](#AuthLDAP) authentication; `keycloak` to use [authentication managed by Keycloak](#AuthKeycloak); or, `no_authentication` to disable authentication.
 
-In either case, you **must** run `./scripts/auth_setup` before starting Malcolm for the first time in order to:
+Whichever method is chosen, users **must** run `./scripts/auth_setup` before starting Malcolm for the first time in order to:
 
 * define the local Malcolm administrator account username and password (although these credentials will only be used for basic authentication, not LDAP authentication)
 * specify whether or not to (re)generate the self-signed certificates used for HTTPS access
@@ -27,7 +28,7 @@ In either case, you **must** run `./scripts/auth_setup` before starting Malcolm 
 * specify whether or not to [store the username/password](https://opensearch.org/docs/latest/monitoring-plugins/alerting/monitors/#authenticate-sender-account) for [OpenSearch Alerting email sender accounts](https://opensearch.org/docs/latest/monitoring-plugins/alerting/monitors/#create-destinations)
     * these parameters are stored securely in the OpenSearch keystore file `opensearch/opensearch.keystore`
 
-# <a name="AuthBasicAccountManagement"></a>Local account management
+## <a name="AuthBasicAccountManagement"></a>Local account management
 
 [`auth_setup`](#AuthSetup) is used to define the username and password for the administrator account. Once Malcolm is running, the administrator account can be used to manage other user accounts via a **Malcolm User Management** page at **https://localhost/auth** if connecting locally)
 
@@ -76,7 +77,7 @@ Before starting Malcolm, edit `nginx/nginx_ldap.conf` according to the specifics
 
 The **Malcolm User Management** page described above is not available when using LDAP authentication.
 
-# <a name="AuthLDAPSecurity"></a>LDAP connection security
+### <a name="AuthLDAPSecurity"></a>LDAP connection security
 
 Authentication over LDAP can be done using one of three methods, [two of which](https://docs.microsoft.com/en-us/openspecs/windows_protocols/ms-adts/8e73932f-70cf-46d6-88b1-8d9f86235e81) offer data confidentiality protection: 
 
@@ -84,7 +85,7 @@ Authentication over LDAP can be done using one of three methods, [two of which](
 * **LDAPS** - a commonly used (though unofficial and considered deprecated) method in which SSL negotiation takes place before any commands are sent from the client to the server
 * **Unencrypted** (cleartext) (***not recommended***)
 
-In addition to the `NGINX_BASIC_AUTH` environment variable being set to `false` in the [`auth-common.env` configuration file](malcolm-config.md#MalcolmConfigEnvVars) file, the `NGINX_LDAP_TLS_STUNNEL` and `NGINX_LDAP_TLS_STUNNEL` environment variables are used in conjunction with the values in `nginx/nginx_ldap.conf` to define the LDAP connection security level. Use the following combinations of values to achieve the connection security methods above, respectively:
+In addition to the `NGINX_AUTH_MODE` environment variable being set to `ldap` in the [`auth-common.env` configuration file](malcolm-config.md#MalcolmConfigEnvVars) file, the `NGINX_LDAP_TLS_STUNNEL` and `NGINX_LDAP_TLS_STUNNEL` environment variables are used in conjunction with the values in `nginx/nginx_ldap.conf` to define the LDAP connection security level. Use the following combinations of values to achieve the connection security methods above, respectively:
 
 * **StartTLS**
     - `NGINX_LDAP_TLS_STUNNEL` set to `true` in [`auth-common.env`](malcolm-config.md#MalcolmConfigEnvVars)
@@ -98,7 +99,11 @@ In addition to the `NGINX_BASIC_AUTH` environment variable being set to `false` 
 
 For encrypted connections (whether using **StartTLS** or **LDAPS**), Malcolm will require and verify certificates when one or more trusted CA certificate files are placed in the `nginx/ca-trust/` directory. Otherwise, any certificate presented by the domain server will be accepted.
 
-# <a name="TLSCerts"></a>TLS certificates
+## <a name="AuthKeycloak"></a>Keycloak
+
+**TODO: documentation for keycloak goes here**
+
+## <a name="TLSCerts"></a>TLS certificates
 
 When users [set up authentication](#AuthSetup) for Malcolm a set of unique [self-signed](https://en.wikipedia.org/wiki/Self-signed_certificate) TLS certificates are created which are used to secure the connection between clients (e.g., your web browser) and Malcolm's browser-based interface. This is adequate for most Malcolm instances as they are often run locally or on internal networks, although your browser will most likely require users to add a security exception for the certificate when first connecting to Malcolm.
 
@@ -106,7 +111,7 @@ Another option is for users to generate their own certificates (or have them iss
 
 A third possibility is to use a third-party reverse proxy (e.g., [Traefik](https://doc.traefik.io/traefik/) or [Caddy](https://caddyserver.com/docs/quick-starts/reverse-proxy)) to handle the issuance of the certificates and to broker the connections between clients and Malcolm. Reverse proxies such as these often implement the [ACME](https://datatracker.ietf.org/doc/html/rfc8555) protocol for domain name authentication and can be used to request certificates from certificate authorities such as [Let's Encrypt](https://letsencrypt.org/how-it-works/). In this configuration, the reverse proxy will be encrypting the connections instead of Malcolm, so users will need to set the `NGINX_SSL` environment variable to `false` in [`nginx.env`](malcolm-config.md#MalcolmConfigEnvVars) (or answer `no` to the "Require encrypted HTTPS connections?" question posed by `./scripts/configure`). If you are setting `NGINX_SSL` to `false`, **make sure** user must understand precisely what they are doing, ensuring that external connections cannot reach ports over which Malcolm will be communicating without encryption, including verifying local firewall configuration.
 
-# <a name="CommandLineConfig"></a>Command-line arguments
+## <a name="CommandLineConfig"></a>Command-line arguments
 
 The `./scripts/auth_setup` script can also be run noninteractively which can be useful for scripting Malcolm setup. This behavior can be selected by supplying the `--auth-noninteractive` option on the command line. Running with the `--help` option will list the arguments accepted by the script:
 

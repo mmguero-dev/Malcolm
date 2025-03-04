@@ -61,10 +61,10 @@ USER root
 # encryption method: HTTPS ('true') vs. unencrypted HTTP ('false')
 ARG NGINX_SSL=true
 
-# authentication method: HTTP basic authentication ('true') vs nginx-auth-ldap ('false')
-ARG NGINX_BASIC_AUTH=true
+# authentication method: basic|ldap|keycloak|no_authentication
+ARG NGINX_AUTH_MODE=basic
 
-# NGINX LDAP (NGINX_BASIC_AUTH=false) can support LDAP, LDAPS, or LDAP+StartTLS.
+# NGINX LDAP (NGINX_AUTH_MODE=ldap) can support LDAP, LDAPS, or LDAP+StartTLS.
 #   For StartTLS, set NGINX_LDAP_TLS_STUNNEL=true to issue the StartTLS command
 #   and use stunnel to tunnel the connection.
 ARG NGINX_LDAP_TLS_STUNNEL=false
@@ -80,7 +80,7 @@ ARG NGINX_LDAP_TLS_STUNNEL_CHECK_IP=
 ARG NGINX_LDAP_TLS_STUNNEL_VERIFY_LEVEL=2
 
 ENV NGINX_SSL $NGINX_SSL
-ENV NGINX_BASIC_AUTH $NGINX_BASIC_AUTH
+ENV NGINX_AUTH_MODE $NGINX_AUTH_MODE
 ENV NGINX_LDAP_TLS_STUNNEL $NGINX_LDAP_TLS_STUNNEL
 ENV NGINX_LDAP_TLS_STUNNEL_CHECK_HOST $NGINX_LDAP_TLS_STUNNEL_CHECK_HOST
 ENV NGINX_LDAP_TLS_STUNNEL_CHECK_IP $NGINX_LDAP_TLS_STUNNEL_CHECK_IP

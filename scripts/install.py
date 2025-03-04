@@ -985,34 +985,43 @@ class Installer(object):
 
                 ###################################################################################
                 elif currentStep == ConfigOptions.AuthMethod:
-                    allowedAuthModes = {
-                        'Basic': 'true',
-                        'Lightweight Directory Access Protocol (LDAP)': 'false',
-                        'None': 'no_authentication',
-                    }
-                    authMode = None if (malcolmProfile == PROFILE_MALCOLM) else 'Basic'
+
+                    # don't make them go through every thing every time, give them a choice instead
+                    authMethodChoices = (
+                        (
+                            'basic',
+                            "Use basic HTTP authentication",
+                            (not args.authMode) or (str(args.authMode).lower() == 'basic'),
+                        ),
+                        (
+                            'ldap',
+                            "Use Lightweight Directory Access Protocol (LDAP) for authentication",
+                            (str(args.authMode).lower() == 'ldap'),
+                        ),
+                        (
+                            'keycloak',
+                            "Use Keycloak for authentication",
+                            (str(args.authMode).lower() == 'keycloak'),
+                        ),
+                        (
+                            'no_authentication',
+                            "Disable authentication",
+                            (str(args.authMode).lower() == 'no_authentication'),
+                        ),
+                    )
+                    authMode = None if (malcolmProfile == PROFILE_MALCOLM) else 'basic'
                     loopBreaker = CountUntilException(MaxAskForValueCount, 'Invalid authentication method')
-                    while authMode not in list(allowedAuthModes.keys()) and loopBreaker.increment():
+                    while authMode not in list([x[0] for x in authMethodChoices]) and loopBreaker.increment():
                         authMode = InstallerChooseOne(
                             'Select authentication method',
-                            choices=[
-                                (
-                                    x,
-                                    '',
-                                    x
-                                    == (
-                                        'Lightweight Directory Access Protocol (LDAP)' if args.authModeLDAP else 'Basic'
-                                    ),
-                                )
-                                for x in list(allowedAuthModes.keys())
-                            ],
+                            choices=authMethodChoices,
                             extraLabel=BACK_LABEL,
-                        )
+                        ).lower()
 
                     ldapStartTLS = False
                     ldapServerTypeDefault = args.ldapServerType if args.ldapServerType else 'winldap'
                     ldapServerType = ldapServerTypeDefault
-                    if 'ldap' in authMode.lower():
+                    if 'ldap' in authMode:
                         allowedLdapModes = ('winldap', 'openldap')
                         ldapServerType = args.ldapServerType if args.ldapServerType else None
                         loopBreaker = CountUntilException(MaxAskForValueCount, 'Invalid LDAP server compatibility type')
@@ -2181,19 +2190,19 @@ class Installer(object):
                 'INDEX_MANAGEMENT_SEGMENTS',
                 indexManagementOptimizeSessionSegments,
             ),
-            # authentication method: basic (true), ldap (false) or no_authentication
+            # authentication method: basic|ldap|keycloak|no_authentication
             EnvValue(
                 True,
                 os.path.join(args.configDir, 'auth-common.env'),
-                'NGINX_BASIC_AUTH',
-                allowedAuthModes.get(authMode, TrueOrFalseNoQuote(True)),
+                'NGINX_AUTH_MODE',
+                authMode,
             ),
             # StartTLS vs. ldap:// or ldaps://
             EnvValue(
                 True,
                 os.path.join(args.configDir, 'auth-common.env'),
                 'NGINX_LDAP_TLS_STUNNEL',
-                TrueOrFalseNoQuote(('ldap' in authMode.lower()) and ldapStartTLS),
+                TrueOrFalseNoQuote((authMode == 'ldap') and ldapStartTLS),
             ),
             # Logstash host and port
             EnvValue(
@@ -4149,14 +4158,13 @@ def main():
         help="Require encrypted HTTPS connections",
     )
     authencOptionsArgGroup.add_argument(
-        '--ldap',
-        dest='authModeLDAP',
-        type=str2bool,
-        metavar="true|false",
-        nargs='?',
-        const=True,
-        default=False,
-        help="Use Lightweight Directory Access Protocol (LDAP)",
+        '--auth-mode',
+        dest='authMode',
+        required=False,
+        metavar='<basic|ldap|keycloak|no_authentication>',
+        type=str,
+        default=None,
+        help='Authentication method',
     )
     authencOptionsArgGroup.add_argument(
         '--ldap-mode',

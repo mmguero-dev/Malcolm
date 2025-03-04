@@ -27,13 +27,16 @@ NGINX_BASIC_AUTH_CONF=/etc/nginx/nginx_auth_basic.conf
 # "include" file for auth_ldap, prompt, and "auth_ldap_servers" name
 NGINX_LDAP_AUTH_CONF=/etc/nginx/nginx_auth_ldap.conf
 
+# "include" file for KeyCloak authentication
+NGINX_KEYCLOAK_AUTH_CONF=/etc/nginx/nginx_auth_keycloak.conf
+
 # "include" file for fully disabling authentication
 NGINX_NO_AUTH_CONF=/etc/nginx/nginx_auth_disabled.conf
 
 # volume-mounted user configuration containing "ldap_server ad_server" section with URL, binddn, etc.
 NGINX_LDAP_USER_CONF=/etc/nginx/nginx_ldap.conf
 
-# runtime "include" file for auth method (link to either NGINX_BASIC_AUTH_CONF or NGINX_LDAP_AUTH_CONF)
+# runtime "include" file for auth method (link to NGINX_BASIC_AUTH_CONF, NGINX_LDAP_AUTH_CONF, NGINX_KEYCLOAK_AUTH_CONF, or NGINX_NO_AUTH_CONF)
 NGINX_RUNTIME_AUTH_CONF=/etc/nginx/nginx_auth_rt.conf
 
 # runtime "include" file for ldap config (link to either NGINX_BLANK_CONF or (possibly modified) NGINX_LDAP_USER_CONF)
@@ -97,8 +100,9 @@ else
   ln -sf "$NGINX_SSL_OFF_CONF" "$NGINX_SSL_CONF"
 fi
 
-if [[ -z $NGINX_BASIC_AUTH ]] || [[ "$NGINX_BASIC_AUTH" == "true" ]]; then
-  # doing HTTP basic auth instead of ldap
+# NGINX_AUTH_MODE basic|ldap|keycloak|no_authentication
+if [[ -z $NGINX_AUTH_MODE ]] || [[ "$NGINX_AUTH_MODE" == "basic" ]] || [[ "$NGINX_AUTH_MODE" == "true" ]]; then
+  # doing HTTP basic auth
 
   # point nginx_auth_rt.conf to nginx_auth_basic.conf
   ln -sf "$NGINX_BASIC_AUTH_CONF" "$NGINX_RUNTIME_AUTH_CONF"
@@ -106,7 +110,7 @@ if [[ -z $NGINX_BASIC_AUTH ]] || [[ "$NGINX_BASIC_AUTH" == "true" ]]; then
   # ldap configuration is empty
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_RUNTIME_LDAP_CONF"
 
-elif [[ "$NGINX_BASIC_AUTH" == "no_authentication" ]]; then
+elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]]; then
   # completely disabling authentication (not recommended)
 
   # point nginx_auth_rt.conf to nginx_auth_disabled.conf
@@ -115,7 +119,17 @@ elif [[ "$NGINX_BASIC_AUTH" == "no_authentication" ]]; then
   # ldap configuration is empty
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_RUNTIME_LDAP_CONF"
 
-else
+elif [[ "$NGINX_AUTH_MODE" == "keycloak" ]]; then
+  # Keycloak authentication
+
+  # point nginx_auth_rt.conf to nginx_auth_keycloak.conf
+  ln -sf "$NGINX_KEYCLOAK_AUTH_CONF" "$NGINX_RUNTIME_AUTH_CONF"
+
+  # ldap configuration is empty
+  ln -sf "$NGINX_BLANK_CONF" "$NGINX_RUNTIME_LDAP_CONF"
+
+
+elif [[ "$NGINX_AUTH_MODE" == "ldap" ]] || [[ "$NGINX_AUTH_MODE" == "false" ]]; then
   # ldap authentication
 
   # point nginx_auth_rt.conf to nginx_auth_ldap.conf
@@ -309,11 +323,31 @@ if [[ -f "${NGINX_LANDING_INDEX_HTML}" ]]; then
     MALCOLM_DASHBOARDS_URL="$(echo "$NGINX_DASHBOARDS_PREFIX" | sed 's@/$@@')/"
     MALCOLM_DASHBOARDS_ICON=opensearch_mark_default.svg
   fi
+  if [[ "$NGINX_AUTH_MODE" == "ldap" ]]; then
+    AUTH_TITLE="LDAP Authentication"
+    AUTH_DESC="Malcolm is using <a href=\"readme/docs/authsetup.html#AuthLDAP\">LDAP</a> for authentication"
+    AUTH_LINK="/readme/docs/authsetup.html#AuthLDAP"
+  elif [[ "$NGINX_AUTH_MODE" == "keycloak" ]]; then
+    AUTH_TITLE="Keycloak Authentication"
+    AUTH_DESC="Malcolm is using <a href=\"readme/docs/authsetup.html#AuthKeycloak\">Keycloak</a> for authentication"
+    AUTH_LINK="/keycloak/"
+  elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]]; then
+    AUTH_TITLE="Authentication is Disabled"
+    AUTH_DESC="<a href=\"/readme/docs/authsetup.html\">Authentication for Malcolm</a> is disabled"
+    AUTH_LINK="/readme/docs/authsetup.html"
+  else
+    AUTH_TITLE="Local Account Management"
+    AUTH_DESC="Manage the <a href=\"/readme/docs/authsetup.html#AuthBasicAccountManagement\">local user accounts</a> maintained by Malcolm"
+    AUTH_LINK="/auth/"
+  fi
   for HTML in "$(dirname "$(realpath "${NGINX_LANDING_INDEX_HTML}")")"/*.html; do
     sed -i "s@MALCOLM_DASHBOARDS_NAME_REPLACER@${MALCOLM_DASHBOARDS_NAME}@g" "${HTML}" || true
     sed -i "s@MALCOLM_DASHBOARDS_URL_REPLACER@${MALCOLM_DASHBOARDS_URL}@g" "${HTML}" || true
     sed -i "s@MALCOLM_DASHBOARDS_ICON_REPLACER@${MALCOLM_DASHBOARDS_ICON}@g" "${HTML}" || true
     sed -i "s/MALCOLM_VERSION_REPLACER/v${MALCOLM_VERSION:-unknown} (${VCS_REVISION:-} @ ${BUILD_DATE:-})/g" "${HTML}" || true
+    sed -i "s@MALCOLM_AUTH_TITLE_REPLACER@${AUTH_TITLE}@g" "${HTML}" || true
+    sed -i "s@MALCOLM_AUTH_DESC_REPLACER@${AUTH_DESC}@g" "${HTML}" || true
+    sed -i "s@MALCOLM_AUTH_URL_REPLACER@${AUTH_LINK}@g" "${HTML}" || true
   done
 fi
 

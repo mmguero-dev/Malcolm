@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ "${KEYCLOAK_DISABLED:-false}" != "true" ]]; then
+if [[ "${NGINX_AUTH_MODE:-keycloak}" == "keycloak" ]]; then
   POSTGRES_HOST=${POSTGRES_HOST:-postgres}
   PGPORT=${PGPORT:-5432}
   POSTGRES_KEYCLOAK_DB=${POSTGRES_KEYCLOAK_DB:-keycloak}

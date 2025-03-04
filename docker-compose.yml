@@ -1248,6 +1248,7 @@ services:
     env_file:
     - ./config/process.env
     - ./config/ssl.env
+    - ./config/auth-common.env
     - ./config/postgres.env
     - ./config/keycloak.env
     command:
