@@ -3,6 +3,7 @@ FROM registry.access.redhat.com/ubi9 AS ubi-micro-build
 RUN mkdir -p /mnt/rootfs && \
     dnf install --nodocs -y --releasever 9 --setopt install_weak_deps=false --installroot /mnt/rootfs \
       curl-minimal \
+      postgresql \
       procps-ng \
       psmisc \
       rsync \
