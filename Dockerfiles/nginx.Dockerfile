@@ -83,12 +83,10 @@ ENV NGINX_LDAP_TLS_STUNNEL_VERIFY_LEVEL $NGINX_LDAP_TLS_STUNNEL_VERIFY_LEVEL
 
 # build latest nginx with nginx-auth-ldap
 ENV OPENRESTY_VERSION=1.27.1.1
-ENV LUA_RESTY_OPENIDC_VERSION=1.8.0
 ENV NGINX_AUTH_LDAP_BRANCH=master
 
 # NGINX source
 ADD https://codeload.github.com/mmguero-dev/nginx-auth-ldap/tar.gz/$NGINX_AUTH_LDAP_BRANCH /nginx-auth-ldap.tar.gz
-ADD https://codeload.github.com/zmartzone/lua-resty-openidc/tar.gz/v$LUA_RESTY_OPENIDC_VERSION /lua-resty-openidc.tar.gz
 ADD https://openresty.org/download/openresty-$OPENRESTY_VERSION.tar.gz /openresty.tar.gz
 
 
@@ -187,29 +185,15 @@ RUN set -x ; \
     zlib-dev \
     ; \
     \
-  mkdir -p /usr/src/lua-resty-openidc /usr/src/nginx-auth-ldap /www /www/logs/nginx /var/log/nginx ; \
+  mkdir -p /usr/src/nginx-auth-ldap /www /www/logs/nginx /var/log/nginx ; \
   tar -zxC /usr/src -f /openresty.tar.gz ; \
   tar -zxC /usr/src/nginx-auth-ldap --strip=1 -f /nginx-auth-ldap.tar.gz ; \
   cd /usr/src/openresty-$OPENRESTY_VERSION ; \
-  ./configure $CONFIG --with-debug ; \
-  make -j$(getconf _NPROCESSORS_ONLN) ; \
-  mv objs/nginx objs/nginx-debug ; \
-  mv objs/ngx_http_xslt_filter_module.so objs/ngx_http_xslt_filter_module-debug.so ; \
-  mv objs/ngx_http_geoip_module.so objs/ngx_http_geoip_module-debug.so ; \
-  mv objs/ngx_http_perl_module.so objs/ngx_http_perl_module-debug.so ; \
-  mv objs/ngx_stream_geoip_module.so objs/ngx_stream_geoip_module-debug.so ; \
   ./configure $CONFIG ; \
   make -j$(getconf _NPROCESSORS_ONLN) ; \
   make install ; \
   rm -rf /etc/nginx/html/ ; \
-  mkdir -p /etc/nginx/conf.d/ /etc/nginx/templates/ /etc/nginx/auth/ /usr/share/nginx/html/ /usr/local/openresty/lualib/resty/lua-resty-openidc ; \
-  tar -zxC /usr/local/openresty/lualib/resty/lua-resty-openidc --strip=1 -f /lua-resty-openidc.tar.gz ; \
-  install -m644 html/50x.html /usr/share/nginx/html/ ; \
-  install -m755 objs/nginx-debug /usr/sbin/nginx-debug ; \
-  install -m755 objs/ngx_http_xslt_filter_module-debug.so /usr/lib/nginx/modules/ngx_http_xslt_filter_module-debug.so ; \
-  install -m755 objs/ngx_http_geoip_module-debug.so /usr/lib/nginx/modules/ngx_http_geoip_module-debug.so ; \
-  install -m755 objs/ngx_http_perl_module-debug.so /usr/lib/nginx/modules/ngx_http_perl_module-debug.so ; \
-  install -m755 objs/ngx_stream_geoip_module-debug.so /usr/lib/nginx/modules/ngx_stream_geoip_module-debug.so ; \
+  mkdir -p /etc/nginx/conf.d/ /etc/nginx/templates/ /etc/nginx/auth/ /usr/share/nginx/html/ ; \
   ln -s /usr/local/openresty/bin/openresty /usr/sbin/nginx ; \
   ln -s ../../usr/lib/nginx/modules /etc/nginx/modules ; \
   strip /usr/sbin/nginx* ; \
@@ -245,10 +229,11 @@ RUN set -x ; \
     tzdata \
     wget; \
   update-ca-certificates; \
+  /usr/local/openresty/bin/opm get zmartzone/lua-resty-openidc ; \
   apk del .nginx-build-deps ; \
   apk del .gettext ; \
   mv /tmp/envsubst /usr/local/bin/ ; \
-  rm -rf /usr/src/* /var/tmp/* /var/cache/apk/* /openresty.tar.gz /lua-resty-openidc.gz /nginx-auth-ldap.tar.gz; \
+  rm -rf /usr/src/* /var/tmp/* /var/cache/apk/* /openresty.tar.gz /nginx-auth-ldap.tar.gz; \
   touch /etc/nginx/nginx_ldap.conf /etc/nginx/nginx_blank.conf && \
   find /usr/share/nginx/html/ -type d -exec chmod 755 "{}" \; && \
   find /usr/share/nginx/html/ -type f -exec chmod 644 "{}" \; && \
