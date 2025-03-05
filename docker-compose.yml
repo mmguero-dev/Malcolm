@@ -1254,8 +1254,6 @@ services:
     command:
     - /opt/keycloak/bin/kc.sh
     - start
-    - --proxy-headers
-    - xforwarded
     volumes:
     - type: bind
       bind:

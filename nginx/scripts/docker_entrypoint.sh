@@ -368,7 +368,7 @@ if [[ -f "${NGINX_LANDING_INDEX_HTML}" ]]; then
   elif [[ "$NGINX_AUTH_MODE" == "keycloak" ]]; then
     AUTH_TITLE="Keycloak Authentication"
     AUTH_DESC="Malcolm is using <a href=\"readme/docs/authsetup.html#AuthKeycloak\">Keycloak</a> for authentication"
-    AUTH_LINK="/keycloak/"
+    AUTH_LINK="/auth/"
   elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]] || [[ "$NGINX_AUTH_MODE" == "none" ]] || [[ "$NGINX_AUTH_MODE" == "no" ]]; then
     AUTH_TITLE="Authentication is Disabled"
     AUTH_DESC="<a href=\"/readme/docs/authsetup.html\">Authentication for Malcolm</a> is disabled"
