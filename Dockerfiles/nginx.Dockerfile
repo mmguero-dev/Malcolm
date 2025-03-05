@@ -85,11 +85,9 @@ ENV NGINX_LDAP_TLS_STUNNEL_VERIFY_LEVEL $NGINX_LDAP_TLS_STUNNEL_VERIFY_LEVEL
 ENV OPENRESTY_VERSION=1.27.1.1
 ENV LUA_RESTY_OPENIDC_VERSION=1.8.0
 ENV NGINX_AUTH_LDAP_BRANCH=master
-ENV NGINX_HTTP_SUB_FILTER_BRANCH=master
 
 # NGINX source
 ADD https://codeload.github.com/mmguero-dev/nginx-auth-ldap/tar.gz/$NGINX_AUTH_LDAP_BRANCH /nginx-auth-ldap.tar.gz
-ADD https://codeload.github.com/yaoweibin/ngx_http_substitutions_filter_module/tar.gz/$NGINX_HTTP_SUB_FILTER_BRANCH /ngx_http_substitutions_filter_module-master.tar.gz
 ADD https://codeload.github.com/zmartzone/lua-resty-openidc/tar.gz/v$LUA_RESTY_OPENIDC_VERSION /lua-resty-openidc.tar.gz
 ADD https://openresty.org/download/openresty-$OPENRESTY_VERSION.tar.gz /openresty.tar.gz
 
@@ -157,7 +155,6 @@ RUN set -x ; \
     --with-file-aio \
     --with-http_v2_module \
     --add-module=/usr/src/nginx-auth-ldap \
-    --add-module=/usr/src/ngx_http_substitutions_filter_module \
   " ; \
   apk update --no-cache; \
   apk upgrade --no-cache; \
@@ -190,10 +187,9 @@ RUN set -x ; \
     zlib-dev \
     ; \
     \
-  mkdir -p /usr/src/lua-resty-openidc /usr/src/nginx-auth-ldap /usr/src/ngx_http_substitutions_filter_module /www /www/logs/nginx /var/log/nginx ; \
+  mkdir -p /usr/src/lua-resty-openidc /usr/src/nginx-auth-ldap /www /www/logs/nginx /var/log/nginx ; \
   tar -zxC /usr/src -f /openresty.tar.gz ; \
   tar -zxC /usr/src/nginx-auth-ldap --strip=1 -f /nginx-auth-ldap.tar.gz ; \
-  tar -zxC /usr/src/ngx_http_substitutions_filter_module --strip=1 -f /ngx_http_substitutions_filter_module-master.tar.gz ; \
   cd /usr/src/openresty-$OPENRESTY_VERSION ; \
   ./configure $CONFIG --with-debug ; \
   make -j$(getconf _NPROCESSORS_ONLN) ; \
@@ -252,7 +248,7 @@ RUN set -x ; \
   apk del .nginx-build-deps ; \
   apk del .gettext ; \
   mv /tmp/envsubst /usr/local/bin/ ; \
-  rm -rf /usr/src/* /var/tmp/* /var/cache/apk/* /openresty.tar.gz /lua-resty-openidc.gz /nginx-auth-ldap.tar.gz /ngx_http_substitutions_filter_module-master.tar.gz; \
+  rm -rf /usr/src/* /var/tmp/* /var/cache/apk/* /openresty.tar.gz /lua-resty-openidc.gz /nginx-auth-ldap.tar.gz; \
   touch /etc/nginx/nginx_ldap.conf /etc/nginx/nginx_blank.conf && \
   find /usr/share/nginx/html/ -type d -exec chmod 755 "{}" \; && \
   find /usr/share/nginx/html/ -type f -exec chmod 644 "{}" \; && \

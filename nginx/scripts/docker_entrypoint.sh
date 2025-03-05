@@ -140,7 +140,7 @@ if [[ -z $NGINX_AUTH_MODE ]] || [[ "$NGINX_AUTH_MODE" == "basic" ]] || [[ "$NGIN
   # /auth location handling for htpasswd
   ln -sf "$NGINX_AUTH_BASIC_LOCATION_CONF" "$NGINX_AUTH_LOCATION_CONF"
 
-elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]]; then
+elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]] || [[ "$NGINX_AUTH_MODE" == "none" ]] || [[ "$NGINX_AUTH_MODE" == "no" ]]; then
   # completely disabling authentication (not recommended)
 
   # point nginx_auth_rt.conf to nginx_auth_disabled.conf
@@ -369,7 +369,7 @@ if [[ -f "${NGINX_LANDING_INDEX_HTML}" ]]; then
     AUTH_TITLE="Keycloak Authentication"
     AUTH_DESC="Malcolm is using <a href=\"readme/docs/authsetup.html#AuthKeycloak\">Keycloak</a> for authentication"
     AUTH_LINK="/keycloak/"
-  elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]]; then
+  elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]] || [[ "$NGINX_AUTH_MODE" == "none" ]] || [[ "$NGINX_AUTH_MODE" == "no" ]]; then
     AUTH_TITLE="Authentication is Disabled"
     AUTH_DESC="<a href=\"/readme/docs/authsetup.html\">Authentication for Malcolm</a> is disabled"
     AUTH_LINK="/readme/docs/authsetup.html"
