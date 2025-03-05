@@ -21,3 +21,11 @@ map ${DOLLAR}host ${DOLLAR}dashboards_proxy_url {
 map ${DOLLAR}host ${DOLLAR}proxy_x_forwarded_proto_override {
   default "$NGINX_X_FORWARDED_PROTO_OVERRIDE";
 }
+
+map ${DOLLAR}host ${DOLLAR}keycloak_relative_path {
+  default "$KC_HTTP_RELATIVE_PATH";
+}
+
+map ${DOLLAR}host ${DOLLAR}keycloak_redirect_uri_path {
+  default "$KEYCLOAK_AUTH_REDIRECT_URI";
+}
