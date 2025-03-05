@@ -3,64 +3,66 @@ set -e
 
 NGINX_LANDING_INDEX_HTML=/usr/share/nginx/html/index.html
 
-NGINX_TEMPLATES_DIR=/etc/nginx/templates
-NGINX_CONFD_DIR=/etc/nginx/conf.d
+NGINX_CONF_DIR=/etc/nginx
+NGINX_CONF=${NGINX_CONF_DIR}/nginx.conf
+NGINX_TEMPLATES_DIR=${NGINX_CONF_DIR}/templates
+NGINX_CONFD_DIR=${NGINX_CONF_DIR}/conf.d
 
 # set up for HTTPS/HTTP and NGINX HTTP basic vs. LDAP/LDAPS/LDAP+StartTLS auth
 
 # "include" file that indicates the locations of the PEM files
-NGINX_SSL_ON_CONF=/etc/nginx/nginx_ssl_on_config.conf
+NGINX_SSL_ON_CONF=${NGINX_CONF_DIR}/nginx_ssl_on_config.conf
 
 # "include" symlink name which, at runtime, will point to either the ON or OFF file
-NGINX_SSL_CONF=/etc/nginx/nginx_ssl_config.conf
+NGINX_SSL_CONF=${NGINX_CONF_DIR}/nginx_ssl_config.conf
 
 # a blank file just to use as an "include" placeholder for the nginx's LDAP config when LDAP is not used
-NGINX_BLANK_CONF=/etc/nginx/nginx_blank.conf
+NGINX_BLANK_CONF=${NGINX_CONF_DIR}/nginx_blank.conf
 
 # "include" file for resolver directive
-NGINX_RESOLVER_CONF=/etc/nginx/nginx_system_resolver.conf
+NGINX_RESOLVER_CONF=${NGINX_CONF_DIR}/nginx_system_resolver.conf
 
 # "include" file for /auth endpoint location
-NGINX_AUTH_LOCATION_CONF=/etc/nginx/nginx_auth_location.conf
+NGINX_AUTH_LOCATION_CONF=${NGINX_CONF_DIR}/nginx_auth_location.conf
 
 # "include" file for htadmin (basic) /auth endpoint location
-NGINX_AUTH_BASIC_LOCATION_CONF=/etc/nginx/nginx_auth_basic_location.conf
+NGINX_AUTH_BASIC_LOCATION_CONF=${NGINX_CONF_DIR}/nginx_auth_basic_location.conf
 
 # "include" file for keycloak /auth endpoint location
-NGINX_AUTH_KEYCLOAK_LOCATION_CONF=/etc/nginx/nginx_auth_keycloak_location.conf
+NGINX_AUTH_KEYCLOAK_LOCATION_CONF=${NGINX_CONF_DIR}/nginx_auth_keycloak_location.conf
 
 # "include" file for /auth endpoint location
-NGINX_AUTH_LOCATION_CONF=/etc/nginx/nginx_auth_location.conf
+NGINX_AUTH_LOCATION_CONF=${NGINX_CONF_DIR}/nginx_auth_location.conf
 
 # "include" file for auth_basic, prompt, and htpasswd location
-NGINX_BASIC_AUTH_CONF=/etc/nginx/nginx_auth_basic.conf
+NGINX_BASIC_AUTH_CONF=${NGINX_CONF_DIR}/nginx_auth_basic.conf
 
 # "include" file for auth_ldap, prompt, and "auth_ldap_servers" name
-NGINX_LDAP_AUTH_CONF=/etc/nginx/nginx_auth_ldap.conf
+NGINX_LDAP_AUTH_CONF=${NGINX_CONF_DIR}/nginx_auth_ldap.conf
 
 # "include" file for KeyCloak authentication
-NGINX_KEYCLOAK_AUTH_CONF=/etc/nginx/nginx_auth_keycloak.conf
+NGINX_KEYCLOAK_AUTH_CONF=${NGINX_CONF_DIR}/nginx_auth_keycloak.conf
 
 # "include" file for fully disabling authentication
-NGINX_NO_AUTH_CONF=/etc/nginx/nginx_auth_disabled.conf
+NGINX_NO_AUTH_CONF=${NGINX_CONF_DIR}/nginx_auth_disabled.conf
 
 # volume-mounted user configuration containing "ldap_server ad_server" section with URL, binddn, etc.
-NGINX_LDAP_USER_CONF=/etc/nginx/nginx_ldap.conf
+NGINX_LDAP_USER_CONF=${NGINX_CONF_DIR}/nginx_ldap.conf
 
 # runtime "include" file for auth method (link to NGINX_BASIC_AUTH_CONF, NGINX_LDAP_AUTH_CONF, NGINX_KEYCLOAK_AUTH_CONF, or NGINX_NO_AUTH_CONF)
-NGINX_RUNTIME_AUTH_CONF=/etc/nginx/nginx_auth_rt.conf
+NGINX_RUNTIME_AUTH_CONF=${NGINX_CONF_DIR}/nginx_auth_rt.conf
 
 # runtime "include" file for ldap config (link to either NGINX_BLANK_CONF or (possibly modified) NGINX_LDAP_USER_CONF)
-NGINX_RUNTIME_LDAP_CONF=/etc/nginx/nginx_ldap_rt.conf
+NGINX_RUNTIME_LDAP_CONF=${NGINX_CONF_DIR}/nginx_ldap_rt.conf
 
 # "include" files for idark2dash rewrite using opensearch dashboards, kibana, and runtime copy, respectively
-NGINX_DASHBOARDS_IDARK2DASH_REWRITE_CONF=/etc/nginx/nginx_idark2dash_rewrite_dashboards.conf
-NGINX_KIBANA_IDARK2DASH_REWRITE_CONF=/etc/nginx/nginx_idark2dash_rewrite_kibana.conf
-NGINX_RUNTIME_IDARK2DASH_REWRITE_CONF=/etc/nginx/nginx_idark2dash_rewrite_rt.conf
+NGINX_DASHBOARDS_IDARK2DASH_REWRITE_CONF=${NGINX_CONF_DIR}/nginx_idark2dash_rewrite_dashboards.conf
+NGINX_KIBANA_IDARK2DASH_REWRITE_CONF=${NGINX_CONF_DIR}/nginx_idark2dash_rewrite_kibana.conf
+NGINX_RUNTIME_IDARK2DASH_REWRITE_CONF=${NGINX_CONF_DIR}/nginx_idark2dash_rewrite_rt.conf
 # do the same thing for /dashboards URLs, send to kibana if they're using elasticsearch
-NGINX_DASHBOARDS_DASHBOARDS_REWRITE_CONF=/etc/nginx/nginx_dashboards_rewrite_dashboards.conf
-NGINX_KIBANA_DASHBOARDS_REWRITE_CONF=/etc/nginx/nginx_dashboards_rewrite_kibana.conf
-NGINX_RUNTIME_DASHBOARDS_REWRITE_CONF=/etc/nginx/nginx_dashboards_rewrite_rt.conf
+NGINX_DASHBOARDS_DASHBOARDS_REWRITE_CONF=${NGINX_CONF_DIR}/nginx_dashboards_rewrite_dashboards.conf
+NGINX_KIBANA_DASHBOARDS_REWRITE_CONF=${NGINX_CONF_DIR}/nginx_dashboards_rewrite_kibana.conf
+NGINX_RUNTIME_DASHBOARDS_REWRITE_CONF=${NGINX_CONF_DIR}/nginx_dashboards_rewrite_rt.conf
 
 # config file for stunnel if using stunnel to issue LDAP StartTLS function
 STUNNEL_CONF=/etc/stunnel/stunnel.conf
@@ -106,9 +108,23 @@ fi
 if [[ -z $NGINX_SSL ]] || [[ "$NGINX_SSL" != "false" ]]; then
   # doing encrypted HTTPS
   ln -sf "$NGINX_SSL_ON_CONF" "$NGINX_SSL_CONF"
+  SSL_FLAG=" ssl"
 else
   # doing unencrypted HTTP (not recommended)
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_SSL_CONF"
+  SSL_FLAG=""
+fi
+# generate listen_####.conf files with appropriate SSL flag (since the NGINX
+#   listen directive doesn't allow using variables)
+if [[ -f "${NGINX_CONF}" ]]; then
+  LISTEN_PORT_CONF_PATTERN="^\s*include\s+(${NGINX_CONF_DIR}/listen_([0-9]+)\.conf)\s*;\s*$"
+  while IFS= read -r LINE; do
+    if [[ "${LINE}" =~ ${LISTEN_PORT_CONF_PATTERN} ]]; then
+      IFILE=${BASH_REMATCH[1]}
+      PORT=${BASH_REMATCH[2]}
+      [[ ! -f "${IFILE}" ]] && echo "listen ${PORT}${SSL_FLAG};" > "${IFILE}"
+    fi
+  done < "${NGINX_CONF}"
 fi
 
 # NGINX_AUTH_MODE basic|ldap|keycloak|no_authentication
@@ -266,10 +282,10 @@ EOF
 fi # basic vs. ldap
 
 # if the runtime htpasswd file doesn't exist but the "preseed" does, copy the preseed over for runtime
-if [[ ! -f /etc/nginx/auth/htpasswd ]] && [[ -f /tmp/auth/default/htpasswd ]]; then
-  cp /tmp/auth/default/htpasswd /etc/nginx/auth/htpasswd
-  [[ -n ${PUID} ]] && chown -f ${PUID} /etc/nginx/auth/htpasswd
-  [[ -n ${PGID} ]] && chown -f :${PGID} /etc/nginx/auth/htpasswd
+if [[ ! -f ${NGINX_CONF_DIR}/auth/htpasswd ]] && [[ -f /tmp/auth/default/htpasswd ]]; then
+  cp /tmp/auth/default/htpasswd ${NGINX_CONF_DIR}/auth/htpasswd
+  [[ -n ${PUID} ]] && chown -f ${PUID} ${NGINX_CONF_DIR}/auth/htpasswd
+  [[ -n ${PGID} ]] && chown -f :${PGID} ${NGINX_CONF_DIR}/auth/htpasswd
   rm -rf /tmp/auth/* || true
 fi
 
