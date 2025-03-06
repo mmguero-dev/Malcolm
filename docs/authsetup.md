@@ -5,6 +5,7 @@
     - [Lightweight Directory Access Protocol (LDAP) authentication](#AuthLDAP)
         + [LDAP connection security](#AuthLDAPSecurity)
     - [Keycloak](#AuthKeycloak)
+        + [Using a remote Keycloak instance](#AuthKeycloakRemote)
     - [TLS certificates](#TLSCerts)
     - [Command-line arguments](#CommandLineConfig)
 * [Log Out of Malcolm](#LoggingOut)
@@ -15,7 +16,7 @@ With the local basic authentication method, user accounts are managed by Malcolm
 
 LDAP authentication are managed on a remote directory service, such as a [Microsoft Active Directory Domain Services](https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview) or [OpenLDAP](https://www.openldap.org/).
 
-Malcolm's authentication method is defined in the [`auth-common.env` configuration file](malcolm-config.md#MalcolmConfigEnvVars) file with the `NGINX_AUTH_MODE` environment variable: valid values are `basic` (or `true` for legacy compatibility), to use [TLS-encrypted HTTP basic](#AuthBasicAccountManagement) authentication (default); `ldap` (or `false` for legacy compatibility) to use [Lightweight Directory Access Protocol (LDAP)](#AuthLDAP) authentication; `keycloak` to use [authentication managed by Keycloak](#AuthKeycloak); or, `no_authentication` to disable authentication.
+Malcolm's authentication method is defined in the [`auth-common.env` configuration file](malcolm-config.md#MalcolmConfigEnvVars) file with the `NGINX_AUTH_MODE` environment variable: valid values are `basic` (or `true` for legacy compatibility), to use [TLS-encrypted HTTP basic](#AuthBasicAccountManagement) authentication (default); `ldap` (or `false` for legacy compatibility) to use [Lightweight Directory Access Protocol (LDAP)](#AuthLDAP) authentication; `keycloak` to use [authentication managed by Malcolm's embedded Keycloak](#AuthKeycloak) instance;  `keycloak_remote` to use [authentication managed by an external Keycloak](#AuthKeycloakRemote) instance; or, `no_authentication` to disable authentication.
 
 Whichever method is chosen, users **must** run `./scripts/auth_setup` before starting Malcolm for the first time in order to:
 
@@ -102,6 +103,8 @@ For encrypted connections (whether using **StartTLS** or **LDAPS**), Malcolm wil
 ## <a name="AuthKeycloak"></a>Keycloak
 
 **TODO: documentation for keycloak goes here**
+
+### <a name="AuthKeycloakRemote"></a>Using a remote Keycloak instance
 
 ## <a name="TLSCerts"></a>TLS certificates
 

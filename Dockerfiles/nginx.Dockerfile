@@ -56,7 +56,7 @@ USER root
 # encryption method: HTTPS ('true') vs. unencrypted HTTP ('false')
 ARG NGINX_SSL=true
 
-# authentication method: basic|ldap|keycloak|no_authentication
+# authentication method: basic|ldap|keycloak|keycloak_remote|no_authentication
 ARG NGINX_AUTH_MODE=basic
 
 # NGINX LDAP (NGINX_AUTH_MODE=ldap) can support LDAP, LDAPS, or LDAP+StartTLS.
@@ -229,7 +229,12 @@ RUN set -x ; \
     tzdata \
     wget; \
   update-ca-certificates; \
-  /usr/local/openresty/bin/opm get zmartzone/lua-resty-openidc ; \
+  # trying to solve "no session state" error:
+  # https://github.com/zmartzone/lua-resty-openidc/issues/514#issuecomment-2123720551
+  /usr/local/openresty/bin/opm install ledgetech/lua-resty-http ; \
+  /usr/local/openresty/bin/opm install bungle/lua-resty-session=3.10 ; \
+  /usr/local/openresty/bin/opm install cdbattags/lua-resty-jwt ; \
+  /usr/local/openresty/bin/opm install zmartzone/lua-resty-openidc ; \
   apk del .nginx-build-deps ; \
   apk del .gettext ; \
   mv /tmp/envsubst /usr/local/bin/ ; \

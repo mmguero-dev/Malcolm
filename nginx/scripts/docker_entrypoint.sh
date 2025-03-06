@@ -127,7 +127,7 @@ if [[ -f "${NGINX_CONF}" ]]; then
   done < "${NGINX_CONF}"
 fi
 
-# NGINX_AUTH_MODE basic|ldap|keycloak|no_authentication
+# NGINX_AUTH_MODE basic|ldap|keycloak|keycloak_remote|no_authentication
 if [[ -z $NGINX_AUTH_MODE ]] || [[ "$NGINX_AUTH_MODE" == "basic" ]] || [[ "$NGINX_AUTH_MODE" == "true" ]]; then
   # doing HTTP basic auth
 
@@ -152,8 +152,8 @@ elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]] || [[ "$NGINX_AUTH_MODE" ==
   # /auth location is empty
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_AUTH_LOCATION_CONF"
 
-elif [[ "$NGINX_AUTH_MODE" == "keycloak" ]]; then
-  # Keycloak authentication
+elif [[ "$NGINX_AUTH_MODE" == "keycloak_remote" ]]; then
+  # Keycloak (remote) authentication
 
   # point nginx_auth_rt.conf to nginx_auth_keycloak.conf
   ln -sf "$NGINX_KEYCLOAK_AUTH_CONF" "$NGINX_RUNTIME_AUTH_CONF"
@@ -162,6 +162,18 @@ elif [[ "$NGINX_AUTH_MODE" == "keycloak" ]]; then
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_RUNTIME_LDAP_CONF"
 
   # /auth location is empty
+  ln -sf "$NGINX_BLANK_CONF" "$NGINX_AUTH_LOCATION_CONF"
+
+elif [[ "$NGINX_AUTH_MODE" == "keycloak" ]]; then
+  # Keycloak (embedded) authentication
+
+  # point nginx_auth_rt.conf to nginx_auth_keycloak.conf
+  ln -sf "$NGINX_KEYCLOAK_AUTH_CONF" "$NGINX_RUNTIME_AUTH_CONF"
+
+  # ldap configuration is empty
+  ln -sf "$NGINX_BLANK_CONF" "$NGINX_RUNTIME_LDAP_CONF"
+
+  # /auth location points to embedded keycloak container
   ln -sf "$NGINX_AUTH_KEYCLOAK_LOCATION_CONF" "$NGINX_AUTH_LOCATION_CONF"
 
 elif [[ "$NGINX_AUTH_MODE" == "ldap" ]] || [[ "$NGINX_AUTH_MODE" == "false" ]]; then
@@ -369,6 +381,10 @@ if [[ -f "${NGINX_LANDING_INDEX_HTML}" ]]; then
     AUTH_TITLE="Keycloak Authentication"
     AUTH_DESC="Malcolm is using <a href=\"readme/docs/authsetup.html#AuthKeycloak\">Keycloak</a> for authentication"
     AUTH_LINK="/auth/"
+  elif [[ "$NGINX_AUTH_MODE" == "keycloak_remote" ]]; then
+    AUTH_TITLE="Keycloak Authentication"
+    AUTH_DESC="Malcolm is using an external <a href=\"readme/docs/authsetup.html#AuthKeycloak\">Keycloak</a> for authentication"
+    AUTH_LINK="${KEYCLOAK_AUTH_URL:-}"
   elif [[ "$NGINX_AUTH_MODE" == "no_authentication" ]] || [[ "$NGINX_AUTH_MODE" == "none" ]] || [[ "$NGINX_AUTH_MODE" == "no" ]]; then
     AUTH_TITLE="Authentication is Disabled"
     AUTH_DESC="<a href=\"/readme/docs/authsetup.html\">Authentication for Malcolm</a> is disabled"

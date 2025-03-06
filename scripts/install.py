@@ -1000,8 +1000,13 @@ class Installer(object):
                         ),
                         (
                             'keycloak',
-                            "Use Keycloak for authentication",
+                            "Use embedded Keycloak for authentication",
                             (str(args.authMode).lower() == 'keycloak'),
+                        ),
+                        (
+                            'keycloak_remote',
+                            "Use external Keycloak for authentication",
+                            (str(args.authMode).lower() == 'keycloak_remote'),
                         ),
                         (
                             'no_authentication',
@@ -2190,7 +2195,7 @@ class Installer(object):
                 'INDEX_MANAGEMENT_SEGMENTS',
                 indexManagementOptimizeSessionSegments,
             ),
-            # authentication method: basic|ldap|keycloak|no_authentication
+            # authentication method: basic|ldap|keycloak|keycloak_remote|no_authentication
             EnvValue(
                 True,
                 os.path.join(args.configDir, 'auth-common.env'),
@@ -4161,7 +4166,7 @@ def main():
         '--auth-mode',
         dest='authMode',
         required=False,
-        metavar='<basic|ldap|keycloak|no_authentication>',
+        metavar='<basic|ldap|keycloak|keycloak_remote|no_authentication>',
         type=str,
         default=None,
         help='Authentication method',
