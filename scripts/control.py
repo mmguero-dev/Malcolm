@@ -78,6 +78,7 @@ from malcolm_utils import (
     run_process,
     same_file_or_dir,
     str2bool,
+    touch,
     which,
 )
 
@@ -168,6 +169,7 @@ def checkEnvFilesAndValues():
     if os.path.isdir(examplesConfigDir := os.path.join(MalcolmPath, 'config')):
 
         # process renames, copies, removes, etc. from env-var-actions.yml
+        envVarActionsYaml = None
         envVarActionsFile = os.path.join(examplesConfigDir, 'env-var-actions.yml')
         if os.path.isfile(envVarActionsFile):
             with open(envVarActionsFile, 'r') as f:
@@ -223,6 +225,7 @@ def checkEnvFilesAndValues():
                                 sourceVars = dotenvImported.dotenv_values(sourceEnvFileName)
                                 # open the destination file for writing new values
                                 with open(destEnvFileName, "a") as destEnvFileHandle:
+                                    newlineAdded = False
                                     for destKey, sourceKey in keys.items():
                                         # if a key exists in the source, but not in the dest, it needs to be written
                                         if (sourceKey in sourceVars) and (destKey not in destVars):
@@ -230,6 +233,9 @@ def checkEnvFilesAndValues():
                                                 eprint(
                                                     f"Creating {os.path.basename(destEnvFileName)}:{destKey} from {os.path.basename(sourceEnvFileName)}:{sourceKey}"
                                                 )
+                                            if not newlineAdded:
+                                                print('', file=destEnvFileHandle)
+                                                newlineAdded = True
                                             print(f"{destKey}={sourceVars[sourceKey]}", file=destEnvFileHandle)
 
                 # removed_environment_variables contains values that used to be in an environment variable file, but no longer belong there
@@ -267,48 +273,6 @@ def checkEnvFilesAndValues():
                                         eprint(f"Removing {keys}, deleting {os.path.basename(envFileName)}")
                                     os.unlink(envFileName)
 
-                # files or directories that need to be relocated, only if:
-                #   - deployment mode is docker compose
-                #   - Malcolm is not running
-                #   - the source exists
-                #   - the destination does not exist
-                if (orchMode is OrchestrationFramework.DOCKER_COMPOSE) and ('relocated_files' in envVarActionsYaml):
-                    osEnv = os.environ.copy()
-                    if not args.noTmpDirOverride:
-                        osEnv['TMPDIR'] = MalcolmTmpPath
-                    err, out = run_process(
-                        [
-                            dockerComposeBin,
-                            '--profile',
-                            args.composeProfile,
-                            '-f',
-                            args.composeFile,
-                            'ps',
-                            '--services',
-                            '--status=running',
-                        ],
-                        env=osEnv,
-                        stderr=False,
-                        debug=args.debug,
-                    )
-                    out[:] = [x for x in out if x]
-                    if (err == 0) and (len(out) == 0):
-                        for src, dst in envVarActionsYaml['relocated_files'].items():
-                            srcPath = os.path.join(MalcolmPath, src)
-                            dstPath = os.path.join(MalcolmPath, next(iter(get_iterable(dst))))
-                            if os.path.exists(dstPath) or (not os.path.exists(srcPath)):
-                                if args.debug:
-                                    eprint(
-                                        f'Either "{dst}" already exists or "{src}" does not, ignoring in relocated_files'
-                                    )
-                            else:
-                                try:
-                                    shutil.move(srcPath, dstPath)
-                                    if args.debug:
-                                        eprint(f'Relocated "{src}" to "{dst}"')
-                                except Exception as e:
-                                    eprint(f'Error relocating "{src}" to "{dst}": {e}')
-
         # creating missing .env file from .env.example file
         for envExampleFile in sorted(glob.glob(os.path.join(examplesConfigDir, '*.env.example'))):
             envFile = os.path.join(args.configDir, os.path.basename(envExampleFile[: -len('.example')]))
@@ -339,6 +303,51 @@ def checkEnvFilesAndValues():
                         )
                         for missingVar in missingVars:
                             print(f"{missingVar}={exampleValues[missingVar]}", file=envFileHandle)
+
+        # files or directories that need to be relocated, only if:
+        #   - deployment mode is docker compose
+        #   - Malcolm is not running
+        #   - the source exists
+        #   - the destination does not exist
+        if (
+            envVarActionsYaml
+            and isinstance(envVarActionsYaml, dict)
+            and (orchMode is OrchestrationFramework.DOCKER_COMPOSE)
+            and ('relocated_files' in envVarActionsYaml)
+        ):
+            osEnv = os.environ.copy()
+            if not args.noTmpDirOverride:
+                osEnv['TMPDIR'] = MalcolmTmpPath
+            err, out = run_process(
+                [
+                    dockerComposeBin,
+                    '--profile',
+                    args.composeProfile,
+                    '-f',
+                    args.composeFile,
+                    'ps',
+                    '--services',
+                    '--status=running',
+                ],
+                env=osEnv,
+                stderr=False,
+                debug=args.debug,
+            )
+            out[:] = [x for x in out if x]
+            if (err == 0) and (len(out) == 0):
+                for src, dst in envVarActionsYaml['relocated_files'].items():
+                    srcPath = os.path.join(MalcolmPath, src)
+                    dstPath = os.path.join(MalcolmPath, next(iter(get_iterable(dst))))
+                    if os.path.exists(dstPath) or (not os.path.exists(srcPath)):
+                        if args.debug:
+                            eprint(f'Either "{dst}" already exists or "{src}" does not, ignoring in relocated_files')
+                    else:
+                        try:
+                            shutil.move(srcPath, dstPath)
+                            if args.debug:
+                                eprint(f'Relocated "{src}" to "{dst}"')
+                        except Exception as e:
+                            eprint(f'Error relocating "{src}" to "{dst}": {e}')
 
 
 ###################################################################################################
@@ -1152,10 +1161,10 @@ def start():
     global orchMode
 
     if args.service is None:
-        # touch the htadmin metadata file and .opensearch.*.curlrc files
-        open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
-        open(os.path.join(MalcolmPath, '.opensearch.primary.curlrc'), 'a').close()
-        open(os.path.join(MalcolmPath, '.opensearch.secondary.curlrc'), 'a').close()
+        touch(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')))
+        touch(os.path.join(MalcolmPath, '.opensearch.primary.curlrc'))
+        touch(os.path.join(MalcolmPath, '.opensearch.secondary.curlrc'))
+        touch(os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf')))
 
         # make sure the auth files exist. if we are in an interactive shell and we're
         # missing any of the auth files, prompt to create them now
@@ -1193,8 +1202,8 @@ def start():
                 os.chmod(envFile, stat.S_IRUSR | stat.S_IWUSR)
 
         # touch the zeek intel file and zeek custom file
-        open(os.path.join(MalcolmPath, os.path.join('zeek', os.path.join('intel', '__load__.zeek'))), 'a').close()
-        open(os.path.join(MalcolmPath, os.path.join('zeek', os.path.join('custom', '__load__.zeek'))), 'a').close()
+        touch(os.path.join(MalcolmPath, os.path.join('zeek', os.path.join('intel', '__load__.zeek'))))
+        touch(os.path.join(MalcolmPath, os.path.join('zeek', os.path.join('custom', '__load__.zeek'))))
 
         # clean up any leftover intel update locks
         shutil.rmtree(
@@ -1863,7 +1872,7 @@ def authSetup():
                         f.write(f'max_password_len = {PasswordMaxLen}\n\n')
 
                     # touch the metadata file
-                    open(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')), 'a').close()
+                    touch(os.path.join(MalcolmPath, os.path.join('htadmin', 'metadata')))
 
                     if nginxAuthMode in ['basic', 'true']:
                         DisplayMessage(
@@ -2128,7 +2137,7 @@ def authSetup():
                                 os.remove(openSearchCredFileName)
                             except Exception:
                                 pass
-                        open(openSearchCredFileName, 'a').close()
+                        touch(openSearchCredFileName)
                         os.chmod(openSearchCredFileName, stat.S_IRUSR | stat.S_IWUSR)
 
                 # OpenSearch authenticate sender account credentials

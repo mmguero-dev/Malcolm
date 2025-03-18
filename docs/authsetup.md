@@ -142,7 +142,7 @@ The next steps happen in the context of `auth_setup`.
 
 3. Run `./scripts/auth_setup` and select **Configure Keycloak**.
 
-![Configure Keycloak in auth_setup](./images/screenshots/keycloak_03_auth_setup.png)
+![Configure Keycloak in auth_setup](./images/screenshots/auth_setup.png)
 
 4. Specify the name of the Keycloak [realm](https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms) to use.
 
@@ -200,7 +200,7 @@ The next steps happen in the context of `./scripts/auth_setup`.
 
 4. Next, running `auth_setup` again, select **Configure Keycloak**.
 
-![Configure Keycloak in auth_setup](./images/screenshots/keycloak_03_auth_setup.png)
+![Configure Keycloak in auth_setup](./images/screenshots/auth_setup.png)
 
 5. Specify the name of the Keycloak [realm](https://www.keycloak.org/docs/latest/server_admin/index.html#_configuring-realms) to use. The default, as defined by Keycloak itself, is [`master`](https://www.keycloak.org/docs/latest/server_admin/index.html#the-master-realm).
 
@@ -399,6 +399,6 @@ In order to avoid specifying passwords as command line arguments, when setting t
 
 # <a name="LoggingOut"></a>Log Out of Malcolm
 
-Since Malcolm's nginx reverse proxy uses HTTP Basic Authentication, there is no "Logout" button. Users should exit their browser window to log out of Malcom. On the next browser restart, Malcolm will prompt the user for credentials.
+When using [Keycloak](#AuthKeycloak), Malcolm users can log out of Malcolm by navigating to the Keycloak user interface, opening the drop-down with their name or username in the upper-right corner of the page, and selecting **Sign out**.
 
-Another way to log out of Malcolm is for a user to manually clear their browser's active sessions.
+For the other authentication methods which use HTTP basic authentication, users should exit their browser to log out of Malcom. On the next browser restart, Malcolm will prompt the user for credentials. Another way to log out of Malcolm is for a user to manually clear their browser's active sessions.
