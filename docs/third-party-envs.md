@@ -4,6 +4,7 @@
     - [Generating a Malcolm Amazon Machine Image (AMI) for Use on Amazon Web Services (AWS)](#AWSAMI)
         + [Prerequisites](#AWSAMIPrerequisites)
         + [Procedure](#AWSAMIProcedure)
+            * [Using MFA](#AWSAMIMFA)
         + [Attribution](#AWSAttribution)
 
 ## <a name="AWSAMI"></a>Generating a Malcolm Amazon Machine Image (AMI) for Use on Amazon Web Services (AWS)
@@ -30,15 +31,17 @@ The files referenced in this section can be found in [scripts/third-party-enviro
     $ cp ./packer_vars.json.example ./packer_vars.json
     ```
 1. Edit `packer_vars.json` 
-    * set `aws_access_key`, `aws_secret_key`, `vpc_region`, `instance_arch`, and other variables as needed
+    * set `vpc_region`, `instance_arch`, and other variables as needed
 1. Validate the packer configuration
     ```bash
     $ packer validate packer_build.json
     The configuration is valid.
     ```
-1. Launch packer to build the AMI
+1. Launch packer to build the AMI, providing `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` as environment variables:
     ```bash
-    $ packer build -var-file=packer_vars.json packer_build.json
+    $ AWS_ACCESS_KEY_ID=YOUR_AWS_ACCESS_KEY \
+        AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_KEY \
+        packer build -var-file=packer_vars.json packer_build.json
 
     amazon-ebs: output will be in this color.
 
@@ -130,6 +133,15 @@ The files referenced in this section can be found in [scripts/third-party-enviro
 1. Run `~/Malcolm/scripts/configure` to configure Malcolm
 1. Run `~/Malcolm/scripts/auth_setup` to set up authentication for Malcolm
 1. Run `~/Malcolm/scripts/start` to start Malcolm
+
+### <a name="AWSAMIMFA"></a> Using MFA
+
+Users with [AWS MFA requirements](https://docs.aws.amazon.com/console/iam/self-mfa) may receive an `UnauthorizedOperation` error when performing the steps outlined above. If this is the case, the following workaround may allow the build to execute (thanks to [this GitHub comment](https://github.com/hashicorp/packer-plugin-amazon/issues/441#issuecomment-1880073476)):
+
+1. Remove the `access_key` and `secret_key` lines from the `builders` section of `packer_build.json` (right below `"type": "amazon-ebs"`)
+1. Run `aws ec2 describe-instances --profile=myprofile` (replacing `myprofile` with the credential profile name) to cause `aws` to authenticate (prompting for the MFA code) and cache the credentials
+1. At the bash command line, run: `eval "$(aws configure export-credentials --profile xxxxxxxx --format env)"` to load the current AWS credentials into environment variables in the current session
+1. Run the `packer build` command as described in the previous section
 
 ### <a name="AWSAttribution"></a> Attribution
 

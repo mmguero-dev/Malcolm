@@ -33,6 +33,14 @@ NGINX_KEYCLOAK_LOCATION_CONF=${NGINX_CONF_DIR}/nginx_keycloak_location.conf
 NGINX_KEYCLOAK_UPSTREAM_LINK=${NGINX_CONF_DIR}/nginx_keycloak_upstream_rt.conf
 NGINX_KEYCLOAK_UPSTREAM_CONF=${NGINX_CONF_DIR}/nginx_keycloak_upstream.conf
 
+# "include" file for /netbox endpoint location
+NGINX_NETBOX_LOCATION_LINK=${NGINX_CONF_DIR}/nginx_netbox_location_rt.conf
+NGINX_NETBOX_LOCATION_CONF=${NGINX_CONF_DIR}/nginx_netbox_location.conf
+
+# "include" file for embedded netbox upstream
+NGINX_NETBOX_UPSTREAM_LINK=${NGINX_CONF_DIR}/nginx_netbox_upstream_rt.conf
+NGINX_NETBOX_UPSTREAM_CONF=${NGINX_CONF_DIR}/nginx_netbox_upstream.conf
+
 # "include" file for auth_basic, prompt, and htpasswd location
 NGINX_BASIC_AUTH_CONF=${NGINX_CONF_DIR}/nginx_auth_basic.conf
 NGINX_AUTH_BASIC_LOCATION_CONF=${NGINX_CONF_DIR}/nginx_auth_basic_location.conf
@@ -160,6 +168,16 @@ else
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_OPENSEARCH_UPSTREAM_LINK"
   ln -sf "$NGINX_BLANK_CONF" "$NGINX_OPENSEARCH_MAPI_LINK"
   ln -sf "$NGINX_OPENSEARCH_API_501_CONF" "$NGINX_OPENSEARCH_API_LINK"
+fi
+
+if [[ "${NETBOX_MODE:-local}" == "local" ]]; then
+  # /netbox location points to embedded netbox container
+  ln -sf "$NGINX_NETBOX_LOCATION_CONF" "$NGINX_NETBOX_LOCATION_LINK"
+  ln -sf "$NGINX_NETBOX_UPSTREAM_CONF" "$NGINX_NETBOX_UPSTREAM_LINK"
+else
+  # /netbox location isn't used
+  ln -sf "$NGINX_BLANK_CONF" "$NGINX_NETBOX_LOCATION_LINK"
+  ln -sf "$NGINX_BLANK_CONF" "$NGINX_NETBOX_UPSTREAM_LINK"
 fi
 
 # NGINX_AUTH_MODE basic|ldap|keycloak|keycloak_remote|no_authentication
@@ -478,6 +496,19 @@ if [[ -f "${NGINX_LANDING_INDEX_HTML}" ]]; then
     AUTH_DESC="Manage the <a href=\"/readme/docs/authsetup.html#AuthBasicAccountManagement\">local user accounts</a> maintained by Malcolm"
     AUTH_LINK="/auth/"
   fi
+  if [[ "${NETBOX_MODE:-local}" == "disabled" ]]; then
+    NETBOX_TITLE="NetBox"
+    NETBOX_DESC="<a href=\"/readme/docs/asset-interaction-analysis.html\">NetBox</a> is disabled"
+    NETBOX_LINK="/readme/docs/asset-interaction-analysis.html"
+  elif [[ "${NETBOX_MODE:-local}" == "remote" ]]; then
+    NETBOX_TITLE="NetBox"
+    NETBOX_DESC="Model and document your <a href=\"/readme/docs/asset-interaction-analysis.html\">network infrastructure</a>"
+    NETBOX_LINK="${NETBOX_URL:-#}"
+  else
+    NETBOX_TITLE="NetBox"
+    NETBOX_DESC="Model and document your <a href=\"/readme/docs/asset-interaction-analysis.html\">network infrastructure</a>"
+    NETBOX_LINK="/netbox/"
+  fi
   for HTML in "$(dirname "$(realpath "${NGINX_LANDING_INDEX_HTML}")")"/*.html; do
     sed -i "s@MALCOLM_DASHBOARDS_NAME_REPLACER@${MALCOLM_DASHBOARDS_NAME}@g" "${HTML}" || true
     sed -i "s@MALCOLM_DASHBOARDS_URL_REPLACER@${MALCOLM_DASHBOARDS_URL}@g" "${HTML}" || true
@@ -486,6 +517,9 @@ if [[ -f "${NGINX_LANDING_INDEX_HTML}" ]]; then
     sed -i "s@MALCOLM_AUTH_TITLE_REPLACER@${AUTH_TITLE}@g" "${HTML}" || true
     sed -i "s@MALCOLM_AUTH_DESC_REPLACER@${AUTH_DESC}@g" "${HTML}" || true
     sed -i "s@MALCOLM_AUTH_URL_REPLACER@${AUTH_LINK}@g" "${HTML}" || true
+    sed -i "s@MALCOLM_NETBOX_TITLE_REPLACER@${NETBOX_TITLE}@g" "${HTML}" || true
+    sed -i "s@MALCOLM_NETBOX_DESC_REPLACER@${NETBOX_DESC}@g" "${HTML}" || true
+    sed -i "s@MALCOLM_NETBOX_URL_REPLACER@${NETBOX_LINK}@g" "${HTML}" || true
   done
 fi
 

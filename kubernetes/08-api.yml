@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
       - name: api-container
-        image: ghcr.io/idaholab/malcolm/api:25.03.1
+        image: ghcr.io/idaholab/malcolm/api:25.04.0
         imagePullPolicy: Always
         stdin: false
         tty: true
@@ -57,6 +57,10 @@ spec:
               name: upload-common-env
           - configMapRef:
               name: dashboards-env
+          - configMapRef:
+              name: netbox-common-env
+          - secretRef:
+              name: netbox-secret-env
           - configMapRef:
               name: opensearch-env
         env:
