@@ -179,9 +179,10 @@ app.config.from_object("project.config.Config")
 
 debugApi = app.config["MALCOLM_API_DEBUG"] == "true"
 
+arkimeSsl = malcolm_utils.str2bool(app.config["ARKIME_SSL"])
 arkimeHost = app.config["ARKIME_HOST"]
 arkimePort = app.config["ARKIME_PORT"]
-arkimeStatusUrl = f'https://{arkimeHost}:{arkimePort}/_ns_/nstest.html'
+arkimeStatusUrl = f'http{"s" if arkimeSsl else ""}://{arkimeHost}:{arkimePort}/_ns_/nstest.html'
 dashboardsUrl = app.config["DASHBOARDS_URL"]
 dashboardsHelperHost = app.config["DASHBOARDS_HELPER_HOST"]
 dashboardsMapsPort = app.config["DASHBOARDS_MAPS_PORT"]
@@ -587,7 +588,7 @@ def aggfields(fieldnames, current_request, urls=None):
         # Get the field mapping type for this field, and map it to a good default "missing"
         #   (empty bucket) label for the bucket missing= parameter below
         mapping = databaseClient.indices.get_field_mapping(
-            fname,
+            fields=fname,
             index=idx,
         )
         missing_val = (
@@ -791,6 +792,7 @@ def fields():
             for fieldname, fieldinfo in malcolm_utils.deep_get(
                 template,
                 ["index_template", "template", "mappings", "properties"],
+                {},
             ).items():
                 if debugApi:
                     fieldinfo['source'] = f'opensearch.{templateName}'
@@ -814,6 +816,7 @@ def fields():
                     for fieldname, fieldinfo in malcolm_utils.deep_get(
                         component,
                         ["component_template", "template", "mappings", "properties"],
+                        {},
                     ).items():
                         if debugApi:
                             fieldinfo['source'] = f'opensearch.{templateName}.{componentName}'
@@ -828,15 +831,19 @@ def fields():
 
     # get fields from OpenSearch dashboards
     try:
-        for field in requests.get(
-            f"{dashboardsUrl}/api/index_patterns/_fields_for_wildcard",
-            params={
-                'pattern': index_from_args(args),
-                'meta_fields': ["_source", "_id", "_type", "_index", "_score"],
-            },
-            auth=opensearchReqHttpAuth,
-            verify=opensearchSslVerify,
-        ).json()['fields']:
+        for field in (
+            requests.get(
+                f"{dashboardsUrl}/api/index_patterns/_fields_for_wildcard",
+                params={
+                    'pattern': index_from_args(args),
+                    'meta_fields': ["_source", "_id", "_type", "_index", "_score"],
+                },
+                auth=opensearchReqHttpAuth,
+                verify=opensearchSslVerify,
+            )
+            .json()
+            .get('fields', [])
+        ):
             if fieldname := malcolm_utils.deep_get(field, ['name']):
                 if debugApi:
                     field['source'] = 'dashboards'
@@ -1043,7 +1050,18 @@ def ready():
 
     return jsonify(
         arkime=arkimeStatus,
-        dashboards=(malcolm_utils.deep_get(dashboardsStatus, ["status", "overall", "state"], "red") != "red"),
+        dashboards=(
+            malcolm_utils.deep_get(
+                dashboardsStatus,
+                [
+                    "status",
+                    "overall",
+                    "level" if databaseMode == malcolm_utils.DatabaseMode.ElasticsearchRemote else "state",
+                ],
+                "red",
+            )
+            != "red"
+        ),
         dashboards_maps=dashboardsMapsStatus,
         filebeat_tcp=filebeatTcpJsonStatus,
         freq=freqStatus,
