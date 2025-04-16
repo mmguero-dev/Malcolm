@@ -1349,7 +1349,7 @@ def start():
             exit(err)
 
     elif orchMode is OrchestrationFramework.KUBERNETES:
-        if CheckPersistentStorageDefs(
+        if args.skipPerVolChecks or CheckPersistentStorageDefs(
             namespace=args.namespace,
             malcolmPath=MalcolmPath,
             profile=args.composeProfile,
@@ -1376,7 +1376,10 @@ def start():
         else:
             groupedStorageEntries = {
                 i: [j[0] for j in j]
-                for i, j in groupby(sorted(REQUIRED_VOLUME_OBJECTS.items(), key=lambda x: x[1]), lambda x: x[1])
+                for i, j in groupby(
+                    sorted(REQUIRED_VOLUME_OBJECTS.items(), key=lambda x: tuple(x[1].items())),
+                    lambda x: tuple(x[1].items()),
+                )
             }
             raise Exception(
                 f'Storage objects required by Malcolm are not defined in {os.path.join(MalcolmPath, "kubernetes")}: {groupedStorageEntries}'
@@ -2797,6 +2800,15 @@ def main():
         type=str,
         default=os.getenv('MALCOLM_NAMESPACE', 'malcolm'),
         help="Kubernetes namespace",
+    )
+    kubernetesGroup.add_argument(
+        '--skip-persistent-volume-checks',
+        dest='skipPerVolChecks',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=False,
+        help="Skip checks for PersistentVolumes/PersistentVolumeClaims in manifests before starting",
     )
     kubernetesGroup.add_argument(
         '--reclaim-persistent-volume',
