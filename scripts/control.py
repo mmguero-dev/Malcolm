@@ -1359,6 +1359,8 @@ def start():
                 malcolmPath=MalcolmPath,
                 configPath=args.configDir,
                 profile=args.composeProfile,
+                startCapturePods=not args.noCapturePodsStart,
+                noCapabilities=args.noCapabilities,
             )
 
             if dictsearch(startResults, 'error'):
@@ -2808,7 +2810,25 @@ def main():
         nargs='?',
         const=True,
         default=False,
-        help="Skip checks for PersistentVolumes/PersistentVolumeClaims in manifests before starting",
+        help='Skip checks for PersistentVolumes/PersistentVolumeClaims in manifests (only for "start" operation with Kubernetes)',
+    )
+    kubernetesGroup.add_argument(
+        '--no-capture-pods',
+        dest='noCapturePodsStart',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=False,
+        help='Do not deploy pods for traffic live capture/analysis (only for "start" operation with Kubernetes)',
+    )
+    kubernetesGroup.add_argument(
+        '--no-capabilities',
+        dest='noCapabilities',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=False,
+        help='Do not specify modifications to container capabilities (only for "start" operation with Kubernetes)',
     )
     kubernetesGroup.add_argument(
         '--reclaim-persistent-volume',

@@ -709,7 +709,15 @@ def DeleteNamespace(namespace, deleteRetPerVol=False):
     return results_dict
 
 
-def StartMalcolm(namespace, malcolmPath, configPath, profile=PROFILE_MALCOLM, dryrun=False):
+def StartMalcolm(
+    namespace,
+    malcolmPath,
+    configPath,
+    profile=PROFILE_MALCOLM,
+    startCapturePods=True,
+    noCapabilities=False,
+    dryrun=False,
+):
     if not namespace:
         namespace = 'malcolm'
 
@@ -855,14 +863,17 @@ def StartMalcolm(namespace, malcolmPath, configPath, profile=PROFILE_MALCOLM, dr
         if not dryrun:
             results_dict['create_from_yaml']['result'] = dict()
         yamlFiles = sorted(
-            list(
-                chain(
-                    *[
-                        glob.iglob(os.path.join(os.path.join(malcolmPath, 'kubernetes'), ftype), recursive=False)
-                        for ftype in ['*.yml', '*.yaml']
-                    ]
+            [
+                f
+                for f in chain.from_iterable(
+                    glob.iglob(os.path.join(os.path.join(malcolmPath, 'kubernetes'), ftype), recursive=False)
+                    for ftype in ['*.yml', '*.yaml']
                 )
-            )
+                if startCapturePods
+                or not any(
+                    f.endswith(suffix) for suffix in ['-live.yml', '-live.yaml', '-capture.yml', '-capture.yaml']
+                )
+            ]
         )
         for yamlName in yamlFiles:
             # check to make sure the container in this YAML file belongs to this profile
@@ -883,9 +894,14 @@ def StartMalcolm(namespace, malcolmPath, configPath, profile=PROFILE_MALCOLM, dr
             # apply the manifests in this YAML file, otherwise skip it
             if containerBelongsInProfile:
 
-                # Some containers need to have resource requests created for them on the fly (idaholab/Malcolm#539).
-                # For now the only ones I'm doing this for are ones that have JAVA_OPTS specified (see CONTAINER_JAVA_OPTS_VARS)
-                #   which we retrieve from the container's environment variables we created earlier as configMapRefs.
+                # Some manifests need to have some modifications done to them on-the-fly:
+                #
+                # * Remove "capabilities" under "securityContext" (for something like Fargate that doesn't support them)
+                # * Have resource requests created for them on the fly (idaholab/Malcolm#539).
+                #       For now the only ones I'm doing this for are ones that have JAVA_OPTS specified (see CONTAINER_JAVA_OPTS_VARS)
+                #           which we retrieve from the container's environment variables we created earlier as configMapRefs.
+                #       TODO: optionally expand this to other containers as well
+                #
                 modified = False
                 if manYamlFileContents:
                     for docIdx, doc in enumerate(manYamlFileContents):
@@ -899,13 +915,26 @@ def StartMalcolm(namespace, malcolmPath, configPath, profile=PROFILE_MALCOLM, dr
                             for containerIdx, container in enumerate(
                                 manYamlFileContents[docIdx]['spec']['template']['spec']['containers']
                             ):
-                                # we're only concerned about containters we've defined by name in CONTAINER_JAVA_OPTS_VARS
                                 containerName = remove_suffix(
                                     manYamlFileContents[docIdx]['spec']['template']['spec']['containers'][
                                         containerIdx
                                     ].get('name', ''),
                                     '-container',
                                 )
+
+                                # if they've asked to disable the capabilities definition (e.g., for fargate)
+                                if noCapabilities and (
+                                    'securityContext'
+                                    in manYamlFileContents[docIdx]['spec']['template']['spec']['containers'][
+                                        containerIdx
+                                    ]
+                                ):
+                                    manYamlFileContents[docIdx]['spec']['template']['spec']['containers'][containerIdx][
+                                        'securityContext'
+                                    ].pop('capabilities', None)
+                                    modified = True
+
+                                # for resource requests we're only concerned about containters we've defined by name in CONTAINER_JAVA_OPTS_VARS
                                 if containerName in CONTAINER_JAVA_OPTS_VARS:
                                     # load up a list of environment variable sets (configMapRefs) defined in the container's envFrom
                                     containerEnvs = {}
@@ -956,7 +985,7 @@ def StartMalcolm(namespace, malcolmPath, configPath, profile=PROFILE_MALCOLM, dr
                                                 ]['resources']['requests']['memory'] = f'{requestMib}Mi'
                                             modified = True
 
-                # if we added a resource request, write out the modified YAML to a temporary file
+                # if we modified the manifest write out the modified YAML to a temporary file
                 with temporary_filename(suffix='.yml') if modified else nullcontext() as tmpYmlFileName:
                     if modified:
                         with open(tmpYmlFileName, 'w') as tmpYmlFile:
