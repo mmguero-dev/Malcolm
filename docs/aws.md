@@ -447,18 +447,18 @@ $ aws ec2 create-security-group \
     --description "Security group for Malcolm EFS" \
     --vpc-id $VPC_ID
 
-$ SG_ID=$(aws ec2 describe-security-groups \
+$ EFS_SG_ID=$(aws ec2 describe-security-groups \
     --filters "Name=group-name,Values=malcolm-efs-sg" "Name=vpc-id,Values=$VPC_ID" \
     --query 'SecurityGroups[0].GroupId' --output text)
 
-$ echo $SG_ID
+$ echo $EFS_SG_ID
 ```
 
 * Add NFS inbound rule to Security Group
 
 ```bash
 $ aws ec2 authorize-security-group-ingress \
-    --group-id $SG_ID \
+    --group-id $EFS_SG_ID \
     --protocol tcp \
     --port 2049 \
     --cidr 10.0.0.0/16
@@ -481,7 +481,7 @@ $ for subnet in $SUBNETS; do \
     aws efs create-mount-target \
         --file-system-id $EFS_ID \
         --subnet-id $subnet \
-        --security-groups $SG_ID; \
+        --security-groups $EFS_SG_ID; \
 done
 ```
 
@@ -616,11 +616,51 @@ $ aws acm describe-certificate \
 ```bash
 $ ./Malcolm/scripts/start -f "${KUBECONFIG:-$HOME/.kube/config}" \
     --inject-resources \
-    --service-type LoadBalancer \
     --no-capture-pods \
     --no-capabilities \
     --skip-persistent-volume-checks
 ```
+
+* Allow incoming TCP connections from remote sensors (**OPTIONAL**: only needed to allow forwarding from a remote [Hedgehog Linux](live-analysis.md#Hedgehog) network sensor)
+    * Create and assign a security group for Logstash (5044/tcp) and Filebeat (5045/tcp) to accept logs. Replacing `0.0.0.0/0` with a more limited CIDR block in the following commands is recommended.
+    
+    ```bash
+    $ aws ec2 create-security-group \
+        --group-name malcolm-raw-tcp-sg \
+        --description "Security group for raw TCP services" \
+        --vpc-id $VPC_ID
+    
+    $ TCP_SG_ID=$(aws ec2 describe-security-groups \
+                    --filters Name=group-name,Values=malcolm-raw-tcp-sg \
+                    --query 'SecurityGroups[0].GroupId' \
+                    --output text)
+    
+    $ for PORT in 5044 5045; do \
+        aws ec2 authorize-security-group-ingress \
+            --group-id $TCP_SG_ID \
+            --protocol tcp \
+            --port $PORT \
+            --cidr 0.0.0.0/0; \
+    done
+    ```
+
+    * Assign the new security group to the network interfaces 
+
+    ```bash
+    $ for POD in logstash filebeat; do \
+        POD_NAME="$(kubectl get pods -n malcolm --no-headers -o custom-columns=':metadata.name' | grep "$POD" | head -n 1)"; \
+        [[ -n "$POD_NAME" ]] || continue; \
+        POD_IP="$(kubectl get pod -n malcolm "$POD_NAME" -o jsonpath='{.status.podIP}')"; \
+        [[ -n "$POD_IP" ]] || continue; \
+        NIC_ID="$(aws ec2 describe-network-interfaces --filters "Name=addresses.private-ip-address,Values=$POD_IP" --query "NetworkInterfaces[0].NetworkInterfaceId" --output text)"; \
+        [[ -n "$NIC_ID" ]] || continue; \
+        NIC_GROUPS="$(aws ec2 describe-network-interfaces --network-interface-ids "$NIC_ID" --query "NetworkInterfaces[0].Groups[].GroupId" --output text)"; \
+        [[ -n "$NIC_GROUPS" ]] || continue; \
+        aws ec2 modify-network-interface-attribute \
+          --network-interface-id "$NIC_ID" \
+          --groups $TCP_SG_ID $NIC_GROUPS; \
+    done
+    ```
 
 * Get the ALB hostname for the ALB ingress created from `./Malcolm/kubernetes/99-ingress-aws-alb.yml`
 
@@ -718,7 +758,6 @@ This section assumes good working knowledge of Amazon Web Services (AWS) and Ama
 1. Deploy the AWS Load Ballancer Controller add-on
     * See [**Ingress Controllers**](kubernetes.md#Ingress) under [**Deploying Malcolm with Kubernetes**](kubernetes.md)
     * [`kubernetes/99-ingress-aws-alb.yml.example`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-aws-alb.yml.example) is an example ingress manifest for Malcolm using the ALB controller for HTTP(S) requests and the NLB controller for TCP connections to Logstash and Filebeat
-    * Users must specify `--service-type LoadBalancer` when [starting](kubernetes.md#Running) Malcolm; or, set `type: LoadBalancer` for the `nginx-proxy` service in [`98-nginx-proxy.yml`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/98-nginx-proxy.yml), the `filebeat` service in [`12-filebeat.yml`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/12-filebeat.yml) and the the `logstash` service in [`13-logstash.yml`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/13-logstash.yml)
     * [How do I set up the AWS Load Balancer Controller on an Amazon EKS cluster...?](https://repost.aws/knowledge-center/eks-alb-ingress-controller-fargate)
     * [Installing the AWS Load Balancer Controller add-on](https://docs.aws.amazon.com/eks/latest/userguide/aws-load-balancer-controller.html)
     * [Application load balancing on Amazon EKS](https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html)
