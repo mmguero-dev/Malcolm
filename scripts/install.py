@@ -54,7 +54,8 @@ from malcolm_common import (
     KubernetesDynamic,
     LoadYaml,
     MalcolmCfgRunOnceFile,
-    MalcolmPath,
+    GetMalcolmPath,
+    SetMalcolmPath,
     OrchestrationFramework,
     OrchestrationFrameworksSupported,
     PLATFORM_LINUX,
@@ -473,7 +474,7 @@ class Installer(object):
 
             # extract runtime files
             if installPath and os.path.isdir(installPath):
-                MalcolmPath = installPath
+                SetMalcolmPath(installPath)
                 if self.debug:
                     eprint(f"Created {installPath} for Malcolm runtime files")
 
@@ -622,7 +623,6 @@ class Installer(object):
         logstashHost = 'logstash:5044'
         syslogPortDict = defaultdict(lambda: 0)
         sftpOpen = False
-        indexSnapshotCompressed = False
         behindReverseProxy = False
         dockerNetworkExternalName = ""
         zeekIntelParamsProvided = False
@@ -743,12 +743,6 @@ class Installer(object):
                         ) and InstallerYesOrNo(
                             f'Require SSL certificate validation for communication with {opensearchPrimaryLabel} instance?',
                             default=args.opensearchPrimarySslVerify,
-                            extraLabel=BACK_LABEL,
-                        )
-                    else:
-                        indexSnapshotCompressed = InstallerYesOrNo(
-                            f'Compress {opensearchPrimaryLabel} index snapshots?',
-                            default=args.indexSnapshotCompressed,
                             extraLabel=BACK_LABEL,
                         )
 
@@ -1050,7 +1044,6 @@ class Installer(object):
                             indexDirDefault = os.path.join(malcolm_install_path, indexDir)
                     indexDirFull = os.path.realpath(indexDirDefault)
 
-                    indexSnapshotCompressed = False
                     if args.indexSnapshotDir:
                         indexSnapshotDirDefault = args.indexSnapshotDir
                         indexSnapshotDir = indexSnapshotDirDefault
@@ -1204,7 +1197,7 @@ class Installer(object):
                                             )
                                             break
 
-                                # opensearch snapshot repository directory and compression
+                                # opensearch snapshot repository directory
                                 if not InstallerYesOrNo(
                                     'Store OpenSearch index snapshots in {}?'.format(indexSnapshotDirDefault),
                                     default=not bool(args.indexSnapshotDir),
@@ -2201,13 +2194,6 @@ class Installer(object):
                 os.path.join(args.configDir, 'dashboards-helper.env'),
                 'DASHBOARDS_DARKMODE',
                 TrueOrFalseNoQuote(dashboardsDarkMode),
-            ),
-            # OpenSearch index state management snapshot compression
-            EnvValue(
-                True,
-                os.path.join(args.configDir, 'dashboards-helper.env'),
-                'ISM_SNAPSHOT_COMPRESSED',
-                TrueOrFalseNoQuote(indexSnapshotCompressed),
             ),
             # delete based on index pattern size
             EnvValue(
@@ -3211,7 +3197,11 @@ class LinuxInstaller(Installer):
         else:
             self.sudoCmd = ["sudo", "-n"]
             err, out = self.run_process(['whoami'], privileged=True)
-            if ((err != 0) or (len(out) == 0) or (out[0] != 'root')) and (not self.configOnly):
+            if (
+                ((err != 0) or (len(out) == 0) or (out[0] != 'root'))
+                and (not self.configOnly)
+                and (self.orchMode is OrchestrationFramework.DOCKER_COMPOSE)
+            ):
                 raise Exception(f'{ScriptName} must be run as root, or {self.sudoCmd} must be available')
 
         # determine command to use to query if a package is installed
@@ -4300,16 +4290,6 @@ def main():
         help="Require SSL certificate validation for communication with primary OpenSearch instance",
     )
     opensearchArgGroup.add_argument(
-        '--opensearch-compress-snapshots',
-        dest='indexSnapshotCompressed',
-        type=str2bool,
-        metavar="true|false",
-        nargs='?',
-        const=True,
-        default=False,
-        help="Compress OpenSearch index snapshots",
-    )
-    opensearchArgGroup.add_argument(
         '--opensearch-secondary',
         dest='opensearchSecondaryMode',
         required=False,
@@ -5121,12 +5101,12 @@ def main():
                 installer.install_docker_compose()
             if hasattr(installer, 'tweak_system_files'):
                 installer.tweak_system_files()
-            if hasattr(installer, 'install_malcolm_files'):
-                _, installPath = installer.install_malcolm_files(malcolmFile, args.configDir is None)
+        if hasattr(installer, 'install_malcolm_files'):
+            _, installPath = installer.install_malcolm_files(malcolmFile, args.configDir is None)
 
     # if .env directory is unspecified, use the default ./config directory
     if args.configDir is None:
-        args.configDir = os.path.join(MalcolmPath, 'config')
+        args.configDir = os.path.join(GetMalcolmPath(), 'config')
     try:
         os.makedirs(args.configDir)
     except OSError as exc:
@@ -5148,7 +5128,7 @@ def main():
                 f'{ScriptName} requires the official Python client library for kubernetes for {orchMode} mode'
             )
 
-    if (
+    if ((not installPath) or (not os.path.isdir(installPath))) and (
         args.configOnly
         or (args.configFile and os.path.isfile(args.configFile))
         or (args.configDir and os.path.isdir(args.configDir))
