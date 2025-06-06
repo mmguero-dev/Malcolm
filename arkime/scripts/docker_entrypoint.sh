@@ -25,39 +25,39 @@ CAPTURE_INTERFACE=${PCAP_IFACE:-}
 LIVE_CAPTURE=${ARKIME_LIVE_CAPTURE:-false}
 VIEWER_PORT=${ARKIME_VIEWER_PORT:-8005}
 NODE_NAME=${PCAP_NODE_NAME:-malcolm}
+ROLE_BASED_ACCESS=${ROLE_BASED_ACCESS:-false}
 
 MALCOLM_PROFILE=${MALCOLM_PROFILE:-"malcolm"}
-OPENSEARCH_URL_FINAL=${OPENSEARCH_URL:-"http://opensearch:9200"}
+OPENSEARCH_URL_FINAL=${OPENSEARCH_URL:-"https://opensearch:9200"}
 OPENSEARCH_PRIMARY=${OPENSEARCH_PRIMARY:-"opensearch-local"}
 OPENSEARCH_CREDS_CONFIG_FILE=${OPENSEARCH_CREDS_CONFIG_FILE:-"/var/local/curlrc/.opensearch.primary.curlrc"}
-if ( [[ "$OPENSEARCH_PRIMARY" == "opensearch-remote" ]] || [[ "$OPENSEARCH_PRIMARY" == "elasticsearch-remote" ]] ) && [[ -r "$OPENSEARCH_CREDS_CONFIG_FILE" ]]; then
-    # need to build the opensearch URL (including username/password) by combining
-    # OPENSEARCH_URL and parameters from OPENSEARCH_CREDS_CONFIG_FILE
 
-    # get the new username/password from the curl file (I already wrote python code to do this, so sue me)
-    pushd "$(dirname $(realpath -e "${BASH_SOURCE[0]}"))" >/dev/null 2>&1
-    NEW_USER_PASSWORD="$(python3 -c "import malcolm_utils; result=malcolm_utils.ParseCurlFile('$OPENSEARCH_CREDS_CONFIG_FILE'); print(result['user']+'|'+result['password']);")"
-    NEW_USER="$(echo "$NEW_USER_PASSWORD" | cut -d'|' -f1)"
-    NEW_PASSWORD="$(urlencodeall "$(echo "$NEW_USER_PASSWORD" | cut -d'|' -f2-)")"
-    popd >/dev/null 2>&1
+# need to build the opensearch URL (including username/password) by combining
+# OPENSEARCH_URL and parameters from OPENSEARCH_CREDS_CONFIG_FILE
 
-    # extract the other stuff from OPENSEARCH_URL_FINAL
-    # extract the protocol
-    PROTOCOL=$(echo "$OPENSEARCH_URL_FINAL" | grep "://" | sed -e's,^\(.*://\).*,\1,g')
-    # Remove the PROTOCOL
-    URL_NO_PROTOCOL=$(echo "${OPENSEARCH_URL_FINAL/$PROTOCOL/}")
-    # Use tr: Make the PROTOCOL lower-case for easy string compare
-    PROTOCOL=$(echo "$PROTOCOL" | tr '[:upper:]' '[:lower:]')
+# get the new username/password from the curl file (I already wrote python code to do this, so sue me)
+pushd "$(dirname $(realpath -e "${BASH_SOURCE[0]}"))" >/dev/null 2>&1
+NEW_USER_PASSWORD="$(python3 -c "import malcolm_utils; result=malcolm_utils.ParseCurlFile('$OPENSEARCH_CREDS_CONFIG_FILE'); print(result['user']+'|'+result['password']);")"
+NEW_USER="$(echo "$NEW_USER_PASSWORD" | cut -d'|' -f1)"
+NEW_PASSWORD="$(urlencodeall "$(echo "$NEW_USER_PASSWORD" | cut -d'|' -f2-)")"
+popd >/dev/null 2>&1
 
-    # Extract the old user and password (if any)
-    USERPASS=$(echo "$URL_NO_PROTOCOL" | grep "@" | cut -d"/" -f1 | rev | cut -d"@" -f2- | rev)
+# extract the other stuff from OPENSEARCH_URL_FINAL
+# extract the protocol
+PROTOCOL=$(echo "$OPENSEARCH_URL_FINAL" | grep "://" | sed -e's,^\(.*://\).*,\1,g')
+# Remove the PROTOCOL
+URL_NO_PROTOCOL=$(echo "${OPENSEARCH_URL_FINAL/$PROTOCOL/}")
+# Use tr: Make the PROTOCOL lower-case for easy string compare
+PROTOCOL=$(echo "$PROTOCOL" | tr '[:upper:]' '[:lower:]')
 
-    # Extract the host
-    HOSTPORT=$(echo "${URL_NO_PROTOCOL/$USERPASS@/}" | cut -d"/" -f1)
+# Extract the old user and password (if any)
+USERPASS=$(echo "$URL_NO_PROTOCOL" | grep "@" | cut -d"/" -f1 | rev | cut -d"@" -f2- | rev)
 
-    # smoosh them all together for the new URL
-    OPENSEARCH_URL_FINAL="${PROTOCOL}${NEW_USER}:${NEW_PASSWORD}@${HOSTPORT}"
-fi
+# Extract the host
+HOSTPORT=$(echo "${URL_NO_PROTOCOL/$USERPASS@/}" | cut -d"/" -f1)
+
+# smoosh them all together for the new URL
+OPENSEARCH_URL_FINAL="${PROTOCOL}${NEW_USER}:${NEW_PASSWORD}@${HOSTPORT}"
 
 # iff config.ini does not exist but config.orig.ini does, use it as a basis and modify based on env. vars
 if [[ ! -f "${ARKIME_CONFIG_FILE}" ]] && [[ -r "${ARKIME_DIR}"/etc/config.orig.ini ]]; then
@@ -196,6 +196,49 @@ if [[ ! -f "${ARKIME_CONFIG_FILE}" ]] && [[ -r "${ARKIME_DIR}"/etc/config.orig.i
       sed -i "s/^\(plugins=.*\)[[:space:]]*;[[:space:]]*$/\1/" "${ARKIME_CONFIG_FILE}"
     fi
 
+    # build mappings from Malcolm roles to Arkime roles for config.ini
+    #   - https://arkime.com/settings#user-role-mappings
+    #   - https://arkime.com/roles
+    RBAC_FILE="$(mktemp)"
+    CONFIG_RBAC_FILE="$(mktemp)"
+    echo -e "\n[user-role-mappings]" >> "${RBAC_FILE}"
+    # TODO: Once Arkime v5.6.5 is out remove this "false &&" cause their stuff will be fixed
+    if false && [[ "${ROLE_BASED_ACCESS,,}" =~ ^(1|true|yes|on)$ ]]; then
+      echo "arkimeUser=true" >> "${RBAC_FILE}"
+      [[ -n "$ROLE_ARKIME_ADMIN" ]] && \
+        echo "arkimeAdmin=(vals['X-Forwarded-Roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_ADMIN')" >> "${RBAC_FILE}"
+      [[ -n "$ROLE_ARKIME_READ_ACCESS" ]]  && \
+        echo "role:read_access=(vals['X-Forwarded-Roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_READ_ACCESS')" >> "${RBAC_FILE}"
+      [[ -n "$ROLE_ARKIME_READ_WRITE_ACCESS" ]]  && \
+        echo "role:read_write_access=(vals['X-Forwarded-Roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_READ_WRITE_ACCESS')" >> "${RBAC_FILE}"
+      [[ -n "$ROLE_ARKIME_PCAP_ACCESS" ]]  && \
+      echo "role:pcap_access=(vals['X-Forwarded-Roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_PCAP_ACCESS')" >> "${RBAC_FILE}"
+      [[ -n "$ROLE_ARKIME_HUNT_ACCESS" ]]  && \
+      echo "role:hunt_access=(vals['X-Forwarded-Roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_HUNT_ACCESS')" >> "${RBAC_FILE}"
+      [[ -n "$ROLE_ARKIME_WISE_READ_ACCESS" ]]  && \
+        echo "wiseUser=(vals['X-Forwarded-Roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_WISE_READ_ACCESS')" >> "${RBAC_FILE}"
+      [[ -n "$ROLE_ARKIME_WISE_READ_WRITE_ACCESS" ]]  && \
+        echo "wiseAdmin=(vals['X-Forwarded-Roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_WISE_READ_WRITE_ACCESS')" >> "${RBAC_FILE}"
+    else
+      echo "arkimeAdmin=true" >> "${RBAC_FILE}"
+    fi
+    echo -e "\n" >> "${RBAC_FILE}"
+    awk '
+        FNR==NR { insert_lines[NR] = $0; insert_count = NR; next }
+        /^\[custom-fields\]/ && !inserted {
+            for (i = 1; i <= insert_count; i++) print insert_lines[i]
+            inserted = 1
+        }
+        { print }
+        END {
+            if (!inserted) {
+                for (i = 1; i <= insert_count; i++) print insert_lines[i]
+            }
+        }
+    ' "${RBAC_FILE}" "${ARKIME_CONFIG_FILE}" > "${CONFIG_RBAC_FILE}" && mv "${CONFIG_RBAC_FILE}" "${ARKIME_CONFIG_FILE}"
+    rm -f "${RBAC_FILE}" "${CONFIG_RBAC_FILE}"
+
+    # make sure permissions and ownership are nice
     chmod 600 "${ARKIME_CONFIG_FILE}" || true
     [[ -n ${PUID} ]] && chown -f ${PUID} "${ARKIME_CONFIG_FILE}" || true
     [[ -n ${PGID} ]] && chown -f :${PGID} "${ARKIME_CONFIG_FILE}" || true

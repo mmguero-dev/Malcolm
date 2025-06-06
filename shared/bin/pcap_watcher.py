@@ -176,10 +176,6 @@ class EventWatcher:
         self.topic_socket = self.context.socket(zmq.PUB)
         self.topic_socket.bind(f"tcp://*:{PCAP_TOPIC_PORT}")
 
-        # todo: do I want to set this? probably not since this guy's whole job is to send
-        # and if he can't then what's the point? just block
-        # self.topic_socket.SNDTIMEO = 5000
-
         self.logger.info(f"{scriptName}:\tEventWatcher initialized")
 
     ###################################################################################################
@@ -446,13 +442,13 @@ def main():
         sys.tracebacklimit = 0
 
     opensearchIsLocal = (args.opensearchMode == malcolm_utils.DatabaseMode.OpenSearchLocal) or (
-        args.opensearchUrl == 'http://opensearch:9200'
+        args.opensearchUrl == 'https://opensearch:9200'
     )
-    opensearchCreds = ParseCurlFile(args.opensearchCurlRcFile) if (not opensearchIsLocal) else defaultdict(lambda: None)
+    opensearchCreds = ParseCurlFile(args.opensearchCurlRcFile)
 
     if not args.opensearchUrl:
         if opensearchIsLocal:
-            args.opensearchUrl = 'http://opensearch:9200'
+            args.opensearchUrl = 'https://opensearch:9200'
         elif 'url' in opensearchCreds:
             args.opensearchUrl = opensearchCreds['url']
 

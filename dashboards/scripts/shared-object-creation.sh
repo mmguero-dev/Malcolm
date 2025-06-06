@@ -190,19 +190,19 @@ if [[ "${CREATE_OS_ARKIME_SESSION_INDEX:-true}" = "true" ]] ; then
   for LOOP in primary secondary; do
 
     if [[ "$LOOP" == "primary" ]]; then
-      OPENSEARCH_URL_TO_USE=${OPENSEARCH_URL:-"http://opensearch:9200"}
+      OPENSEARCH_URL_TO_USE=${OPENSEARCH_URL:-"https://opensearch:9200"}
       OPENSEARCH_CREDS_CONFIG_FILE_TO_USE=${OPENSEARCH_CREDS_CONFIG_FILE:-"/var/local/curlrc/.opensearch.primary.curlrc"}
-      if ( [[ "$OPENSEARCH_PRIMARY" == "opensearch-remote" ]] || [[ "$OPENSEARCH_PRIMARY" == "elasticsearch-remote" ]] ) && [[ -r "$OPENSEARCH_CREDS_CONFIG_FILE_TO_USE" ]]; then
-        OPENSEARCH_LOCAL=false
+      if [[ -r "$OPENSEARCH_CREDS_CONFIG_FILE_TO_USE" ]]; then
         CURL_CONFIG_PARAMS=(
           --config
           "$OPENSEARCH_CREDS_CONFIG_FILE_TO_USE"
           )
       else
-        OPENSEARCH_LOCAL=true
         CURL_CONFIG_PARAMS=()
-
       fi
+      ( [[ "$OPENSEARCH_PRIMARY" == "opensearch-remote" ]] || [[ "$OPENSEARCH_PRIMARY" == "elasticsearch-remote" ]] ) && \
+        OPENSEARCH_LOCAL=false || \
+        OPENSEARCH_LOCAL=true
       DATASTORE_TYPE="$(echo "$OPENSEARCH_PRIMARY" | cut -d- -f1)"
 
     elif [[ "$LOOP" == "secondary" ]] && ( [[ "$OPENSEARCH_SECONDARY" == "opensearch-remote" ]] || [[ "$OPENSEARCH_SECONDARY" == "elasticsearch-remote" ]] ) && [[ -n "${OPENSEARCH_SECONDARY_URL:-""}" ]]; then
@@ -250,18 +250,6 @@ if [[ "${CREATE_OS_ARKIME_SESSION_INDEX:-true}" = "true" ]] ; then
             -XPUT --location --fail-with-body --output "$CURL_OUT" --silent "$OPENSEARCH_URL_TO_USE/_snapshot/$ISM_SNAPSHOT_REPO" \
             -d "{ \"type\": \"fs\", \"settings\": { \"location\": \"$ISM_SNAPSHOT_REPO\", \"compress\": $ISM_SNAPSHOT_COMPRESSED } }" \
             || ( cat "$CURL_OUT" && echo )
-
-          # for single-cluster opensearch set cluster-wide default replicas to 0
-          echo "Setting number_of_replicas for single-node $DATASTORE_TYPE..."
-          CURL_OUT=$(get_tmp_output_filename)
-          curl "${CURL_CONFIG_PARAMS[@]}" --location --fail-with-body --output "$CURL_OUT" --silent \
-            -XPUT "$OPENSEARCH_URL_TO_USE/_settings" \
-            -H "$XSRF_HEADER:true" -H 'Content-type:application/json' \
-            -d '{ "index": { "number_of_replicas":0 } }' || ( cat "$CURL_OUT" && echo )
-          curl "${CURL_CONFIG_PARAMS[@]}" --location --fail-with-body --output "$CURL_OUT" --silent \
-            -XPUT "$OPENSEARCH_URL_TO_USE/_cluster/settings" \
-            -H "$XSRF_HEADER:true" -H 'Content-type:application/json' \
-            -d '{ "persistent": { "cluster.default_number_of_replicas":0 } }' || ( cat "$CURL_OUT" && echo )
         fi
 
         #############################################################################################################################

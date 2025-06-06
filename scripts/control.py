@@ -1500,26 +1500,32 @@ def authSetup():
 
     netboxCommonEnvFile = os.path.join(args.configDir, 'netbox-common.env')
     authCommonEnvFile = os.path.join(args.configDir, 'auth-common.env')
+    nginxEnvFile = os.path.join(args.configDir, 'nginx.env')
+    openSearchEnvFile = os.path.join(args.configDir, 'opensearch.env')
 
     if args.authMode:
         nginxAuthMode = str(args.authMode).lower()
     else:
         nginxAuthMode = 'unknown'
         if os.path.isfile(authCommonEnvFile):
-            nginxAuthMode = (
-                dotenvImported.dotenv_values(authCommonEnvFile).get('NGINX_AUTH_MODE', nginxAuthMode).lower()
-            )
-    netboxMode = None
+            nginxAuthMode = str(
+                dotenvImported.dotenv_values(authCommonEnvFile).get('NGINX_AUTH_MODE', nginxAuthMode)
+            ).lower()
+    netboxMode = ''
     if os.path.isfile(netboxCommonEnvFile):
-        netboxMode = dotenvImported.dotenv_values(netboxCommonEnvFile).get('NETBOX_MODE', '').lower()
+        netboxMode = str(dotenvImported.dotenv_values(netboxCommonEnvFile).get('NETBOX_MODE', '')).lower()
+    osPrimaryMode = ''
+    osSecondaryMode = ''
+    if os.path.isfile(openSearchEnvFile):
+        osPrimaryMode = str(dotenvImported.dotenv_values(openSearchEnvFile).get('OPENSEARCH_PRIMARY', '')).lower()
+        osSecondaryMode = str(dotenvImported.dotenv_values(openSearchEnvFile).get('OPENSEARCH_SECONDARY', '')).lower()
 
     # don't make them go through every thing every time, give them a choice instead
     # 0 - key
     # 1 - description
     # 2 - preselected choice
     # 3 - option default (yes/no) for if they're doing "all""
-    # 4 - ? (lol, doesn't seem to be used in this script, probably just there
-    #          as it's used in other scripts where ChooseOne/ChooseMultiple is used)
+    # 4 - perform automatically if the listed files don't exist (auto first-time generation)
     authConfigChoices = [
         x
         for x in [
@@ -1574,11 +1580,11 @@ def authSetup():
                 ],
             ),
             (
-                'keycloak',
+                'keycloak' if nginxAuthMode.startswith('keycloak') else None,
                 "Configure Keycloak",
                 False,
                 bool(
-                    str(nginxAuthMode).startswith('keycloak')
+                    nginxAuthMode.startswith('keycloak')
                     or args.authKeycloakRealm
                     or args.authKeycloakRedirectUri
                     or args.authKeycloakUrl
@@ -1592,11 +1598,25 @@ def authSetup():
                 [],
             ),
             (
-                'remoteos',
+                'rbac' if nginxAuthMode.startswith('keycloak') else None,
+                "Configure Role-Based Access Control",
+                False,
+                bool(nginxAuthMode.startswith('keycloak') or args.authRbacEnabled),
+                [],
+            ),
+            (
+                'remoteos' if any('-remote' in x for x in [osPrimaryMode, osSecondaryMode]) else None,
                 "Configure remote primary or secondary OpenSearch/Elasticsearch instance",
                 False,
                 False,
                 [],
+            ),
+            (
+                'localos' if osPrimaryMode == 'opensearch-local' else None,
+                "(Re)generate internal passwords for local primary OpenSearch instance",
+                False,
+                (not args.cmdAuthSetupNonInteractive) or args.authGenOpensearchCreds,
+                [os.path.join(GetMalcolmPath(), '.opensearch.primary.curlrc')],
             ),
             (
                 'email',
@@ -1606,7 +1626,7 @@ def authSetup():
                 [],
             ),
             (
-                'netbox',
+                'netbox' if (netboxMode == 'local') else None,
                 "(Re)generate internal passwords for NetBox",
                 False,
                 (not args.cmdAuthSetupNonInteractive) or args.authGenNetBoxPasswords,
@@ -1620,7 +1640,7 @@ def authSetup():
                 [],
             ),
             (
-                'keycloakdb',
+                'keycloakdb' if nginxAuthMode == 'keycloak' else None,
                 "(Re)generate internal passwords for Keycloak's PostgreSQL database",
                 False,
                 (not args.cmdAuthSetupNonInteractive) or args.authGenKeycloakDbPassword,
@@ -1802,23 +1822,24 @@ def authSetup():
                             os.chmod(ldapConfFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
 
                     # write env files
-                    UpdateEnvFiles(
-                        [
-                            EnvValue(
-                                True,
-                                authCommonEnvFile,
-                                'NGINX_AUTH_MODE',
-                                nginxAuthMode,
-                            ),
-                            EnvValue(
-                                True,
-                                authCommonEnvFile,
-                                'NGINX_LDAP_TLS_STUNNEL',
-                                TrueOrFalseNoQuote((nginxAuthMode == 'ldap') and ldapStartTLS),
-                            ),
-                        ],
-                        stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH,
-                    )
+                    with pushd(args.configDir):
+                        UpdateEnvFiles(
+                            [
+                                EnvValue(
+                                    True,
+                                    authCommonEnvFile,
+                                    'NGINX_AUTH_MODE',
+                                    nginxAuthMode,
+                                ),
+                                EnvValue(
+                                    True,
+                                    nginxEnvFile,
+                                    'NGINX_LDAP_TLS_STUNNEL',
+                                    TrueOrFalseNoQuote((nginxAuthMode == 'ldap') and ldapStartTLS),
+                                ),
+                            ],
+                            stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH,
+                        )
 
                 elif authItem[0] == 'admin':
                     # prompt username and password
@@ -2193,6 +2214,19 @@ def authSetup():
                         touch(openSearchCredFileName)
                         os.chmod(openSearchCredFileName, stat.S_IRUSR | stat.S_IWUSR)
 
+                # OpenSearch internal service account credentials
+                elif authItem[0] == 'localos':
+                    esUsername = 'malcolm_internal'
+                    esPassword = str(
+                        ''.join(secrets.choice(string.ascii_letters + string.digits + '_') for i in range(36)),
+                    )
+                    openSearchCredFileName = os.path.join(GetMalcolmPath(), f'.opensearch.primary.curlrc')
+                    with open(openSearchCredFileName, 'w') as f:
+                        f.write(f'user: "{EscapeForCurl(esUsername)}:{EscapeForCurl(esPassword)}"\n')
+                        f.write('insecure\n')
+                    touch(openSearchCredFileName)
+                    os.chmod(openSearchCredFileName, stat.S_IRUSR | stat.S_IWUSR)
+
                 # OpenSearch authenticate sender account credentials
                 # https://opensearch.org/docs/latest/monitoring-plugins/alerting/monitors/#authenticate-sender-account
                 elif authItem[0] == 'email':
@@ -2426,6 +2460,36 @@ def authSetup():
                         if not nginxAuthMode.startswith('keycloak'):
                             DisplayMessage(
                                 f'Authentication method is "{nginxAuthMode}", Keycloak configuration will have no effect.',
+                                defaultBehavior=defaultBehavior,
+                            )
+
+                elif authItem[0] == 'rbac':
+                    authRbacEnabled = YesOrNo(
+                        'Enable role-based access control?',
+                        default=args.authRbacEnabled,
+                        defaultBehavior=defaultBehavior,
+                    )
+                    with pushd(args.configDir):
+                        UpdateEnvFiles(
+                            [
+                                EnvValue(
+                                    True,
+                                    authCommonEnvFile,
+                                    'ROLE_BASED_ACCESS',
+                                    str(authRbacEnabled).lower(),
+                                ),
+                            ],
+                            stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH,
+                        )
+
+                    if authRbacEnabled:
+                        DisplayMessage(
+                            f'See Keycloak or {os.path.basename(authCommonEnvFile)} for realm roles.',
+                            defaultBehavior=defaultBehavior,
+                        )
+                        if not nginxAuthMode.startswith('keycloak'):
+                            DisplayMessage(
+                                f'Authentication method is "{nginxAuthMode}", RBAC settings will have no effect.',
                                 defaultBehavior=defaultBehavior,
                             )
 
@@ -2859,7 +2923,7 @@ def main():
         metavar='<string>',
         type=str,
         default=os.getenv('MALCOLM_IMAGE_TAG', None),
-        help='Tag for container images (e.g., "25.05.1"; only for "start" operation with Kubernetes)',
+        help='Tag for container images (e.g., "25.06.0"; only for "start" operation with Kubernetes)',
     )
     kubernetesGroup.add_argument(
         '--delete-namespace',
@@ -3009,6 +3073,15 @@ def main():
         help="(Re)generate internal superuser passwords for PostgreSQL",
     )
     authSetupGroup.add_argument(
+        '--auth-generate-opensearch-internal-creds',
+        dest='authGenOpensearchCreds',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=False,
+        help="(Re)generate internal credentials for embedded OpenSearch instance",
+    )
+    authSetupGroup.add_argument(
         '--auth-generate-keycloak-db-password',
         dest='authGenKeycloakDbPassword',
         type=str2bool,
@@ -3097,6 +3170,15 @@ def main():
         type=str,
         default='',
         help='Required role(s) which users must be assigned (--auth-method is keycloak|keycloak_remote)',
+    )
+    authSetupGroup.add_argument(
+        '--auth-role-based-access-control',
+        dest='authRbacEnabled',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=False,
+        help='Enable Role-Based Access Control (--auth-method is keycloak|keycloak_remote)',
     )
 
     logsAndStatusGroup = parser.add_argument_group('Logs and Status')

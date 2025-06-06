@@ -3,11 +3,11 @@
 # Copyright (c) 2025 Battelle Energy Alliance, LLC.  All rights reserved.
 
 MALCOLM_PROFILE=${MALCOLM_PROFILE:-"malcolm"}
-OPENSEARCH_URL=${OPENSEARCH_URL:-"http://opensearch:9200"}
+OPENSEARCH_URL=${OPENSEARCH_URL:-"https://opensearch:9200"}
 OPENSEARCH_PRIMARY=${OPENSEARCH_PRIMARY:-"opensearch-local"}
 OPENSEARCH_SSL_CERTIFICATE_VERIFICATION=${OPENSEARCH_SSL_CERTIFICATE_VERIFICATION:-"false"}
 OPENSEARCH_CREDS_CONFIG_FILE=${OPENSEARCH_CREDS_CONFIG_FILE:-"/var/local/curlrc/.opensearch.primary.curlrc"}
-if ( [[ "$OPENSEARCH_PRIMARY" == "opensearch-remote" ]] || [[ "$OPENSEARCH_PRIMARY" == "elasticsearch-remote" ]] ) && [[ -r "$OPENSEARCH_CREDS_CONFIG_FILE" ]]; then
+if [[ -r "$OPENSEARCH_CREDS_CONFIG_FILE" ]]; then
   CURL_CONFIG_PARAMS=(
     --config
     "$OPENSEARCH_CREDS_CONFIG_FILE"
@@ -66,8 +66,8 @@ if [[ "$MALCOLM_PROFILE" == "malcolm" ]]; then
 
     echo "Creating default user..."
 
-  	# this password isn't going to be used by Arkime, nginx will do the auth instead
-  	$ARKIME_DIR/bin/arkime_add_user.sh "${MALCOLM_USERNAME}" "${MALCOLM_USERNAME}" "ignored" --admin --webauthonly --webauth $DB_SSL_FLAG
+  	# this username/password isn't going to be used by Arkime, nginx will do the auth instead
+  	$ARKIME_DIR/bin/arkime_add_user.sh "${MALCOLM_USERNAME}" "${MALCOLM_USERNAME}" "ignored" --admin --webauthonly --webauth $DB_SSL_FLAG >/dev/null 2>&1
 
     echo "Initializing fields..."
 
@@ -85,6 +85,22 @@ if [[ "$MALCOLM_PROFILE" == "malcolm" ]]; then
       jq ". += {\"user\": \"${MALCOLM_USERNAME}\"}" < "${VIEW_FILE}" >"${TEMP_JSON}"
       curl "${CURL_CONFIG_PARAMS[@]}" -sS --output /dev/null -H'Content-Type: application/json' -XPOST "${OPENSEARCH_URL}/arkime_views/_doc/${RANDOM_ID}" -d "@${TEMP_JSON}"
       rm -f "${TEMP_JSON}"
+    done
+
+    echo "Creating user-defined roles..."
+
+    for ROLE_FILE in "$ARKIME_DIR"/etc/roles/*.json; do
+      ROLE_NAME=${ROLE_FILE##*/}
+      ROLE_NAME=${ROLE_NAME#arkime_}
+      ROLE_NAME=${ROLE_NAME%.json}
+      PERM_ARGS=()
+      [[ "$(jq -r '(.doc?.disablePcapDownload) // true' < "${ROLE_FILE}")" == "true" ]] && PERM_ARGS+=( --disablePcapDownload )
+      [[ "$(jq -r '(.doc?.hideFiles) // true' < "${ROLE_FILE}")" == "true" ]] && PERM_ARGS+=( --hideFiles )
+      [[ "$(jq -r '(.doc?.hidePcap) // true' < "${ROLE_FILE}")" == "true" ]] && PERM_ARGS+=( --hidePcap )
+      [[ "$(jq -r '(.doc?.hideStats) // true' < "${ROLE_FILE}")" == "true" ]] && PERM_ARGS+=( --hideStats )
+      [[ "$(jq -r '(.doc?.packetSearch) // false' < "${ROLE_FILE}")" == "true" ]] && PERM_ARGS+=( --packetSearch )
+      [[ "$(jq -r '(.doc?.removeEnabled) // false' < "${ROLE_FILE}")" == "true" ]] && PERM_ARGS+=( --removeEnabled )
+      $ARKIME_DIR/bin/arkime_add_user.sh "role:${ROLE_NAME}" "${ROLE_NAME}" "ignored" --createOnly --roles "" "${PERM_ARGS[@]}" $DB_SSL_FLAG >/dev/null 2>&1
     done
 
     echo "Setting defaults..."

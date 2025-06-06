@@ -161,11 +161,9 @@ def main():
         sys.tracebacklimit = 0
 
     opensearchIsLocal = (args.opensearchMode == malcolm_utils.DatabaseMode.OpenSearchLocal) or (
-        args.opensearchUrl == 'http://opensearch:9200'
+        args.opensearchUrl == 'https://opensearch:9200'
     )
-    opensearchCreds = (
-        malcolm_utils.ParseCurlFile(args.opensearchCurlRcFile) if (not opensearchIsLocal) else defaultdict(lambda: None)
-    )
+    opensearchCreds = malcolm_utils.ParseCurlFile(args.opensearchCurlRcFile)
 
     args.netboxUrl = malcolm_utils.remove_suffix(malcolm_utils.remove_suffix(args.netboxUrl, '/'), '/api')
     if netboxEmbedded := (args.netboxUrl == NETBOX_URL_DEFAULT):
@@ -178,7 +176,7 @@ def main():
 
     if not args.opensearchUrl:
         if opensearchIsLocal:
-            args.opensearchUrl = 'http://opensearch:9200'
+            args.opensearchUrl = 'https://opensearch:9200'
         elif 'url' in opensearchCreds:
             args.opensearchUrl = opensearchCreds['url']
     opensearchReqHttpAuth = (

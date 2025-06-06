@@ -855,20 +855,31 @@ def DotEnvDynamic(debug=False, forceInteraction=False):
 
 ###################################################################################################
 # do the required auth files for Malcolm exist?
+def AuthFileCheck(fileName, allowEmpty=False):
+    try:
+        return os.path.isfile(fileName) and (allowEmpty or (os.path.getsize(fileName) > 0))
+    except Exception as e:
+        return False
+
+
 def MalcolmAuthFilesExist(configDir=None):
     configDirToCheck = (
         configDir if configDir is not None and os.path.isdir(configDir) else os.path.join(GetMalcolmPath(), 'config')
     )
     return (
-        os.path.isfile(os.path.join(GetMalcolmPath(), os.path.join('nginx', 'htpasswd')))
-        and os.path.isfile(os.path.join(GetMalcolmPath(), os.path.join('nginx', 'nginx_ldap.conf')))
-        and os.path.isfile(os.path.join(GetMalcolmPath(), os.path.join('nginx', os.path.join('certs', 'cert.pem'))))
-        and os.path.isfile(os.path.join(GetMalcolmPath(), os.path.join('nginx', os.path.join('certs', 'key.pem'))))
-        and os.path.isfile(os.path.join(configDirToCheck, 'netbox-secret.env'))
-        and os.path.isfile(os.path.join(configDirToCheck, 'postgres.env'))
-        and os.path.isfile(os.path.join(configDirToCheck, 'redis.env'))
-        and os.path.isfile(os.path.join(configDirToCheck, 'auth.env'))
-        and os.path.isfile(os.path.join(GetMalcolmPath(), '.opensearch.primary.curlrc'))
+        AuthFileCheck(os.path.join(GetMalcolmPath(), os.path.join('nginx', 'htpasswd')))
+        and AuthFileCheck(os.path.join(GetMalcolmPath(), os.path.join('nginx', 'nginx_ldap.conf')), allowEmpty=True)
+        and AuthFileCheck(
+            os.path.join(GetMalcolmPath(), os.path.join('nginx', os.path.join('certs', 'cert.pem'))), allowEmpty=True
+        )
+        and AuthFileCheck(
+            os.path.join(GetMalcolmPath(), os.path.join('nginx', os.path.join('certs', 'key.pem'))), allowEmpty=True
+        )
+        and AuthFileCheck(os.path.join(configDirToCheck, 'netbox-secret.env'))
+        and AuthFileCheck(os.path.join(configDirToCheck, 'postgres.env'))
+        and AuthFileCheck(os.path.join(configDirToCheck, 'redis.env'))
+        and AuthFileCheck(os.path.join(configDirToCheck, 'auth.env'))
+        and AuthFileCheck(os.path.join(GetMalcolmPath(), '.opensearch.primary.curlrc'))
     )
 
 
@@ -991,18 +1002,22 @@ LOG_IGNORE_REGEX = re.compile(
   | \d+\s+changes\s+in\s+\d+\s+seconds\.\s+Saving
   | Cleaning\s+registries\s+for\s+queue:
   | Connecting\s+to\s+backoff
+  | Could\s+not\s+assign\s+group.+to\s+remotely-authenticated\s+user.+Group\s+not\s+found
   | curl.+localhost.+GET\s+/api/status\s+200
   | DB\s+saved\s+on\s+disk
   | DEPRECATION
   | descheduling\s+job\s*id
+  | DON'T\s+DO\s+IT.*bad\s+idea
   | eshealth
   | esindices/list
   | executing\s+attempt_(transition|set_replica_count)\s+for
   | failed\s+to\s+get\s+tcp6?\s+stats\s+from\s+/proc
+  | Failure\s+no\s+such\s+index\s+\[\.opendistro_security\]
   | Falling\s+back\s+to\s+single\s+shard\s+assignment
   | Fork\s+CoW\s+for\s+RDB
   | GET\s+/(_cat/health|api/status|sessions2-|arkime_\w+).+HTTP/[\d\.].+\b200\b
   | GET\s+/\s+.+\b200\b.+ELB-HealthChecker
+  | opensearch.*has\s+insecure\s+file\s+permissions
   | i:\s+pcap:\s+read\s+\d+\s+file
   | Info:\s+checksum:\s+No\s+packets\s+with\s+invalid\s+checksum,\s+assuming\s+checksum\s+offloading\s+is\s+NOT\s+used
   | Info:\s+logopenfile:\s+eve-log\s+output\s+device\s+\(regular\)\s+initialized:\s+eve\.json
@@ -1033,6 +1048,7 @@ LOG_IGNORE_REGEX = re.compile(
   | use_field_mapping
   | Using\s+geoip\s+database
   | Warning:\s+app-layer-
+  | you\s+may\s+need\s+to\s+run\s+securityadmin
 )
 """,
     re.VERBOSE | re.IGNORECASE,
