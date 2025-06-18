@@ -1902,17 +1902,20 @@ class Installer(object):
                         extraLabel=BACK_LABEL,
                     )
                     loopBreaker = CountUntilException(MaxAskForValueCount, 'Invalid NetBox IP autopopulation filter')
+                    stripSpacePattern = re.compile(r'\s+')
                     while loopBreaker.increment():
-                        netboxAutoPopulateSubnets = ''.join(
-                            (
-                                InstallerAskForString(
-                                    'Specify NetBox IP autopopulation filter',
-                                    default=args.netboxAutopopFilter,
-                                    extraLabel=BACK_LABEL,
-                                )
-                                if (netboxEnabled and netboxAutoPopulate)
-                                else ''
-                            ).split()
+                        netboxAutoPopulateSubnets = (
+                            InstallerAskForString(
+                                'Specify NetBox IP autopopulation filter',
+                                default=args.netboxAutopopFilter,
+                                extraLabel=BACK_LABEL,
+                            )
+                            if (netboxEnabled and netboxAutoPopulate)
+                            else ''
+                        )
+                        netboxAutoPopulateSubnets = ';'.join(
+                            f"{k.strip()}:{stripSpacePattern.sub('', v)}"
+                            for k, v in (item.split(':', 1) for item in netboxAutoPopulateSubnets.split(';'))
                         )
                         if ValidNetBoxSubnetFilter(netboxAutoPopulateSubnets):
                             break

@@ -16,15 +16,18 @@ require 'stringex_lite'
 # Despite the warning against globla variables, we are using them here in order to make sure that
 #   we don't have duplicate caches for things cross different clones of the filter,
 #   which is what happens if you just use @instance_variables. However, we should
-#   be safe because 1) we are using Concurrent::Hash to maintain these per-type caches, and
+#   be safe because 1) we are using Concurrent::Map to maintain these per-type caches, and
 #   2) because the caches themselves are threadsafe. Note that this will share these values
 #   across filters and pipelines, though, as far as I understand it.
 # See "Avoiding Concurrency Issues"
 #   https://www.elastic.co/guide/en/logstash/current/plugins-filters-ruby.html#plugins-filters-ruby-concurrency
 # Note that these calls are intended to be used during the "register" method.
 
-$global_caches_hash = Concurrent::Hash.new
-$global_ttl_caches_hash = Concurrent::Hash.new
+$global_caches_hash = Concurrent::Map.new
+$global_ttl_caches_hash = Concurrent::Map.new
+
+$global_autopopulate_subnets_config_site_hash = Concurrent::Map.new
+$global_autopopulate_subnets_config_site_hash_populated = Concurrent::AtomicFixnum.new(0)
 
 def get_register_cache(
   cache_type,
@@ -47,16 +50,16 @@ end
 # These global variables are used for generating performance profiling stats for
 #   NetBox API calls and are not used by default
 $method_timings_logging_thread_started = Concurrent::AtomicFixnum.new(0)
-$method_timings = Concurrent::Hash.new { |h, k| h[k] = Concurrent::Array.new }
+$method_timings = Concurrent::Map.new
 $method_timings_logging_thread = nil
 $method_timings_logging_thread_running = false
 
-$private_ip_subnets = {
-  IPAddr.new("10.0.0.0/8")      => { network: IPAddr.new("10.0.0.0"), broadcast: IPAddr.new("10.255.255.255") },
-  IPAddr.new("172.16.0.0/12")   => { network: IPAddr.new("172.16.0.0"), broadcast: IPAddr.new("172.31.255.255") },
-  IPAddr.new("192.168.0.0/16")  => { network: IPAddr.new("192.168.0.0"), broadcast: IPAddr.new("192.168.255.255") },
-  IPAddr.new("fc00::/7")        => { network: IPAddr.new("fc00::"), broadcast: IPAddr.new("fdff:ffff:ffff:ffff:ffff:ffff:ffff:ffff") }
-}.freeze
+$private_ip_subnets = [
+  IPAddr.new("10.0.0.0/8"),
+  IPAddr.new("172.16.0.0/12"),
+  IPAddr.new("192.168.0.0/16"),
+  IPAddr.new("fc00::/7")
+].freeze
 
 
 ##############################################################################################
@@ -88,7 +91,7 @@ class NetBoxConnLazy
 
     if $method_timings_logging_thread_running
       duration = (Time.now - start_time) * 1000
-      $method_timings[key] << duration
+      $method_timings.compute_if_absent(key) { Concurrent::Array.new } << duration
     end
 
     @connected ||= !result.nil?
@@ -111,32 +114,6 @@ class NetBoxConnLazy
   end
 end
 
-##############################################################################################
-def assignable_private_ip?(ip)
-  ipaddr = if ip.is_a?(IPAddr)
-             ip
-           else
-             begin
-               IPAddr.new(ip)
-             rescue
-               nil
-             end
-           end
-  return false if ipaddr.nil?
-
-  $private_ip_subnets.find do |subnet, addresses|
-    if subnet.include?(ipaddr)
-      return ipaddr != addresses[:network] && ipaddr != addresses[:broadcast]
-    end
-  end
-
-  false
-end
-
-##############################################################################################
-def cidr_is_private?(cidr)
-  $private_ip_subnets.any? { |subnet, _| subnet.include?(cidr) }
-end
 
 ##############################################################################################
 def parse_autopopulate_config(raw_config)
@@ -158,22 +135,33 @@ def parse_autopopulate_config(raw_config)
       next
     end
 
-    unless cidr_is_private?(cidr.to_range.first)
+    range = cidr.to_range
+    unless range.first.private?
       puts "parse_autopopulate_config skipping non-private CIDR: #{cidr_str}"
       next
     end
 
-    entries << { cidr: cidr, allow: !is_exclusion }
+    entries << {
+      cidr: cidr,
+      allow: !is_exclusion,
+      network: range.first,
+      broadcast: range.to_a.last
+    }
   end
 
   { allow_all_private: false, entries: entries }
 end
 
 ##############################################################################################
-def parse_autopopulate_configs_for_sites(raw_config)
-  return { '*' => { allow_all_private: true, entries: [] } } if raw_config.nil? || raw_config.strip.empty?
+def parse_autopopulate_configs_for_sites(raw_config, config_site_hash)
+  site_configs = (config_site_hash.respond_to?(:[]) &&
+                  config_site_hash.respond_to?(:[]=) &&
+                  config_site_hash.respond_to?(:each_pair)) ? config_site_hash : Hash.new
 
-  site_configs = {}
+  if raw_config.nil? || raw_config.strip.empty?
+    site_configs['*'] = { allow_all_private: true, entries: [] }
+    return site_configs
+  end
 
   raw_config.split(';').each do |site_entry|
     site_entry = site_entry.strip
@@ -450,7 +438,14 @@ def register(
   if !_autopopulate_subnets.nil? && _autopopulate_subnets.empty?
     _autopopulate_subnets = nil
   end
-  @autopopulate_subnets_config_site_hash = parse_autopopulate_configs_for_sites(_autopopulate_subnets)
+
+  if !_autopopulate_subnets.nil? &&
+     ($global_autopopulate_subnets_config_site_hash_populated.value == 0) &&
+     $global_autopopulate_subnets_config_site_hash_populated.compare_and_set(0, 1)
+  then
+    _config_site_hash = parse_autopopulate_configs_for_sites(_autopopulate_subnets, $global_autopopulate_subnets_config_site_hash)
+    puts "IP autopopulation filter: #{JSON.generate(Hash[_config_site_hash.each_pair.to_a])}" if @debug
+  end
 
   # case-insensitive hash of OUIs (https://standards-oui.ieee.org/) to Manufacturers (https://demo.netbox.dev/static/docs/core-functionality/device-types/)
   @manuf_hash = get_register_ttl_cache(:manuf_hash, params.fetch("manuf_cache_size", 4096), @cache_ttl, true)
@@ -501,7 +496,6 @@ def register(
   @virtual_machine_device_type_name = "Virtual Machine".freeze
 
   if @debug_timings && ($method_timings_logging_thread_started.value == 0) && $method_timings_logging_thread_started.compare_and_set(0, 1)
-     $method_timings = Concurrent::Hash.new { |h, k| h[k] = Concurrent::Array.new }
      $method_timings_logging_thread = Thread.new { log_method_timings_thread_proc }
      $method_timings_logging_thread_running = true
    end
@@ -556,7 +550,7 @@ def autopopulate_allowed?(ip_input, site_id, config_site_hash)
          end
        end
 
-  return false unless assignable_private_ip?(ip)
+  return false unless ip.private?
 
   # Determine applicable config: site-specific first, fallback to '*', else allow
   config = config_site_hash[site_id]
@@ -580,7 +574,10 @@ def autopopulate_allowed?(ip_input, site_id, config_site_hash)
   # Iterate entries in order; last matching rule wins
   allow = nil
   config[:entries].each do |entry|
-    allow = entry[:allow] if entry[:cidr].include?(ip)
+    if entry[:cidr].include?(ip)
+      next if ip.ipv4? && (ip == entry[:network] || ip == entry[:broadcast])  # Skip unassignable
+      allow = entry[:allow]
+    end
   end
 
   allow.nil? ? false : allow
@@ -588,7 +585,7 @@ end
 
 def autopopulate_allowed_debug?(ip_input, site_id, config_site_hash)
   result = autopopulate_allowed?(ip_input, site_id, config_site_hash)
-  puts "autopopulate_allowed: (#{site_id.to_s}, #{ip_input.to_s}, #{JSON.generate(config_site_hash)}): #{result})" if @debug
+  puts "autopopulate_allowed: (#{site_id.to_s}, #{ip_input.to_s}: #{result})"
   return result
 end
 
@@ -628,11 +625,8 @@ def filter(
   # _key might be an array of IP addresses, but we're only going to set the first _result into @target.
   #    this is still useful, though as autopopulation may happen for multiple IPs even if we only
   #    store the result of the first one found
-  if !_key.is_a?(Array) then
-    _newKey = Array.new
-    _newKey.push(_key) unless _key.nil?
-    _key = _newKey
-  end
+  _key = [_key].compact unless _key.is_a?(Array)
+
   # _private_ips stores IPAddr representations of IP strings for private IP addresses
   _private_ips = Array.new
 
@@ -646,7 +640,7 @@ def filter(
     else
       _result, _key_ip, _nb_queried = nil, nil, false
     end
-    _private_ips.push(_key_ip) if assignable_private_ip?(_key_ip)
+    _private_ips.push(_key_ip) if _key_ip&.private?
     _netbox_queried ||= _nb_queried unless _lookup_tracking_result[:cache_hit]
 
     if !_result.nil? && !_result.empty?
@@ -742,11 +736,7 @@ def filter(
 
   unless _private_ips.empty? || @add_tag.nil? || @add_tag.empty?
     _tags = event.get('[tags]')
-    if !_tags.is_a?(Array) then
-      _newTags = Array.new
-      _newTags.push(_tags) unless _tags.nil? || _tags.empty?
-      _tags = _newTags
-    end
+    _tags = [_tags].reject { |t| t.nil? || t.empty? } unless _tags.is_a?(Array)
     if !_tags.include? @add_tag
       _tags.push(@add_tag)
       event.set("[tags]", _tags)
@@ -1429,7 +1419,7 @@ def autopopulate_prefixes(
   _autopopulate_tags = [ @device_tag_autopopulated ]
 
   _prefix_data = nil
-  if (_private_ip_subnet = $private_ip_subnets.keys().find { |subnet| subnet.include?(ip_obj) })
+  if (_private_ip_subnet = $private_ip_subnets.find { |subnet| subnet.include?(ip_obj) })
     _new_prefix_ip = ip_obj.mask([_private_ip_subnet.prefix + 8, ip_obj.ipv6? ? 64 : 24].min)
     _new_prefix_name = _new_prefix_ip.to_s
     if !_new_prefix_name.to_s.include?('/')
@@ -1544,7 +1534,7 @@ def netbox_lookup(
 
   _key_ip = IPAddr.new(ip_key) rescue nil
 
-  if autopopulate_allowed?(_key_ip, site_id, @autopopulate_subnets_config_site_hash) && (@autopopulate || (!@target.nil? && !@target.empty?))
+  if (@autopopulate || (!@target.nil? && !@target.empty?)) && autopopulate_allowed?(_key_ip, site_id, $global_autopopulate_subnets_config_site_hash)
 
     _nb = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose)
 
