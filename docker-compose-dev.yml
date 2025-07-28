@@ -435,6 +435,11 @@ services:
     - type: bind
       bind:
         create_host_path: false
+      source: ./arkime/etc/wise.ini
+      target: /opt/arkime/wiseini/wise.ini
+    - type: bind
+      bind:
+        create_host_path: false
       source: ./pcap
       target: /data/pcap
     - type: bind
@@ -522,6 +527,12 @@ services:
         create_host_path: false
       source: ./arkime/rules
       target: /opt/arkime/rules
+      read_only: true
+    - type: bind
+      bind:
+        create_host_path: false
+      source: ./arkime/etc/wise.ini
+      target: /opt/arkime/wiseini/wise.ini
       read_only: true
     - type: bind
       bind:
