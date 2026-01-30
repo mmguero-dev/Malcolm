@@ -1,4 +1,4 @@
-FROM zeek/zeek:8.0.5
+FROM zeek/zeek:8.0.6
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
