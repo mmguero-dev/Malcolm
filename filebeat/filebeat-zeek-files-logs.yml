@@ -108,7 +108,7 @@ filebeat.inputs:
 
 #-------------------------- Redis Output (for filescan) ------------------------
 output.redis:
-  hosts: ["${REDIS_HOST:redis-cache}:${REDIS_PORT:6379}"]
+  hosts: ["${REDIS_HOST:redis}:${REDIS_PORT:6379}"]
   password: "${REDIS_PASSWORD}"
   db: ${REDIS_ZEEK_FILES_DATABASE:1}
   key: "zeek_notify"
