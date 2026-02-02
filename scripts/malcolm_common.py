@@ -2113,17 +2113,23 @@ def suggest_os_memory(total_gb: Optional[int] = None) -> str:
 
 
 def suggest_ls_memory(total_gb: Optional[int] = None) -> str:
-    """Return Logstash heap suggestion (e.g., "3g")."""
+    """Return Logstash heap suggestion (e.g., "3000m"), computed in MB."""
     if total_gb is None:
         total_gb = total_memory_gb()
+
+    total_mb = int(total_gb) * 1024
+
     if total_gb <= 16:
-        heap = total_gb // 8
+        heap_mb = total_mb // 8
     elif total_gb <= 32:
-        heap = total_gb // 6
+        heap_mb = total_mb // 6
     else:
-        heap = total_gb // 4
-    heap_gb = min(max(heap, 2), 4)
-    return f"{heap_gb}g"
+        heap_mb = total_mb // 4
+
+    # Clamp to [2g, 3g] in MB
+    heap_mb = min(max(heap_mb, 2500), 3 * 1024)
+
+    return f"{heap_mb}m"
 
 
 def suggest_ls_workers(cores: Optional[int] = None) -> int:
