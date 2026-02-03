@@ -47,7 +47,7 @@ spec:
                "redis-cache",
                "sh",
                "-c",
-               "redis-server --save '' --appendonly no --maxmemory-policy allkeys-lru --requirepass $(REDIS_PASSWORD)"]
+               "redis-server --save '' --appendonly no --maxmemory $(REDIS_CACHE_MAXMEMORY) --maxmemory-policy $(REDIS_CACHE_MAXMEMORY_POLICY) --maxmemory-samples 10 --lazyfree-lazy-eviction yes --requirepass $(REDIS_PASSWORD)"]
         ports:
           - name: redis
             protocol: TCP

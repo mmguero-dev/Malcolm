@@ -83,6 +83,11 @@ TOTAL_CPUS=$(( TOTAL_CPUS / 2 ))
 (( $TOTAL_CPUS <= 0 )) && TOTAL_CPUS=1
 export HILTI_JIT_PARALLELISM=${BUILD_JOBS:-$TOTAL_CPUS}
 
+# TODO: some that might be worth looking at in the future:
+# * ARP (off by default) https://packages.zeek.org/packages/view/593a976c-c3b1-11ed-9c2f-0a598146b5c6
+# * Detect gateway IP: https://github.com/stratosphereips/zeek-package-log-gateway-IP
+# * Different IRC detections: https://packages.zeek.org/packages/view/5943b1ed-c3b1-11ed-9c2f-0a598146b5c6
+
 # install Zeek packages that install nicely using zkg
 ZKG_GITHUB_URLS=(
   "https://github.com/0xl3x1/zeek-EternalSafety"

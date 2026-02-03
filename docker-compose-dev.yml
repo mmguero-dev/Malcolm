@@ -1399,7 +1399,7 @@ services:
     command:
     - sh
     - -c
-    - redis-server --dir /data --appendonly yes --requirepass $$REDIS_PASSWORD
+    - redis-server --dir /data --appendonly yes --appendfsync everysec --no-appendfsync-on-rewrite yes --auto-aof-rewrite-percentage 100 --auto-aof-rewrite-min-size $$REDIS_AUTO_AOF_REWRITE_MIN_SIZE --save '' --maxmemory $$REDIS_MAXMEMORY --maxmemory-policy $$REDIS_MAXMEMORY_POLICY --requirepass $$REDIS_PASSWORD
     volumes:
     - type: bind
       bind:
@@ -1443,7 +1443,7 @@ services:
     command:
     - sh
     - -c
-    - redis-server --save '' --appendonly no --maxmemory-policy allkeys-lru --requirepass $$REDIS_PASSWORD
+    - redis-server --save '' --appendonly no --maxmemory $$REDIS_CACHE_MAXMEMORY --maxmemory-policy $$REDIS_CACHE_MAXMEMORY_POLICY --maxmemory-samples 10 --lazyfree-lazy-eviction yes --requirepass $$REDIS_PASSWORD
     volumes:
     - type: bind
       bind:
