@@ -48,6 +48,7 @@ ENV STRELKA_BACKEND_PROCS=$STRELKA_BACKEND_PROCS
 
 ADD --chmod=755 strelka/*.sh /usr/local/bin/
 ADD --chmod=755 strelka/backend/*.sh /usr/local/bin/
+ADD strelka/config/backend /etc/strelka/
 
 RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') && \
     apt-get -q update && \

@@ -39,6 +39,7 @@ ADD --chmod=755 strelka/*.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/
 ADD --chmod=755 container-health-scripts/strelka-frontend.sh /usr/local/bin/container_health.sh
+ADD strelka/config/frontend /etc/strelka/
 
 EXPOSE 57314
 
