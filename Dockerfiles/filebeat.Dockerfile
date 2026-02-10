@@ -82,7 +82,7 @@ ENV TINI_URL=https://github.com/krallin/tini/releases/download/${TINI_VERSION}/t
 ENV YQ_VERSION="4.52.2"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
 
-ENV EVTX_VERSION="0.11.0"
+ENV EVTX_VERSION="0.11.1"
 ENV EVTX_URL="https://github.com/omerbenamram/evtx/releases/download/v${EVTX_VERSION}/evtx_dump-v${EVTX_VERSION}-XXX-unknown-linux-gnu"
 
 USER root
