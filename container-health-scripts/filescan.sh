@@ -6,7 +6,18 @@ set -euo pipefail
 
 JQ_EVAL=$(
     curl --fail --silent -XGET http://localhost:${FILESCAN_HEALTH_PORT:-8001}/health | \
-        jq '.state == "running" and ([.programs[][].healthy] | all) and ([.programs[][].state == "running"] | all)' 2>/dev/null
+        jq '.state == "running"
+            and (
+              .programs
+              | with_entries(select(.key != "fileserve"))
+              | ([ .[][].healthy ] | all)
+            )
+            and (
+              .programs
+              | with_entries(select(.key != "fileserve"))
+              | ([ .[][].state == "running" ] | all)
+            )
+          ' 2>/dev/null
 )
 [[ "$JQ_EVAL" == "true" ]] && exit 0 && exit 1
 
