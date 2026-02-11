@@ -226,7 +226,7 @@ async def main(
                 options.redis.db,
             )
             # this is an error we can't really recover from
-            return
+            sys.exit(1)
 
         # FIXME: we could/should probably make this handle also be async
         output = Path(
