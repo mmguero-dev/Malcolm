@@ -1471,7 +1471,7 @@ def MalcolmAuthFilesExist(configDir=None, run_profile=PROFILE_MALCOLM):
         (
             (run_profile == PROFILE_HEDGEHOG)
             or (
-                AuthFileCheck(os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')))
+                AuthFileCheck(os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')), allowEmpty=True)
                 and AuthFileCheck(os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf')), allowEmpty=True)
                 and AuthFileCheck(
                     os.path.join(MalcolmPath, os.path.join('nginx', os.path.join('certs', 'cert.pem'))), allowEmpty=True

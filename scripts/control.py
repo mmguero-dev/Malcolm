@@ -1372,9 +1372,10 @@ def start():
     global dotenvImported
 
     if args.service is None:
-        touch(os.path.join(GetMalcolmPath(), os.path.join('htadmin', 'metadata')))
         touch(os.path.join(GetMalcolmPath(), '.opensearch.primary.curlrc'))
         touch(os.path.join(GetMalcolmPath(), '.opensearch.secondary.curlrc'))
+        touch(os.path.join(GetMalcolmPath(), os.path.join('htadmin', 'metadata')))
+        touch(os.path.join(GetMalcolmPath(), os.path.join('nginx', 'htpasswd')))
         touch(os.path.join(GetMalcolmPath(), os.path.join('nginx', 'nginx_ldap.conf')))
 
         # make sure the auth files exist. if we are in an interactive shell and we're
@@ -1874,6 +1875,7 @@ def authSetup():
     defaultBehavior = (
         UserInputDefaultsBehavior.DefaultsPrompt if not args.cmdAuthSetupNonInteractive else noninteractiveBehavior
     )
+    authMethodChanged = False
 
     try:
         for authItem in authConfigChoices[1:]:
@@ -1931,6 +1933,7 @@ def authSetup():
                             choices=authMethodChoices,
                         ).lower()
                     if newNginxAuthMode:
+                        authMethodChanged = nginxAuthMode != newNginxAuthMode
                         nginxAuthMode = newNginxAuthMode
 
                     ldapStartTLS = False
@@ -2020,6 +2023,13 @@ def authSetup():
                             ],
                             stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH,
                         )
+
+                    if authMethodChanged and (authConfigChoice == 'all'):
+                        DisplayMessage(
+                            f'Authentication method has changed! Please re-run auth_setup for new options.',
+                            defaultBehavior=defaultBehavior,
+                        )
+                        break
 
                 elif authItem[0] == 'admin':
                     # prompt username and password
