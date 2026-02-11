@@ -463,6 +463,23 @@ def checkWiseFile():
         shutil.copyfile(wiseExampleFile, wiseFile)
 
 
+def getNginxAuthMethod():
+    global args
+    global dotenvImported
+
+    authCommonEnvFile = os.path.join(args.configDir, 'auth-common.env')
+    if args.authMode:
+        nginxAuthMode = str(args.authMode).lower()
+    else:
+        nginxAuthMode = 'unknown'
+        if os.path.isfile(authCommonEnvFile):
+            nginxAuthMode = str(
+                dotenvImported.dotenv_values(authCommonEnvFile).get('NGINX_AUTH_MODE', nginxAuthMode)
+            ).lower()
+
+    return nginxAuthMode
+
+
 def malcolm_iso_services_op(start):
     global args
     global orchMode
@@ -1381,12 +1398,16 @@ def start():
         # make sure the auth files exist. if we are in an interactive shell and we're
         # missing any of the auth files, prompt to create them now
         if sys.__stdin__.isatty() and (
-            not MalcolmAuthFilesExist(configDir=args.configDir, run_profile=args.composeProfile)
+            not MalcolmAuthFilesExist(
+                configDir=args.configDir, run_profile=args.composeProfile, auth_method=getNginxAuthMethod()
+            )
         ):
             authSetup()
 
         # still missing? sorry charlie
-        if not MalcolmAuthFilesExist(configDir=args.configDir, run_profile=args.composeProfile):
+        if not MalcolmAuthFilesExist(
+            configDir=args.configDir, run_profile=args.composeProfile, auth_method=getNginxAuthMethod()
+        ):
             raise Exception(
                 'Files relating to authentication and/or secrets are missing, please run ./scripts/auth_setup to generate them'
             )
@@ -1655,15 +1676,8 @@ def authSetup():
     authCommonEnvFile = os.path.join(args.configDir, 'auth-common.env')
     nginxEnvFile = os.path.join(args.configDir, 'nginx.env')
     openSearchEnvFile = os.path.join(args.configDir, 'opensearch.env')
+    nginxAuthMode = getNginxAuthMethod()
 
-    if args.authMode:
-        nginxAuthMode = str(args.authMode).lower()
-    else:
-        nginxAuthMode = 'unknown'
-        if os.path.isfile(authCommonEnvFile):
-            nginxAuthMode = str(
-                dotenvImported.dotenv_values(authCommonEnvFile).get('NGINX_AUTH_MODE', nginxAuthMode)
-            ).lower()
     netboxMode = ''
     if os.path.isfile(netboxCommonEnvFile):
         netboxMode = str(dotenvImported.dotenv_values(netboxCommonEnvFile).get('NETBOX_MODE', '')).lower()

@@ -1463,7 +1463,7 @@ def AuthFileCheck(fileName, allowEmpty=False):
         return False
 
 
-def MalcolmAuthFilesExist(configDir=None, run_profile=PROFILE_MALCOLM):
+def MalcolmAuthFilesExist(configDir=None, run_profile=PROFILE_MALCOLM, auth_method=None):
     configDirToCheck = (
         configDir if configDir is not None and os.path.isdir(configDir) else os.path.join(MalcolmPath, 'config')
     )
@@ -1471,8 +1471,14 @@ def MalcolmAuthFilesExist(configDir=None, run_profile=PROFILE_MALCOLM):
         (
             (run_profile == PROFILE_HEDGEHOG)
             or (
-                AuthFileCheck(os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')), allowEmpty=True)
-                and AuthFileCheck(os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf')), allowEmpty=True)
+                AuthFileCheck(
+                    os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')),
+                    allowEmpty=(auth_method == 'no_authentication'),
+                )
+                and AuthFileCheck(
+                    os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf')),
+                    allowEmpty=(auth_method != 'ldap'),
+                )
                 and AuthFileCheck(
                     os.path.join(MalcolmPath, os.path.join('nginx', os.path.join('certs', 'cert.pem'))), allowEmpty=True
                 )
