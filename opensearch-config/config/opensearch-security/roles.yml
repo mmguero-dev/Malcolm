@@ -109,6 +109,7 @@ capture_service_access:
         - "arkime_*"
       allowed_actions:
         - read
+        - write
         - create_index
         - indices:admin/create
         - indices:admin/aliases/get
