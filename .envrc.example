@@ -67,6 +67,7 @@ export ARKIME_ALLOW_WISE_GUI_CONFIG=false
 export ARKIME_WISE_SERVICE_URL=http://arkime:8081
 export AUTO_SURICATA=true
 export SURICATA_RULE_UPDATE=false
+export SURICATA_DISABLE_SIDS=
 export AUTO_ZEEK=true
 export ZEEK_ICS=true
 export ZEEK_ICS_BEST_GUESS=true
