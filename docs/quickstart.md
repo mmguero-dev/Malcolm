@@ -2,7 +2,10 @@
 
 * [Quick start](#QuickStart)
     - [Getting Malcolm](#GetMalcolm)
+        + [Installation example using Ubuntu 24.04 LTS](ubuntu-install-example.md#InstallationExample)
+        + [End-to-end Malcolm and Hedgehog Linux ISO Installation](malcolm-hedgehog-e2e-iso-install.md#InstallationExample)
     - [User interface](#UserInterfaceURLs)
+    - [Docker vs. Podman](#DockerVPodman)
 
 ## <a name="GetMalcolm"></a>Getting Malcolm
 

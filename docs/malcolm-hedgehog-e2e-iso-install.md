@@ -21,6 +21,7 @@ In contrast to using the ISO installer, Malcolm can also be installed on any x86
     - [Setting up Authentication](#MalcolmAuthSetup)
 * [Hedgehog Linux Installation and Configuration](#HedgehogInstallAndConfig)
     - [Configuring Communication Between Hedgehog and Malcolm](#HedgehogCommConfig)
+    - [TCP Ports Required for Malcolm ↔ Hedgehog Communication](#HedgehogMalcolmPorts)
 * [Verifying Traffic Capture and Forwarding](#Verify)
 * [Tuning Live Analysis](live-analysis.md#LiveAnalysisTuning)
 
@@ -690,6 +691,24 @@ After a few seconds a progress bar will update and show the files have been 100%
 ![SSL Certificate Transfer, Hedgehog Side - 03](./images/screenshots/ssl-cert-transfer-07.png)
 
 Once the has been completed, users can click the "play" icon (▷) in the panel at the top of the [desktop](#MalcolmDesktop) to start Malcolm under the [Hedgehog run profile](live-analysis.md#Profiles).
+
+### <a name="HedgehogMalcolmPorts"></a> TCP Ports Required for Malcolm ↔ Hedgehog Communication
+
+The following TCP ports on the Malcolm instance must be reachable for the sensor to forward data to Malcolm:
+
+| Port | Data | Purpose |
+|-|-|-|
+| 443/tcp | Enrichment lookups for Arkime sessions | Hedgehog's Arkime `capture` contacts Malcolm's Arkime [WISE](https://arkime.com/wise) at `https://﹤Malcolm host or IP address﹥/wise`, if enabled. |
+| 9200/tcp | Arkime sessions | Hedgehog's Arkime `capture` sends session data to Malcolm's OpenSearch instance at `https://﹤Malcolm host or IP address﹥:9200`. Alternatively, 443/tcp may be used at `https://﹤Malcolm host or IP address﹥/mapi/opensearch/`. |
+| 5044/tcp | Zeek logs, Suricata alerts, and file-scanning results | Hedgehog's Filebeat sends data to Malcolm's Logstash. |
+| 5045/tcp | Auxiliary data (resources, temperature, system logs, etc.) | Hedgehog's Fluent Bit sends data to Malcolm's JSON-over-TCP listener. |
+
+The following TCP ports on the Hedgehog sensor must be reachable for Malcolm to retrieve artifacts:
+
+| Port | Data | Purpose |
+|-|-|-|
+| 8005/tcp | PCAP payload requests | Malcolm's Arkime viewer contacts Hedgehog's Arkime viewer when a user views an Arkime [session](arkime.md#ArkimeSessions), [exports a PCAP](arkime.md#ArkimePCAPExport), or runs a [Hunt](arkime.md#ArkimeHunt) job |
+| 8006/tcp | Extracted file requests | Malcolm proxies requests to download [extracted files](file-scanning.md#ZeekFileExtractionUI) stored on the Hedgehog sensor. |
 
 ## <a name="Verify"></a>Verifying Traffic Capture and Forwarding
 

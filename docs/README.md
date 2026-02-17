@@ -16,6 +16,8 @@ Malcolm can also easily be deployed locally on an ordinary consumer workstation 
 
 * [Quick start](quickstart.md#QuickStart)
     - [Getting Malcolm](quickstart.md#GetMalcolm)
+        + [Installation example using Ubuntu 24.04 LTS](ubuntu-install-example.md#InstallationExample)
+        + [End-to-end Malcolm and Hedgehog Linux ISO Installation](malcolm-hedgehog-e2e-iso-install.md#InstallationExample)
     - [User interface](quickstart.md#UserInterfaceURLs)
     - [Docker vs. Podman](quickstart.md#DockerVPodman)
 * [Components](components.md#Components)
