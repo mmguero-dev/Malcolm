@@ -177,6 +177,14 @@ CUSTOM_TRANSFORM_HANDLERS: Dict[str, TransformHook] = {
         forward=custom_transform_zeek_disable_ics_all,
         reverse=custom_reverse_transform_zeek_disable_ics_all,
     ),
+    KEY_ENV_ZEEK_DISABLE_INTEL_LIVE: TransformHook(
+        forward=custom_transform_zeek_disable_intel_live,
+        reverse=custom_reverse_transform_zeek_disable_intel_live,
+    ),
+    KEY_ENV_ZEEK_DISABLE_INTEL_OFFLINE: TransformHook(
+        forward=custom_transform_zeek_disable_intel_offline,
+        reverse=custom_reverse_transform_zeek_disable_intel_offline,
+    ),
     KEY_ENV_ZEEK_DISABLE_BEST_GUESS_ICS: TransformHook(
         forward=custom_transform_zeek_disable_best_guess_ics,
         reverse=custom_reverse_transform_zeek_disable_best_guess_ics,
@@ -650,6 +658,11 @@ class EnvMapper:
             self.env_var_by_map_key[KEY_ENV_ZEEK_EXTRACTOR_MODE].config_items = [KEY_CONFIG_ITEM_FILE_CARVE_MODE]
             self.env_var_by_map_key[KEY_ENV_ZEEK_FILE_PRESERVATION].config_items = [KEY_CONFIG_ITEM_FILE_PRESERVE_MODE]
             self.env_var_by_map_key[KEY_ENV_ZEEK_DISABLE_ICS_ALL].config_items = [KEY_CONFIG_ITEM_MALCOLM_ICS]
+            self.env_var_by_map_key[KEY_ENV_ZEEK_DISABLE_INTEL_LIVE].config_items = [KEY_CONFIG_ITEM_ZEEK_INTEL_LIVE]
+            self.env_var_by_map_key[KEY_ENV_ZEEK_DISABLE_INTEL_OFFLINE].config_items = [
+                KEY_CONFIG_ITEM_ZEEK_INTEL_OFFLINE
+            ]
+
             self.env_var_by_map_key[KEY_ENV_ZEEK_DISABLE_BEST_GUESS_ICS].config_items = [
                 KEY_CONFIG_ITEM_ZEEK_ICS_BEST_GUESS
             ]

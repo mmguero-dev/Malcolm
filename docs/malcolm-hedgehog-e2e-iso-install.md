@@ -269,26 +269,28 @@ Select an item number to configure, or an action:
 │       ├── 58. Intel::item_expiration Timeout (current: -1min)
 │       ├── 59. Pull Threat Intelligence Feeds on Startup (current: Yes)
 │       └── 60. Threat Indicator "Since" Period (current: 24 hours ago)
-├── 61. Enrich with Reverse DNS Lookups (current: Yes)
-├── 62. Enrich with Manufacturer (OUI) Lookups (current: Yes)
-├── 63. Enrich with Frequency Scoring (current: Yes)
-├── 64. NetBox Mode (current: Local)
-│   ├── 65. Auto-Create Subnet Prefixes (current: Yes)
-│   ├── 66. Auto-Populate NetBox Inventory (current: Yes)
-│   ├── 67. NetBox Enrichment (current: Yes)
-│   ├── 68. NetBox IP Autopopulation Filter (current: empty)
-│   └── 69. NetBox Site Name (current: Malcolm)
-├── 70. Expose Malcolm Service Ports (current: No)
-├── 71. Network Traffic Node Name (current: host)
-└── 72. Capture Live Network Traffic (current: Yes)
-    ├── 73. Analyze Live Traffic with Suricata (current: Yes)
-    ├── 74. Analyze Live Traffic with Zeek (current: Yes)
-    ├── 75. Capture Filter (current: empty)
-    ├── 76. Capture Interface(s) (current: eth0)
-    ├── 77. Capture Live Traffic with netsniff-ng (current: Yes)
-    ├── 78. Capture Live Traffic with tcpdump (current: No)
-    ├── 79. Gather Traffic Capture Statistics (current: Yes)
-    └── 80. Optimize Interface Settings for Capture (current: Yes)
+│       ├── 61. Use Intel on Live Traffic (current: Yes)
+│       └── 62. Use Intel on Uploaded PCAP (current: Yes)
+├── 63. Enrich with Reverse DNS Lookups (current: Yes)
+├── 64. Enrich with Manufacturer (OUI) Lookups (current: Yes)
+├── 65. Enrich with Frequency Scoring (current: Yes)
+├── 66. NetBox Mode (current: Local)
+│   ├── 67. Auto-Create Subnet Prefixes (current: Yes)
+│   ├── 68. Auto-Populate NetBox Inventory (current: Yes)
+│   ├── 69. NetBox Enrichment (current: Yes)
+│   ├── 70. NetBox IP Autopopulation Filter (current: empty)
+│   └── 71. NetBox Site Name (current: Malcolm)
+├── 72. Expose Malcolm Service Ports (current: No)
+├── 73. Network Traffic Node Name (current: host)
+└── 74. Capture Live Network Traffic (current: Yes)
+    ├── 75. Analyze Live Traffic with Suricata (current: Yes)
+    ├── 76. Analyze Live Traffic with Zeek (current: Yes)
+    ├── 77. Capture Filter (current: empty)
+    ├── 78. Capture Interface(s) (current: eth0)
+    ├── 79. Capture Live Traffic with netsniff-ng (current: Yes)
+    ├── 80. Capture Live Traffic with tcpdump (current: No)
+    ├── 81. Gather Traffic Capture Statistics (current: Yes)
+    └── 82. Optimize Interface Settings for Capture (current: Yes)
 
 --- Actions ---
   s. Save and Continue
@@ -485,6 +487,10 @@ Proceed with Malcolm installation using the above configuration? (y / N): y
             + Select **Y** for Malcolm to pull from threat intelligence feeds when the `zeek-offline` container starts up.
         + **Threat Indicator "Since" Period**
             + When querying a [TAXII](zeek-intel.md#ZeekIntelSTIX), [MISP](zeek-intel.md#ZeekIntelMISP), [Google](zeek-intel.md#ZeekIntelGoogle), or [Mandiant](zeek-intel.md#ZeekIntelMandiant) threat intelligence feed, only process threat indicators created or modified since the time represented by this value; it may be either a fixed date/time (`01/01/2025`) or relative interval (`24 hours ago`). Note that this value can be overridden per-feed by adding a `since:` value to each feed's respective configuration YAML file.
+        * **Use Intel on Live Traffic**
+            + Select **Y** for Zeek (in the `zeek-live` container) to use threat intel data when analyzing live traffic.
+        * **Use Intel on Uploaded PCAP**
+            + Select **Y** for Zeek (in the `zeek` container) to use threat intel data when analyzing historical traffic (i.e., uploaded PCAP).
 * **Enrich with Reverse DNS Lookups**
     - If enabled, this option will perform reverse [DNS lookups](https://www.elastic.co/guide/en/logstash/current/plugins-filters-dns.html) on IP addresses found in traffic and use the results to enrich network logs. Select **Y** if the Malcolm instance has access to a DNS server to perform these lookups.
 * **Enrich with Manufacturer (OUI) Lookups**

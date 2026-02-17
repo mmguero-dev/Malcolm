@@ -162,6 +162,8 @@ KEY_CONFIG_ITEM_ZEEK_INTEL_ON_STARTUP = "zeekIntelOnStartup"
 KEY_CONFIG_ITEM_ZEEK_INTEL_FEED_SINCE = "zeekIntelFeedSince"
 KEY_CONFIG_ITEM_ZEEK_INTEL_CRON_EXPRESSION = "zeekIntelCronExpression"
 KEY_CONFIG_ITEM_ZEEK_INTEL_ITEM_EXPIRATION = "zeekIntelItemExpiration"
+KEY_CONFIG_ITEM_ZEEK_INTEL_LIVE = "zeekIntelLive"
+KEY_CONFIG_ITEM_ZEEK_INTEL_OFFLINE = "zeekIntelOffline"
 
 
 def get_configuration_item_keys_dict():

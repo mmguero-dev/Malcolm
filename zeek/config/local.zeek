@@ -6,6 +6,7 @@
 
 global true_regex: pattern = /^\s*(?i:t(rue)?|y(es)?|on|1)\s*$/;
 
+global disable_intel = (getenv("ZEEK_DISABLE_INTEL") == true_regex) ? T : F;
 global disable_stats = (getenv("ZEEK_DISABLE_STATS") == true_regex) ? T : F;
 global disable_log_passwords = (getenv("ZEEK_DISABLE_LOG_PASSWORDS") == true_regex) ? T : F;
 global disable_ssl_validate_certs = (getenv("ZEEK_DISABLE_SSL_VALIDATE_CERTS") == true_regex) ? T : F;
@@ -131,7 +132,9 @@ global json_format = (getenv("ZEEK_JSON") == true_regex) ? T : F;
 @if (!disable_ics_all)
   @load ACID/scripts
 @endif
-@load intel
+@if (!disable_intel)
+  @load intel
+@endif
 @load custom
 
 # These are defaults that will be overridden in extractor.zeek.

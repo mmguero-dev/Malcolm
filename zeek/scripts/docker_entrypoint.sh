@@ -17,5 +17,16 @@ if [[ -d "${ZEEK_LOG_PATH}" ]] && [[ -n "${SUPERCRONIC_CRONTAB}" ]]; then
          >> "${SUPERCRONIC_CRONTAB}"
 fi
 
+ZEEK_DIR=${ZEEK_DIR:-"/usr/local/zeek"}
+
+if [[ -z ${ZEEK_DISABLE_INTEL} ]]; then
+  if [[ ${ZEEK_LIVE_CAPTURE} == "true" ]]; then
+    [[ ${ZEEK_DISABLE_INTEL_LIVE} == "true" ]] && ZEEK_DISABLE_INTEL=true
+  else
+    [[ ${ZEEK_DISABLE_INTEL_OFFLINE} == "true" ]] && ZEEK_DISABLE_INTEL=true
+  fi
+fi
+[[ -n ${ZEEK_DISABLE_INTEL} ]] && export ZEEK_DISABLE_INTEL
+
 # start supervisor (which will spawn pcap-zeek, cron, etc.) or whatever the default command is
 exec "$@"

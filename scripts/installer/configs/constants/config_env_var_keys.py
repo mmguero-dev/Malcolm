@@ -136,6 +136,8 @@ KEY_ENV_ZEEK_LIVE_CAPTURE = "ZEEK_LIVE_CAPTURE"  # live traffic analysis with Ze
 KEY_ENV_ZEEK_DISABLE_STATS = "ZEEK_DISABLE_STATS"  # live capture statistics for Zeek
 KEY_ENV_ZEEK_ROTATED_PCAP = "ZEEK_ROTATED_PCAP"  # rotated captured PCAP analysis with Zeek (not live capture)
 KEY_ENV_ZEEK_AUTO_ANALYZE_PCAP_FILES = "ZEEK_AUTO_ANALYZE_PCAP_FILES"  # automatic uploaded pcap analysis with Zeek
+KEY_ENV_ZEEK_DISABLE_INTEL_LIVE = "ZEEK_DISABLE_INTEL_LIVE"  # disable/enable Zeek intel for live capture
+KEY_ENV_ZEEK_DISABLE_INTEL_OFFLINE = "ZEEK_DISABLE_INTEL_OFFLINE"  # disable/enable Zeek intel for uploaded PCAP
 KEY_ENV_ZEEK_INTEL_REFRESH_ON_STARTUP = (
     "ZEEK_INTEL_REFRESH_ON_STARTUP"  # Pull from threat intelligence feeds on container startup
 )

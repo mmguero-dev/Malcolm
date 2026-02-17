@@ -1454,4 +1454,18 @@ DEPENDENCY_CONFIG: Dict[str, DependencySpec] = {
             ui_parent=KEY_CONFIG_ITEM_ZEEK_PULL_INTELLIGENCE_FEEDS,
         )
     ),
+    KEY_CONFIG_ITEM_ZEEK_INTEL_LIVE: DependencySpec(
+        visibility=VisibilityRule(
+            depends_on=KEY_CONFIG_ITEM_ZEEK_PULL_INTELLIGENCE_FEEDS,
+            condition=lambda enabled: bool(enabled),
+            ui_parent=KEY_CONFIG_ITEM_ZEEK_PULL_INTELLIGENCE_FEEDS,
+        )
+    ),
+    KEY_CONFIG_ITEM_ZEEK_INTEL_OFFLINE: DependencySpec(
+        visibility=VisibilityRule(
+            depends_on=KEY_CONFIG_ITEM_ZEEK_PULL_INTELLIGENCE_FEEDS,
+            condition=lambda enabled: bool(enabled),
+            ui_parent=KEY_CONFIG_ITEM_ZEEK_PULL_INTELLIGENCE_FEEDS,
+        )
+    ),
 }

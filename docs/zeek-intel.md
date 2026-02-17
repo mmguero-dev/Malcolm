@@ -23,6 +23,8 @@ As multiple instances of this container may be running in a Malcolm deployment (
 
 Additional settings governing Malcolm's behavior when pulling from threat intelligence feeds may be specified during Malcolm configuration (see the [**end-to-end Malcolm installation example**](malcolm-hedgehog-e2e-iso-install.md#MalcolmConfig)). The global [`ZEEK_INTEL_FEED_SINCE`](malcolm-config.md#MalcolmConfigEnvVars) value can be overridden per-feed by adding a `since` value to the corresponding configuration YAML file described below.
 
+Setting `ZEEK_DISABLE_INTEL_OFFLINE=true` (in `./config/zeek-offline.env`) or `ZEEK_DISABLE_INTEL_LIVE=true` (in `./config/zeek-live.env`) disables loading of the `./zeek/intel` scripts for the `zeek` or `zeek-live` containers, respectively. This is useful when you want threat intelligence applied to live traffic but not to uploaded PCAP (historical) processing.
+
 For a public example of Zeek intelligence files, see Critical Path Security's [repository](https://github.com/CriticalPathSecurity/Zeek-Intelligence-Feeds), which aggregates data from various other threat feeds into Zeek's format.
 
 ## <a name="ZeekIntelSTIX"></a>STIX™ and TAXII™

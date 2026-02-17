@@ -295,6 +295,24 @@ def custom_reverse_transform_zeek_disable_ics_all(value: str) -> bool:
     return True if value == "" else not (value.lower() == "true")
 
 
+def custom_transform_zeek_disable_intel_live(zeekIntelLive: bool) -> str:
+    return "" if zeekIntelLive else true_or_false_no_quotes(not zeekIntelLive)
+
+
+def custom_reverse_transform_zeek_disable_intel_live(value: str) -> bool:
+    # Empty string means the disable flag is not set, so zeek live intel remains enabled (True)
+    return True if value == "" else not (value.lower() == "true")
+
+
+def custom_transform_zeek_disable_intel_offline(zeekIntelOffline: bool) -> str:
+    return "" if zeekIntelOffline else true_or_false_no_quotes(not zeekIntelOffline)
+
+
+def custom_reverse_transform_zeek_disable_intel_offline(value: str) -> bool:
+    # Empty string means the disable flag is not set, so zeek offline intel remains enabled (True)
+    return True if value == "" else not (value.lower() == "true")
+
+
 def custom_transform_zeek_disable_best_guess_ics(zeekICSBestGuess: bool) -> str:
     return "" if zeekICSBestGuess else true_or_false_no_quotes(not zeekICSBestGuess)
 

@@ -155,6 +155,8 @@ _base_config +CAPTURE_FLAG:
     | .configuration.zeekIntelOnStartup = ${ZEEK_INTEL_ON_STARTUP}
     | .configuration.zeekLogDir = "${ZEEK_PATH}"
     | .configuration.zeekPullIntelligenceFeeds = ${ZEEK_INTEL}
+    | .configuration.zeekIntelLive = ${ZEEK_INTEL_LIVE}
+    | .configuration.zeekIntelOffline = ${ZEEK_INTEL_OFFLINE}
   EOF
 
   jq -f "${JQ_FILE}" "${SETTINGS_FILE}" | sponge "${SETTINGS_FILE}"
