@@ -13,31 +13,35 @@ Checking out the [Malcolm source code]({{ site.github.repository_url }}/tree/{{ 
 * `dashboards` - code and configuration for the `dashboards` container for creating additional ad-hoc visualizations and dashboards beyond that which is provided by Arkime Viewer
 * `Dockerfiles` - a directory containing build instructions for Malcolm's images
 * `docs` - a directory containing instructions and documentation
-* `filebeat` - code and configuration for the `filebeat` container that ingests Zeek logs and forwards them to the `logstash` container
-* `filescan` - code and configuration for the `filescan` container that can scan files extracted by Zeek
 * `file-upload` - code and configuration for the `upload` container that serves a web browser-based upload form for uploading PCAP files and Zeek logs, and serves an SFTP share as an alternate upload
+* `filebeat` - code and configuration for the `filebeat` container that ingests Zeek logs and forwards them to the `logstash` container
+* `filescan-logs` - an initially empty directory into which file scanning result logs will be generated
+* `filescan` - code and configuration for the `filescan` container that can scan files extracted by Zeek
 * `freq-server` - code and configuration for the `freq` container used for calculating entropy of strings
 * `hedgehog-raspi` - code and configuration for building a [Hedgehog Linux](live-analysis.md#Hedgehog) [Raspberry Pi image](hedgehog-raspi-build.md#HedgehogRaspiBuild)
 * `htadmin` - configuration for the `htadmin` user account management container
+* `keycloak` - code for the [`keycloak`](authsetup.md#AuthKeycloak) container
 * `logstash` - code and configuration for the `logstash` container that parses Zeek logs and forwards them to the `opensearch` container
 * `malcolm-iso` - code and configuration for building an [installer ISO](malcolm-iso.md#ISO) for a minimal Debian-based Linux installation for running Malcolm
 * `netbox` - code and configuration for the `netbox` container which provides asset management capabilities
 * `nginx` - configuration for the `nginx` reverse-proxy container
-* `opensearch` - an initially empty directory where the OpenSearch database instance will reside
 * `opensearch-backup` - an initially empty directory for storing OpenSearch [index snapshots](index-management.md#IndexManagement) 
-* `pcap` - an initially empty directory for PCAP files to be uploaded, processed, and stored
+* `opensearch-config` - code and scripts used during the initialization of the `opensearch` container
+* `opensearch` - an initially empty directory where the OpenSearch database instance will reside
 * `pcap-capture` - code and configuration for the `pcap-capture` container that can capture network traffic
 * `pcap-monitor` - code and configuration for the `pcap-monitor` container that watches for new or uploaded PCAP files and notifies the other services to process them
+* `pcap` - an initially empty directory for PCAP files to be uploaded, processed, and stored
 * `postgres-scripts` - code used in the `postgres` container for database initialization
+* `postgres` - an initially empty directory to hold the PostgreSQL database used by NetBox and Keycloak
 * `redis` - an initially empty directory where the Redis database runtime files will reside
 * `scripts` - control scripts for starting, stopping, restarting, etc., Malcolm
 * `shared` - miscellaneous code used by various Malcolm components 
-* `strelka` - code for the `strelka-` containers used in by `filescan` for file scanning
-* `suricata` - code and configuration for the `suricata` container that handles PCAP processing using Suricata
+* `strelka` - code and configuration for the `strelka-` containers used in by `filescan` for file scanning
 * `suricata-logs` - an initially empty directory for Suricata logs to be uploaded, processed, and stored
+* `suricata` - code and configuration for the `suricata` container that handles PCAP processing using Suricata
 * `yara` - a directory for custom user-provided YARA rules
-* `zeek` - code and configuration for the `Zeek` container that handles PCAP processing using Zeek
 * `zeek-logs` - an initially empty directory for Zeek logs to be uploaded, processed, and stored
+* `zeek` - code and configuration for the `Zeek` container that handles PCAP processing using Zeek
 * `_includes` and `_layouts` - templates for the HTML version of the documentation
 * `.github` - GitHub workflow actions used to build [Malcolm using GitHub runners](contributing-github-runners.md#GitHubRunners)
 
@@ -80,7 +84,7 @@ Then, go take a walk or something since it will be a while. When you are done, y
 * `ghcr.io/idaholab/malcolm/suricata` (based on `debian:13-slim`)
 * `ghcr.io/idaholab/malcolm/zeek` (based on `zeek/zeek`)
 
-Alternately, if you have forked Malcolm on GitHub, [workflow files]({{ site.github.repository_url }}/tree/{{ site.github.build_revision }}/.github/workflows/) are provided that contain instructions for GitHub to build the images, as well as [sensor](live-analysis.md#Hedgehog) and [Malcolm](malcolm-iso.md#ISO) installer ISOs. The resulting images are named according to the pattern `ghcr.io/owner/malcolm/image:branch` (e.g., if you have forked Malcolm with the GitHub user `romeogdetlevjr`, the `Arkime` container built for the `main` branch would be named `ghcr.io/romeogdetlevjr/malcolm/arkime:main`). To run your local instance of Malcolm using these images instead of the official ones, you will need to edit your `docker-compose.yml` file(s) and replace the `image:` tags according to this new pattern, or use the bash helper script `./shared/bin/github_image_helper.sh` to pull and re-tag the images.
+Alternately, if you have forked Malcolm on GitHub, [workflow files]({{ site.github.repository_url }}/tree/{{ site.github.build_revision }}/.github/workflows/) are provided that contain instructions for GitHub to build the images, as well as [sensor](live-analysis.md#Hedgehog) and [Malcolm](malcolm-iso.md#ISO) installer ISOs. The resulting images are named according to the pattern `ghcr.io/owner/malcolm/image:branch` (e.g., if you have forked Malcolm with the GitHub user `romeogdetlevjr`, the `Arkime` container built for the `main` branch would be named `ghcr.io/romeogdetlevjr/malcolm/arkime:main`). To run your local instance of Malcolm using these images instead of the official ones, you will need to edit your `docker-compose.yml` file(s) and replace the `image:` tags according to this new pattern, or use the bash helper script [`./scripts/github_image_helper.sh`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/scripts/github_image_helper.sh) to pull and re-tag the images.
 
 # <a name="Packager"></a>Pre-Packaged installation files
 

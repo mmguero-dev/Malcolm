@@ -46,7 +46,7 @@ Malcolm leverages the following excellent open source tools, among others:
     * [reversinglabs/reversinglabs-yara-rules](https://github.com/reversinglabs/reversinglabs-yara-rules)
     * [SEKOIA-IO/Community](https://github.com/SEKOIA-IO/Community)
     * [volexity/threat-intel](https://github.com/volexity/threat-intel)
-* These [Zeek packages]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/shared/bin/zeek_install_plugins.sh):
+* These [Zeek packages]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/zeek/scripts/zeek_install_plugins.sh):
     * Amazon.com, Inc.'s [ICS protocol](https://github.com/amzn?q=zeek) analyzers
     * Andrew Klaus's [Sniffpass](https://github.com/cybera/zeek-sniffpass) plugin for detecting cleartext passwords in HTTP POST requests
     * Andrew Klaus's [zeek-httpattacks](https://github.com/precurse/zeek-httpattacks) plugin for detecting noncompliant HTTP requests
