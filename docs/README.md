@@ -2,7 +2,7 @@
 
 ![Malcolm Network Diagram](./images/malcolm_network_diagram.png)
 
-Malcolm processes network traffic data in the form of packet capture (PCAP) files or Zeek logs. A [sensor](live-analysis.md#Hedgehog) (packet capture appliance) monitors network traffic mirrored to it over a SPAN port on a network switch or router, or by using a network TAP device. [Zeek](https://www.zeek.org/index.html) logs and [Arkime](https://arkime.com/) sessions are generated containing important session metadata from the traffic observed, which are then securely forwarded to a Malcolm instance. Full PCAP files are optionally stored locally on the sensor device for later examination.
+Malcolm processes network traffic data in the form of packet capture (PCAP) files or Zeek logs. A [sensor](live-analysis.md#Hedgehog) monitors network traffic mirrored to it over a SPAN port on a network switch or router, or by using a network TAP device. [Zeek](https://www.zeek.org/index.html) logs and [Arkime](https://arkime.com/) sessions are generated containing important session metadata from the traffic observed, which are then securely forwarded to a Malcolm instance. Full PCAP files are optionally stored locally on the sensor device for later examination.
 
 Malcolm parses the network session data and enriches it with additional lookups and mappings including GeoIP mapping, hardware manufacturer lookups from [organizationally unique identifiers (docs/OUI)](http://standards-oui.ieee.org/oui/oui.txt) in MAC addresses, assigning names to [network segments and hosts](asset-interaction-analysis.md#AssetInteractionAnalysis) based on a user-defined asset inventory, performing [JA4 fingerprinting](https://blog.foxio.io/ja4%2B-network-fingerprinting), and many others.
 
@@ -167,6 +167,9 @@ Malcolm can also easily be deployed locally on an ordinary consumer workstation 
 * [Hardening](hardening.md#Hardening)
     - [Compliance Exceptions](hardening.md#ComplianceExceptions)
 * [Installation example using Ubuntu 24.04 LTS](ubuntu-install-example.md#InstallationExample)
+* [Hedgehog Linux - Malcolm's Network Sensor](hedgehog.md)
+    - [Configuring Hedgehog for Standalone Use](hedgehog-standalone.md)
+* [End-to-end Malcolm and Hedgehog Linux ISO Installation](malcolm-hedgehog-e2e-iso-install.md#InstallationExample)
 * [Upgrading Malcolm](malcolm-upgrade.md#UpgradePlan)
 * [Modifying or Contributing to Malcolm](contributing-guide.md)
     - [Local modifications](contributing-local-modifications.md#LocalMods)

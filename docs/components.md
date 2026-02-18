@@ -34,7 +34,7 @@ Malcolm leverages the following excellent open source tools, among others:
 * [Keycloak](https://www.keycloak.org/) - an identity and access management (IAM) tool
 * [OpenResty](https://openresty.org/) - a dynamic web platform based on [Nginx](https://nginx.org/) and [LuaJIT](http://luajit.org/) for HTTPS and reverse proxying Malcolm components
 * [nginx-auth-ldap](https://github.com/kvspb/nginx-auth-ldap) - an LDAP authentication module for Nginx
-* [Fluent Bit](https://fluentbit.io/) - for forwarding metrics to Malcolm from [network sensors](live-analysis.md#Hedgehog) (packet-capture appliances)
+* [Fluent Bit](https://fluentbit.io/) - for forwarding metrics to Malcolm from [network sensors](live-analysis.md#Hedgehog)
 * [Mark Baggett](https://github.com/MarkBaggett)'s [freq](https://github.com/MarkBaggett/freq) - a tool for calculating entropy of strings (e.g., domain names observed in DNS traffic)
 * These YARA rulesets:
     * [advanced-threat-research/Yara-Rules](https://github.com/advanced-threat-research/Yara-Rules)

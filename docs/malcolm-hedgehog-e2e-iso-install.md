@@ -606,7 +606,7 @@ Users will be prompted to do the following:
 
 As of Malcolm v25.12.0, the same base operating system is used for both Malcolm and Hedgehog Linux. All of the sections above under [Malcolm Installation and Configuration](#MalcolmInstallAndConfig) also apply to Hedgehog Linux.
 
-The following section outlines the Hedgehog-specific steps needed to establish communication between the Hedgehog Linux sensor and the Malcolm aggregator.
+The following section outlines the Hedgehog-specific steps needed to establish communication between the Hedgehog Linux sensor and the Malcolm aggregator. See [**Configuring Hedgehog for Standalone Use**](hedgehog-standalone.md) for how to use Hedgehog Linux without a Malcolm aggregator.
 
 ### <a name="HedgehogCommConfig"></a> Configuring Communication Between Hedgehog and Malcolm
 
