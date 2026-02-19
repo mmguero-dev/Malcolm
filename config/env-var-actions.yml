@@ -23,6 +23,11 @@ copied_environment_variables:
       NGINX_AUTH_MODE:
         NGINX_BASIC_AUTH
   filescan:
+    filescan:
+        FILESCAN_OUTPUT_PATH:
+          FILESCAN_OUTPUT_PATH:
+            ? "/filescan/data/logs/filescan-%(ts)s.txt"
+            : "/filescan/data/logs/filescan-%(ts)s.log"
     zeek:
       FILESCAN_HTTP_SERVER_ZIP:
         EXTRACTED_FILE_HTTP_SERVER_ZIP
