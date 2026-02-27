@@ -108,7 +108,7 @@ ZKG_GITHUB_URLS=(
   "https://github.com/cisagov/icsnpp-omron-fins"
   "https://github.com/cisagov/icsnpp-opcua-binary"
   "https://github.com/cisagov/icsnpp-profinet-io-cm"
-  "https://github.com/cisagov/icsnpp-roc-plus"
+  "https://github.com/mmguero-dev/icsnpp-roc-plus"
   "https://github.com/cisagov/icsnpp-s7comm"
   "https://github.com/cisagov/icsnpp-synchrophasor"
   "https://github.com/corelight/callstranger-detector"
@@ -156,7 +156,7 @@ ZKG_GITHUB_URLS=(
   "https://github.com/ncsa/bro-simple-scan"
   "https://github.com/precurse/zeek-httpattacks"
   "https://github.com/salesforce/GQUIC_Protocol_Analyzer"
-  "https://github.com/SeisoLLC/zeek-kafka"
+  "https://github.com/SeisoLLC/zeek-kafka|main"
   "https://github.com/zeek/spicy-tftp|main"
   "https://github.com/zeek/spicy-zip|main"
 )
