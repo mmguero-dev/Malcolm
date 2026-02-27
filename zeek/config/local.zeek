@@ -335,10 +335,6 @@ event zeek_init() &priority=-5 {
 
 }
 
-event file_new(f: fa_file) {
-  Files::add_analyzer(f, Files::ANALYZER_SHA256);
-}
-
 @if (!disable_log_passwords)
   redef HTTP::default_capture_password = T;
   redef FTP::default_capture_password = T;
