@@ -71,7 +71,7 @@ spec:
           - secretRef:
               name: postgres-env
           - secretRef:
-              name: redis-env
+              name: valkey-env
         livenessProbe:
           exec:
             command:

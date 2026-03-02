@@ -554,7 +554,7 @@ services:
           create_host_path: false
         source: ./postgres
         target: /var/lib/postgresql/data
-  redis:
+  valkey:
     volumes:
       - type: bind
         bind:
@@ -565,9 +565,9 @@ services:
       - type: bind
         bind:
           create_host_path: false
-        source: ./redis
+        source: ./valkey
         target: /data
-  redis-cache:
+  valkey-cache:
     volumes:
       - type: bind
         bind:

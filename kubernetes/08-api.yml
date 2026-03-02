@@ -71,7 +71,7 @@ spec:
           - secretRef:
               name: netbox-secret-env
           - secretRef:
-              name: redis-env
+              name: valkey-env
           - configMapRef:
               name: opensearch-env
         livenessProbe:

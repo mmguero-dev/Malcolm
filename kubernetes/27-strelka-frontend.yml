@@ -49,7 +49,7 @@ spec:
           - configMapRef:
               name: ssl-env
           - secretRef:
-              name: redis-env
+              name: valkey-env
           - configMapRef:
               name: pipeline-env
         livenessProbe:

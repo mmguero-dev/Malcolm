@@ -181,7 +181,7 @@ PYCODE
   mkdir -p "$MALCOLM_DEST_DIR/pcap/upload/tmp/spool/"
   mkdir -p "$MALCOLM_DEST_DIR/pcap/upload/variants/"
   mkdir -p "$MALCOLM_DEST_DIR/postgres/"
-  mkdir -p "$MALCOLM_DEST_DIR/redis/"
+  mkdir -p "$MALCOLM_DEST_DIR/valkey/"
   mkdir -p "$MALCOLM_DEST_DIR/scripts/"
   mkdir -p "$MALCOLM_DEST_DIR/strelka/"
   mkdir -p "$MALCOLM_DEST_DIR/suricata-logs/live/"

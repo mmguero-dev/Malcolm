@@ -88,7 +88,7 @@ if mkdir "$DESTDIR"; then
   mkdir $VERBOSE -p "$DESTDIR/pcap/upload/tmp/spool"
   mkdir $VERBOSE -p "$DESTDIR/pcap/upload/variants/"
   mkdir $VERBOSE -p "$DESTDIR/postgres/"
-  mkdir $VERBOSE -p "$DESTDIR/redis/"
+  mkdir $VERBOSE -p "$DESTDIR/valkey/"
   mkdir $VERBOSE -p "$DESTDIR/scripts/"
   mkdir $VERBOSE -p "$DESTDIR/strelka/"
   mkdir $VERBOSE -p "$DESTDIR/suricata-logs/live/"

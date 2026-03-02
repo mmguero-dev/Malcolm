@@ -183,12 +183,12 @@ def parse_args():
 def write_local_settings(args):
     success = False
 
-    # set a variable in local_settings.py for netbox-helathcheck-plugin
+    # set a variable in local_settings.py for netbox-healthcheck-plugin
     #   see https://github.com/netbox-community/netbox-healthcheck-plugin/issues/12#issuecomment-2451665212
     netboxSettingsPyDir = os.path.join(args.netboxDir, os.path.join('netbox', 'netbox'))
     if os.path.isdir(netboxSettingsPyDir):
         try:
-            localSettingsPyContents = "import os\n\nREDIS_URL = f\"redis://{os.environ.get('REDIS_USERNAME', '')}:{os.environ.get('REDIS_PASSWORD', '')}@{os.environ.get('REDIS_HOST', 'redis')}:{os.environ.get('REDIS_PORT', '6379')}/{os.environ.get('REDIS_NETBOX_DATABASE', os.environ.get('REDIS_DATABASE', '0'))}\"\n"
+            localSettingsPyContents = "import os\n\nVALKEY_URL = f\"redis://{os.environ.get('VALKEY_USERNAME', '')}:{os.environ.get('VALKEY_PASSWORD', '')}@{os.environ.get('VALKEY_HOST', 'valkey')}:{os.environ.get('VALKEY_PORT', '6379')}/{os.environ.get('VALKEY_NETBOX_DATABASE', os.environ.get('VALKEY_DATABASE', '0'))}\"\n"
             with open(f"{netboxSettingsPyDir}/local_settings.py", 'w') as f:
                 f.write(localSettingsPyContents)
             success = True

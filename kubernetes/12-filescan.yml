@@ -61,7 +61,7 @@ spec:
           - configMapRef:
               name: pipeline-env
           - secretRef:
-              name: redis-env
+              name: valkey-env
           - secretRef:
               name: filescan-secret-env
           - configMapRef:
