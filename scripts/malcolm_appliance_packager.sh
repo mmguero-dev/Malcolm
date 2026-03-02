@@ -67,7 +67,7 @@ if mkdir "$DESTDIR"; then
   trap "cleanup" EXIT
 
   mkdir $VERBOSE -p "$DESTDIR/arkime/etc/"
-  mkdir $VERBOSE -p "$DESTDIR/arkime/lua/"
+  mkdir $VERBOSE -p "$DESTDIR/arkime/parsers/"
   mkdir $VERBOSE -p "$DESTDIR/arkime/rules/"
   mkdir $VERBOSE -p "$DESTDIR/config/"
   mkdir $VERBOSE -p "$DESTDIR/filebeat/certs/"

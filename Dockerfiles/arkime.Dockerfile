@@ -33,7 +33,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 ENV ARKIME_DIR="/opt/arkime"
-ENV ARKIME_VERSION="5.8.3"
+ENV ARKIME_VERSION="6.0.0"
 ENV ARKIME_DEB_URL="https://github.com/arkime/arkime/releases/download/v${ARKIME_VERSION}/arkime_${ARKIME_VERSION}-1.debian13_XXX.deb"
 ENV ARKIME_JA4_SO_URL="https://github.com/arkime/arkime/releases/download/v${ARKIME_VERSION}/ja4plus.XXX.so"
 ENV ARKIME_LOCALELASTICSEARCH=no
@@ -117,6 +117,7 @@ RUN export DEBARCH=$(dpkg --print-architecture) && \
       libmaxminddb0 \
       libpcap0.8 \
       libpcre2-8-0 \
+      libpython3.13 \
       librdkafka1 \
       libssl3 \
       libtool \
@@ -200,8 +201,8 @@ RUN groupadd --gid $DEFAULT_GID $PGROUP && \
       setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip CAP_IPC_LOCK+eip' $ARKIME_DIR/bin/capture && \
     chown root:${PGROUP} /sbin/ethtool && \
       setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip' /sbin/ethtool && \
-    mkdir -p /var/run/arkime $ARKIME_DIR/logs $ARKIME_DIR/lua && \
-    chown -R $PUSER:$PGROUP $ARKIME_DIR/etc $ARKIME_DIR/lua $ARKIME_DIR/rules $ARKIME_DIR/logs /var/run/arkime
+    mkdir -p /var/run/arkime $ARKIME_DIR/logs $ARKIME_DIR/parsers $ARKIME_DIR/lua && \
+    chown -R $PUSER:$PGROUP $ARKIME_DIR/etc $ARKIME_DIR/parsers $ARKIME_DIR/lua $ARKIME_DIR/rules $ARKIME_DIR/logs /var/run/arkime
 #Update Path
 ENV PATH="/opt:$ARKIME_DIR/bin:${PATH}"
 

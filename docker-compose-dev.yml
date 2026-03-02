@@ -428,8 +428,8 @@ services:
     - type: bind
       bind:
         create_host_path: false
-      source: ./arkime/lua
-      target: /opt/arkime/lua
+      source: ./arkime/parsers
+      target: /opt/arkime/parsers/configmap
       read_only: true
     - type: bind
       bind:
@@ -522,8 +522,8 @@ services:
     - type: bind
       bind:
         create_host_path: false
-      source: ./arkime/lua
-      target: /opt/arkime/lua
+      source: ./arkime/parsers
+      target: /opt/arkime/parsers/configmap
       read_only: true
     - type: bind
       bind:
