@@ -252,3 +252,4 @@ relocated_files:
   # path/to/source: path/to/destination
   netbox/postgres: postgres
   netbox/redis: redis
+  arkime/lua: arkime/parsers

@@ -80,8 +80,8 @@ spec:
             name: arkime-var-local-catrust-volume
           - mountPath: /var/local/curlrc/secretmap
             name: arkime-opensearch-curlrc-secret-volume
-          - mountPath: "/opt/arkime/lua/configmap"
-            name: arkime-lua-volume
+          - mountPath: "/opt/arkime/parsers/configmap"
+            name: arkime-parsers-volume
           - mountPath: "/opt/arkime/rules/configmap"
             name: arkime-rules-volume
           - mountPath: "/data/pcap"
@@ -120,9 +120,9 @@ spec:
         - name: arkime-opensearch-curlrc-secret-volume
           secret:
             secretName: opensearch-curlrc
-        - name: arkime-lua-volume
+        - name: arkime-parsers-volume
           configMap:
-            name: arkime-lua
+            name: arkime-parsers
         - name: arkime-rules-volume
           configMap:
             name: arkime-rules
