@@ -1809,7 +1809,7 @@ class MalcolmSource extends WISESource {
       "zeek.kerberos.cipher",
       "zeek.kerberos.client_cert_fuid",
       "zeek.kerberos.client_cert_subject",
-      "zeek.kerberos.auth_ticket_sha256"
+      "zeek.kerberos.auth_ticket_sha256",
       "zeek.kerberos.new_ticket_sha256",
       "zeek.kerberos.cname",
       "zeek.kerberos.error_msg",
