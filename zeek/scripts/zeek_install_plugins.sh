@@ -125,7 +125,7 @@ ZKG_GITHUB_URLS=(
   "https://github.com/corelight/CVE-2022-24491"
   "https://github.com/corelight/CVE-2022-24497"
   "https://github.com/corelight/cve-2022-26809"
-  "https://github.com/corelight/CVE-2022-26937"
+  "https://github.com/mmguero-dev/CVE-2022-26937"
   "https://github.com/corelight/CVE-2022-30216"
   "https://github.com/corelight/CVE-2022-3602"
   "https://github.com/corelight/ExtendIntel"
