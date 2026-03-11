@@ -755,7 +755,7 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
                 and (list(keystore_args)[0].lower() in ('create', 'remove'))
                 and localKeystorePreExists
             ):
-                # don't be so whiny if the "create" failed just because it already existed or a 'remove' failed on a nonexistant item
+                # don't be so whiny if the "create" failed just because it already existed or a 'remove' failed on a nonexistent item
                 logging.info(e)
             else:
                 logging.warning(e)

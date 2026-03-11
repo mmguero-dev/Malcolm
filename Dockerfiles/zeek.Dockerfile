@@ -172,7 +172,7 @@ ADD --chmod=644 zeek/config/*.zeek ${ZEEK_DIR}/share/zeek/site/
 # ADD --chmod=644 zeek/config/*.json ${ZEEK_DIR}/share/zeek/site/
 
 RUN groupadd --gid ${DEFAULT_GID} ${PUSER} && \
-    useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} --home /nonexistant ${PUSER} && \
+    useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} --home /nonexistent ${PUSER} && \
     usermod -a -G tty ${PUSER} && \
     cp "${ZEEK_DIR}"/bin/zeek "${ZEEK_DIR}"/bin/zeek-offline && \
     chown root:${PGROUP} "${ZEEK_DIR}"/bin/zeek "${ZEEK_DIR}"/bin/capstats && \
