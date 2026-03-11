@@ -30,7 +30,7 @@ ENV TERM=xterm
 ENV YQ_VERSION="4.52.4"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
 
-ENV SUPERCRONIC_VERSION="0.2.39"
+ENV SUPERCRONIC_VERSION="0.2.43"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 
