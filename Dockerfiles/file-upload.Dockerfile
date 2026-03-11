@@ -87,6 +87,7 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       rsync \
       tini \
       vim-tiny && \
+    rm -f /etc/ssh/ssh_host_* && \
     curl -fsSL -o /usr/local/bin/supercronic "${SUPERCRONIC_URL}${BINARCH}" && \
       chmod +x /usr/local/bin/supercronic && \
     mkdir -p /var/www/upload/server/php \
