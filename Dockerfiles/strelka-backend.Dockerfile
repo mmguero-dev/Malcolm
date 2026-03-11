@@ -89,7 +89,7 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
     echo "0 0 * * * /usr/local/bin/yara_rules_setup.sh" > ${SUPERCRONIC_CRONTAB} && \
     apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove && \
       apt-get clean && \
-      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+      rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/journal
 
 USER ${PUSER}
 
