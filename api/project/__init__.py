@@ -1514,6 +1514,10 @@ def netbox_sites():
     f"{('/' + app.config['MALCOLM_API_PREFIX']) if app.config['MALCOLM_API_PREFIX'] else ''}/redis-keyspace-info",
     methods=['GET'],
 )
+@app.route(
+    f"{('/' + app.config['MALCOLM_API_PREFIX']) if app.config['MALCOLM_API_PREFIX'] else ''}/valkey-keyspace-info",
+    methods=['GET'],
+)
 def redis_keyspace_info():
     """Query the redis endpoints and return keyspace info
 
