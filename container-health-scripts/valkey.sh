@@ -6,4 +6,4 @@ set -euo pipefail
 [[ "${REDIS_DISABLED:-false}" == 'true' ]] && exit 0
 
 # check if redis process is running
-pidof redis-server >/dev/null
+pidof valkey-server >/dev/null
