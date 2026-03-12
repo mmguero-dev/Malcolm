@@ -161,7 +161,7 @@ PYCODE
   pushd "$SCRIPT_PATH/.." >/dev/null 2>&1
   MALCOLM_DEST_DIR="$WORKDIR/work/$IMAGE_NAME-Live-Build/config/includes.chroot/etc/skel/Malcolm"
   mkdir -p "$MALCOLM_DEST_DIR/arkime/etc/"
-  mkdir -p "$MALCOLM_DEST_DIR/arkime/lua/"
+  mkdir -p "$MALCOLM_DEST_DIR/arkime/parsers/"
   mkdir -p "$MALCOLM_DEST_DIR/arkime/rules/"
   mkdir -p "$MALCOLM_DEST_DIR/config/"
   mkdir -p "$MALCOLM_DEST_DIR/filebeat/certs/"

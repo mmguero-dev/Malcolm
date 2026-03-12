@@ -118,10 +118,10 @@ MALCOLM_CONFIGMAPS = {
             'path': os.path.join(GetMalcolmPath(), os.path.join('logstash', 'maps')),
         },
     ],
-    'arkime-lua': [
+    'arkime-parsers': [
         {
             'secret': False,
-            'path': os.path.join(GetMalcolmPath(), os.path.join('arkime', 'lua')),
+            'path': os.path.join(GetMalcolmPath(), os.path.join('arkime', 'parsers')),
         },
     ],
     'arkime-rules': [

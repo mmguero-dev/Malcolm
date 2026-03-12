@@ -307,3 +307,4 @@ relocated_files:
   netbox/postgres: postgres
   netbox/redis: valkey
   redis: valkey
+  arkime/lua: arkime/parsers

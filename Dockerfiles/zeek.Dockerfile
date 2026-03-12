@@ -1,4 +1,4 @@
-FROM zeek/zeek:8.0.6
+FROM zeek/zeek:8.1.1
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -136,6 +136,7 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       ( find "${ZEEK_DIR}"/var/lib/zkg/clones -type d -name .git -execdir bash -c "pwd; du -sh; git pull --depth=1 --ff-only; git reflog expire --expire=all --all; git tag -l | xargs -r git tag -d; git gc --prune=all; du -sh" \; ) && \
       rm -rf "${ZEEK_DIR}"/var/lib/zkg/scratch && \
       rm -rf "${ZEEK_DIR}"/lib/zeek/python/zeekpkg/__pycache__ && \
+      ( find "${ZEEK_DIR}/"var/lib/zkg/clones/package/ja4 -mindepth 1 -maxdepth 1 -type d ! \( -name zeek -o -name '.git*' \) -exec rm -rf "{}" \; || true ) && \
       ( find "${ZEEK_DIR}/" -type f -exec file "{}" \; | grep -Pi "ELF 64-bit.*not stripped" | sed 's/:.*//' | xargs -l -r strip --strip-unneeded || true ) && \
       ( find "${ZEEK_DIR}"/lib/zeek/plugins/packages -type f -name "*.hlto" -exec chmod 755 "{}" \; || true ) && \
       ( find "${ZEEK_DIR}"/var/lib/zkg/clones -mindepth 3 -maxdepth 3 -type d \( -iname 'test*' -o -iname 'pcap*' -o -iname "trace*" \) -exec rm -rf "{}" \; || true ) && \
@@ -171,7 +172,7 @@ ADD --chmod=644 zeek/config/*.zeek ${ZEEK_DIR}/share/zeek/site/
 # ADD --chmod=644 zeek/config/*.json ${ZEEK_DIR}/share/zeek/site/
 
 RUN groupadd --gid ${DEFAULT_GID} ${PUSER} && \
-    useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} --home /nonexistant ${PUSER} && \
+    useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} --home /nonexistent ${PUSER} && \
     usermod -a -G tty ${PUSER} && \
     cp "${ZEEK_DIR}"/bin/zeek "${ZEEK_DIR}"/bin/zeek-offline && \
     chown root:${PGROUP} "${ZEEK_DIR}"/bin/zeek "${ZEEK_DIR}"/bin/capstats && \
