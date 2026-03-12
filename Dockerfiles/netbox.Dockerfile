@@ -130,7 +130,8 @@ ENTRYPOINT ["/usr/bin/tini", \
             "--", \
             "/usr/local/bin/docker-uid-gid-setup.sh", \
             "/usr/local/bin/service_check_passthrough.sh", \
-            "-s", "netbox"]
+            "-s", "netbox", \
+            "/usr/local/bin/redis_valkey_env_map.sh"]
 
 CMD ["/opt/netbox/docker-entrypoint.sh", "supervisord", "-c", "/etc/supervisord.conf", "-n"]
 

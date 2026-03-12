@@ -85,83 +85,29 @@ DATABASES = {
 # Redis database settings. Redis is used for caching and for queuing background tasks such as webhook events. A separate
 # configuration exists for each. Full connection details are required in both sections, and it is strongly recommended
 # to use two separate database IDs.
-
-def _valkey_redis_env(var_name: str) -> str:
-    """
-    Given a REDIS_* variable name, return the VALKEY_* name to check first.
-    If it's not a REDIS_* name, just return it unchanged.
-    """
-    return f"VALKEY_{var_name[6:]}" if var_name.startswith("REDIS_") else var_name
-
-
-def _environ_get_valkey_redis(var_name, default=None):
-    """
-    Lookup VALKEY_* first (derived from REDIS_*), then fall back to REDIS_*.
-    """
-    valkey_name = _valkey_redis_env(var_name)
-    if valkey_name != var_name and valkey_name in environ:
-        return environ.get(valkey_name, default)
-    return environ.get(var_name, default)
-
-
-def _environ_get_and_map_valkey_redis(var_name, default, mapper):
-    """
-    Same as _environ_get_and_map, but checks VALKEY_* first, then REDIS_*.
-    """
-    valkey_name = _valkey_redis_env(var_name)
-    if valkey_name != var_name and valkey_name in environ:
-        return _environ_get_and_map(valkey_name, default, mapper)
-    return _environ_get_and_map(var_name, default, mapper)
-
 REDIS = {
     'tasks': {
-        'HOST': _environ_get_valkey_redis('REDIS_HOST', 'localhost'),
-        'PORT': _environ_get_and_map_valkey_redis('REDIS_PORT', 6379, _AS_INT),
-        'SENTINELS': [tuple(uri.split(':')) for uri in _environ_get_and_map_valkey_redis('REDIS_SENTINELS', '', _AS_LIST) if uri != ''],
-        'SENTINEL_SERVICE': _environ_get_valkey_redis('REDIS_SENTINEL_SERVICE', 'default'),
-        'SENTINEL_TIMEOUT': _environ_get_and_map_valkey_redis('REDIS_SENTINEL_TIMEOUT', 10, _AS_INT),
-        'USERNAME': _environ_get_valkey_redis('REDIS_USERNAME', ''),
-        'PASSWORD': _read_secret('redis_password', _environ_get_valkey_redis('REDIS_PASSWORD', '')),
-        'DATABASE': _environ_get_and_map_valkey_redis(
-            'REDIS_NETBOX_DATABASE',
-            _environ_get_and_map_valkey_redis('REDIS_DATABASE', '0', _AS_INT),
-            _AS_INT
-        ),
-        'SSL': _environ_get_and_map_valkey_redis('REDIS_SSL', 'False', _AS_BOOL),
-        'INSECURE_SKIP_TLS_VERIFY': _environ_get_and_map_valkey_redis('REDIS_INSECURE_SKIP_TLS_VERIFY', 'False', _AS_BOOL),
+        'HOST': environ.get('REDIS_HOST', 'localhost'),
+        'PORT': _environ_get_and_map('REDIS_PORT', 6379, _AS_INT),
+        'SENTINELS': [tuple(uri.split(':')) for uri in _environ_get_and_map('REDIS_SENTINELS', '', _AS_LIST) if uri != ''],
+        'SENTINEL_SERVICE': environ.get('REDIS_SENTINEL_SERVICE', 'default'),
+        'SENTINEL_TIMEOUT': _environ_get_and_map('REDIS_SENTINEL_TIMEOUT', 10, _AS_INT),
+        'USERNAME': environ.get('REDIS_USERNAME', ''),
+        'PASSWORD': _read_secret('redis_password', environ.get('REDIS_PASSWORD', '')),
+        'DATABASE': _environ_get_and_map('REDIS_NETBOX_DATABASE', environ.get('REDIS_DATABASE', '0'), _AS_INT),
+        'SSL': _environ_get_and_map('REDIS_SSL', 'False', _AS_BOOL),
+        'INSECURE_SKIP_TLS_VERIFY': _environ_get_and_map('REDIS_INSECURE_SKIP_TLS_VERIFY', 'False', _AS_BOOL),
     },
     'caching': {
-        'HOST': _environ_get_valkey_redis('REDIS_CACHE_HOST', _environ_get_valkey_redis('REDIS_HOST', 'localhost')),
-        'PORT': _environ_get_and_map_valkey_redis(
-            'REDIS_CACHE_PORT',
-            _environ_get_and_map_valkey_redis('REDIS_PORT', 6379, _AS_INT),
-            _AS_INT
-        ),
-        'SENTINELS': [tuple(uri.split(':')) for uri in _environ_get_and_map_valkey_redis('REDIS_CACHE_SENTINELS', '', _AS_LIST) if uri != ''],
-        'SENTINEL_SERVICE': _environ_get_valkey_redis(
-            'REDIS_CACHE_SENTINEL_SERVICE',
-            _environ_get_valkey_redis('REDIS_SENTINEL_SERVICE', 'default')
-        ),
-        'USERNAME': _environ_get_valkey_redis('REDIS_CACHE_USERNAME', _environ_get_valkey_redis('REDIS_USERNAME', '')),
-        'PASSWORD': _read_secret(
-            'redis_cache_password',
-            _environ_get_valkey_redis('REDIS_CACHE_PASSWORD', _environ_get_valkey_redis('REDIS_PASSWORD', ''))
-        ),
-        'DATABASE': _environ_get_and_map_valkey_redis(
-            'REDIS_NETBOX_CACHE_DATABASE',
-            _environ_get_and_map_valkey_redis('REDIS_CACHE_DATABASE', '1', _AS_INT),
-            _AS_INT
-        ),
-        'SSL': _environ_get_and_map_valkey_redis(
-            'REDIS_CACHE_SSL',
-            _environ_get_and_map_valkey_redis('REDIS_SSL', 'False', _AS_BOOL),
-            _AS_BOOL
-        ),
-        'INSECURE_SKIP_TLS_VERIFY': _environ_get_and_map_valkey_redis(
-            'REDIS_CACHE_INSECURE_SKIP_TLS_VERIFY',
-            _environ_get_and_map_valkey_redis('REDIS_INSECURE_SKIP_TLS_VERIFY', 'False', _AS_BOOL),
-            _AS_BOOL
-        ),
+        'HOST': environ.get('REDIS_CACHE_HOST', environ.get('REDIS_HOST', 'localhost')),
+        'PORT': _environ_get_and_map('REDIS_CACHE_PORT', environ.get('REDIS_PORT', '6379'), _AS_INT),
+        'SENTINELS': [tuple(uri.split(':')) for uri in _environ_get_and_map('REDIS_CACHE_SENTINELS', '', _AS_LIST) if uri != ''],
+        'SENTINEL_SERVICE': environ.get('REDIS_CACHE_SENTINEL_SERVICE', environ.get('REDIS_SENTINEL_SERVICE', 'default')),
+        'USERNAME': environ.get('REDIS_CACHE_USERNAME', environ.get('REDIS_USERNAME', '')),
+        'PASSWORD': _read_secret('redis_cache_password', environ.get('REDIS_CACHE_PASSWORD', environ.get('REDIS_PASSWORD', ''))),
+        'DATABASE': _environ_get_and_map('REDIS_NETBOX_CACHE_DATABASE', environ.get('REDIS_CACHE_DATABASE', '1'), _AS_INT),
+        'SSL': _environ_get_and_map('REDIS_CACHE_SSL', environ.get('REDIS_SSL', 'False'), _AS_BOOL),
+        'INSECURE_SKIP_TLS_VERIFY': _environ_get_and_map('REDIS_CACHE_INSECURE_SKIP_TLS_VERIFY', environ.get('REDIS_INSECURE_SKIP_TLS_VERIFY', 'False'), _AS_BOOL),
     },
 }
 
