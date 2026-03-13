@@ -2,10 +2,13 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: nginx-ingress
+  name: malcolm-ingress
   namespace: malcolm
   annotations:
-    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/ingress.class: "traefik"
+    # only applies when ingress.class == "traefik":
+    traefik.ingress.kubernetes.io/service.serversscheme: "https"
+    # only applies when ingress.class == "ingress-nginx":
     nginx.ingress.kubernetes.io/backend-protocol: "https"
     nginx.ingress.kubernetes.io/preserve-trailing-slash: "false"
     nginx.ingress.kubernetes.io/ssl-passthrough: "false"
@@ -15,10 +18,9 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-buffer-size: "512k"
     nginx.ingress.kubernetes.io/proxy-buffering: "off"
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
-    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "75"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-
 spec:
   rules:
   - http:
@@ -31,6 +33,7 @@ spec:
             port:
               number: 443
 ---
+# only applies when ingress.class == "ingress-nginx":
 apiVersion: v1
 kind: ConfigMap
 metadata:
