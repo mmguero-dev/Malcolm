@@ -29,6 +29,9 @@
                 "node": {
                   "type": "keyword"
                 },
+                "parent": {
+                  "type": "keyword"
+                },
                 "depth": {
                   "type": "short"
                 }
