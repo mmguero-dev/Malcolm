@@ -268,6 +268,7 @@ wipe:
 nuke:
   {{call_recipe}} wipe
   rm -rf ./postgres/*
+  rm -rf ./valkey/*
 
 stop:
   #!/usr/bin/env bash
