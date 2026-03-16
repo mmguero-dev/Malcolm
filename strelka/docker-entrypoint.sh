@@ -39,12 +39,16 @@ FILES=(
 for FILE in "${FILES[@]}"; do
   if [[ -f "${FILE}" ]]; then
     yq -i '
-      .coordinator.addr = strenv(VALKEY_CACHE_HOST) + ":" + strenv(VALKEY_CACHE_PORT) |
-      .coordinator.db = (strenv(VALKEY_STRELKA_COORDINATOR_CACHE_DATABASE) | tonumber) |
-      .coordinator.password = strenv(VALKEY_PASSWORD) |
-      .gatekeeper.addr = strenv(VALKEY_CACHE_HOST) + ":" + strenv(VALKEY_CACHE_PORT) |
-      .gatekeeper.db = (strenv(VALKEY_STRELKA_GATEKEEPER_CACHE_DATABASE) | tonumber) |
-      .gatekeeper.password = strenv(VALKEY_PASSWORD)
+      select(has("coordinator")) |= (
+        .coordinator.addr = strenv(VALKEY_CACHE_HOST) + ":" + strenv(VALKEY_CACHE_PORT) |
+        .coordinator.db = (strenv(VALKEY_STRELKA_COORDINATOR_CACHE_DATABASE) | tonumber) |
+        .coordinator.password = strenv(VALKEY_PASSWORD)
+      ) |
+      select(has("gatekeeper")) |= (
+        .gatekeeper.addr = strenv(VALKEY_CACHE_HOST) + ":" + strenv(VALKEY_CACHE_PORT) |
+        .gatekeeper.db = (strenv(VALKEY_STRELKA_GATEKEEPER_CACHE_DATABASE) | tonumber) |
+        .gatekeeper.password = strenv(VALKEY_PASSWORD)
+      )
     ' "${FILE}"
   fi
 done
