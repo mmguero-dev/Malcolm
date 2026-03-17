@@ -454,14 +454,15 @@
         "columns": [
           "source.ip",
           "destination.ip",
+          "file.source",
           "file.mime_type",
-          "zeek.files.filename",
+          "file.entropy",
+          "filescan.tree.depth",
+          "file.name",
           "zeek.files.extracted_uri",
           "filescan.hits",
           "rule.ruleset",
           "rule.name",
-          "file.entropy",
-          "file.source",
           "event.id"
         ],
         "description": "",

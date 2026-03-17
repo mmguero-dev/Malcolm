@@ -98,6 +98,12 @@ if [[ -f /etc/clamav/clamd.conf ]]; then
   else
     set_config /etc/clamav/clamd.conf AlertExceedsMax false
   fi
+
+  if is_truthy "${CLAMD_SCAN_ARCHIVE:-false}"; then
+    set_config /etc/clamav/clamd.conf ScanArchive true
+  else
+    set_config /etc/clamav/clamd.conf ScanArchive false
+  fi
 fi
 
 [[ $# -gt 0 ]] && exec "$@"
