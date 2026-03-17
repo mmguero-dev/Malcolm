@@ -264,20 +264,12 @@ class FileScanMap:
         self.max_scan_time = max_scan_time
 
     def update(self, event: MessageBase) -> bool:
-        if isinstance(event, ScanRequest | ScanSubmit | ScanBegin):
-            if (scan := self.scans.get(event.id)) is None:
-                scan = self.scans[event.id] = FileScan.for_event(
-                    event,
-                    max_scan_time=self.max_scan_time,
-                )
-            return scan.update(event)
-        elif isinstance(event, ScanResult):
-            if (scan := self.scans.get(event.id)) is not None:
-                return scan.update(event)
-        elif isinstance(event, ScanComplete):
-            return False
-        log.debug('ignoring message: %r', event)
-        return False
+        if (scan := self.scans.get(event.id)) is None:
+            scan = self.scans[event.id] = FileScan.for_event(
+                event,
+                max_scan_time=self.max_scan_time,
+            )
+        return scan.update(event)
 
     def get_completed_scans(self) -> Iterator[FileScan]:
         (_, complete), (_, expired), (_, working) = group_items(
@@ -350,10 +342,11 @@ class FileScan(BaseModel):
                 if self.results.get(event.name) is None:
                     self.results[event.name] = FileResult.for_event(event)
                     return True
-            elif isinstance(event, ScanResult):
+            elif isinstance(event, ScanResult | ScanEnd | ScanTimeout):
                 if (result := self.results.get(event.name)) is not None:
                     return result.update(event)
-        log.debug('ignoring message: %r', event)
+
+        log.debug('FileScan.update (%r) ignoring message: %r', self.id, event)
         return False
 
     def get_complete(self) -> ScanComplete:
@@ -376,8 +369,8 @@ class FileResult(BaseModel):
     end: UTCDatetime | None = None
     complete: Annotated[bool, Field(exclude=True)] = False
     errored: Annotated[bool, Field(exclude=True)] = False
-    result: Any | None = None
-    error: Any | None = None
+    results: list[Any] = []
+    errors: list[Any] = []
 
     @property
     def duration(self) -> float:
@@ -394,22 +387,24 @@ class FileResult(BaseModel):
             start=event.time,
         )
 
-    def update(self, event: ScanResult) -> bool:
+    def update(self, event: ScanResult | ScanEnd | ScanTimeout) -> bool:
         if (event.id == self.id) and (event.name == self.name):
             if isinstance(event, ScanResult):
+                if event.error is not None:
+                    self.errors.append(event.error)
+                if event.result is not None:
+                    self.results.append(event.result)
+                return True
+
+            elif isinstance(event, ScanEnd | ScanTimeout):
                 if not self.complete:
-                    if self.end is None:
-                        self.end = event.time
-                    else:
-                        self.end = max(self.end, event.time)
+                    self.end = event.time
                     self.complete = True
-                    if event.error is not None:
-                        self.errored = True
-                    self.result = event.result
-                    self.error = event.error
+                    self.errored = isinstance(event, ScanTimeout) or len(self.errors) > 0
                     return True
                 else:
                     log.error('duplicate scan completion? %r', event)
                     return False
+
         log.debug('ignoring message: %r', event)
         return False
