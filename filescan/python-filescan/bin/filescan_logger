@@ -59,9 +59,11 @@ def safe_unlink(p: PurePosixPath) -> None:
 def result_qualifies_for_preservation(scan_result: FileResult) -> bool:
     return bool(
         isinstance(scan_result, FileResult)
-        and isinstance(scan_result.result, dict)
-        and (rules := scan_result.result.get('rules'))
-        and isinstance(rules, list)
+        and isinstance(scan_result.results, list)
+        and any(
+            isinstance(result, dict) and isinstance(result.get('rules'), list) and len(result['rules']) > 0
+            for result in scan_result.results
+        )
     )
 
 
