@@ -33,7 +33,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 ENV ARKIME_DIR="/opt/arkime"
-ENV ARKIME_VERSION="6.0.1"
+ENV ARKIME_VERSION="6.1.0"
 ENV ARKIME_DEB_URL="https://github.com/arkime/arkime/releases/download/v${ARKIME_VERSION}/arkime_${ARKIME_VERSION}-1.debian13_XXX.deb"
 ENV ARKIME_JA4_SO_URL="https://github.com/arkime/arkime/releases/download/v${ARKIME_VERSION}/ja4plus.XXX.so"
 ENV ARKIME_LOCALELASTICSEARCH=no
@@ -52,7 +52,7 @@ ARG ARKIME_SSL=true
 ARG ARKIME_VIEWER_PORT=8005
 #Whether or not Arkime is in charge of deleting old PCAP files to reclaim space
 ARG MANAGE_PCAP_FILES=false
-ARG ARKIME_PCAP_LIBPCAP=true
+ARG ARKIME_PCAP_LIBPCAP=false
 ARG ARKIME_PCAP_PROCESSOR=true
 ARG ARKIME_LIVE_CAPTURE=false
 ARG ARKIME_ROTATED_PCAP=true
