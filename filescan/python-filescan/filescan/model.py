@@ -345,6 +345,8 @@ class FileScan(BaseModel):
             elif isinstance(event, ScanResult | ScanEnd | ScanTimeout):
                 if (result := self.results.get(event.name)) is not None:
                     return result.update(event)
+            elif isinstance(event, ScanComplete):
+                return False
 
         log.debug('FileScan.update (%r) ignoring message: %r', self.id, event)
         return False
@@ -406,5 +408,8 @@ class FileResult(BaseModel):
                     log.error('duplicate scan completion? %r', event)
                     return False
 
-        log.debug('ignoring message: %r', event)
+            elif isinstance(event, ScanComplete):
+                return False
+
+        log.debug('FileResult.update (%r) ignoring message: %r', self.id, event)
         return False
