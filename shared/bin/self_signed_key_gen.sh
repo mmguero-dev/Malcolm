@@ -116,7 +116,7 @@ function generate_ca {
   fi
 
   openssl genrsa -out ca.key 2048
-  opensssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -subj "$SUBJECT" -out ca.crt
+  openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 -subj "$SUBJECT" -out ca.crt
 }
 
 if [ -d "$WORKDIR" ]; then
@@ -137,6 +137,9 @@ if [ -d "$WORKDIR" ]; then
   # Skip CA generation if both ca.key and ca.crt files already exist
   if [[ -f "$CA_KEY" && -f "$CA_CRT" ]]; then
     echo "CA certificate and key already exist at $OUTPUT_PATH. Skipping generation."
+    # copy the existing CA.crt/key to the workdir for use in server/client generation
+    	cp "$CA_CRT" "$WORKDIR/"
+	    cp "$CA_KEY" "$WORKDIR/"
 
   elif [[ -f "$CA_KEY" || -f "$CA_CRT" ]]; then
     echo "CA certificate WARNING: Only one of ca.key or ca.crt exists in $OUTPUT_PATH."
