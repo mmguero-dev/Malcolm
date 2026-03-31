@@ -1396,6 +1396,7 @@ class MalcolmSource extends WISESource {
       "zeek.hart_ip_common_commands.set_real_time_clock_date",
       "zeek.hart_ip_common_commands.set_real_time_clock_null_bytes",
       "zeek.hart_ip_common_commands.set_real_time_clock_time_of_day",
+      "zeek.hart_ip_common_commands.set_real_time_clock_timestamp",
       "zeek.hart_ip_common_commands.set_real_time_clock_time_set_code",
       "zeek.hart_ip_common_commands.squawk_squawk_control",
       "zeek.hart_ip_common_commands.trim_analog_channel_gain_analog_channel_level",
