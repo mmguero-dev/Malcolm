@@ -21,7 +21,7 @@ fi
 OUTPUT_PATH=
 SUBJECT=
 DN_SERVER=
-DN_CLIENT=  
+DN_CLIENT=
 SKIP_DHPARAM_GEN=0
 while getopts 'vnpo:s:d:c:' OPTION; do
   case "$OPTION" in
@@ -101,8 +101,20 @@ function randomStateFull {
   echo "$CHOSEN_STATE"
 }
 
+function safeLog() {
+    local msg="$*"
+
+    # Try writing to /proc/1/fd/1 (Helm/K8s). Suppress errors so set -e won't exit.
+    if echo "" > /proc/1/fd/1 2>/dev/null; then
+        echo "$msg" > /proc/1/fd/1
+    else
+        # Fallback to normal stdout (Docker Compose, non-root)
+        echo "$msg"
+    fi
+}
+
 function generate_ca {
-  echo "Generating CA certificate and key..."
+  safeLog "Generating CA certificate and key..."
 
   if [[ -z "${SUBJECT}" ]]; then
     SUBJECT_DEFAULT="/C=US/ST=$(randomStateAbbr)/O=ACME/OU=R&D"
@@ -136,15 +148,14 @@ if [ -d "$WORKDIR" ]; then
 
   # Skip CA generation if both ca.key and ca.crt files already exist
   if [[ -f "$CA_KEY" && -f "$CA_CRT" ]]; then
-    echo "CA certificate and key already exist at $OUTPUT_PATH. Skipping generation."
+    safeLog "CA certificate and key already exist at $OUTPUT_PATH. Skipping generation."
     # copy the existing CA.crt/key to the workdir for use in server/client generation
     	cp "$CA_CRT" "$WORKDIR/"
 	    cp "$CA_KEY" "$WORKDIR/"
 
   elif [[ -f "$CA_KEY" || -f "$CA_CRT" ]]; then
-    echo "CA certificate WARNING: Only one of ca.key or ca.crt exists in $OUTPUT_PATH."
-    echo "Existing files will be overwritten to ensure consistency."
-    echo ""
+    safeLog "CA certificate WARNING: Only one of ca.key or ca.crt exists in $OUTPUT_PATH."
+    safeLog "Existing files will be overwritten to ensure consistency."
     generate_ca
 
   else
@@ -153,7 +164,7 @@ if [ -d "$WORKDIR" ]; then
   fi
 
   # server -------------------------------
-  echo "Generating server certificate and key..."
+  safeLog "Generating server certificate and key..." 
 
   if [[ $INTERACTIVE_SHELL == "yes" ]]; then
     cat <<EOF > "server.conf"
@@ -245,7 +256,7 @@ EOF
   rm -f server.key.pem
 
   # client -------------------------------
-  echo "Generating client certificate and key..."
+  safeLog "Generating client certificate and key..."
 
   if [[ $INTERACTIVE_SHELL == "yes" ]]; then
     cat <<EOF > "client.conf"
