@@ -62,7 +62,7 @@ filebeat.inputs:
       fingerprint:
         enabled: false
         offset: ${FILEBEAT_SCANNER_FINGERPRINT_OFFSET:0}
-        length: ${FILEBEAT_SCANNER_FINGERPRINT_LENGTH:1024}
+        length: ${FILEBEAT_SCANNER_FINGERPRINT_LENGTH:512}
   fields_under_root: true
   clean_inactive: ${FILEBEAT_CLEAN_INACTIVE:180m}
   ignore_older: ${FILEBEAT_IGNORE_OLDER:120m}
@@ -88,7 +88,7 @@ filebeat.inputs:
       fingerprint:
         enabled: false
         offset: ${FILEBEAT_SCANNER_FINGERPRINT_OFFSET:0}
-        length: ${FILEBEAT_SCANNER_FINGERPRINT_LENGTH:1024}
+        length: ${FILEBEAT_SCANNER_FINGERPRINT_LENGTH:512}
   fields_under_root: true
   tags: ["_filebeat_zeek_malcolm_live"]
   exclude_lines: ['^\s*#']
