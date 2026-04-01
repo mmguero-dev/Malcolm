@@ -68,6 +68,7 @@ Although the configuration script automates many of the following configuration 
     - `PIPELINE_DISABLED` - if set to `true`, file scanning with Strelka will be disabled
     - `RULES_UPDATE_ENABLED` – if set to `true`, file scanner engines (e.g., ClamAV, YARA, etc.) will periodically update their rule definitions (default `false`)
     - `STRELKA_BACKEND_PROCS` - specifies the number of Strelka backend instances performing file scanning concurrently (default `1`)
+    - `STRELKA_SCANNERS` - comma-separated list of [Strelka scanners](https://target.github.io/strelka/#/?id=scanner-list) to enable
     - `YARA_CUSTOM_RULES_ONLY` - if set to `true`, Malcolm will bypass its default YARA rulesets and use only [user-defined rules](custom-rules.md#YARA) in `./yara/rules` (default `false`)
 * **`keycloak.env`** - settings specific to [Keycloak](https://www.keycloak.org/)
     - The following variables are used for all [Keycloak](authsetup.md#AuthKeycloak) configurations, be it Malcolm's [embedded instance](authsetup.md#AuthKeycloakEmbedded) or a [remote instance](authsetup.md#AuthKeycloakRemote) (see `NGINX_AUTH_MODE` above):

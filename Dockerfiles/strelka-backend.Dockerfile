@@ -46,6 +46,9 @@ ENV CLAMAV_RULES_DIR="/var/lib/clamav"
 ARG STRELKA_BACKEND_PROCS=1
 ENV STRELKA_BACKEND_PROCS=$STRELKA_BACKEND_PROCS
 
+ARG STRELKA_SCANNERS=ScanBatch,ScanBmpEof,ScanBzip2,ScanClamav,ScanDmg,ScanDocx,ScanDonut,ScanEmail,ScanEncryptedDoc,ScanEncryptedZip,ScanEntropy,ScanExiftool,ScanGifEof,ScanGzip,ScanHtml,ScanIqy,ScanIso,ScanJarManifest,ScanJavascript,ScanJnlp,ScanJpegEof,ScanJson,ScanLibarchive,ScanLnk,ScanLsb,ScanLzma,ScanMacho,ScanManifest,ScanMsi,ScanOle,ScanOnenote,ScanPdf,ScanPe,ScanPgp,ScanPhp,ScanPkcs7,ScanPlist,ScanPngEof,ScanPyinstaller,ScanQr,ScanRar,ScanRpm,ScanRtf,ScanSevenZip,ScanSwf,ScanTar,ScanTnef,ScanTranscode,ScanUdf,ScanUpx,ScanUrl,ScanVb,ScanVba,ScanVhd,ScanVsto,ScanXar,ScanXl4ma,ScanXml,ScanYara,ScanZip,ScanZlib,ScanZstd
+ENV STRELKA_SCANNERS=$STRELKA_SCANNERS
+
 ADD --chmod=755 strelka/*.sh /usr/local/bin/
 ADD --chmod=755 strelka/backend/*.sh /usr/local/bin/
 ADD strelka/config/backend /etc/strelka/

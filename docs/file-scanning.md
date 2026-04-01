@@ -19,46 +19,14 @@ Depending on the volume of files extracted from network traffic, file scanning c
 
 Extracted files are scanned by [Strelka](https://target.github.io/strelka/#/), an [open-source](https://github.com/target/strelka) "real-time, container-based file scanning system used for threat hunting, threat detection, and incident response."
 
-Individual Strelka [scanners](https://target.github.io/strelka/#/?id=scanner-list) can be toggled or configured by editing [`strelka/config/backend/backend.yaml`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/config/backend/backend.yaml). To disable a scanner, comment it out by adding `#` to each line of its section under `scanners:`, including the scanner's name:
+Individual Strelka [scanners](https://target.github.io/strelka/#/?id=scanner-list) can be enabled/disabled by including/excluding the scanner's name from the `STRELKA_SCANNERS` [variable in `pipeline.env`](malcolm-config.md#MalcolmConfigEnvVars).
 
-```yaml
-⋯
-scanners:
-  ⋯
-#  'ScanDocx':
-#    - positive:
-#        flavors:
-#          - 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-#          - "docx_file"
-#      priority: 5
-#      options:
-#        extract_text: False
-  ⋯
-```
+Because scanners may have configurable options, an individual scanner can be configured by editing its `.yaml` file in [`strelka/config/backend/scanners/`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/config/backend/scanners/). It's recommended to validate a scanner's configuration file after making changes to it. This could be done using an [online YAML validator](https://www.yamllint.com/) or locally depending on available tools:
 
-To enable a scanner, uncomment its section:
+* `python3 -c 'import sys, yaml; yaml.safe_load(sys.stdin)' < ./strelka/config/backend/scanners/ScanCapa.yaml`
+* `ruby -ryaml -e "YAML.load_file('./strelka/config/backend/scanners/ScanCapa.yaml')"`
 
-```yaml
-⋯
-scanners:
-  ⋯
-  'ScanDocx':
-    - positive:
-        flavors:
-          - 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-          - "docx_file"
-      priority: 5
-      options:
-        extract_text: False
-  ⋯
-```
-
-It's recommended to validate this configuration file after making changes to it. This could be done using an [online YAML validator](https://www.yamllint.com/) or locally depending on available tools:
-
-* `python3 -c 'import sys, yaml; yaml.safe_load(sys.stdin)' < ./strelka/config/backend/backend.yaml`
-* `ruby -ryaml -e "YAML.load_file('./strelka/config/backend/backend.yaml')"`
-
-Each scanner may have configurable options; see the [scanner list](https://target.github.io/strelka/#/?id=scanner-list) for more details. Other Strelka-related configuration files can be found under [`strelka/config/`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/config/). Consult the [Strelka documentation](https://target.github.io/strelka/#/?id=configuration-files) for more details.
+Other Strelka-related configuration files can be found under [`strelka/config/`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/config/). Consult the [Strelka documentation](https://target.github.io/strelka/#/?id=configuration-files) for more details.
 
 For the [**YARA**](https://github.com/VirusTotal/yara) scanner, Malcolm's [default YARA rule set]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/backend/yara_rules_setup.sh) and/or [user-defined custom YARA rules](custom-rules.md#YARA) are used for scanning.
 
@@ -94,7 +62,7 @@ The `FILESCAN_HTTP_SERVER_…` [environment variables](malcolm-config.md#Malcolm
 
 Multiple components of Malcolm's file-scanning pipeline can extract archive files (e.g., `zip`, `7z`, `.tar.gz`, etc.) in order to scan their contents:
 
-* Strelka - Strelka's [`backend.yaml`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/config/backend/backend.yaml) configuration file controls which scanners are enabled or disabled (i.e., commented out). Many scanners decompress and/or extract files from various archive file types, including `ScanZip`, `ScanTar`, `ScanSevenZip`, and others. Search the [list of scanners](https://target.github.io/strelka/#/?id=scanner-list) for "extract" and "decompress" to review the scanners that handle archive files. If these scanners are enabled (i.e., not commented out), Strelka will decompress and extract archive files and, in turn, scan their contents. This is Malcolm's default behavior.
+* Strelka - Strelka's [`backend.yaml`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/config/backend/backend.yaml) configuration file controls which scanners are enabled or disabled (see the discussion on `STRELKA_SCANNERS` above). Many scanners decompress and/or extract files from various archive file types, including `ScanZip`, `ScanTar`, `ScanSevenZip`, and others. Search the [list of scanners](https://target.github.io/strelka/#/?id=scanner-list) for "extract" and "decompress" to review the scanners that handle archive files. If these scanners are enabled, Strelka will decompress and extract archive files and, in turn, scan their contents. This is Malcolm's default behavior.
 * Zeek - The [spicy-zip](https://github.com/zeek/spicy-zip) file analyzer for Zeek can extract the contents of ZIP files observed by Zeek. The `ZEEK_DISABLE_SPICY_ZIP` [environment variable](malcolm-config.md#MalcolmConfigEnvVars) in [`zeek.env`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/config/zeek.env.example) controls this behavior. By default, this value is set to `true`, meaning the spicy-zip analyzer is disabled so as not to conflict with Strelka's default behavior described above.
 * ClamAV - ClamAV's [`ScanArchive`](https://manpages.debian.org/trixie/clamav-daemon/clamd.conf.5.en.html#ScanArchive) setting determines whether it will scan the contents of archives and compressed files. The `CLAMD_SCAN_ARCHIVE` [environment variable](malcolm-config.md#MalcolmConfigEnvVars) in [`pipeline.env`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/config/pipeline.env.example) controls this behavior. By default, this value is set to `false`, meaning ClamAV will not scan inside archive files, so as not to conflict with Strelka's default behavior described above.
 
