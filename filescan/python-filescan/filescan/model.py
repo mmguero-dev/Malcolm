@@ -264,6 +264,8 @@ class FileScanMap:
         self.max_scan_time = max_scan_time
 
     def update(self, event: MessageBase) -> bool:
+        if isinstance(event, ScanComplete):
+            return False
         if (scan := self.scans.get(event.id)) is None:
             scan = self.scans[event.id] = FileScan.for_event(
                 event,
@@ -389,8 +391,10 @@ class FileResult(BaseModel):
             start=event.time,
         )
 
-    def update(self, event: ScanResult | ScanEnd | ScanTimeout) -> bool:
-        if (event.id == self.id) and (event.name == self.name):
+    def update(self, event: ScanResult | ScanEnd | ScanTimeout | ScanComplete) -> bool:
+        if isinstance(event, ScanComplete):
+            return False
+        elif (event.id == self.id) and (event.name == self.name):
             if isinstance(event, ScanResult):
                 if event.error is not None:
                     self.errors.append(event.error)
@@ -407,9 +411,6 @@ class FileResult(BaseModel):
                 else:
                     log.error('duplicate scan completion? %r', event)
                     return False
-
-            elif isinstance(event, ScanComplete):
-                return False
 
         log.debug('FileResult.update (%r) ignoring message: %r', self.id, event)
         return False
