@@ -28,7 +28,7 @@ class StrelkaOptions(ScannerOptions, frozen=True):
     gatekeeper: bool = True
     cert: Path | None = None
     secure: bool = True
-    timeout: float = 3600.0
+    timeout: float = 5400.0
     chunksize: int = 128 * 1024
 
 

@@ -2,9 +2,9 @@ version: 2025.12.16.01
 logging_cfg: '/etc/strelka/logging.yaml'
 limits:
   max_files: 10000
-  time_to_live: 1800
+  time_to_live: 3600
   max_depth: 15
-  distribution: 1200
+  distribution: 1800
   scanner: 180
 coordinator:
   addr: 'strelka-coordinator:6379'
