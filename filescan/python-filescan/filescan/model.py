@@ -296,7 +296,7 @@ class FileScan(BaseModel):
     metadata: dict[str, str] | None = None
     expected: Annotated[int, Field(exclude=True)] = -1
     results: dict[str, FileResult] = {}
-    min_scan_time: Annotated[timedelta, Field(exclude=True)] = timedelta(seconds=30)
+    min_scan_time: Annotated[timedelta, Field(exclude=True)] = timedelta(minutes=5)
     max_scan_time: Annotated[timedelta | None, Field(exclude=True)] = None
 
     @computed_field
