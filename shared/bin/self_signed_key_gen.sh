@@ -101,20 +101,8 @@ function randomStateFull {
   echo "$CHOSEN_STATE"
 }
 
-function safeLog() {
-    local msg="$*"
-
-    # Try writing to /proc/1/fd/1 (Helm/K8s). Suppress errors so set -e won't exit.
-    if echo "" > /proc/1/fd/1 2>/dev/null; then
-        echo "$msg" > /proc/1/fd/1
-    else
-        # Fallback to normal stdout (Docker Compose, non-root)
-        echo "$msg"
-    fi
-}
-
 function generate_ca {
-  safeLog "Generating CA certificate and key..."
+  echo "Generating CA certificate and key..." > /dev/fd/1
 
   if [[ -z "${SUBJECT}" ]]; then
     SUBJECT_DEFAULT="/C=US/ST=$(randomStateAbbr)/O=ACME/OU=R&D"
@@ -148,14 +136,14 @@ if [ -d "$WORKDIR" ]; then
 
   # Skip CA generation if both ca.key and ca.crt files already exist
   if [[ -f "$CA_KEY" && -f "$CA_CRT" ]]; then
-    safeLog "CA certificate and key already exist at $OUTPUT_PATH. Skipping generation."
+    echo "CA certificate and key already exist at $OUTPUT_PATH. Skipping generation." > /dev/fd/1
     # copy the existing CA.crt/key to the workdir for use in server/client generation
     	cp "$CA_CRT" "$WORKDIR/"
 	    cp "$CA_KEY" "$WORKDIR/"
 
   elif [[ -f "$CA_KEY" || -f "$CA_CRT" ]]; then
-    safeLog "CA certificate WARNING: Only one of ca.key or ca.crt exists in $OUTPUT_PATH."
-    safeLog "Existing files will be overwritten to ensure consistency."
+    echo "CA certificate WARNING: Only one of ca.key or ca.crt exists in $OUTPUT_PATH." > /dev/fd/1
+    echo "Existing files will be overwritten to ensure consistency." > /dev/fd/1
     generate_ca
 
   else
@@ -164,7 +152,7 @@ if [ -d "$WORKDIR" ]; then
   fi
 
   # server -------------------------------
-  safeLog "Generating server certificate and key..." 
+  echo "Generating server certificate and key..." > /dev/fd/1
 
   if [[ $INTERACTIVE_SHELL == "yes" ]]; then
     cat <<EOF > "server.conf"
@@ -256,7 +244,7 @@ EOF
   rm -f server.key.pem
 
   # client -------------------------------
-  safeLog "Generating client certificate and key..."
+  echo "Generating client certificate and key..." > /dev/fd/1
 
   if [[ $INTERACTIVE_SHELL == "yes" ]]; then
     cat <<EOF > "client.conf"
