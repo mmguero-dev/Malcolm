@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
       - name: strelka-backend-container
-        image: ghcr.io/idaholab/malcolm/strelka-backend:26.04.1
+        image: ghcr.io/idaholab/malcolm/strelka-backend:26.04.2
         imagePullPolicy: Always
         stdin: false
         tty: true
