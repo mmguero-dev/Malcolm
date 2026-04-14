@@ -102,7 +102,7 @@ function randomStateFull {
 }
 
 function generate_ca {
-  echo "Generating CA certificate and key..." > /dev/fd/1
+  echo "Generating CA certificate and key..."
 
   if [[ -z "${SUBJECT}" ]]; then
     SUBJECT_DEFAULT="/C=US/ST=$(randomStateAbbr)/O=ACME/OU=R&D"
@@ -136,14 +136,14 @@ if [ -d "$WORKDIR" ]; then
 
   # Skip CA generation if both ca.key and ca.crt files already exist
   if [[ -f "$CA_KEY" && -f "$CA_CRT" ]]; then
-    echo "CA certificate and key already exist at $OUTPUT_PATH. Skipping generation." > /dev/fd/1
+    echo "CA certificate and key already exist at $OUTPUT_PATH. Skipping generation."
     # copy the existing CA.crt/key to the workdir for use in server/client generation
     	cp "$CA_CRT" "$WORKDIR/"
 	    cp "$CA_KEY" "$WORKDIR/"
 
   elif [[ -f "$CA_KEY" || -f "$CA_CRT" ]]; then
-    echo "CA certificate WARNING: Only one of ca.key or ca.crt exists in $OUTPUT_PATH." > /dev/fd/1
-    echo "Existing files will be overwritten to ensure consistency." > /dev/fd/1
+    echo "CA certificate WARNING: Only one of ca.key or ca.crt exists in $OUTPUT_PATH."
+    echo "Existing files will be overwritten to ensure consistency."
     generate_ca
 
   else
@@ -152,7 +152,7 @@ if [ -d "$WORKDIR" ]; then
   fi
 
   # server -------------------------------
-  echo "Generating server certificate and key..." > /dev/fd/1
+  echo "Generating server certificate and key..."
 
   if [[ $INTERACTIVE_SHELL == "yes" ]]; then
     cat <<EOF > "server.conf"
@@ -244,7 +244,7 @@ EOF
   rm -f server.key.pem
 
   # client -------------------------------
-  echo "Generating client certificate and key..." > /dev/fd/1
+  echo "Generating client certificate and key..."
 
   if [[ $INTERACTIVE_SHELL == "yes" ]]; then
     cat <<EOF > "client.conf"
