@@ -24,7 +24,7 @@ WORKDIR /opt/keycloak
 
 RUN /opt/keycloak/bin/kc.sh build
 
-FROM quay.io/keycloak/keycloak:26.5
+FROM quay.io/keycloak/keycloak:26.6
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"

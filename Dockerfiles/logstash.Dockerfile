@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/ubi-minimal AS manuf-builder
+FROM registry.access.redhat.com/ubi10/ubi-minimal AS manuf-builder
 
 COPY logstash/requirements.txt /work/
 COPY scripts/malcolm_utils.py /work/
@@ -16,7 +16,7 @@ RUN microdnf -y install \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     python3 manuf-oui-parse.py -o vendor_macs.yaml
 
-FROM docker.elastic.co/logstash/logstash-oss:9.2.7
+FROM docker.elastic.co/logstash/logstash-oss:9.2.8
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
