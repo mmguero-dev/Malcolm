@@ -125,11 +125,14 @@ Vagrant.configure("2") do |config|
     if [[ -d "${DATA_DRIVE}" ]]; then
       RKE2_DATA_DIR="${DATA_DRIVE}"/rke2
       NFS_DATA_DIR="${DATA_DRIVE}"/nfs-export/malcolm
+      echo "export RKE2_DATA_DRIVE=${RKE2_DATA_DRIVE}" > /root/paths.sh
     else
       RKE2_DATA_DIR=/var/lib/rancher/rke2
       NFS_DATA_DIR=/nfs-export/malcolm
     fi
     mkdir -p "${RKE2_DATA_DIR}" "${NFS_DATA_DIR}"
+    echo "export RKE2_DATA_DIR=${RKE2_DATA_DIR}" >> /root/paths.sh
+    echo "export NFS_DATA_DIR=${NFS_DATA_DIR}" >> /root/paths.sh
 
     # Configure promiscuous NIC for capture
     cp /vagrant/vagrant_dependencies/set-promisc.service /etc/systemd/system/set-promisc.service
@@ -277,19 +280,29 @@ EOF
       sleep 20
     done
     echo "rke2-coredns-rke2-coredns is present" >&2
-    myip_string=$(hostname -I)
-    read -ra my_hostips <<< $myip_string
+
+    command -v ip >/dev/null 2>&1 && \
+      PRIMARY_IP=$(ip route get 255.255.255.255 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}') || \
+      PRIMARY_IP=$(hostname -I | awk '{print $1}')
+
     cp /vagrant/vagrant_dependencies/Corefile.yaml /tmp/Corefile.yaml
-    sed -i "s/###NODE_IP_ADDRESS###/${my_hostips[0]}/g" /tmp/Corefile.yaml
+    sed -i "s/###NODE_IP_ADDRESS###/${PRIMARY_IP}/g" /tmp/Corefile.yaml
     sed -i "s/###NODE_HOST_NAME###/$(hostname -s) ${node_name}/g" /tmp/Corefile.yaml
     kubectl replace -f /tmp/Corefile.yaml
 
     # Configure NFS
     echo "#!/usr/bin/env bash" > "$NFS_DATA_DIR"/cleanup.bash
     chmod 755 "$NFS_DATA_DIR"/cleanup.bash
-    for MALDIR in filescan zeek-logs suricata-logs config runtime-logs opensearch opensearch-backup; do
+    for MALDIR in config \
+                  filescan-logs \
+                  opensearch \
+                  opensearch-backup \
+                  pcap \
+                  runtime-logs \
+                  suricata-logs \
+                  zeek-logs; do
       mkdir -p "$NFS_DATA_DIR"/"$MALDIR"
-      echo "$NFS_DATA_DIR/$MALDIR ${my_hostips[0]}/24(rw,sync,insecure,no_root_squash,no_subtree_check,crossmnt)" >> /etc/exports
+      echo "$NFS_DATA_DIR/$MALDIR ${PRIMARY_IP}/24(rw,sync,insecure,no_root_squash,no_subtree_check,crossmnt)" >> /etc/exports
       echo "sudo rm -rf $NFS_DATA_DIR/$MALDIR/*" >> "$NFS_DATA_DIR"/cleanup.bash
     done
     exportfs -ra
@@ -310,12 +323,18 @@ EOF
     echo "Traefik ingress controller is ready" >&2
     sleep 5
 
-    command -v ip >/dev/null 2>&1 && SUGGESTED_IP=$(ip route get 255.255.255.255 2>/dev/null | grep -Po '(?<=src )(\d{1,3}.){4}' | sed "s/ //g") || SUGGESTED_IP=$(hostname -I | awk '{print $1}')
+    [[ -f /root/paths.sh ]] && source /root/paths.sh
+    command -v ip >/dev/null 2>&1 && \
+      PRIMARY_IP=$(ip route get 255.255.255.255 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src"){print $(i+1); exit}}') || \
+      PRIMARY_IP=$(hostname -I | awk '{print $1}')
+
     echo -e -n "\nTo SSH into the virtual machine, run:" >&2
     echo -e "\tvagrant ssh" >&2
     echo -e -n "To retrieve kubeconfig file, run:" >&2
-    echo -e "\tvagrant ssh -c 'cat /home/vagrant/.kube/config' >./shared/kubeconfig && sed -i 's/127.0.0.1/$SUGGESTED_IP/g' ./shared/kubeconfig\n" >&2
-    hostname -I
+    echo -e "\\tvagrant ssh -c 'cat /home/vagrant/.kube/config' >./shared/kubeconfig && sed -i 's/127.0.0.1/$PRIMARY_IP/g' ./shared/kubeconfig\\n" >&2
+    echo -e -n "To populate NFS volumes manifest, run:" >&2
+    echo -e "\\tsed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1$PRIMARY_IP/' -e 's|/malcolm/|$NFS_DATA_DIR/|g' ../01-volumes-nfs.yml.example >../01-volumes-nfs-vagrant.yml\\n" >&2
+    showmount -e | tail -n +2 | sort >&2
   SHELL
 
 end
