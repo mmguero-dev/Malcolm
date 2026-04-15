@@ -121,9 +121,15 @@ Vagrant.configure("2") do |config|
   config.vm.provision "reload"
 
   config.vm.provision "shell", inline: <<-SHELL
-    RKE2_DATA_DRIVE="$(grep -A 1 "Disk added by Vagrant" /etc/fstab | grep -v '^#' | head -n 1 | awk '{print $2}')"
-    [[ -d "${RKE2_DATA_DRIVE}" ]] && RKE2_DATA_DIR="${RKE2_DATA_DRIVE}"/rke2 || RKE2_DATA_DIR=/var/lib/rancher/rke2
-    mkdir -p "${RKE2_DATA_DIR}"
+    DATA_DRIVE="$(grep -A 1 "Disk added by Vagrant" /etc/fstab | grep -v '^#' | head -n 1 | awk '{print $2}')"
+    if [[ -d "${DATA_DRIVE}" ]]; then
+      RKE2_DATA_DIR="${DATA_DRIVE}"/rke2
+      NFS_DATA_DIR="${DATA_DRIVE}"/nfs-export/malcolm
+    else
+      RKE2_DATA_DIR=/var/lib/rancher/rke2
+      NFS_DATA_DIR=/nfs-export/malcolm
+    fi
+    mkdir -p "${RKE2_DATA_DIR}" "${NFS_DATA_DIR}"
 
     # Configure promiscuous NIC for capture
     cp /vagrant/vagrant_dependencies/set-promisc.service /etc/systemd/system/set-promisc.service
@@ -191,10 +197,10 @@ EOF
     node_name=$(kubectl get nodes -o jsonpath="{.items[0].metadata.name}")
 
     cp /vagrant/vagrant_dependencies/sc.yaml /tmp/sc.yaml
-    if [[ -d "${RKE2_DATA_DRIVE}" ]]; then
-      mkdir -p "${RKE2_DATA_DRIVE}"/local-path-provisioner
-      chmod 777 "${RKE2_DATA_DRIVE}"/local-path-provisioner
-      sed -i "s@/opt/local-path-provisioner@${RKE2_DATA_DRIVE}/local-path-provisioner@g" /tmp/sc.yaml
+    if [[ -d "${DATA_DRIVE}" ]]; then
+      mkdir -p "${DATA_DRIVE}"/local-path-provisioner
+      chmod 777 "${DATA_DRIVE}"/local-path-provisioner
+      sed -i "s@/opt/local-path-provisioner@${DATA_DRIVE}/local-path-provisioner@g" /tmp/sc.yaml
     fi
     kubectl apply -f /tmp/sc.yaml
 
@@ -279,16 +285,16 @@ EOF
     kubectl replace -f /tmp/Corefile.yaml
 
     # Configure NFS
-    echo "#!/usr/bin/env bash" > /malcolm/cleanup.bash
-    chmod 755 /malcolm/cleanup.bash
+    echo "#!/usr/bin/env bash" > "$NFS_DATA_DIR"/cleanup.bash
+    chmod 755 "$NFS_DATA_DIR"/cleanup.bash
     for MALDIR in filescan zeek-logs suricata-logs config runtime-logs opensearch opensearch-backup; do
-      mkdir -p /malcolm/"$MALDIR"
-      echo "/malcolm/$MALDIR ${my_hostips[0]}/24(rw,sync,insecure,no_root_squash,no_subtree_check,crossmnt)" >> /etc/exports
-      echo "sudo rm -rf /malcolm/$MALDIR/*" >> /malcolm/cleanup.bash
+      mkdir -p "$NFS_DATA_DIR"/"$MALDIR"
+      echo "$NFS_DATA_DIR/$MALDIR ${my_hostips[0]}/24(rw,sync,insecure,no_root_squash,no_subtree_check,crossmnt)" >> /etc/exports
+      echo "sudo rm -rf $NFS_DATA_DIR/$MALDIR/*" >> "$NFS_DATA_DIR"/cleanup.bash
     done
     exportfs -ra
-    chmod -R 777 /malcolm
-    chown -R vagrant:vagrant /malcolm
+    chmod -R 777 "$NFS_DATA_DIR"
+    chown -R vagrant:vagrant "$NFS_DATA_DIR"
 
     sleep 5
     echo "Rebooting..." >&2
