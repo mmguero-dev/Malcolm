@@ -1,0 +1,311 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+def parse_disk_size(size_str)
+  size_str = size_str.strip.upcase
+  if size_str =~ /^(\d+)(GB?)$/
+    return $1.to_i * 1024
+  elsif size_str =~ /^(\d+)(MB?)$/
+    return $1.to_i
+  else
+    raise "Unrecognized disk size format: #{size_str}"
+  end
+end
+
+unless Vagrant.has_plugin?("vagrant-reload")
+  raise 'vagrant-reload plugin is not installed!'
+end
+
+Vagrant.require_version ">= 2.3.7"
+Vagrant.configure("2") do |config|
+  vm_box = ENV['VAGRANT_BOX'] || 'bento/debian-13'
+  vm_cpus = ENV['VAGRANT_CPUS'] || '8'
+  vm_memory = ENV['VAGRANT_MEMORY'] || '24576'
+  vm_disk_size = ENV['VAGRANT_DISK_SIZE'] || '400GB'
+  vm_name = ENV['VAGRANT_NAME'] || 'Malcolm-K8S'
+  vm_gui = ENV['VAGRANT_GUI'] || 'true'
+  vm_ssd = ENV['VAGRANT_SSD'] || 'on'
+  vm_nic = ENV['VAGRANT_NIC'] || 'eth0'
+  libvirt_machine_arch = ENV['VAGRANT_LIBVIRT_MACHINE_ARCH'] || 'x86_64'
+  libvirt_machine_type = ENV['VAGRANT_LIBVIRT_MACHINE_TYPE'] || 'q35'
+  libvirt_ovmf_code = ENV['VAGRANT_LIBVIRT_LOADER'] || ''
+  libvirt_ovmf_vars = ENV['VAGRANT_LIBVIRT_NVRAM'] || ''
+  malcolm_namespace = ENV['MALCOLM_NAMESPACE'] || 'malcolm'
+  malcolm_host_port = ENV['MALCOLM_HOST_PORT'] || '8443'
+
+  config.vm.define vm_name
+  config.vm.box = vm_box
+  config.ssh.config = "ssh_config"
+
+  # NIC 1: Static IP with port forwarding
+  config.vm.network "forwarded_port", guest: 30443, host: malcolm_host_port.to_i
+
+  config.vm.provider :libvirt do |libvirt|
+    libvirt.driver = "kvm"
+    libvirt.cpus = vm_cpus.to_i
+    libvirt.memory = vm_memory.to_i
+    libvirt.machine_arch = libvirt_machine_arch
+    libvirt.machine_type = libvirt_machine_type
+    libvirt.loader = libvirt_ovmf_code if libvirt_ovmf_code && !libvirt_ovmf_code.empty?
+    libvirt.nvram  = libvirt_ovmf_vars if libvirt_ovmf_vars && !libvirt_ovmf_vars.empty?
+    libvirt.nic_model_type = "virtio"
+    libvirt.cpu_mode = 'host-model'
+    libvirt.cpu_fallback = 'forbid'
+    libvirt.channel :type  => 'unix', :target_name => 'org.qemu.guest_agent.0', :target_type => 'virtio'
+    libvirt.random :model => 'random'
+    libvirt.disk_bus = "virtio"
+    libvirt.storage :file, :size => vm_disk_size
+  end
+
+  config.vm.provider "virtualbox" do |vb, override|
+    override.vm.disk :disk, name: "extra", size: vm_disk_size
+    override.vm.network "private_network", type: "dhcp", virtualbox__intnet: "promiscuous", auto_config: false
+
+    vb.gui = (vm_gui.to_s.downcase == 'true')
+    vb.customize ['modifyvm', :id, '--memory', vm_memory]
+    vb.customize ['modifyvm', :id, '--cpus', vm_cpus]
+    vb.customize ['modifyvm', :id, '--ioapic', 'on']
+    vb.customize ['modifyvm', :id, '--accelerate3d', 'off']
+    vb.customize ['modifyvm', :id, '--graphicscontroller', 'vboxsvga']
+    vb.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 1, "--device", 0, "--nonrotational", vm_ssd]
+    vb.name = vm_name
+  end
+
+  config.vm.provider "vmware_desktop" do |vm, override|
+    override.vm.network "private_network", type: "dhcp", auto_config: false
+    vm.vmx["displayName"] = vm_name
+    vm.vmx["memsize"] = vm_memory.to_s
+    vm.vmx["numvcpus"] = vm_cpus.to_s
+    if vm_ssd.to_s.downcase == "on" || vm_ssd.to_s.downcase == "true"
+      vm.vmx["scsi0:0.virtualSSD"] = "1"
+    end
+    # TODO: vmware doesn't support adding a second disk with the official vagrant plugin
+    #   so this just resizes the primary disk. however, we're not automatically
+    #   resizing the primary disk partition in the VM so this isn't really done yet.
+    vm.vmx["disk.size"] = parse_disk_size(vm_disk_size).to_s
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    set -euo pipefail
+
+    apt-get update -y
+    apt-get install -y \
+      apache2-utils \
+      build-essential \
+      git \
+      iptables \
+      jq \
+      linux-headers-$(uname -m | sed 's/^x86_64$/amd64/') \
+      nfs-common \
+      nfs-kernel-server \
+      openssl \
+      qemu-guest-agent
+
+    ALL_DISKS=($(lsblk --nodeps --noheadings --output NAME --paths))
+    for DISK in "${ALL_DISKS[@]}"; do
+        if [[ "$(lsblk --noheadings --output MOUNTPOINT "${DISK}" | grep -vE "^$")" == "" ]] && \
+           [[ "$(lsblk --noheadings --output FSTYPE "${DISK}" | grep -vE "^$")" == "" ]]; then
+            mkfs.ext4 "${DISK}"
+            tune2fs -o journal_data_writeback "${DISK}"
+            MOUNT_POINT=/mnt/"$(basename "${DISK}")"
+            mkdir -p "${MOUNT_POINT}"
+            grep -qs "$MOUNT_POINT" /etc/fstab || echo -e "# Disk added by Vagrant\n${DISK} ${MOUNT_POINT} ext4 defaults,relatime,errors=remount-ro 0 0" >> /etc/fstab
+        fi
+    done
+    mount -a
+
+    [[ -x /sbin/rcvboxadd ]] && /sbin/rcvboxadd quicksetup all >/dev/null 2>&1 || true
+    systemctl enable qemu-guest-agent >/dev/null 2>&1 || true
+  SHELL
+
+  config.vm.provision "reload"
+
+  config.vm.provision "shell", inline: <<-SHELL
+    RKE2_DATA_DRIVE="$(grep -A 1 "Disk added by Vagrant" /etc/fstab | grep -v '^#' | head -n 1 | awk '{print $2}')"
+    [[ -d "${RKE2_DATA_DRIVE}" ]] && RKE2_DATA_DIR="${RKE2_DATA_DRIVE}"/rke2 || RKE2_DATA_DIR=/var/lib/rancher/rke2
+    mkdir -p "${RKE2_DATA_DIR}"
+
+    # Configure promiscuous NIC for capture
+    cp /vagrant/vagrant_dependencies/set-promisc.service /etc/systemd/system/set-promisc.service
+    sed -i "s/eth0/#{vm_nic}/g" /etc/systemd/system/set-promisc.service
+    systemctl enable set-promisc.service
+
+    # Setup RKE2
+    curl -fsSL https://get.rke2.io | INSTALL_RKE2_VERSION=v1.35.3+rke2r3 sh -
+    mkdir -p /etc/rancher/rke2
+    echo "cni: calico" > /etc/rancher/rke2/config.yaml
+    echo "disable: rke2-ingress-nginx" >> /etc/rancher/rke2/config.yaml
+    echo "data-dir: ${RKE2_DATA_DIR}" >> /etc/rancher/rke2/config.yaml
+
+    mkdir -p "${RKE2_DATA_DIR}"/server/manifests/
+    cat <<EOF >"${RKE2_DATA_DIR}"/server/manifests/traefik.yaml
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  repo: https://traefik.github.io/charts
+  chart: traefik
+  targetNamespace: kube-system
+  valuesContent: |-
+    service:
+      type: NodePort
+    ports:
+      web:
+        nodePort: 30080
+      websecure:
+        nodePort: 30443
+    ingressClass:
+      enabled: true
+      isDefaultClass: true
+EOF
+    cat <<EOF >"${RKE2_DATA_DIR}"/server/manifests/traefik-nginx-compat.yaml
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: nginx
+spec:
+  controller: traefik.io/ingress-controller
+EOF
+
+    systemctl start rke2-server.service
+    systemctl enable rke2-server.service
+
+    mkdir /root/.kube
+    mkdir /home/vagrant/.kube
+
+    cp /etc/rancher/rke2/rke2.yaml /home/vagrant/.kube/config
+    cp /etc/rancher/rke2/rke2.yaml /root/.kube/config
+    chmod 0600 /home/vagrant/.kube/config
+    chmod 0600 /root/.kube/config
+    touch /home/vagrant/.hushlogin
+    chown -R vagrant:vagrant /home/vagrant/.kube /home/vagrant/.hushlogin
+
+    if [[ -n "${RKE2_DATA_DIR}" ]]; then
+      find "${RKE2_DATA_DIR}"/data -type f -executable -name kubectl -print0 | head -z -n 1 | xargs -r -0 -I XXX ln -v -s "XXX" /usr/local/bin/kubectl
+    else
+      ln -v -s /var/lib/rancher/rke2/bin/kubectl /usr/local/bin/kubectl
+    fi
+    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash -
+    node_name=$(kubectl get nodes -o jsonpath="{.items[0].metadata.name}")
+
+    cp /vagrant/vagrant_dependencies/sc.yaml /tmp/sc.yaml
+    if [[ -d "${RKE2_DATA_DRIVE}" ]]; then
+      mkdir -p "${RKE2_DATA_DRIVE}"/local-path-provisioner
+      chmod 777 "${RKE2_DATA_DRIVE}"/local-path-provisioner
+      sed -i "s@/opt/local-path-provisioner@${RKE2_DATA_DRIVE}/local-path-provisioner@g" /tmp/sc.yaml
+    fi
+    kubectl apply -f /tmp/sc.yaml
+
+    LINUX_CPU=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')
+
+    YQ_VERSION="4.52.5"
+    YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_${LINUX_CPU}"
+    curl -fsSL -o /usr/local/bin/yq "${YQ_URL}"
+    chmod 755 /usr/local/bin/yq
+    chown root:root /usr/local/bin/yq
+
+    STERN_VERSION=1.33.1
+    STERN_URL="https://github.com/stern/stern/releases/download/v${STERN_VERSION}/stern_${STERN_VERSION}_linux_${LINUX_CPU}.tar.gz"
+    cd /tmp
+    mkdir -p ./stern
+    curl -L "${STERN_URL}" | tar xzf - -C ./stern
+    mv ./stern/stern /usr/local/bin/stern
+    chmod 755 /usr/local/bin/stern
+    chown root:root /usr/local/bin/stern
+    rm -rf /tmp/stern*
+
+    K9S_VERSION=0.50.18
+    K9S_URL="https://github.com/derailed/K9S/releases/download/v${K9S_VERSION}/k9s_Linux_${LINUX_CPU}.tar.gz"
+    cd /tmp
+    mkdir -p ./K9S
+    curl -L "${K9S_URL}" | tar xzf - -C ./K9S
+    mv ./K9S/k9s /usr/local/bin/k9s
+    chmod 755 /usr/local/bin/k9s
+    chown root:root /usr/local/bin/k9s
+    rm -rf /tmp/K9S*
+
+    KUBECONFORM_VERSION=0.7.0
+    KUBECONFORM_URL="https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-${LINUX_CPU}.tar.gz"
+    cd /tmp
+    mkdir -p ./KUBECONFORM
+    curl -L "${KUBECONFORM_URL}" | tar xzf - -C ./KUBECONFORM
+    mv ./KUBECONFORM/kubeconform /usr/local/bin/kubeconform
+    chmod 755 /usr/local/bin/kubeconform
+    chown root:root /usr/local/bin/kubeconform
+    rm -rf /tmp/KUBECONFORM*
+
+    grep -qxF 'alias k="kubectl"' /home/vagrant/.bashrc || cat /vagrant/vagrant_dependencies/bash_convenience >> /home/vagrant/.bashrc
+    sed -i "s/KUBESPACE=malcolm/KUBESPACE=#{malcolm_namespace}/g" /home/vagrant/.bashrc
+
+    # Load specific settings sysctl settings needed for opensearch
+    if [[ ! -f /etc/sysctl.d/performance.conf ]]; then
+      mkdir -p /etc/sysctl.d/
+      echo 'fs.file-max=2097152' > /etc/sysctl.d/performance.conf
+      echo 'fs.inotify.max_queued_events=131072' >> /etc/sysctl.d/performance.conf
+      echo 'fs.inotify.max_user_instances=8192' >> /etc/sysctl.d/performance.conf
+      echo 'fs.inotify.max_user_watches=131072' >> /etc/sysctl.d/performance.conf
+      echo 'kernel.dmesg_restrict=0' >> /etc/sysctl.d/performance.conf
+      echo 'vm.dirty_background_ratio=5' >> /etc/sysctl.d/performance.conf
+      echo 'vm.dirty_ratio=10' >> /etc/sysctl.d/performance.conf
+      echo 'vm.max_map_count=524288' >> /etc/sysctl.d/performance.conf
+      echo 'vm.swappiness=0' >> /etc/sysctl.d/performance.conf
+      sysctl -p
+    fi
+    if [[ ! -f /etc/security/limits.d/limits.conf ]]; then
+      mkdir -p /etc/security/limits.d/
+      echo '* soft nofile 65535' > /etc/security/limits.d/limits.conf
+      echo '* hard nofile 65535' >> /etc/security/limits.d/limits.conf
+      echo '* soft memlock unlimited' >> /etc/security/limits.d/limits.conf
+      echo '* hard memlock unlimited' >> /etc/security/limits.d/limits.conf
+      echo '* soft nproc 262144' >> /etc/security/limits.d/limits.conf
+      echo '* hard nproc 524288' >> /etc/security/limits.d/limits.conf
+    fi
+    sed -i 's/GRUB_CMDLINE_LINUX="[^"]*/& elevator=deadline systemd.unified_cgroup_hierarchy=1 cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem random.trust_cpu=on preempt=voluntary/' /etc/default/grub
+    update-grub
+
+    # Update coredns so that hostname will resolve to their perspective IPs by enabling the host plugin
+    echo "Waiting for rke2-coredns-rke2-coredns..." >&2
+    until kubectl get configmaps --namespace kube-system 2>/dev/null | grep -q rke2-coredns-rke2-coredns; do
+      sleep 20
+    done
+    echo "rke2-coredns-rke2-coredns is present" >&2
+    myip_string=$(hostname -I)
+    read -ra my_hostips <<< $myip_string
+    cp /vagrant/vagrant_dependencies/Corefile.yaml /tmp/Corefile.yaml
+    sed -i "s/###NODE_IP_ADDRESS###/${my_hostips[0]}/g" /tmp/Corefile.yaml
+    sed -i "s/###NODE_HOST_NAME###/$(hostname -s) ${node_name}/g" /tmp/Corefile.yaml
+    kubectl replace -f /tmp/Corefile.yaml
+
+    # Configure NFS
+    echo "#!/usr/bin/env bash" > /malcolm/cleanup.bash
+    chmod 755 /malcolm/cleanup.bash
+    for MALDIR in filescan zeek-logs suricata-logs config runtime-logs opensearch opensearch-backup; do
+      mkdir -p /malcolm/"$MALDIR"
+      echo "/malcolm/$MALDIR ${my_hostips[0]}/24(rw,sync,insecure,no_root_squash,no_subtree_check,crossmnt)" >> /etc/exports
+      echo "sudo rm -rf /malcolm/$MALDIR/*" >> /malcolm/cleanup.bash
+    done
+    exportfs -ra
+    chmod -R 777 /malcolm
+    chown -R vagrant:vagrant /malcolm
+
+    sleep 5
+    echo "Rebooting..." >&2
+  SHELL
+
+  config.vm.provision "reload"
+
+  config.vm.provision "shell", inline: <<-SHELL
+    echo "Waiting for Traefik ingress controller..." >&2
+    until kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=traefik -n kube-system --timeout=20s >/dev/null 2>&1; do
+      sleep 5
+    done
+    echo "Traefik ingress controller is ready" >&2
+    sleep 5
+
+    echo "You may now ssh to your kubernetes cluster using \"vagrant ssh\"" >&2
+    hostname -I
+  SHELL
+
+end
