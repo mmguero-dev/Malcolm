@@ -113,6 +113,7 @@ class MalcolmSource extends WISESource {
       "file.path",
       "file.size",
       "file.source",
+      "file.strings",
       "file.type",
       "file.uid",
       "host.name",
