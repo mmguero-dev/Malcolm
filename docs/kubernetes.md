@@ -3,7 +3,7 @@
 * [Deploying Malcolm with Kubernetes](#Kubernetes)
     - [System](#System)
         + [Ingress Controllers](#Ingress)
-            * [Ingress-NGINX Controller](#IngressNGINX)
+            * [Traefik Ingress Controller](#IngressTraefik)
         + [Kubernetes Provider Settings](#Limits)
 * [Configuration](#Config)
     - [OpenSearch and Elasticsearch Instances](#OpenSearchInstances)
@@ -24,172 +24,17 @@ This document assumes good working knowledge of Kubernetes (K8s). The comprehens
 
 There exist a variety of ingress controllers for Kubernetes suitable for different Kubernetes providers and environments. A few sample manifests for ingress controllers can be found in Malcolm's [`kubernetes`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/) directory, prefixed with `99-ingress-…`:
 
-* [`kubernetes/99-ingress-traefik.yml.example`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example) - an example ingress manifest for Malcolm using the [Ingress-NGINX controller for Kubernetes](https://github.com/kubernetes/ingress-nginx). The Ingress-NGINX controller has been used internally on self-hosted Kubernetes clusters during Malcolm's development and testing.
+* [`kubernetes/99-ingress-traefik.yml.example`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example) - an example ingress manifest for Malcolm using the [Traefik ingress controller for Kubernetes](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-ingress/). The Traefik controller has been used internally on self-hosted Kubernetes clusters during Malcolm's development and testing.
 * [`kubernetes/99-ingress-aws-alb.yml.example`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-aws-alb.yml.example) - an example ingress manifest for Malcolm using the [AWS Load Balancer (ALB) Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.5/#aws-load-balancer-controller). Users likely will prefer to use ALB to [deploy Malcolm on Amazon Elastic Kubernetes Service (EKS)](aws.md#AWSEKSAuto).
 
-Before [running](#Running) Malcolm, either copy one of the `99-ingress-…` files to `99-ingress.yml` as a starting point to define the ingress or define a custom manifest file and save it as `99-ingress.yml`.
+Before [running](#Running) Malcolm copy one of the `99-ingress-…` files to `99-ingress.yml` as a starting point to define the ingress, or define a custom manifest file and save it as `99-ingress.yml`.
 
-#### <a name="IngressNGINX"></a> Ingress-NGINX Controller
+#### <a name="IngressTraefik"></a> Traefik Ingress Controller
 
-Malcolm's [ingress controller manifest]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example) uses the [Ingress-NGINX controller for Kubernetes](https://github.com/kubernetes/ingress-nginx). A few Malcolm features require some customization when installing and configuring the Ingress-NGINX controller. As well as being listed below, see [kubernetes/vagrant/deploy_ingress_nginx.sh]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/deploy_ingress_nginx.sh) for an example of how to configure and apply the Ingress-NGINX controller for Kubernetes.
+In order to [use the Traefik ingress controller with Malcolm]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example), it must first be installed. Consult your Kubernetes platform's documentation for how to install Traefik on Kubernetes, or read [Getting Started with Kubernetes and Traefik¶](https://doc.traefik.io/traefik/getting-started/kubernetes/).
 
-* To forward logs from a remote instance of [Hedgehog Linux](hedgehog.md):
-    - See ["Exposing TCP and UDP services"](https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/) in the Ingress-NGINX documentation.
-    - Configure the controller to start up with the `--tcp-services-configmap=ingress-nginx/tcp-services` flag:
-        ```
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-        …
-          name: ingress-nginx-controller
-          namespace: ingress-nginx
-        spec:
-        …
-          template:
-        …
-            spec:
-              containers:
-                + args:
-                    + /nginx-ingress-controller
-                    + --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
-                    + --election-id=ingress-nginx-leader
-                    + --controller-class=k8s.io/ingress-nginx
-                    + --ingress-class=nginx
-                    + --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
-                    + --validating-webhook=:8443
-                    + --validating-webhook-certificate=/usr/local/certificates/cert
-                    + --validating-webhook-key=/usr/local/certificates/key
-                    + --enable-ssl-passthrough
-                    + --tcp-services-configmap=ingress-nginx/tcp-services
-        …
-        ```
-    - Add the appropriate ports (minimally TCP ports 5044 and 9200) to the `ingress-nginx-controller` load-balancer service definition:
-        ```
-          apiVersion: v1
-          kind: Service
-          metadata:
-          …
-            name: ingress-nginx-controller
-            namespace: ingress-nginx
-          spec:
-            externalTrafficPolicy: Local
-            ipFamilies:
-              - IPv4
-            ipFamilyPolicy: SingleStack
-            ports:
-              - appProtocol: http
-                name: http
-                port: 80
-                protocol: TCP
-                targetPort: http
-              - appProtocol: https
-                name: https
-                port: 443
-                protocol: TCP
-                targetPort: https
-              - appProtocol: tcp
-                name: lumberjack
-                port: 5044
-                targetPort: 5044
-                protocol: TCP
-              - appProtocol: tcp
-                name: tcpjson
-                port: 5045
-                targetPort: 5045
-                protocol: TCP
-          - appProtocol: tcp
-                name: opensearch
-                port: 9200
-                targetPort: 9200
-                protocol: TCP
-          …
-            type: LoadBalancer
-        ```
-    - Add the appropriate ports (minimally TCP ports 5044 and 9200) to the `ingress-nginx-controller` deployment container's definition:
-        ```
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-        …
-          name: ingress-nginx-controller
-          namespace: ingress-nginx
-        spec:
-        …
-          template:
-        …
-            spec:
-              containers:
-        …
-                  ports:
-                    * containerPort: 80
-                      name: http
-                      protocol: TCP
-                    * containerPort: 443
-                      name: https
-                      protocol: TCP
-                    * containerPort: 8443
-                      name: webhook
-                      protocol: TCP
-                    * name: lumberjack
-                      containerPort: 5044
-                      protocol: TCP
-                    * name: tcpjson
-                      containerPort: 5045
-                      protocol: TCP
-                    * name: opensearch
-                      containerPort: 9200
-                      protocol: TCP
-        …
-        ```
+* **TODO: NEED TO TALK ABOUT SETTING UP TCP PORT FORWARDING AND OTHER MODIFICATIONS TO THE 99-ingress file!!!**
 
-* To use [SSL Passthrough](https://kubernetes.github.io/ingress-nginx/user-guide/tls/) to have the Kubernetes gateway use Malcolm's TLS certificates rather than its own:
-    - Configure the controller to start up with the `--enable-ssl-passthrough` flag:
-        ```
-        apiVersion: apps/v1
-        kind: Deployment
-        metadata:
-        …
-          name: ingress-nginx-controller
-          namespace: ingress-nginx
-        spec:
-        …
-          template:
-        …
-            spec:
-              containers:
-                * args:
-                    * /nginx-ingress-controller
-                    * --publish-service=$(POD_NAMESPACE)/ingress-nginx-controller
-                    * --election-id=ingress-nginx-leader
-                    * --controller-class=k8s.io/ingress-nginx
-                    * --ingress-class=nginx
-                    * --configmap=$(POD_NAMESPACE)/ingress-nginx-controller
-                    * --validating-webhook=:8443
-                    * --validating-webhook-certificate=/usr/local/certificates/cert
-                    * --validating-webhook-key=/usr/local/certificates/key
-                    * --enable-ssl-passthrough
-                    * --tcp-services-configmap=ingress-nginx/tcp-services
-        …
-        ```
-
-    - Modify Malcolm's [ingress controller manifest]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example) to specify the `host:` value and use [host-based routing](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/):
-
-        ```
-        …
-        spec:
-          rules:
-          + host: malcolm.example.org
-            http:
-              paths:
-              + path: /
-                pathType: Prefix
-                backend:
-                  service:
-                    name: nginx-proxy
-                    port:
-                      number: 443
-        …
-        ```
 
 ### <a name="Limits"></a> Kubernetes Provider Settings
 
@@ -319,7 +164,9 @@ Malcolm's control scripts require the [official Python 3 client library for Kube
 
 # <a name="Example"></a> Deployment Example
 
-TODO:
+Here is a basic step-by-step example illustrating how to deploy Malcolm with Kubernetes. For the sake of simplicity, this example uses Vagrant: see [kubernetes/vagrant/Vagrantfile]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/Vagrantfile) to create a virtualized Kubernetes cluster with a built-in NFS server for persistent storage. To follow this example, you'll need to download or copy the contents of [kubernetes/vagrant/]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant) from the Malcolm source code to a local directory. This example also assumes users have downloaded and extracted the [release tarball]({{ site.github.repository_url }}/releases/latest) or used `./scripts/malcolm_appliance_packager.sh` to package up the files needed to run Malcolm.
+
+First, bring up the virtualized Kubernetes cluster and run the commands provided at the end of that process to retrieve the kubeconfig file, and create the [NFS PersistentVolumeClaims](#PVC) and [ingress controller](#IngressTraefik) based on the examples provided:
 
 ```bash
 $ cd kubernetes/vagrant 
@@ -350,12 +197,56 @@ $ sed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1192.168.121.239/' \
       -e 's|/malcolm/|/mnt/vdb/nfs-export/malcolm/|g' \
     ../01-volumes-nfs.yml.example > ../01-volumes-nfs-vagrant.yml 
 
+$ cp ../99-ingress-traefik.yml.example ../99-ingress.yml.example
+
 $ KUBECONFIG=kubeconfig kubectl get nodes
 NAME        STATUS   ROLES                AGE     VERSION
 debian-13   Ready    control-plane,etcd   6m58s   v1.35.3+rke2r3
 
-$ cd ../../
+$ cd ../..
+```
 
+Next, ensure the Malcolm source code (from the release tarball or git repository working copy) is present:
+
+
+```bash
+$ ls -l
+total 45,056
+drwxr-xr-x 2 user user  4,096 Apr 24 14:35 config
+drwxr-xr-x 3 user user     19 Apr 24 14:35 filebeat
+drwxr-xr-x 2 user user      6 Apr 24 14:35 htadmin
+drwxr-xr-x 3 user user  4,096 Apr 24 14:39 kubernetes
+drwxr-xr-x 4 user user     31 Apr 24 14:35 logstash
+drwxr-xr-x 6 user user     62 Apr 24 14:35 netbox
+drwxr-xr-x 4 user user     35 Apr 24 14:35 nginx
+drwxr-xr-x 3 user user     19 Apr 24 14:35 opensearch
+drwxr-xr-x 2 user user      6 Apr 24 14:35 opensearch-backup
+drwxr-xr-x 4 user user     37 Apr 24 14:35 pcap
+drwxr-xr-x 2 user user  4,096 Apr 24 14:35 scripts
+drwxr-xr-x 3 user user     19 Apr 24 14:35 suricata
+drwxr-xr-x 3 user user     18 Apr 24 14:35 suricata-logs
+drwxr-xr-x 3 user user     19 Apr 24 14:35 yara
+drwxr-xr-x 3 user user     19 Apr 24 14:35 zeek
+drwxr-xr-x 7 user user     85 Apr 24 14:35 zeek-logs
+-rw-r--r-- 1 user user 18,761 Apr 24 14:35 docker-compose.yml
+-rw-r--r-- 1 user user  3,453 Apr 24 14:35 README.md
+```
+
+Even before starting Malcolm, the `status` script can verify communication with the Kubernetes cluster:
+
+```bash
+$ ./scripts/status -f ./kubernetes/vagrant/kubeconfig 
+Node Name | Hostname  | IP              | Provider ID | Instance Type | Total CPU | CPU Usage | Percent CPU | Total Memory | Memory Usage | Total Storage | Current Pods | 
+----------+-----------+-----------------+-------------+---------------+-----------+-----------+-------------+--------------+--------------+---------------+--------------|
+debian-13 | debian-13 | 192.168.121.239 | debian-13   | rke2          | 8000m     | 942.81m   | 11.79%      | 31.35Gi      | 2.31Gi       | 58.8Gi        | 44           | 
+
+Pod Name | State | Pod IP | Pod Kind | Worker Node | CPU Usage | Memory Usage | Container Name:Restarts | Container Image | 
+---------+-------+--------+----------+-------------+-----------+--------------+-------------------------+-----------------|
+```
+
+Run `./scripts/configure` to configure Malcolm. For an in-depth treatment of the configuration options, see the **Malcolm Configuration Menu Items** section in **[End-to-end Malcolm and Hedgehog Linux ISO Installation](malcolm-hedgehog-e2e-iso-install.md#MalcolmConfigItems)**.:
+
+```
 $ ./scripts/configure -f ./kubernetes/vagrant/kubeconfig
 
 --- Malcolm Configuration Menu ---
@@ -460,161 +351,13 @@ Capture Interface(s)                              : eth0
 
 Proceed using the above configuration? (y / N): y
 
-$ ./scripts/auth_setup -f ./kubernetes/vagrant/kubeconfig
-…
-
-$ ./scripts/status -f ./kubernetes/vagrant/kubeconfig 
-Node Name | Hostname  | IP              | Provider ID | Instance Type | Total CPU | CPU Usage | Percent CPU | Total Memory | Memory Usage | Total Storage | Current Pods | 
-----------+-----------+-----------------+-------------+---------------+-----------+-----------+-------------+--------------+--------------+---------------+--------------|
-debian-13 | debian-13 | 192.168.121.239 | debian-13   | rke2          | 8000m     | 942.81m   | 11.79%      | 31.35Gi      | 2.31Gi       | 58.8Gi        | 44           | 
-
-Pod Name | State | Pod IP | Pod Kind | Worker Node | CPU Usage | Memory Usage | Container Name:Restarts | Container Image | 
----------+-------+--------+----------+-------------+-----------+--------------+-------------------------+-----------------|
-
-$ TODO? ingress?
-
-```
-
-
-Here is a basic step-by-step example illustrating how to deploy Malcolm with Kubernetes. For the sake of simplicity, this example uses Vagrant: see [kubernetes/vagrant/Vagrantfile]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/Vagrantfile) to create a virtualized Kubernetes cluster with one control plane node and two worker nodes or see [kubernetes/vagrant/Vagrantfile_NFS_Server.example]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/Vagrantfile_NFS_Server.example) to include an NFS server with the cluster described above. It assumes users have downloaded and extracted the [release tarball]({{ site.github.repository_url }}/releases/latest) or used `./scripts/malcolm_appliance_packager.sh` to package up the files needed to run Malcolm.
-
-```
-$ ls -l
-total 45,056
-drwxr-xr-x 2 user user  4,096 Apr 24 14:35 config
-drwxr-xr-x 3 user user     19 Apr 24 14:35 filebeat
-drwxr-xr-x 2 user user      6 Apr 24 14:35 htadmin
-drwxr-xr-x 3 user user  4,096 Apr 24 14:39 kubernetes
-drwxr-xr-x 4 user user     31 Apr 24 14:35 logstash
-drwxr-xr-x 6 user user     62 Apr 24 14:35 netbox
-drwxr-xr-x 4 user user     35 Apr 24 14:35 nginx
-drwxr-xr-x 3 user user     19 Apr 24 14:35 opensearch
-drwxr-xr-x 2 user user      6 Apr 24 14:35 opensearch-backup
-drwxr-xr-x 4 user user     37 Apr 24 14:35 pcap
-drwxr-xr-x 2 user user  4,096 Apr 24 14:35 scripts
-drwxr-xr-x 3 user user     19 Apr 24 14:35 suricata
-drwxr-xr-x 3 user user     18 Apr 24 14:35 suricata-logs
-drwxr-xr-x 3 user user     19 Apr 24 14:35 yara
-drwxr-xr-x 3 user user     19 Apr 24 14:35 zeek
-drwxr-xr-x 7 user user     85 Apr 24 14:35 zeek-logs
--rw-r--r-- 1 user user 18,761 Apr 24 14:35 docker-compose.yml
--rw-r--r-- 1 user user  3,453 Apr 24 14:35 README.md
-```
-
-Even before starting Malcolm, the `status` script can verify communication with the Kubernetes cluster:
-
-```
-./scripts/status -f /path/to/kubeconfig.yml
-Node Name        | Hostname         | IP              | Provider ID      | Instance Type | Total CPU | CPU Usage | Percent CPU | Total Memory | Memory Usage | Total Storage | Current Pods |
------------------+------------------+-----------------+------------------+---------------+-----------+-----------+-------------+--------------+--------------+---------------+--------------|
-malcolm-462510   | malcolm-462510   | 192.168.122.37  | malcolm-462510   | k3s           | 16000m    | 17.57m    | 0.11%       | 23.49Gi      | 476.8Mi      | 58.37Gi       | 0            |
-malcolm-463728   | malcolm-463728   | 192.168.122.40  | malcolm-463728   | k3s           | 24000m    | 439.55m   | 1.83%       | 94.33Gi      | 6.18Gi       | 109.44Gi      | 0            |
-malcolm-651135   | malcolm-651135   | 192.168.122.226 | malcolm-651135   | k3s           | 48000m    | 3525.39m  | 7.34%       | 62.79Gi      | 7.58Gi       | 91.11Gi       | 0            |
-…
-
-Pod Name                                      | State   | Pod IP       | Pod Kind   | Worker Node      | CPU Usage | Memory Usage | Container Name:Restarts       | Container Image                                        |
-----------------------------------------------+---------+--------------+------------+------------------+-----------+--------------+-------------------------------+--------------------------------------------------------|
-```
-
-Run `./scripts/configure` to configure Malcolm. For an in-depth treatment of the configuration options, see the **Malcolm Configuration Menu Items** section in **[End-to-end Malcolm and Hedgehog Linux ISO Installation](malcolm-hedgehog-e2e-iso-install.md#MalcolmConfigItems)**.:
-
-```
---- Malcolm Configuration Menu ---
-Select an item number to configure, or an action:
-├── 1. Container Runtime (current: kubernetes)
-│   ├── 2. Process Group ID (current: 1000)
-│   └── 3. Process User ID (current: 1000)
-├── 4. Run Profile (current: malcolm)
-│   ├── 5. Dark Mode for Dashboards (current: Yes)
-│   ├── 6. Extra Tags (current: [])
-│   ├── 7. Forward Logs to Remote Secondary Store (current: No)
-│   ├── 8. Logstash Memory (current: 4g)
-│   ├── 9. Logstash Workers (current: 3)
-│   ├── 10. OpenSearch Memory (current: 31g)
-│   └── 11. Primary Document Store (current: opensearch-local)
-├── 12. Require HTTPS Connections (current: Yes)
-├── 13. IPv4 for nginx Resolver Directive (current: Yes)
-├── 14. IPv6 for nginx Resolver Directive (current: No)
-├── 15. Clean Up Artifacts (current: Yes)
-│   ├── 16. Arkime PCAP Management (current: Yes)
-│   │   └── 17. Delete PCAP Threshold (current: 5%)
-│   └── 18. Delete Old Indices (current: Yes)
-│       ├── 19. Index Prune Threshold (current: 500G)
-│       └── 20. Prune Indices by Name (current: No)
-├── 21. Enable Arkime Index Management (current: No)
-├── 22. Enable Arkime Analysis (current: Yes)
-│   ├── 23. Allow Arkime WISE Configuration (current: No)
-│   └── 24. Enable Arkime WISE (current: Yes)
-├── 25. Enable Suricata Analysis (current: Yes)
-│   └── 26. Enable Suricata Rule Updates (current: Yes)
-├── 27. Enable Zeek Analysis (current: Yes)
-│   ├── 28. Enable Zeek ICS/OT Analyzers (current: Yes)
-│   │   └── 29. Enable Zeek ICS "Best Guess" (current: Yes)
-│   ├── 30. File Extraction Mode (current: interesting)
-│   │   ├── 31. Extracted File Percent Threshold (current: 0)
-│   │   ├── 32. Extracted File Size Threshold (current: 50G)
-│   │   ├── 33. File Preservation (current: quarantined)
-│   │   ├── 34. File scanning workers (current: 1)
-│   │   ├── 35. Preserved Files HTTP Server (current: Yes)
-│   │   │   ├── 36. Downloaded Preserved File Password (current: ********)
-│   │   │   └── 37. Zip Downloads (current: Yes)
-│   │   ├── 38. Scan with Strelka (current: Yes)
-│   │   └── 39. Update Scan Rules (current: Yes)
-│   └── 40. Use Threat Feeds for Zeek Intelligence (current: Yes)
-│       ├── 41. Cron Expression for Threat Feed Updates (current: 0 0 * * *)
-│       ├── 42. Intel::item_expiration Timeout (current: -1min)
-│       ├── 43. Pull Threat Intelligence Feeds on Startup (current: Yes)
-│       ├── 44. Threat Indicator "Since" Period (current: 24 hours ago)
-│       ├── 45. Use Intel on Live Traffic (current: Yes)
-│       └── 46. Use Intel on Uploaded PCAP (current: Yes)
-├── 47. Enrich with Reverse DNS Lookups (current: No)
-├── 48. Enrich with Manufacturer (OUI) Lookups (current: Yes)
-├── 49. Enrich with Frequency Scoring (current: Yes)
-├── 50. NetBox Mode (current: Local)
-│   ├── 51. Auto-Create Subnet Prefixes (current: Yes)
-│   ├── 52. Auto-Populate NetBox Inventory (current: Yes)
-│   ├── 53. NetBox Enrichment (current: Yes)
-│   ├── 54. NetBox IP Autopopulation Filter (current: empty)
-│   └── 55. NetBox Site Name (current: Malcolm)
-├── 56. Expose Malcolm Service Ports (current: Customize)
-│   ├── 57. Expose Filebeat TCP (current: Yes)
-│   │   └── 58. Use Filebeat TCP Listener Defaults (current: Yes)
-│   ├── 59. Syslog TCP Port (current: 514)
-│   └── 60. Syslog UDP Port (current: 514)
-├── 61. Network Traffic Node Name (current: malcolm-cluster)
-└── 62. Capture Live Network Traffic (current: No)
-
---- Actions ---
-  s. Save and Continue
-  w. Where Is...? (search for settings)
-  d. Debug menu structure
-  x. Exit Installer
----------------------------------
-
-Enter item number or action: s
-
-…
-
-============================================================
-FINAL CONFIGURATION SUMMARY
-============================================================
-Configuration Only                                : Yes
-Configuration Directory                           : /home/user/Malcolm/config
-Container Runtime                                 : kubernetes
-Run Profile                                       : malcolm
-Process UID/GID                                   : 1000/1000
-HTTPS/SSL                                         : Yes
-Node Name                                         : malcolm-cluster
-============================================================
-
-Proceed with Malcolm installation using the above configuration? (y / N): y
-
 ```
 
 Run `./scripts/auth_setup` and answer the questions to [configure authentication](authsetup.md#AuthSetup):
 
 ```
-$ ./scripts/auth_setup -f /path/to/kubeconfig.yaml
+$ ./scripts/auth_setup -f ./kubernetes/vagrant/kubeconfig
+…
 
 1: all - Configure all authentication-related settings
 2: method - Select authentication method (currently "basic")
@@ -669,53 +412,6 @@ Store password hash secret for Arkime viewer cluster? (y / N): n
 Transfer self-signed client certificates to a remote log forwarder? (y / N): n
 ```
 
-Next, copy `./kubernetes/01-volumes-vagrant-nfs-server.yml.example` to `./kubernetes/01-volumes.yml` (when using the Vagrant provided NFS server) or copy `./kubernetes/01-volumes-nfs.yml.example` to `./kubernetes/01-volumes.yml` and edit that file to define the [required PersistentVolumeClaims](#PVC) there.
-
-```
-$ cp -v ./kubernetes/01-volumes-nfs.yml.example ./kubernetes/01-volumes.yml
-'./kubernetes/01-volumes-nfs.yml.example' -> './kubernetes/01-volumes.yml'
-
-$ vi ./kubernetes/01-volumes.yml
-…
-
-$ grep -A 3 PersistentVolumeClaim ./kubernetes/01-volumes.yml
-kind: PersistentVolumeClaim
-metadata:
-  name: pcap-claim
-  namespace: malcolm
---
-kind: PersistentVolumeClaim
-metadata:
-  name: zeek-claim
-  namespace: malcolm
---
-kind: PersistentVolumeClaim
-metadata:
-  name: suricata-claim
-  namespace: malcolm
---
-kind: PersistentVolumeClaim
-metadata:
-  name: config-claim
-  namespace: malcolm
---
-kind: PersistentVolumeClaim
-metadata:
-  name: runtime-logs-claim
-  namespace: malcolm
---
-kind: PersistentVolumeClaim
-metadata:
-  name: opensearch-claim
-  namespace: malcolm
---
-kind: PersistentVolumeClaim
-metadata:
-  name: opensearch-backup-claim
-  namespace: malcolm
-
-```
-
 Start Malcolm:
 
 ```
@@ -725,7 +421,7 @@ logstash | [2026-01-16T17:58:33,274][INFO ][logstash.agent           ] Pipelines
 
 Started Malcolm
 
-Malcolm services can be accessed at https://192.168.56.10/
+Malcolm services can be accessed at https://192.168.121.239/
 ------------------------------------------------------------------------------
 ```
 
@@ -734,52 +430,35 @@ Check the status of the Malcolm deployment with `./scripts/status`:
 ```
 $ ./scripts/status -f /path/to/kubeconfig.yaml
 
-Node Name        | Hostname         | IP              | Provider ID      | Instance Type | Total CPU | CPU Usage | Percent CPU | Total Memory | Memory Usage | Total Storage | Current Pods |
------------------+------------------+-----------------+------------------+---------------+-----------+-----------+-------------+--------------+--------------+---------------+--------------|
-malcolm-462510   | malcolm-462510   | 192.168.122.37  | malcolm-462510   | k3s           | 16000m    | 17.57m    | 0.11%       | 23.49Gi      | 476.8Mi      | 58.37Gi       | 1            |
-malcolm-463728   | malcolm-463728   | 192.168.122.40  | malcolm-463728   | k3s           | 24000m    | 439.55m   | 1.83%       | 94.33Gi      | 6.18Gi       | 109.44Gi      | 6            |
-malcolm-651135   | malcolm-651135   | 192.168.122.226 | malcolm-651135   | k3s           | 48000m    | 3525.39m  | 7.34%       | 62.79Gi      | 7.58Gi       | 91.11Gi       | 10           |
-malcolm-651420   | malcolm-651420   | 192.168.122.30  | malcolm-651420   | k3s           | 40000m    | 384.83m   | 0.96%       | 125.79Gi     | 20.68Gi      | 91.11Gi       | 4            |
-malcolm-651490   | malcolm-651490   | 192.168.122.227 | malcolm-651490   | k3s           | 32000m    | 620.71m   | 1.94%       | 47.04Gi      | 2.88Gi       | 182.28Gi      | 5            |
-malcolm-651492   | malcolm-651492   | 192.168.122.44  | malcolm-651492   | k3s           | 32000m    | 669.12m   | 2.09%       | 62.79Gi      | 2.09Gi       | 109.44Gi      | 6            |
-malcolm-651493   | malcolm-651493   | 192.168.122.222 | malcolm-651493   | k3s           | 32000m    | 3609.89m  | 11.28%      | 62.79Gi      | 6.22Gi       | 182.28Gi      | 6            |
-malcolm-651525   | malcolm-651525   | 192.168.122.221 | malcolm-651525   | k3s           | 16000m    | 122.93m   | 0.77%       | 46.83Gi      | 1.96Gi       | 182.28Gi      | 3            |
-malcolm-655079   | malcolm-655079   | 192.168.122.32  | malcolm-655079   | k3s           | 24000m    | 237.0m    | 0.99%       | 94.32Gi      | 7.49Gi       | 109.44Gi      | 4            |
-malcolm-655103   | malcolm-655103   | 192.168.122.36  | malcolm-655103   | k3s           | 24000m    | 222.27m   | 0.93%       | 94.32Gi      | 1.24Gi       | 109.44Gi      | 4            |
-malcolm-655119   | malcolm-655119   | 192.168.122.43  | malcolm-655119   | k3s           | 24000m    | 1098.66m  | 4.58%       | 94.32Gi      | 18.92Gi      | 109.44Gi      | 5            |
-malcolm-655152   | malcolm-655152   | 192.168.122.46  | malcolm-655152   | k3s           | 12000m    | 67.06m    | 0.56%       | 46.82Gi      | 689.14Mi     | 3665.02Gi     | 2            |
-malcolm-655153   | malcolm-655153   | 192.168.122.34  | malcolm-655153   | k3s           | 12000m    | 85.8m     | 0.71%       | 46.82Gi      | 1.05Gi       | 455.95Gi      | 4            |
-malcolm-655154   | malcolm-655154   | 192.168.122.38  | malcolm-655154   | k3s           | 12000m    | 76.03m    | 0.63%       | 46.82Gi      | 2.01Gi       | 109.44Gi      | 3            |
-malcolm-655155   | malcolm-655155   | 192.168.122.42  | malcolm-655155   | k3s           | 12000m    | 40.7m     | 0.34%       | 46.82Gi      | 698.82Mi     | 109.44Gi      | 3            |
-malcolm-655160   | malcolm-655160   | 192.168.122.35  | malcolm-655160   | k3s           | 12000m    | 22.76m    | 0.19%       | 46.82Gi      | 582.74Mi     | 109.44Gi      | 2            |
-malcolm-673112   | malcolm-673112   | 192.168.122.41  | malcolm-673112   | k3s           | 12000m    | 24.96m    | 0.21%       | 30.72Gi      | 532.43Mi     | 455.95Gi      | 2            |
-malcolm-681270   | malcolm-681270   | 192.168.122.47  | malcolm-681270   | k3s           | 12000m    | 70.45m    | 0.59%       | 30.72Gi      | 596.16Mi     | 455.95Gi      | 2            |
+Node Name | Hostname  | IP              | Provider ID | Instance Type | Total CPU | CPU Usage | Percent CPU | Total Memory | Memory Usage | Total Storage | Current Pods | 
+----------+-----------+-----------------+-------------+---------------+-----------+-----------+-------------+--------------+--------------+---------------+--------------|
+debian-13 | debian-13 | 192.168.121.239 | debian-13   | rke2          | 8000m     | 942.81m   | 11.79%      | 31.35Gi      | 2.31Gi       | 58.8Gi        | 44           | 
 
 Pod Name                                      | State   | Pod IP       | Pod Kind   | Worker Node      | CPU Usage | Memory Usage | Container Name:Restarts       | Container Image                                    |
 ----------------------------------------------+---------+--------------+------------+------------------+-----------+--------------+-------------------------------+----------------------------------------------------|
-api-deployment-7fff7bf884-84prz               | Running | 10.42.2.226  | ReplicaSet | malcolm-651525   | 0.12m     | 68.89Mi      | api-container:0               | ghcr.io/idaholab/malcolm/api:{{ site.malcolm.version }}                   |
-arkime-deployment-68946dffcb-fx8nl            | Running | 10.42.13.42  | ReplicaSet | malcolm-651490   | 309.86m   | 1.01Gi       | arkime-container:0            | ghcr.io/idaholab/malcolm/arkime:{{ site.malcolm.version }}                |
-dashboards-deployment-6456f67fb4-jhnqf        | Running | 10.42.11.184 | ReplicaSet | malcolm-463728   | 85.4m     | 215.95Mi     | dashboards-container:0        | ghcr.io/idaholab/malcolm/dashboards:{{ site.malcolm.version }}            |
-dashboards-helper-deployment-7d5d8c5ddf-tphbx | Running | 10.42.17.23  | ReplicaSet | malcolm-655152   | 8.56m     | 47.26Mi      | dashboards-helper-container:0 | ghcr.io/idaholab/malcolm/dashboards-helper:{{ site.malcolm.version }}     |
-filebeat-deployment-855578fd56-wxz5t          | Running | 10.42.16.223 | ReplicaSet | malcolm-651135   | 5.77m     | 278.45Mi     | filebeat-container:0          | ghcr.io/idaholab/malcolm/filebeat-oss:{{ site.malcolm.version }}          |
-filescan-deployment-7b675999dd-m7sx8          | Running | 10.42.2.227  | ReplicaSet | malcolm-651525   | 4.32m     | 204.33Mi     | filescan-container:0          | ghcr.io/idaholab/malcolm/filescan:{{ site.malcolm.version }}              |
-freq-deployment-5dbf7fd958-xdm4j              | Running | 10.42.9.23   | ReplicaSet | malcolm-655155   | 1.13m     | 36.59Mi      | freq-container:0              | ghcr.io/idaholab/malcolm/freq:{{ site.malcolm.version }}                  |
-htadmin-deployment-6779876475-h5wwh           | Running | 10.42.10.48  | ReplicaSet | malcolm-651493   | 0.26m     | 43.36Mi      | htadmin-container:0           | ghcr.io/idaholab/malcolm/htadmin:{{ site.malcolm.version }}               |
-keycloak-deployment-7fd4bdff5c-fkzxs          | Running | 10.42.9.24   | ReplicaSet | malcolm-655155   | 0.03m     | 11.07Mi      | keycloak-container:0          | ghcr.io/idaholab/malcolm/keycloak:{{ site.malcolm.version }}              |
-logstash-deployment-5bbcc5b775-bjk59          | Running | 10.42.11.185 | ReplicaSet | malcolm-463728   | 68.84m    | 3.97Gi       | logstash-container:0          | ghcr.io/idaholab/malcolm/logstash-oss:{{ site.malcolm.version }}          |
-netbox-deployment-987476c89-6vznb             | Running | 10.42.16.224 | ReplicaSet | malcolm-651135   | 428.2m    | 1.09Gi       | netbox-container:0            | ghcr.io/idaholab/malcolm/netbox:{{ site.malcolm.version }}                |
-nginx-proxy-deployment-6d9b9858fd-q9w5z       | Running | 10.42.3.140  | ReplicaSet | malcolm-655079   | 13.07m    | 25.78Mi      | nginx-proxy-container:0       | ghcr.io/idaholab/malcolm/nginx-proxy:{{ site.malcolm.version }}           |
-opensearch-deployment-6c546f45b9-n4czl        | Running | 10.42.7.165  | ReplicaSet | malcolm-655119   | 887.36m   | 17.8Gi       | opensearch-container:0        | ghcr.io/idaholab/malcolm/opensearch:{{ site.malcolm.version }}            |
-pcap-monitor-deployment-66dbd9c68f-22tkm      | Running | 10.42.10.46  | ReplicaSet | malcolm-651493   | 183.31m   | 867.33Mi     | pcap-monitor-container:0      | ghcr.io/idaholab/malcolm/pcap-monitor:{{ site.malcolm.version }}          |
-postgres-deployment-5c78f478fb-nl4zn          | Running | 10.42.15.210 | ReplicaSet | malcolm-651492   | 472.87m   | 85.33Mi      | postgres-container:0          | ghcr.io/idaholab/malcolm/postgresql:{{ site.malcolm.version }}            |
-valkey-cache-deployment-5c776698fc-dvbp2       | Running | 10.42.5.20   | ReplicaSet | malcolm-655154   | 9.58m     | 10.18Mi      | valkey-cache-container:0      | ghcr.io/idaholab/malcolm/valkey:{{ site.malcolm.version }}                |
-valkey-deployment-75486865c5-4xscs            | Running | 10.42.15.209 | ReplicaSet | malcolm-651492   | 9.66m     | 10.04Mi      | valkey-container:0            | ghcr.io/idaholab/malcolm/valkey:{{ site.malcolm.version }}                |
-strelka-backend-deployment-6dcf7ccdcc-xjbxx   | Running | 10.42.5.21   | ReplicaSet | malcolm-655154   | 4.72m     | 1.18Gi       | strelka-backend-container:0   | ghcr.io/idaholab/malcolm/strelka-backend:{{ site.malcolm.version }}       |
-strelka-frontend-deployment-6988c75f8c-gmf8c  | Running | 10.42.6.23   | ReplicaSet | malcolm-655160   | 0.03m     | 8.02Mi       | strelka-frontend-container:0  | ghcr.io/idaholab/malcolm/strelka-frontend:{{ site.malcolm.version }}      |
-strelka-manager-deployment-f578ccc7-2vw7l     | Running | 10.42.12.15  | ReplicaSet | malcolm-681270   | 2.41m     | 7.57Mi       | strelka-manager-container:0   | ghcr.io/idaholab/malcolm/strelka-manager:{{ site.malcolm.version }}       |
-suricata-offline-deployment-86d4796bf7-wpzq5  | Running | 10.42.16.222 | ReplicaSet | malcolm-651135   | 2882.76m  | 4.11Gi       | suricata-offline-container:0  | ghcr.io/idaholab/malcolm/suricata:{{ site.malcolm.version }}              |
-upload-deployment-7d8886d86b-qnncd            | Running | 10.42.4.174  | ReplicaSet | malcolm-655103   | 78.27m    | 226.11Mi     | upload-container:0            | ghcr.io/idaholab/malcolm/file-upload:{{ site.malcolm.version }}           |
-zeek-offline-deployment-fb7847b9b-jvtcj       | Running | 10.42.10.47  | ReplicaSet | malcolm-651493   | 3016.28m  | 3.14Gi       | zeek-offline-container:0      | ghcr.io/idaholab/malcolm/zeek:{{ site.malcolm.version }}                  |
+api-deployment-7fff7bf884-84prz               | Running | 10.42.2.226  | ReplicaSet | debian-13   | 0.12m     | 68.89Mi      | api-container:0               | ghcr.io/idaholab/malcolm/api:{{ site.malcolm.version }}                   |
+arkime-deployment-68946dffcb-fx8nl            | Running | 10.42.13.42  | ReplicaSet | debian-13   | 309.86m   | 1.01Gi       | arkime-container:0            | ghcr.io/idaholab/malcolm/arkime:{{ site.malcolm.version }}                |
+dashboards-deployment-6456f67fb4-jhnqf        | Running | 10.42.11.184 | ReplicaSet | debian-13   | 85.4m     | 215.95Mi     | dashboards-container:0        | ghcr.io/idaholab/malcolm/dashboards:{{ site.malcolm.version }}            |
+dashboards-helper-deployment-7d5d8c5ddf-tphbx | Running | 10.42.17.23  | ReplicaSet | debian-13   | 8.56m     | 47.26Mi      | dashboards-helper-container:0 | ghcr.io/idaholab/malcolm/dashboards-helper:{{ site.malcolm.version }}     |
+filebeat-deployment-855578fd56-wxz5t          | Running | 10.42.16.223 | ReplicaSet | debian-13   | 5.77m     | 278.45Mi     | filebeat-container:0          | ghcr.io/idaholab/malcolm/filebeat-oss:{{ site.malcolm.version }}          |
+filescan-deployment-7b675999dd-m7sx8          | Running | 10.42.2.227  | ReplicaSet | debian-13   | 4.32m     | 204.33Mi     | filescan-container:0          | ghcr.io/idaholab/malcolm/filescan:{{ site.malcolm.version }}              |
+freq-deployment-5dbf7fd958-xdm4j              | Running | 10.42.9.23   | ReplicaSet | debian-13   | 1.13m     | 36.59Mi      | freq-container:0              | ghcr.io/idaholab/malcolm/freq:{{ site.malcolm.version }}                  |
+htadmin-deployment-6779876475-h5wwh           | Running | 10.42.10.48  | ReplicaSet | debian-13   | 0.26m     | 43.36Mi      | htadmin-container:0           | ghcr.io/idaholab/malcolm/htadmin:{{ site.malcolm.version }}               |
+keycloak-deployment-7fd4bdff5c-fkzxs          | Running | 10.42.9.24   | ReplicaSet | debian-13   | 0.03m     | 11.07Mi      | keycloak-container:0          | ghcr.io/idaholab/malcolm/keycloak:{{ site.malcolm.version }}              |
+logstash-deployment-5bbcc5b775-bjk59          | Running | 10.42.11.185 | ReplicaSet | debian-13   | 68.84m    | 3.97Gi       | logstash-container:0          | ghcr.io/idaholab/malcolm/logstash-oss:{{ site.malcolm.version }}          |
+netbox-deployment-987476c89-6vznb             | Running | 10.42.16.224 | ReplicaSet | debian-13   | 428.2m    | 1.09Gi       | netbox-container:0            | ghcr.io/idaholab/malcolm/netbox:{{ site.malcolm.version }}                |
+nginx-proxy-deployment-6d9b9858fd-q9w5z       | Running | 10.42.3.140  | ReplicaSet | debian-13   | 13.07m    | 25.78Mi      | nginx-proxy-container:0       | ghcr.io/idaholab/malcolm/nginx-proxy:{{ site.malcolm.version }}           |
+opensearch-deployment-6c546f45b9-n4czl        | Running | 10.42.7.165  | ReplicaSet | debian-13   | 887.36m   | 17.8Gi       | opensearch-container:0        | ghcr.io/idaholab/malcolm/opensearch:{{ site.malcolm.version }}            |
+pcap-monitor-deployment-66dbd9c68f-22tkm      | Running | 10.42.10.46  | ReplicaSet | debian-13   | 183.31m   | 867.33Mi     | pcap-monitor-container:0      | ghcr.io/idaholab/malcolm/pcap-monitor:{{ site.malcolm.version }}          |
+postgres-deployment-5c78f478fb-nl4zn          | Running | 10.42.15.210 | ReplicaSet | debian-13   | 472.87m   | 85.33Mi      | postgres-container:0          | ghcr.io/idaholab/malcolm/postgresql:{{ site.malcolm.version }}            |
+valkey-cache-deployment-5c776698fc-dvbp2      | Running | 10.42.5.20   | ReplicaSet | debian-13   | 9.58m     | 10.18Mi      | valkey-cache-container:0      | ghcr.io/idaholab/malcolm/valkey:{{ site.malcolm.version }}                |
+valkey-deployment-75486865c5-4xscs            | Running | 10.42.15.209 | ReplicaSet | debian-13   | 9.66m     | 10.04Mi      | valkey-container:0            | ghcr.io/idaholab/malcolm/valkey:{{ site.malcolm.version }}                |
+strelka-backend-deployment-6dcf7ccdcc-xjbxx   | Running | 10.42.5.21   | ReplicaSet | debian-13   | 4.72m     | 1.18Gi       | strelka-backend-container:0   | ghcr.io/idaholab/malcolm/strelka-backend:{{ site.malcolm.version }}       |
+strelka-frontend-deployment-6988c75f8c-gmf8c  | Running | 10.42.6.23   | ReplicaSet | debian-13   | 0.03m     | 8.02Mi       | strelka-frontend-container:0  | ghcr.io/idaholab/malcolm/strelka-frontend:{{ site.malcolm.version }}      |
+strelka-manager-deployment-f578ccc7-2vw7l     | Running | 10.42.12.15  | ReplicaSet | debian-13   | 2.41m     | 7.57Mi       | strelka-manager-container:0   | ghcr.io/idaholab/malcolm/strelka-manager:{{ site.malcolm.version }}       |
+suricata-offline-deployment-86d4796bf7-wpzq5  | Running | 10.42.16.222 | ReplicaSet | debian-13   | 2882.76m  | 4.11Gi       | suricata-offline-container:0  | ghcr.io/idaholab/malcolm/suricata:{{ site.malcolm.version }}              |
+upload-deployment-7d8886d86b-qnncd            | Running | 10.42.4.174  | ReplicaSet | debian-13   | 78.27m    | 226.11Mi     | upload-container:0            | ghcr.io/idaholab/malcolm/file-upload:{{ site.malcolm.version }}           |
+zeek-offline-deployment-fb7847b9b-jvtcj       | Running | 10.42.10.47  | ReplicaSet | debian-13   | 3016.28m  | 3.14Gi       | zeek-offline-container:0      | ghcr.io/idaholab/malcolm/zeek:{{ site.malcolm.version }}                  |
 ```
 
 View container logs for the Malcolm deployment with `./scripts/logs` (if **[stern](https://github.com/stern/stern)** present in `$PATH`):
