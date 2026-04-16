@@ -319,6 +319,162 @@ Malcolm's control scripts require the [official Python 3 client library for Kube
 
 # <a name="Example"></a> Deployment Example
 
+TODO:
+
+```bash
+$ cd kubernetes/vagrant 
+
+$ vagrant up
+Bringing machine 'Malcolm-K8S' up with 'libvirt' provider...
+…
+Malcolm-K8S: Waiting for Traefik ingress controller...
+Malcolm-K8S: Traefik ingress controller is ready
+Malcolm-K8S: 
+Malcolm-K8S: To SSH into the virtual machine, run:  vagrant ssh
+Malcolm-K8S: To retrieve kubeconfig file, run:  vagrant ssh -c 'cat /home/vagrant/.kube/config' >./kubeconfig && sed -i 's/127.0.0.1/192.168.121.81/g' ./kubeconfig
+Malcolm-K8S: 
+Malcolm-K8S: To populate NFS volumes manifest, run: sed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1192.168.121.81/' -e 's|/malcolm/|/mnt/vdb/nfs-export/malcolm/|g' ../01-volumes-nfs.yml.example >../01-volumes-nfs-vagrant.yml
+Malcolm-K8S: 
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/config            192.168.121.81/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/filescan-logs     192.168.121.81/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/opensearch        192.168.121.81/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/opensearch-backup 192.168.121.81/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/pcap              192.168.121.81/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/runtime-logs      192.168.121.81/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/suricata-logs     192.168.121.81/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/zeek-logs         192.168.121.81/24
+
+$ vagrant ssh -c 'cat /home/vagrant/.kube/config' >./kubeconfig && sed -i 's/127.0.0.1/192.168.121.81/g' ./kubeconfig
+
+$ sed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1192.168.121.81/' \
+      -e 's|/malcolm/|/mnt/vdb/nfs-export/malcolm/|g' \
+    ../01-volumes-nfs.yml.example > ../01-volumes-nfs-vagrant.yml 
+
+$ KUBECONFIG=kubeconfig kubectl get nodes
+NAME        STATUS   ROLES                AGE     VERSION
+debian-13   Ready    control-plane,etcd   6m58s   v1.35.3+rke2r3
+
+$ cd ../../
+
+$ ./scripts/configure -f ./kubernetes/vagrant/kubeconfig
+
+--- Malcolm Configuration Menu ---
+Select an item number to configure, or an action:
+├── 1. Container Runtime (current: kubernetes)
+│   ├── 2. Process Group ID (current: 1000)
+│   └── 3. Process User ID (current: 1000)
+├── 4. Run Profile (current: malcolm)
+│   ├── 5. Dark Mode for Dashboards (current: Yes)
+│   ├── 6. Extra Tags (current: [])
+│   ├── 7. Forward Logs to Remote Secondary Store (current: No)
+│   ├── 8. Logstash Memory (current: 3g)
+│   ├── 9. Logstash Workers (per pipeline) (current: 2)
+│   ├── 10. OpenSearch Memory (current: 14g)
+│   └── 11. Primary Document Store (current: opensearch-local)
+├── 12. Require HTTPS Connections (current: Yes)
+├── 13. IPv4 for nginx Resolver Directive (current: Yes)
+├── 14. IPv6 for nginx Resolver Directive (current: No)
+├── 15. Clean Up Artifacts (current: No)
+├── 16. Enable Arkime Index Management (current: No)
+├── 17. Enable Arkime Analysis (current: Yes)
+│   ├── 18. Allow Arkime WISE Configuration (current: No)
+│   └── 19. Enable Arkime WISE (current: Yes)
+├── 20. Enable Suricata Analysis (current: Yes)
+│   └── 21. Enable Suricata Rule Updates (current: No)
+├── 22. Enable Zeek Analysis (current: Yes)
+│   ├── 23. Enable Zeek ICS/OT Analyzers (current: Yes)
+│   │   └── 24. Enable Zeek ICS "Best Guess" (current: Yes)
+│   ├── 25. File Extraction Mode (current: interesting)
+│   │   ├── 26. Extracted File Percent Threshold (current: 0)
+│   │   ├── 27. Extracted File Size Threshold (current: 1TB)
+│   │   ├── 28. File Preservation (current: quarantined)
+│   │   ├── 29. File scanning workers (current: 1)
+│   │   ├── 30. Preserved Files HTTP Server (current: Yes)
+│   │   │   ├── 31. Downloaded Preserved File Password (current: ********)
+│   │   │   └── 32. Zip Downloads (current: Yes)
+│   │   ├── 33. Scan with Strelka (current: Yes)
+│   │   └── 34. Update Scan Rules (current: No)
+│   └── 35. Use Threat Feeds for Zeek Intelligence (current: Yes)
+│       ├── 36. Cron Expression for Threat Feed Updates (current: 0 0 * * *)
+│       ├── 37. Intel::item_expiration Timeout (current: -1min)
+│       ├── 38. Pull Threat Intelligence Feeds on Startup (current: Yes)
+│       ├── 39. Threat Indicator "Since" Period (current: 24 hours ago)
+│       ├── 40. Use Intel on Live Traffic (current: Yes)
+│       └── 41. Use Intel on Uploaded PCAP (current: Yes)
+├── 42. Enrich with Reverse DNS Lookups (current: No)
+├── 43. Enrich with Manufacturer (OUI) Lookups (current: Yes)
+├── 44. Enrich with Frequency Scoring (current: Yes)
+├── 45. NetBox Mode (current: Local)
+│   ├── 46. Auto-Create Subnet Prefixes (current: Yes)
+│   ├── 47. Auto-Populate NetBox Inventory (current: Yes)
+│   ├── 48. NetBox Enrichment (current: Yes)
+│   ├── 49. NetBox IP Autopopulation Filter (current: empty)
+│   └── 50. NetBox Site Name (current: Malcolm)
+├── 51. Expose Malcolm Service Ports (current: Yes)
+│   └── 52. Expose Filebeat TCP (current: Yes)
+│       └── 53. Use Filebeat TCP Listener Defaults (current: Yes)
+├── 54. Network Traffic Node Name (current: vagrant)
+└── 55. Capture Live Network Traffic (current: Yes)
+    ├── 56. Analyze Live Traffic with Suricata (current: Yes)
+    ├── 57. Analyze Live Traffic with Zeek (current: Yes)
+    ├── 58. Capture Filter (current: empty)
+    ├── 59. Capture Interface(s) (current: eth0)
+    ├── 60. Capture Live Traffic with netsniff-ng (current: Yes)
+    ├── 61. Capture Live Traffic with tcpdump (current: No)
+    ├── 62. Gather Traffic Capture Statistics (current: Yes)
+    └── 63. Optimize Interface Settings for Capture (current: Yes)
+
+--- Actions ---
+  s. Save and Continue
+  w. Where Is...? (search for settings)
+  x. Exit Installer
+---------------------------------
+
+Enter item number or action: s
+
+============================================================
+FINAL CONFIGURATION SUMMARY
+============================================================
+Configuration Only                                : Yes
+Configuration Directory                           : /home/tlacuache/tmp/Malcolm/config
+Container Runtime                                 : kubernetes
+Run Profile                                       : malcolm
+Process UID/GID                                   : 1000/1000
+HTTPS/SSL                                         : Yes
+Node Name                                         : vagrant
+Logstash Workers (per pipeline)                   : 2
+OpenSearch Memory                                 : 14g
+Enable Zeek ICS/OT Analyzers                      : Yes
+File Extraction Mode                              : interesting
+Extracted File Size Threshold                     : 1TB
+Downloaded Preserved File Password                : ********
+Zip Downloads                                     : Yes
+Auto-Create Subnet Prefixes                       : Yes
+Auto-Populate NetBox Inventory                    : Yes
+NetBox Site Name                                  : Malcolm
+Expose Malcolm Service Ports                      : Yes
+Capture Live Network Traffic                      : Yes
+Capture Interface(s)                              : eth0
+============================================================
+
+Proceed using the above configuration? (y / N): y
+
+$ ./scripts/auth_setup -f ./kubernetes/vagrant/kubeconfig
+…
+
+$ ./scripts/status -f ./kubernetes/vagrant/kubeconfig 
+Node Name | Hostname  | IP             | Provider ID | Instance Type | Total CPU | CPU Usage | Percent CPU | Total Memory | Memory Usage | Total Storage | Current Pods | 
+----------+-----------+----------------+-------------+---------------+-----------+-----------+-------------+--------------+--------------+---------------+--------------|
+debian-13 | debian-13 | 192.168.121.81 | debian-13   | rke2          | 8000m     | 195.61m   | 2.45%       | 23.47Gi      | 2.2Gi        | 58.8Gi        | 24           | 
+
+Pod Name | State | Pod IP | Pod Kind | Worker Node | CPU Usage | Memory Usage | Container Name:Restarts | Container Image | 
+---------+-------+--------+----------+-------------+-----------+--------------+-------------------------+-----------------|
+
+$ 
+
+```
+
+
 Here is a basic step-by-step example illustrating how to deploy Malcolm with Kubernetes. For the sake of simplicity, this example uses Vagrant: see [kubernetes/vagrant/Vagrantfile]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/Vagrantfile) to create a virtualized Kubernetes cluster with one control plane node and two worker nodes or see [kubernetes/vagrant/Vagrantfile_NFS_Server.example]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/Vagrantfile_NFS_Server.example) to include an NFS server with the cluster described above. It assumes users have downloaded and extracted the [release tarball]({{ site.github.repository_url }}/releases/latest) or used `./scripts/malcolm_appliance_packager.sh` to package up the files needed to run Malcolm.
 
 ```
