@@ -195,6 +195,18 @@ function DoReplacersInFile() {
       # OpenSearch - flat_object - https://opensearch.org/docs/latest/field-types/supported-field-types/flat-object/
       # Elasticsearch - flattened - https://www.elastic.co/guide/en/elasticsearch/reference/current/flattened.html
       sed -i "s/flat_object/flattened/g" "${REPLFILE}" || true
+
+      # the parameters for wildcard field type differ between opensearch and elasticsearch
+      # opensearch - https://docs.opensearch.org/latest/mappings/supported-field-types/wildcard/
+      # elasticsearch - https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/keyword#wildcard-field-type
+      jq '
+        walk(
+          if type == "object" and .type? == "wildcard"
+          then del(.doc_values, .normalizer)
+          else .
+          end
+        )
+      ' "${REPLFILE}" | sponge "${REPLFILE}"
     fi
 
     if [[ "$FILE_TYPE" == "dashboard" ]]; then

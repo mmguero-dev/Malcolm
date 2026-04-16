@@ -100,6 +100,12 @@
             },
             "entropy": {
               "type": "float"
+            },
+            "strings": {
+              "type": "wildcard",
+              "ignore_above": 4096,
+              "doc_values": false,
+              "normalizer": "lowercase"
             }
           }
         },
