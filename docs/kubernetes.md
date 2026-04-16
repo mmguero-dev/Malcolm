@@ -331,22 +331,22 @@ Malcolm-K8S: Waiting for Traefik ingress controller...
 Malcolm-K8S: Traefik ingress controller is ready
 Malcolm-K8S: 
 Malcolm-K8S: To SSH into the virtual machine, run:  vagrant ssh
-Malcolm-K8S: To retrieve kubeconfig file, run:  vagrant ssh -c 'cat /home/vagrant/.kube/config' >./kubeconfig && sed -i 's/127.0.0.1/192.168.121.81/g' ./kubeconfig
+Malcolm-K8S: To retrieve kubeconfig file, run:  vagrant ssh -c 'cat /home/vagrant/.kube/config' >./kubeconfig && sed -i 's/127.0.0.1/192.168.121.239/g' ./kubeconfig
 Malcolm-K8S: 
-Malcolm-K8S: To populate NFS volumes manifest, run: sed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1192.168.121.81/' -e 's|/malcolm/|/mnt/vdb/nfs-export/malcolm/|g' ../01-volumes-nfs.yml.example >../01-volumes-nfs-vagrant.yml
+Malcolm-K8S: To populate NFS volumes manifest, run: sed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1192.168.121.239/' -e 's|/malcolm/|/mnt/vdb/nfs-export/malcolm/|g' ../01-volumes-nfs.yml.example >../01-volumes-nfs-vagrant.yml
 Malcolm-K8S: 
-Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/config            192.168.121.81/24
-Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/filescan-logs     192.168.121.81/24
-Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/opensearch        192.168.121.81/24
-Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/opensearch-backup 192.168.121.81/24
-Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/pcap              192.168.121.81/24
-Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/runtime-logs      192.168.121.81/24
-Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/suricata-logs     192.168.121.81/24
-Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/zeek-logs         192.168.121.81/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/config            192.168.121.239/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/filescan-logs     192.168.121.239/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/opensearch        192.168.121.239/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/opensearch-backup 192.168.121.239/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/pcap              192.168.121.239/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/runtime-logs      192.168.121.239/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/suricata-logs     192.168.121.239/24
+Malcolm-K8S: /mnt/vdb/nfs-export/malcolm/zeek-logs         192.168.121.239/24
 
-$ vagrant ssh -c 'cat /home/vagrant/.kube/config' >./kubeconfig && sed -i 's/127.0.0.1/192.168.121.81/g' ./kubeconfig
+$ vagrant ssh -c 'cat /home/vagrant/.kube/config' >./kubeconfig && sed -i 's/127.0.0.1/192.168.121.239/g' ./kubeconfig
 
-$ sed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1192.168.121.81/' \
+$ sed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1192.168.121.239/' \
       -e 's|/malcolm/|/mnt/vdb/nfs-export/malcolm/|g' \
     ../01-volumes-nfs.yml.example > ../01-volumes-nfs-vagrant.yml 
 
@@ -367,9 +367,9 @@ Select an item number to configure, or an action:
 │   ├── 5. Dark Mode for Dashboards (current: Yes)
 │   ├── 6. Extra Tags (current: [])
 │   ├── 7. Forward Logs to Remote Secondary Store (current: No)
-│   ├── 8. Logstash Memory (current: 3g)
+│   ├── 8. Logstash Memory (current: 2500m)
 │   ├── 9. Logstash Workers (per pipeline) (current: 2)
-│   ├── 10. OpenSearch Memory (current: 14g)
+│   ├── 10. OpenSearch Memory (current: 16g)
 │   └── 11. Primary Document Store (current: opensearch-local)
 ├── 12. Require HTTPS Connections (current: Yes)
 ├── 13. IPv4 for nginx Resolver Directive (current: Yes)
@@ -443,7 +443,8 @@ Process UID/GID                                   : 1000/1000
 HTTPS/SSL                                         : Yes
 Node Name                                         : vagrant
 Logstash Workers (per pipeline)                   : 2
-OpenSearch Memory                                 : 14g
+Logstash Memory                                   : 2500m
+OpenSearch Memory                                 : 16g
 Enable Zeek ICS/OT Analyzers                      : Yes
 File Extraction Mode                              : interesting
 Extracted File Size Threshold                     : 1TB
@@ -463,14 +464,14 @@ $ ./scripts/auth_setup -f ./kubernetes/vagrant/kubeconfig
 …
 
 $ ./scripts/status -f ./kubernetes/vagrant/kubeconfig 
-Node Name | Hostname  | IP             | Provider ID | Instance Type | Total CPU | CPU Usage | Percent CPU | Total Memory | Memory Usage | Total Storage | Current Pods | 
-----------+-----------+----------------+-------------+---------------+-----------+-----------+-------------+--------------+--------------+---------------+--------------|
-debian-13 | debian-13 | 192.168.121.81 | debian-13   | rke2          | 8000m     | 195.61m   | 2.45%       | 23.47Gi      | 2.2Gi        | 58.8Gi        | 24           | 
+Node Name | Hostname  | IP              | Provider ID | Instance Type | Total CPU | CPU Usage | Percent CPU | Total Memory | Memory Usage | Total Storage | Current Pods | 
+----------+-----------+-----------------+-------------+---------------+-----------+-----------+-------------+--------------+--------------+---------------+--------------|
+debian-13 | debian-13 | 192.168.121.239 | debian-13   | rke2          | 8000m     | 942.81m   | 11.79%      | 31.35Gi      | 2.31Gi       | 58.8Gi        | 44           | 
 
 Pod Name | State | Pod IP | Pod Kind | Worker Node | CPU Usage | Memory Usage | Container Name:Restarts | Container Image | 
 ---------+-------+--------+----------+-------------+-----------+--------------+-------------------------+-----------------|
 
-$ 
+$ TODO? ingress?
 
 ```
 
