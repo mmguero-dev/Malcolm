@@ -333,7 +333,7 @@ EOF
     echo -e -n "To retrieve kubeconfig file, run:" >&2
     echo -e "\\tvagrant ssh -c 'cat /home/vagrant/.kube/config' >./shared/kubeconfig && sed -i 's/127.0.0.1/$PRIMARY_IP/g' ./shared/kubeconfig\\n" >&2
     echo -e -n "To populate NFS volumes manifest, run:" >&2
-    echo -e "\\tsed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1$PRIMARY_IP/' -e 's|/malcolm/|$NFS_DATA_DIR/|g' ../01-volumes-nfs.yml.example >../01-volumes-nfs-vagrant.yml\\n" >&2
+    echo -e "\\tsed -e 's/^\\([[:space:]]*server:[[:space:]]*\\).*/\\1$PRIMARY_IP/' -e 's|/malcolm/|$NFS_DATA_DIR/|g' ../01-volumes-nfs.yml.example >../01-volumes-nfs-vagrant.yml\\n" >&2
     showmount -e | tail -n +2 | sort >&2
   SHELL
 
