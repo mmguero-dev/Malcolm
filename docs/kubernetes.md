@@ -24,14 +24,14 @@ This document assumes good working knowledge of Kubernetes (K8s). The comprehens
 
 There exist a variety of ingress controllers for Kubernetes suitable for different Kubernetes providers and environments. A few sample manifests for ingress controllers can be found in Malcolm's [`kubernetes`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/) directory, prefixed with `99-ingress-…`:
 
-* [`kubernetes/99-ingress-nginx.yml.example`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-nginx.yml.example) - an example ingress manifest for Malcolm using the [Ingress-NGINX controller for Kubernetes](https://github.com/kubernetes/ingress-nginx). The Ingress-NGINX controller has been used internally on self-hosted Kubernetes clusters during Malcolm's development and testing.
+* [`kubernetes/99-ingress-traefik.yml.example`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example) - an example ingress manifest for Malcolm using the [Ingress-NGINX controller for Kubernetes](https://github.com/kubernetes/ingress-nginx). The Ingress-NGINX controller has been used internally on self-hosted Kubernetes clusters during Malcolm's development and testing.
 * [`kubernetes/99-ingress-aws-alb.yml.example`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-aws-alb.yml.example) - an example ingress manifest for Malcolm using the [AWS Load Balancer (ALB) Controller](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.5/#aws-load-balancer-controller). Users likely will prefer to use ALB to [deploy Malcolm on Amazon Elastic Kubernetes Service (EKS)](aws.md#AWSEKSAuto).
 
 Before [running](#Running) Malcolm, either copy one of the `99-ingress-…` files to `99-ingress.yml` as a starting point to define the ingress or define a custom manifest file and save it as `99-ingress.yml`.
 
 #### <a name="IngressNGINX"></a> Ingress-NGINX Controller
 
-Malcolm's [ingress controller manifest]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-nginx.yml) uses the [Ingress-NGINX controller for Kubernetes](https://github.com/kubernetes/ingress-nginx). A few Malcolm features require some customization when installing and configuring the Ingress-NGINX controller. As well as being listed below, see [kubernetes/vagrant/deploy_ingress_nginx.sh]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/deploy_ingress_nginx.sh) for an example of how to configure and apply the Ingress-NGINX controller for Kubernetes.
+Malcolm's [ingress controller manifest]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example) uses the [Ingress-NGINX controller for Kubernetes](https://github.com/kubernetes/ingress-nginx). A few Malcolm features require some customization when installing and configuring the Ingress-NGINX controller. As well as being listed below, see [kubernetes/vagrant/deploy_ingress_nginx.sh]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/deploy_ingress_nginx.sh) for an example of how to configure and apply the Ingress-NGINX controller for Kubernetes.
 
 * To forward logs from a remote instance of [Hedgehog Linux](hedgehog.md):
     - See ["Exposing TCP and UDP services"](https://kubernetes.github.io/ingress-nginx/user-guide/exposing-tcp-udp-services/) in the Ingress-NGINX documentation.
@@ -172,7 +172,7 @@ Malcolm's [ingress controller manifest]({{ site.github.repository_url }}/blob/{{
         …
         ```
 
-    - Modify Malcolm's [ingress controller manifest]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-nginx.yml.example) to specify the `host:` value and use [host-based routing](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/):
+    - Modify Malcolm's [ingress controller manifest]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example) to specify the `host:` value and use [host-based routing](https://kubernetes.github.io/ingress-nginx/user-guide/basic-usage/):
 
         ```
         …

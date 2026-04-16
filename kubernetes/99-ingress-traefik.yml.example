@@ -1,0 +1,37 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: backend-transport
+  namespace: malcolm
+spec:
+  insecureSkipVerify: true
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: malcolm-ingressroute
+  namespace: malcolm
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: nginx-proxy
+          port: 443
+          scheme: https
+          serversTransport: backend-transport
+---
+# TODO:
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tcp-services
+  namespace: ingress-nginx
+data:
+  5044: "malcolm/logstash:5044"
+  5045: "malcolm/filebeat:5045"
+  8022: "malcolm/upload:22"
+  9200: "malcolm/nginx-proxy:9200"
