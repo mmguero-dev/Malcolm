@@ -191,6 +191,14 @@ install_files() {
       [[ -n $SHARED_IMAGE_VERSION ]] && IMAGE_VERSION="$SHARED_IMAGE_VERSION"
     fi
 
+    if [[ -f "$SHARED_DIR/docker_images.txt" ]]; then
+      DOCKER_IMAGES_TXZ="$(cat "$SHARED_DIR/docker_images.txt" | head -n 1)"
+      if [[ -r "$DOCKER_IMAGES_TXZ" ]]; then
+        mv "$DOCKER_IMAGES_TXZ" /malcolm_images.tar.xz
+        chown root:root /malcolm_images.tar.xz
+      fi
+    fi
+
     echo "BUILD_ID=\"$(date +\'%Y-%m-%d\')-${IMAGE_VERSION}\""   > "$sensor_ver_file"
     echo "VARIANT=\"Hedgehog Linux (Minihog Sensor) v${IMAGE_VERSION}\"" >> "$sensor_ver_file"
     echo "VARIANT_ID=\"hedgehog\"" >> "$sensor_ver_file"
