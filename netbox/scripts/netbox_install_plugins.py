@@ -55,6 +55,7 @@ def install_package_dir_if_needed(
     preinstalledPackagesDict={},
 ):
     installResult = False
+    targetDir = os.getenv('NETBOX_CUSTOM_VENV_PACKAGES_PATH', '')
 
     # First do a "dry run" install to determine what would happen. The report from this will
     #   help us determine if the package actually needs installed or not, as pip always treats
@@ -76,8 +77,10 @@ def install_package_dir_if_needed(
             "off",
             "--report",
             dryRunInstallReportFileName,
-            packageDir,
         ]
+        if os.path.isdir(targetDir):
+            cmd.extend(['--target', targetDir])
+        cmd.append(packageDir)
         err, results = malcolm_utils.run_process(cmd, logger=logging)
         if (err == 0) and os.path.isfile(dryRunInstallReportFileName):
             with open(dryRunInstallReportFileName, 'r') as f:
@@ -116,8 +119,10 @@ def install_package_dir_if_needed(
                     "off",
                     "--report",
                     installReportFileName,
-                    tmpPackageDir,
                 ]
+                if os.path.isdir(targetDir):
+                    cmd.extend(['--target', targetDir])
+                cmd.append(tmpPackageDir)
                 err, results = malcolm_utils.run_process(cmd, logger=logging)
                 installResult = err == 0
 

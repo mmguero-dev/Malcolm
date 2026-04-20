@@ -55,6 +55,17 @@ ADD --chmod=755 dashboards/scripts/docker_entrypoint.sh /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_utils.py /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_constants.py /usr/local/bin/
 
+# This is in part to handle an issue when running with rootless podman and
+#   "userns_mode: keep-id". It seems that anything defined as a VOLUME
+#   in the Dockerfile is getting set with an ownership of 999:999.
+#   This is to override that, although I'm not yet sure if there are
+#   other implications. See containers/podman#23347.
+ENV PUSER_CHOWN="/usr/share/opensearch-dashboards/config;/usr/share/opensearch-dashboards/data"
+
+# see PUSER_CHOWN comment above
+VOLUME ["/usr/share/opensearch-dashboards/config"]
+VOLUME ["/usr/share/opensearch-dashboards/data"]
+
 ENTRYPOINT ["/usr/bin/tini", \
             "--", \
             "/usr/local/bin/docker-uid-gid-setup.sh", \

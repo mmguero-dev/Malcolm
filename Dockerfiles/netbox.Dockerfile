@@ -40,6 +40,7 @@ ARG NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH="/opt/netbox-devicetype-library-import
 ARG NETBOX_DEFAULT_SITE=Malcolm
 ARG NETBOX_PRELOAD_PATH="/opt/netbox-preload"
 ARG NETBOX_CUSTOM_PLUGINS_PATH="/opt/netbox-custom-plugins"
+ARG NETBOX_CUSTOM_VENV_PACKAGES_PATH="/opt/netbox-custom-python"
 ARG NETBOX_CONFIG_PATH="/etc/netbox/config"
 
 ENV NETBOX_PATH=/opt/netbox
@@ -47,6 +48,7 @@ ENV NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH=$NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH
 ENV NETBOX_DEFAULT_SITE=$NETBOX_DEFAULT_SITE
 ENV NETBOX_PRELOAD_PATH=$NETBOX_PRELOAD_PATH
 ENV NETBOX_CUSTOM_PLUGINS_PATH=$NETBOX_CUSTOM_PLUGINS_PATH
+ENV NETBOX_CUSTOM_VENV_PACKAGES_PATH=$NETBOX_CUSTOM_VENV_PACKAGES_PATH
 ENV NETBOX_CONFIG_PATH=$NETBOX_CONFIG_PATH
 
 ADD --chmod=644 netbox/patch/* /tmp/netbox-patches/
@@ -91,7 +93,8 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
     usermod -a -G tty ${PUSER} && \
     mkdir -p /opt/unit "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}" "${NETBOX_PRELOAD_PATH}" && \
     cp /tmp/netbox-config/* "${NETBOX_CONFIG_PATH}" && \
-    chown -R $PUSER:root /etc/netbox /opt/unit "${NETBOX_PATH}" && \
+    chown -R ${PUSER}:root /etc/netbox /opt/unit && \
+    chown -R root:root "${NETBOX_PATH}" && \
     cd "$(dirname "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}")" && \
         curl -sSL "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_URL}" | tar xzf - -C ./"$(basename "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}")" --strip-components 1 && \
     cd "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}" && \
@@ -100,10 +103,12 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       mkdir -p ./repo && \
       curl -sSL "${NETBOX_DEVICETYPE_LIBRARY_URL}" | tar xzf - -C ./repo --strip-components 1 && \
       rm -rf ./repo/device-types/WatchGuard && \
-    mkdir -p "${NETBOX_PATH}/netbox/netbox" "${NETBOX_CUSTOM_PLUGINS_PATH}/requirements" && \
+    mkdir -p "${NETBOX_PATH}/netbox/netbox" "${NETBOX_CUSTOM_PLUGINS_PATH}/requirements" "${NETBOX_CUSTOM_VENV_PACKAGES_PATH}" && \
       jq '. += { "settings": { "http": { "discard_unsafe_fields": false } } }' /etc/unit/nginx-unit.json | jq 'del(.listeners."[::]:8080")' | jq 'del(.listeners."[::]:8081")' | jq '.routes.main[0].action.share = "`/opt/netbox/netbox${uri.substring(7)}`"' | jq '.routes.main[0].match.uri = "/netbox/static/*"' | jq '.routes.status[0].match.uri = "/netbox/status/*"' > /etc/unit/nginx-unit-new.json && \
       mv /etc/unit/nginx-unit-new.json /etc/unit/nginx-unit.json && \
       chmod 644 /etc/unit/nginx-unit.json && \
+      chown --silent -R ${PUSER}:${PGROUP} "${NETBOX_CUSTOM_PLUGINS_PATH}" "${NETBOX_CUSTOM_VENV_PACKAGES_PATH}" && \
+      echo "${NETBOX_CUSTOM_VENV_PACKAGES_PATH}" > "$(${NETBOX_PATH}/venv/bin/python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/netbox-extra.pth" && \
     tr -cd '\11\12\15\40-\176' < "${NETBOX_PATH}/netbox/netbox/configuration.py" > "${NETBOX_PATH}/netbox/netbox/configuration_ascii.py" && \
       mv "${NETBOX_PATH}/netbox/netbox/configuration_ascii.py" "${NETBOX_PATH}/netbox/netbox/configuration.py" && \
     sed -i "s/\('CENSUS_REPORTING_ENABLED',[[:space:]]*\)True/\1False/" "${NETBOX_PATH}/netbox/netbox/settings.py" && \
@@ -125,6 +130,17 @@ ADD --chmod=644 netbox/supervisord.conf /etc/supervisord.conf
 ADD --chmod=644 netbox/preload/*.yml $NETBOX_PRELOAD_PATH/
 
 EXPOSE 9001
+
+# This is in part to handle an issue when running with rootless podman and
+#   "userns_mode: keep-id". It seems that anything defined as a VOLUME
+#   in the Dockerfile is getting set with an ownership of 999:999.
+#   This is to override that, although I'm not yet sure if there are
+#   other implications. See containers/podman#23347.
+ENV PUSER_CHOWN="$NETBOX_CUSTOM_PLUGINS_PATH;$NETBOX_CUSTOM_VENV_PACKAGES_PATH"
+
+# see PUSER_CHOWN comment above
+VOLUME ["$NETBOX_CUSTOM_PLUGINS_PATH"]
+VOLUME ["$NETBOX_CUSTOM_VENV_PACKAGES_PATH"]
 
 ENTRYPOINT ["/usr/bin/tini", \
             "--", \
