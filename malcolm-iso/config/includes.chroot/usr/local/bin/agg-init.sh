@@ -93,7 +93,7 @@ EOF
 
   # if we need to import prebuilt Malcolm docker images, do so now (but not if we're in a live-usb boot)
   DOCKER_DRIVER="$(docker info -f json 2>/dev/null | jq -r '.Driver')"
-  if [[ -n $DOCKER_DRIVER ]] && [[ "$DOCKER_DRIVER" != "vfs" ]] && ! grep -q boot=live /proc/cmdline; then
+  if [[ -f /malcolm_images.tar.xz ]] && [[ -n $DOCKER_DRIVER ]] && [[ "$DOCKER_DRIVER" != "vfs" ]] && ! grep -q boot=live /proc/cmdline; then
     docker load -q -i /malcolm_images.tar.xz && rm -f /malcolm_images.tar.xz
   fi
 
