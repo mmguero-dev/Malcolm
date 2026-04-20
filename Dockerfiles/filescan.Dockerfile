@@ -57,7 +57,7 @@ ENV SUPERCRONIC_VERSION="0.2.43"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 
-ENV YQ_VERSION="4.52.5"
+ENV YQ_VERSION="4.53.2"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
 
 ENV STRELKA_HOST=$STRELKA_HOST
