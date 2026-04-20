@@ -183,6 +183,9 @@ install_files() {
     # Setup OS information
     sensor_ver_file="$SENSOR_HOME/Malcolm/.os-info"
 
+    # mark as first run
+    touch "$SENSOR_HOME"/Malcolm/firstrun
+
     if [[ -f "$SHARED_DIR/version.txt" ]]; then
       SHARED_IMAGE_VERSION="$(cat "$SHARED_DIR/version.txt" | head -n 1)"
       [[ -n $SHARED_IMAGE_VERSION ]] && IMAGE_VERSION="$SHARED_IMAGE_VERSION"
@@ -222,8 +225,6 @@ install_files() {
 
     # Add RPI hostname to /etc/hosts
     echo "127.0.1.1 $(head -n 1 /etc/hostname)" >> /etc/hosts
-
-    # mark as first run
 }
 
 install_hooks() {
