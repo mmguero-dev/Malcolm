@@ -151,6 +151,8 @@ install_deps() {
     # Hedgehog conf files are copied into env before this runs; keep those config files by default
     apt-get -o Dpkg::Options::="--force-confold" install -q $deps -y --no-install-suggests
     apt-get clean
+
+    dpkg -s docker-ce >/dev/null 2>&1 && usermod -a -G docker "$SENSOR_USER"
 }
 
 install_files() {
