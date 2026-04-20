@@ -308,7 +308,7 @@ EOF
       echo '* soft nproc 262144' >> /etc/security/limits.d/limits.conf
       echo '* hard nproc 524288' >> /etc/security/limits.d/limits.conf
     fi
-    sed -i 's/GRUB_CMDLINE_LINUX="[^"]*/& elevator=deadline systemd.unified_cgroup_hierarchy=1 cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem random.trust_cpu=on preempt=voluntary/' /etc/default/grub
+    sed -i 's/GRUB_CMDLINE_LINUX="[^"]*/& systemd.unified_cgroup_hierarchy=1 cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem random.trust_cpu=on preempt=voluntary/' /etc/default/grub
     update-grub
 
     # Update coredns so that hostname will resolve to their perspective IPs by enabling the host plugin

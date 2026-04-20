@@ -86,6 +86,7 @@ clean_up() {
 		   /opt/deps \
 		   /opt/hooks \
 		   /opt/patches \
+           /opt/requirements.txt \
            /root/.bash_history \
            /root/.wget-hsts \
            /root/.cache \
@@ -176,6 +177,7 @@ install_files() {
     echo 'N' | bash "$MALCOLM_SRC/scripts/malcolm_appliance_packager.sh" >/dev/null 2>&1
     ls -lh ./malcolm_*.tar.gz
     tar xzf ./malcolm_*.tar.gz -C "$SENSOR_HOME"/Malcolm --strip-components 2
+    find "$SENSOR_HOME"/Malcolm -type f | sort
     popd >/dev/null 2>&1
     rm -rf .malcolm-install
     popd >/dev/null 2>&1
