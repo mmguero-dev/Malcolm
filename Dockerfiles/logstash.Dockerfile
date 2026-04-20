@@ -107,8 +107,10 @@ RUN set -x && \
     rm -rf /usr/share/logstash.build/ && \
     mkdir -p /logstash-persistent-queue /usr/share/logstash/config/bootstrap /usr/share/logstash/config/persist && \
     usermod -a -G tty ${PUSER} && \
-    chown -R ${PUSER}:root /usr/share/logstash /logstash-persistent-queue && \
-    chmod -R u+rwX,go+rX /usr/share/logstash
+    chown -R root:root /usr/share/logstash  && \
+    chmod -R u+rwX,go+rX /usr/share/logstash && \
+    chown -R ${PUSER}:root /logstash-persistent-queue /usr/share/logstash/config /usr/share/logstash/data /usr/share/logstash/jdk/lib/security /usr/share/logstash/malcolm*
+
 
 COPY --from=manuf-builder --chmod=644 /work/vendor_macs.yaml /etc/vendor_macs.yaml
 COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
