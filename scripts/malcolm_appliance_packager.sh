@@ -23,8 +23,8 @@ function cleanup {
 RUN_PATH="$(pwd)"
 [[ "$(uname -s)" = 'Darwin' ]] && REALPATH=grealpath || REALPATH=realpath
 [[ "$(uname -s)" = 'Darwin' ]] && DIRNAME=gdirname || DIRNAME=dirname
-if ! (type "$REALPATH" && type "$DIRNAME") > /dev/null; then
-  echo "$(basename "${BASH_SOURCE[0]}") requires $REALPATH and $DIRNAME"
+if ! (type "$REALPATH" && type "$DIRNAME" && type yq) > /dev/null; then
+  echo "$(basename "${BASH_SOURCE[0]}") requires $REALPATH and $DIRNAME and Mike Farah's yq"
   exit 1
 fi
 SCRIPT_PATH="$($DIRNAME $($REALPATH -e "${BASH_SOURCE[0]}"))"
@@ -170,12 +170,13 @@ if mkdir "$DESTDIR"; then
 
   unset CONFIRMATION
   echo ""
-  read -p "Do you need to package container images also [y/N]? " CONFIRMATION
+  read -p "Do you need to package container images also [m/h/N]? " CONFIRMATION
   CONFIRMATION=${CONFIRMATION:-N}
-  if [[ $CONFIRMATION =~ ^[Yy]$ ]]; then
+  if [[ $CONFIRMATION =~ ^[YyMmHh]$ ]]; then
+    [[ $CONFIRMATION =~ ^[Hh]$ ]] && IMAGE_PROFILE=hedgehog || IMAGE_PROFILE=malcolm
     echo "This might take a few minutes..."
     DESTNAMEIMAGES="$RUN_PATH/$(basename $DESTDIR)_images.tar.xz"
-    IMAGES=( $(grep image: $DESTDIR/docker-compose.yml | awk '{print $2}' | sort -u) )
+    IMAGES=( $(yq ".services[] | select((.profiles // []) | contains([\"$IMAGE_PROFILE\"])) | .image" $DESTDIR/docker-compose.yml | sort -u) )
     if [[ "$MALCOLM_CONTAINER_RUNTIME" == "podman" ]]; then
       $MALCOLM_CONTAINER_RUNTIME save --multi-image-archive --format docker-archive "${IMAGES[@]}" | xz -1 > "$DESTNAMEIMAGES"
     else
