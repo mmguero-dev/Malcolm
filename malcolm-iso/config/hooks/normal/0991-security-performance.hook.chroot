@@ -154,6 +154,7 @@ usermod -d /var/lib/ntpsec ntpsec
 
 # disable default fluentbit configuration
 systemctl disable fluent-bit || true
+rm -f /etc/fluent-bit/fluent-bit.conf
 
 # add fluentbit logfmt parser
 cat << 'EOF' >> /etc/fluent-bit/parsers.conf
