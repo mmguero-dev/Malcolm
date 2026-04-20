@@ -331,7 +331,7 @@ ENV ZEEK_KAFKA_TOPIC=$ZEEK_KAFKA_TOPIC
 #   where I've put this workaround) in this case the PUSER_CHOWN was
 #   already being set like this, so even if I resolve that issue
 #   I probably don't want to remove this.
-ENV PUSER_CHOWN="$ZEEK_DIR"
+ENV PUSER_CHOWN="$ZEEK_DIR/etc;$ZEEK_DIR/share/zeek/site/custom;$ZEEK_DIR/share/zeek/site/intel;$ZEEK_DIR/share/zeekctl;$ZEEK_DIR/spool"
 
 # see PUSER_CHOWN comment above
 VOLUME ["${ZEEK_DIR}/share/zeek/site/intel"]
