@@ -34,7 +34,12 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
     yum install -y curl-minimal psmisc findutils util-linux jq openssl rsync procps-ng python3 zip unzip && \
     yum remove -y vim-* && \
     usermod -a -G tty ${PUSER} && \
-    chown --silent -R ${PUSER}:${PGROUP} /usr/share/opensearch-dashboards && \
+    mkdir -p /usr/share/opensearch-dashboards/config /usr/share/opensearch-dashboards/data && \
+    chown -R root:root /usr/share/opensearch-dashboards && \
+    find /usr/share/opensearch-dashboards -type d -exec chmod a+rx,go-w {} + && \
+    find /usr/share/opensearch-dashboards -type f -exec chmod a+r,go-w {} + && \
+    chown --silent -R ${PUSER}:${PGROUP} /usr/share/opensearch-dashboards/config /usr/share/opensearch-dashboards/data && \
+    chmod -R u+rwX,go-rwx /usr/share/opensearch-dashboards/config /usr/share/opensearch-dashboards/data && \
     curl -sSLf -o /usr/bin/tini "${TINI_URL}-${BINARCH}" && \
       chmod +x /usr/bin/tini && \
     yum clean all && \
