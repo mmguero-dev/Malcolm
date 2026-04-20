@@ -18,6 +18,8 @@
 
 This document assumes good working knowledge of Kubernetes (K8s). The comprehensive [Kubernetes documentation](https://kubernetes.io/docs/home/) is a good place to go for more information about Kubernetes.
 
+This document describes deploying Malcolm on Kubernetes using the standard [Kubernetes manifests]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/). The official [Malcolm Helm chart](https://github.com/idaholab/Malcolm-Helm/) is now stable and may be preferable for production deployments, as it better leverages Kubernetes scalability features. Review the Malcolm-Helm documentation to choose the deployment method that best fits your environment.
+
 ## <a name="System"></a> System
 
 ### <a name="Ingress"></a> Ingress Controllers
@@ -33,8 +35,7 @@ Before [running](#Running) Malcolm copy one of the `99-ingress-…` files to `99
 
 In order to [use the Traefik ingress controller with Malcolm]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example), it must first be installed. Consult your Kubernetes platform's documentation for how to install Traefik on Kubernetes, or read [Getting Started with Kubernetes and Traefik¶](https://doc.traefik.io/traefik/getting-started/kubernetes/).
 
-* **TODO: NEED TO TALK ABOUT SETTING UP TCP PORT FORWARDING AND OTHER MODIFICATIONS TO THE 99-ingress file!!!**
-
+The Vagrant-based [deployment example](#Example) below illustrates deploying Malcolm with the Traefik ingress controller, including installing Traefik via its Helm chart (search for `HelmChart` in [kubernetes/vagrant/Vagrantfile]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/Vagrantfile)) and exposing Malcolm service ports via `NodePort` (see also [`kubernetes/99-ingress-traefik.yml.example`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/99-ingress-traefik.yml.example)).
 
 ### <a name="Limits"></a> Kubernetes Provider Settings
 
@@ -83,7 +84,7 @@ Malcolm requires persistent [storage](https://kubernetes.io/docs/concepts/storag
 * `suricata-claim` - storage for Suricata logs
 * `zeek-claim` - storage for Zeek logs and files extracted by Zeek
 
-An example of how these PersistentVolume and PersistentVolumeClaim objects could be defined using NFS can be found in the [kubernetes/01-volumes-nfs.yml.example]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/01-volumes-nfs.yml.example) or [kubernetes/01-volumes-vagrant-nfs-server.yml.example]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/01-volumes-vagrant-nfs-server.yml.example) manifest files. The latter of the two manifest examples is used in conjunction with the NFS server Vagrantfile example: [kubernetes/vagrant/Vagrantfile_NFS_Server.example]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/Vagrantfile_NFS_Server.example) . Before [running](#Running) Malcolm, copy either `01-volumes-vagrant-nfs-server.yml.example` to `01-volumes.yml` (for the Vagrant provided NFS server) or copy `01-volumes-nfs.yml.example` to `01-volumes.yml` and modify (or replace) its contents to define the PersistentVolumeClaim objects configured for your own NFS server IP address and exported paths.
+An example of how these PersistentVolume and PersistentVolumeClaim objects could be defined using NFS can be found in the [kubernetes/01-volumes-nfs.yml.example]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/01-volumes-nfs.yml.example) manifest file, used in conjunction with the NFS server in the [vagrant-based deployment example](#Example) ([kubernetes/vagrant/Vagrantfile]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/kubernetes/vagrant/Vagrantfile)). Before [running](#Running) Malcolm, copy `01-volumes-nfs.yml.example` to `01-volumes.yml` and modify (or replace) its contents to define the PersistentVolumeClaim objects configured for your own NFS server IP address and exported paths.
 
 Attempting to start Malcolm without these PersistentVolumeClaims defined in a YAML file in Malcolm's `./kubernetes/` directory will result in an error like this:
 
@@ -197,13 +198,13 @@ $ sed -e 's/^\([[:space:]]*server:[[:space:]]*\).*/\1192.168.121.239/' \
       -e 's|/malcolm/|/mnt/vdb/nfs-export/malcolm/|g' \
     ../01-volumes-nfs.yml.example > ../01-volumes-nfs-vagrant.yml 
 
-$ cp ../99-ingress-traefik.yml.example ../99-ingress.yml.example
+$ cp ../99-ingress-traefik.yml.example ../99-ingress.yml
 
 $ KUBECONFIG=kubeconfig kubectl get nodes
 NAME        STATUS   ROLES                AGE     VERSION
 debian-13   Ready    control-plane,etcd   6m58s   v1.35.3+rke2r3
 
-$ cd ../..
+$ cd ../../
 ```
 
 Next, ensure the Malcolm source code (from the release tarball or git repository working copy) is present:
