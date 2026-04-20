@@ -172,8 +172,8 @@ install_files() {
     mkdir -p Malcolm .malcolm-install
     pushd .malcolm-install >/dev/null 2>&1
     echo 'N' | bash "$MALCOLM_SRC/scripts/malcolm_appliance_packager.sh" >/dev/null 2>&1
-    ls malcolm_*.tar.gz
-    tar xzf malcolm_*.tar.gz -C "$SENSOR_HOME"/Malcolm --strip-components 2
+    ls -lh ./malcolm_*.tar.gz
+    tar xzf ./malcolm_*.tar.gz -C "$SENSOR_HOME"/Malcolm --strip-components 2
     popd >/dev/null 2>&1
     rm -rf .malcolm-install
     popd >/dev/null 2>&1
