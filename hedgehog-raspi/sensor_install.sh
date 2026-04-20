@@ -71,9 +71,8 @@ build_htpdate() {
 
 clean_up() {
 
-    # Remove ethernet interface files left by installation
-    # TODO: how will the user configure interfaces now on hedgehog-raspi?
-    rm -f /etc/network/interfaces.d/eth0
+    # Remove network interface files left by installation
+    rm -f /etc/network/interfaces.d/*
 
     # Remove this script and any debugging files
     # Comment this out in order to troubleshoot the build process in a chroot
