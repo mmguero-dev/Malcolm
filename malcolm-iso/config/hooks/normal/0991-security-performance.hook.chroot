@@ -95,6 +95,25 @@ net.ipv6.conf.default.disable_ipv6=1
 net.ipv6.conf.lo.disable_ipv6=1
 EOF
 
+mkdir -p /etc/polkit-1/rules.d/
+cat << 'EOF' > /etc/polkit-1/rules.d/50-networkmanager-netdev.rules
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("netdev")) {
+        if (
+            action.id == "org.freedesktop.NetworkManager.network-control" ||
+            action.id == "org.freedesktop.NetworkManager.settings.modify.system" ||
+            action.id == "org.freedesktop.NetworkManager.settings.modify.own" ||
+            action.id == "org.freedesktop.NetworkManager.enable-disable-network" ||
+            action.id == "org.freedesktop.NetworkManager.enable-disable-wifi"
+        ) {
+            return polkit.Result.YES;
+        }
+    }
+});
+EOF
+chmod 755 /etc/polkit-1/rules.d/
+chmod 644 /etc/polkit-1/rules.d/50-networkmanager-netdev.rules
+
 # password requirement hardening
 sed -i -e 's/[[:space:]]*nullok[[:alnum:]_]*//g' /etc/pam.d/common-auth
 sed -i -r "s/(pam_faildelay.so.*delay)[[:space:]]*=[[:space:]]*[[:digit:]]+/\1=4000000/g" /etc/pam.d/login
