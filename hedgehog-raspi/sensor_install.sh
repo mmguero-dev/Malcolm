@@ -175,9 +175,7 @@ install_files() {
     mkdir -p Malcolm .malcolm-install
     pushd .malcolm-install >/dev/null 2>&1
     echo 'N' | bash "$MALCOLM_SRC/scripts/malcolm_appliance_packager.sh" >/dev/null 2>&1
-    ls -lh ./malcolm_*.tar.gz
     tar xzf ./malcolm_*.tar.gz -C "$SENSOR_HOME"/Malcolm --strip-components 2
-    find "$SENSOR_HOME"/Malcolm -type f | sort
     popd >/dev/null 2>&1
     rm -rf .malcolm-install
     popd >/dev/null 2>&1
@@ -195,8 +193,8 @@ install_files() {
 
     if [[ -f "$SHARED_DIR/docker_images.txt" ]]; then
       DOCKER_IMAGES_TXZ="$(cat "$SHARED_DIR/docker_images.txt" | head -n 1)"
-      if [[ -r "$DOCKER_IMAGES_TXZ" ]]; then
-        mv "$DOCKER_IMAGES_TXZ" /malcolm_images.tar.xz
+      if [[ -r "$SHARED_DIR/$DOCKER_IMAGES_TXZ" ]]; then
+        mv "$SHARED_DIR/$DOCKER_IMAGES_TXZ" /malcolm_images.tar.xz
         chown root:root /malcolm_images.tar.xz
       fi
     fi

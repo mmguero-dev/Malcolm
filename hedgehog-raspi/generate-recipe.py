@@ -71,7 +71,7 @@ hostname = 'Hedgehog-rpi-%s' % version
 extra_root_shell_cmds = [
     'cp sensor_install.sh "${ROOT?}/root/"',
     '/bin/bash -c \'mkdir -p "${ROOT?}/opt/"{deps,hooks}\'',
-    '/bin/bash -x -c \'pushd "%s/" ; git ls-files --exclude-standard | rsync -R --files-from=- ./ "${ROOT?}/opt/Malcolm/"; rsync -av ./.git/ "${ROOT?}/opt/Malcolm/.git/"; popd\''
+    '/bin/bash -x -c \'pushd "%s/" ; git ls-files --exclude-standard | rsync -R --files-from=- ./ "${ROOT?}/opt/Malcolm/"; rsync -av ./.git/ "${ROOT?}/opt/Malcolm/.git/"; rsync -a ./hedgehog-raspi/shared/ ${ROOT?}/opt/buildshared/; popd\''
     % (MALCOLM_DIR),
 ]
 
