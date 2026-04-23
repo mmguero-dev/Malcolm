@@ -6,11 +6,7 @@ services:
       context: .
       dockerfile: Dockerfiles/opensearch.Dockerfile
     image: ghcr.io/idaholab/malcolm/opensearch:26.04.2
-    # Technically the "hedgehog" profile doesn't have OpenSearch, but in that case
-    #   OPENSEARCH_PRIMARY will be set to remote, which means the container will
-    #   start but not actually run OpenSearch. It's included in both profiles to
-    #   satisfy some other containers' depends_on.
-    profiles: ["malcolm", "hedgehog"]
+    profiles: ["malcolm"]
     logging:
       driver: local
       options:
@@ -410,8 +406,6 @@ services:
     - ./config/arkime.env
     - ./config/arkime-offline.env
     - ./config/arkime-secret.env
-    depends_on:
-    - opensearch
     volumes:
     - type: bind
       bind:
@@ -590,8 +584,6 @@ services:
     - ./config/upload-common.env
     - ./config/zeek.env
     - ./config/zeek-offline.env
-    depends_on:
-    - opensearch
     volumes:
     - type: bind
       bind:
@@ -1111,8 +1103,6 @@ services:
     - ./config/ssl.env
     - ./config/opensearch.env
     - ./config/upload-common.env
-    depends_on:
-    - opensearch
     volumes:
     - type: bind
       bind:
@@ -1583,6 +1573,7 @@ services:
     - htadmin
     - keycloak
     - netbox
+    - opensearch
     - upload
     ports:
     - 0.0.0.0:443:443
