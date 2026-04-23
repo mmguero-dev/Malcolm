@@ -31,6 +31,7 @@ global local_nets_str = getenv("ZEEK_LOCAL_NETS");
 global long_conn_durations = getenv("ZEEK_LONG_CONN_DURATIONS");
 global long_conn_repeat_last_duration = (getenv("ZEEK_LONG_CONN_REPEAT_LAST_DURATION") == true_regex) ? T : F;
 global long_conn_do_notice = (getenv("ZEEK_LONG_CONN_DO_NOTICE") == true_regex) ? T : F;
+global file_analyzer_timeout = double_to_interval((getenv("ZEEK_FILE_ANALYZER_TIMEOUT_SEC") == "") ? 5.0 : to_double(getenv("ZEEK_FILE_ANALYZER_TIMEOUT_SEC")));
 
 global disable_spicy_ipsec = (getenv("ZEEK_DISABLE_SPICY_IPSEC") == true_regex) ? T : F;
 global disable_spicy_ldap = (getenv("ZEEK_DISABLE_SPICY_LDAP") == true_regex) ? T : F;
@@ -143,6 +144,10 @@ global json_format = (getenv("ZEEK_JSON") == true_regex) ? T : F;
 #   plugin altogether, as it's a tiny log that's going to get ignored anyway.
 redef JSONStreaming::enable_log_rotation = F;
 redef JSONStreaming::enabled_logs = set(PacketFilter::LOG);
+
+# Default amount of time a file can be inactive before the file analysis
+#   gives up and discards any internal state related to the file.
+redef default_file_timeout_interval = file_analyzer_timeout;
 
 event zeek_init() &priority=-5 {
 
