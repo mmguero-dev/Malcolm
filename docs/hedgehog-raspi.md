@@ -50,6 +50,8 @@ The resulting `.img.xz` file can be written to a microSD card or other bootable 
 
 ![Using the Raspberry Pi Imager](./images/screenshots/raspi_imager_hedgehog.png)
 
+On the first boot, the system loads the embedded container images before displaying the login prompt, which may take several minutes. This one-time setup is not repeated on subsequent boots.
+
 ## <a name="HedgehogRaspiPassword"></a>Setting Passwords
 
 The provided image allows local login, requiring physical access, with the `sensor` account using the default password `Hedgehog_Linux`. On first login, the user is required to change this password. Login as `root` is disabled by default. After the `sensor` password has been changed, a `root` password may be set using `sudo passwd root` if desired.
