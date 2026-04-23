@@ -112,17 +112,19 @@ clean_up() {
 }
 
 create_user() {
-
-    # Set defaults but it is STRONGLY recommended that these be changed before deploying Sensor
+    # default password (must be changed on first login, see chage below)
     local pass='Hedgehog_Linux'
-    local root_pass='Hedgehog_Linux_Root'
-
+    # create sensor user's group
     groupadd "$SENSOR_GROUP"
-    useradd -m -g "$SENSOR_GROUP" -u 1000 -s /bin/bash -d "$SENSOR_HOME" "$SENSOR_USER"
-    usermod -a -G netdev "$SENSOR_USER"
-
-    echo -n "${SENSOR_USER}:${pass}" | chpasswd --crypt-method YESCRYPT
-    echo -n "root:${root_pass}" | chpasswd --crypt-method YESCRYPT
+    # create sensor user, and add to netdev and sudo group
+    useradd -m -g "$SENSOR_GROUP" -G sudo,netdev -u 1000 -s /bin/bash -d "$SENSOR_HOME" "$SENSOR_USER"
+    # set default password
+    echo "${SENSOR_USER}:${pass}" | chpasswd --crypt-method YESCRYPT
+    # force password change on first login
+    chage -d 0 "$SENSOR_USER"
+    # disable direct root password login
+    passwd -d root
+    passwd -l root
 }
 
 install_deps() {

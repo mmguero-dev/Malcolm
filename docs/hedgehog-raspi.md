@@ -4,7 +4,7 @@
 
 * [Obtaining the Hedgehog Linux for Raspberry Pi Image](#HedgehogRaspiBuild)
 * [Writing the Image to Flash Media](#HedgehogRaspiBurn)
-* [Setting the `root` and `sensor` Passwords](#HedgehogRaspiPassword)
+* [Setting Passwords](#HedgehogRaspiPassword)
 * [Configuration](#HedgehogRaspiConfig)
 * [Performance Considerations](#HedgehogRaspiPerformance)
 
@@ -50,23 +50,22 @@ The resulting `.img.xz` file can be written to a microSD card or other bootable 
 
 ![Using the Raspberry Pi Imager](./images/screenshots/raspi_imager_hedgehog.png)
 
-## <a name="HedgehogRaspiPassword"></a>Setting the `root` and `sensor` Passwords
+## <a name="HedgehogRaspiPassword"></a>Setting Passwords
 
-The provided image allows login (requiring physical access) with the `sensor` account using a default password of `Hedgehog_Linux`, or the `root` account with a default password of `Hedgehog_Linux_Root`. It is **highly** recommended that users change both of these passwords using the `passwd` utility prior to configuring networking on the device.
+The provided image allows local login, requiring physical access, with the `sensor` account using the default password `Hedgehog_Linux`. On first login, the user is required to change this password. Login as `root` is disabled by default. After the `sensor` password has been changed, a `root` password may be set using `sudo passwd root` if desired.
 
 ```
 Hedgehog-rpi-4 login: sensor
 Password:
-
-sensor@Hedgehog-rpi-4:~$ su -
-Password:
-root@Hedgehog-rpi-4:~# passwd
-New password:
-Retype new password:
-passwd: password updated successfully
-root@Hedgehog-rpi-4:~# passwd sensor
-New password:
-Retype new password:
+You are required to change your password immediately (administrator enforced).
+Changing password for sensor.
+Current password: **************
+New password: ****************
+Retype new password: ****************
+sensor@Hedgehog-rpi-4:~$ sudo passwd root
+[sudo] password for sensor: ****************
+New password: ****************
+Retype new password: ****************
 passwd: password updated successfully
 ```
 
