@@ -170,6 +170,7 @@ Malcolm can also easily be deployed locally on an ordinary consumer workstation 
 * [Installation example using Ubuntu 24.04 LTS](ubuntu-install-example.md#InstallationExample)
 * [Hedgehog Linux - Malcolm's Network Sensor](hedgehog.md)
     - [Configuring Hedgehog for Standalone Use](hedgehog-standalone.md)
+    - [Running Hedgehog Linux on Raspberry Pi](hedgehog-raspi.md)
 * [End-to-end Malcolm and Hedgehog Linux ISO Installation](malcolm-hedgehog-e2e-iso-install.md#InstallationExample)
 * [Upgrading Malcolm](malcolm-upgrade.md#UpgradePlan)
 * [Modifying or Contributing to Malcolm](contributing-guide.md)

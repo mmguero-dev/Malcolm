@@ -99,11 +99,11 @@ In short, Malcolm provides an easily deployable traffic analysis tool suite for 
         + Hedgehog Linux
             * Minimum system requirements
                 - 8 gigabytes RAM
-                - 4 CPU cores (amd64 supported, arm64 supported for Raspberry Pi image)
+                - 4 CPU cores (amd64/arm64 supported)
                 - As much storage (preferably solid-state or RAID) as necessary to meet full PCAP retention requirements
             * Recommended system requirements
                 - 16+ gigabytes RAM
-                - 8+ CPU cores (amd64 supported, arm64 supported for Raspberry Pi image)
+                - 8+ CPU cores (amd64/arm64 supported)
                 - As much storage (preferably solid-state or RAID) as necessary to meet data retention requirements
     - License
         + Malcolm is [distributed](https://github.com/idaholab/Malcolm/blob/main/LICENSE.txt) under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0) on an as-is basis, without warranties or conditions of any kind, either express or implied.

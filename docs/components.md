@@ -62,6 +62,6 @@ Malcolm leverages the following excellent open source tools, among others:
     * Seiso's [zeek-kafka](https://github.com/SeisoLLC/zeek-kafka), a Zeek log writer that publishes to Kafka
     * Zeek's [Spicy](https://github.com/zeek/spicy) plugin framework
 * [GeoLite2](https://dev.maxmind.com/geoip/geoip2/geolite2/) - Malcolm includes GeoLite2 data created by [MaxMind](https://www.maxmind.com)
-* [Debian Live](https://www.debian.org/devel/debian-live/) - the framework used to build the x86_64 [installer ISOs](malcolm-iso.md#ISO) and the [Raspberry Pi sensor image](hedgehog-raspi-build.md#HedgehogRaspiBuild)
+* [Debian Live](https://www.debian.org/devel/debian-live/) - the framework used to build the x86_64 [installer ISOs](malcolm-iso.md#ISO) and the [Raspberry Pi sensor image](hedgehog-raspi.md#HedgehogRaspiBuild)
 
 ![Malcolm Components](./images/malcolm_components.png)
