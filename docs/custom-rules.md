@@ -4,7 +4,9 @@
 * [Suricata](#Suricata)
 * [Zeek](#Zeek)
 * [YARA](#YARA)
-* [NetBox Plugins](#NetBox)
+* [NetBox](#NetBox)
+  * [Plugins](#NetBoxPlugins)
+  * [Scripts](#NetBoxScripts)
 * [Logstash Output Pipelines](#Logstash)
 * [Other Customizations](#Other)
 
@@ -108,15 +110,27 @@ docker compose exec -u $(id -u) strelka-backend /usr/local/bin/yara_rules_setup.
 
 If the `YARA_CUSTOM_RULES_ONLY` [environment variable](malcolm-config.md#MalcolmConfigEnvVars) in [`./config/pipeline.env`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/config/pipeline.env.example) is set to `true`, Malcolm will bypass its default YARA rulesets and use only user-defined rules in `./yara/rules`.
 
-## <a name="NetBox"></a>NetBox Plugins
+## <a name="NetBox"></a>NetBox
+
+### <a name="NetBoxPlugins"></a>Plugins
 
 NetBox's functionality can be extended with plugins that can provide "[new data models, integrations, and more](https://netboxlabs.com/netbox-plugins/)" (see also the [NetBox Wiki](https://github.com/netbox-community/netbox/wiki/Plugins)).
 
-When Malcolm's NetBox container [starts up]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/netbox/scripts/netbox_install_plugins.py), it installs (using [pip](https://packaging.python.org/en/latest/guides/tool-recommendations/#installing-packages)) any NetBox plugins that have [cloned](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or [downloaded and extracted](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives) into subdirectories in `./netbox/custom-plugins/` in the Malcolm installation directory. In instances where Malcolm is being run in an offline/airgapped configuration, the plugins' additional dependencies must also be present under `./netbox/custom-plugins/requirements/`, where they will be automatically installed first.
+When Malcolm's NetBox container [starts up]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/netbox/control-scripts/netbox_install_plugins.py), it installs (using [pip](https://packaging.python.org/en/latest/guides/tool-recommendations/#installing-packages)) any NetBox plugins that have [cloned](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) or [downloaded and extracted](https://docs.github.com/en/repositories/working-with-files/using-files/downloading-source-code-archives) into subdirectories in `./netbox/custom-plugins/` in the Malcolm installation directory. In instances where Malcolm is being run in an offline/airgapped configuration, the plugins' additional dependencies must also be present under `./netbox/custom-plugins/requirements/`, where they will be automatically installed first.
 
 The following warning is quoted from the [NetBox documentation](https://netboxlabs.com/docs/netbox/en/stable/configuration/plugins/):
 
 > Plugins extend NetBox by allowing external code to run with the same access and privileges as NetBox itself. Only install plugins from trusted sources. The NetBox maintainers make absolutely no guarantees about the integrity or security of your installation with plugins enabled.
+
+### <a name="NetBoxScripts"></a>Scripts
+
+NetBox's functionality can be also extended with custom scripting "[to provide a way for users to execute custom logic from within the NetBox UI](https://netboxlabs.com/docs/netbox/customization/custom-scripts/)" (see also the ["Getting Started with NetBox Custom Scripts"](https://netboxlabs.com/blog/getting-started-with-netbox-custom-scripts/)).
+
+When Malcolm's NetBox container [starts up]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/netbox/scripts/netbox_init.py), it registers any NetBox scripts (ending with a `.py` extension) found in `./netbox/custom-scripts/` in the Malcolm installation directory. NetBox scripts can be run and managed in the NetBox UI under *Scripts* in the *Customization* menu.
+
+The following warning is quoted from the [NetBox documentation](https://netboxlabs.com/docs/netbox/customization/custom-scripts/):
+
+> **Only install trusted scripts.** Custom scripts have unrestricted access to change anything in the database and are inherently unsafe and should only be installed and run from trusted sources. You should also review and set permissions for who can run scripts if the script can modify any data.
 
 ## <a name="Logstash"></a>Logstash Output Pipelines
 
