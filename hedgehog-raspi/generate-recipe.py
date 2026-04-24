@@ -61,10 +61,10 @@ if version in ['4', '5']:
 # CMA fixup (TODO: does this apply to Rpi5?):
 extra_chroot_shell_cmds = []
 if version == '4':
-    extra_chroot_shell_cmds.append("sed -i 's/cma=64M //' /boot/firmware/cmdline.txt")
-extra_chroot_shell_cmds.append(
-    r"""sed -i '1 s/$/ systemd.unified_cgroup_hierarchy=1 cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem random.trust_cpu=on usbcore.autosuspend=-1 preempt=voluntary/' /boot/firmware/cmdline.txt"""
-)
+    extra_chroot_shell_cmds = [
+        "sed -i 's/cma=64M //' /boot/firmware/cmdline.txt",
+    ]
+
 # Hostname:
 hostname = 'Hedgehog-rpi-%s' % version
 

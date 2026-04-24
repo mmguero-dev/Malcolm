@@ -230,8 +230,8 @@ install_files() {
     # Prepare debs directory for other packages
     mkdir -p "${DEBS_DIR}"
 
-    # Disable ipv6
-    echo 'ipv6.disable=1' > /etc/default/raspi-extra-cmdline
+    # Set kernel parameters
+    echo 'systemd.unified_cgroup_hierarchy=1 cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem random.trust_cpu=on usbcore.autosuspend=-1 preempt=voluntary ipv6.disable=1' > /etc/default/raspi-extra-cmdline
 
     # Add RPI hostname to /etc/hosts
     echo "127.0.1.1 $(head -n 1 /etc/hostname)" >> /etc/hosts
