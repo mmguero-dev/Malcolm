@@ -124,7 +124,7 @@ The following warning is quoted from the [NetBox documentation](https://netboxla
 
 ### <a name="NetBoxScripts"></a>Scripts
 
-NetBox's functionality can be also extended with custom scripting "[to provide a way for users to execute custom logic from within the NetBox UI](https://netboxlabs.com/docs/netbox/customization/custom-scripts/)" (see also the ["Getting Started with NetBox Custom Scripts"](https://netboxlabs.com/blog/getting-started-with-netbox-custom-scripts/)).
+NetBox's functionality can be also extended with custom scripting "[to provide a way for users to execute custom logic from within the NetBox UI](https://netboxlabs.com/docs/netbox/customization/custom-scripts/)" (see also ["Getting Started with NetBox Custom Scripts"](https://netboxlabs.com/blog/getting-started-with-netbox-custom-scripts/)).
 
 When Malcolm's NetBox container [starts up]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/netbox/scripts/netbox_init.py), it registers any NetBox scripts (ending with a `.py` extension) found in `./netbox/custom-scripts/` in the Malcolm installation directory. NetBox scripts can be run and managed in the NetBox UI under *Scripts* in the *Customization* menu.
 
