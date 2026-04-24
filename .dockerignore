@@ -50,4 +50,5 @@ postgres
 filescan-logs
 netbox/media
 netbox/custom-plugins
+netbox/custom-scripts
 zeek/custom
