@@ -870,13 +870,6 @@ def process_custom_netbox_scripts(args, netbox_venv_py, manage_script):
     results = []
     scripts_path = Path(args.scripts_dir).expanduser().resolve()
 
-    script_importer_cmdline_stub = r"""
-import sys, pathlib
-p = pathlib.Path(sys.argv[1])
-code = p.read_text(encoding="utf-8")
-exec(compile(code, str(p), "exec"), {})
-"""
-
     if not scripts_path.is_dir():
         return results
 
@@ -950,14 +943,19 @@ except Exception as e:
                 with malcolm_utils.temporary_filename('.py') as tmp_import_script:
                     with open(tmp_import_script, "w", encoding="utf-8") as file:
                         file.write(script_code)
+
+                    script_importer_cmdline_stub = f"""
+import runpy
+runpy.run_path({str(tmp_import_script)!r}, run_name="__main__")
+"""
                     err, out = malcolm_utils.run_process(
                         [
                             netbox_venv_py,
                             manage_script,
                             "nbshell",
+                            "--no-color",
                             "-c",
                             script_importer_cmdline_stub,
-                            tmp_import_script,
                         ],
                         logger=logging,
                     )
