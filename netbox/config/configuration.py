@@ -312,6 +312,20 @@ REMOTE_AUTH_SUPERUSER_GROUPS = _environ_get_and_map('REMOTE_AUTH_SUPERUSER_GROUP
 REMOTE_AUTH_SUPERUSERS = _environ_get_and_map('REMOTE_AUTH_SUPERUSERS', '', _AS_LIST)
 REMOTE_AUTH_STAFF_GROUPS = _environ_get_and_map('REMOTE_AUTH_STAFF_GROUPS', '', _AS_LIST)
 REMOTE_AUTH_STAFF_USERS = _environ_get_and_map('REMOTE_AUTH_STAFF_USERS', '', _AS_LIST)
+# SSO Configuration
+SOCIAL_AUTH_OKTA_OPENIDCONNECT_KEY = environ.get('SOCIAL_AUTH_OKTA_OPENIDCONNECT_KEY')
+SOCIAL_AUTH_OKTA_OPENIDCONNECT_SECRET = _read_secret('okta_openidconnect_secret', environ.get('SOCIAL_AUTH_OKTA_OPENIDCONNECT_SECRET', ''))
+SOCIAL_AUTH_OKTA_OPENIDCONNECT_API_URL = environ.get('SOCIAL_AUTH_OKTA_OPENIDCONNECT_API_URL')
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = _read_secret('google_oauth2_secret', environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', ''))
+
+# OIDC Configuration
+SOCIAL_AUTH_OIDC_OIDC_ENDPOINT = environ.get('SOCIAL_AUTH_OIDC_OIDC_ENDPOINT')
+SOCIAL_AUTH_OIDC_KEY = environ.get('SOCIAL_AUTH_OIDC_KEY')
+SOCIAL_AUTH_OIDC_SECRET = _read_secret('oidc_secret', environ.get('SOCIAL_AUTH_OIDC_SECRET', ''))
+SOCIAL_AUTH_OIDC_SCOPE = _environ_get_and_map('SOCIAL_AUTH_OIDC_SCOPE', '', _AS_LIST)
+LOGOUT_REDIRECT_URL = environ.get('LOGOUT_REDIRECT_URL','/')
+SOCIAL_AUTH_OIDC_JWT_ALGORITHMS = _environ_get_and_map('SOCIAL_AUTH_OIDC_JWT_ALGORITHMS', "RS256", _AS_LIST)
 
 # This repository is used to check whether there is a new release of NetBox available. Set to None to disable the
 # version check or use the URL below to check for release in the official NetBox repository.
@@ -359,3 +373,6 @@ TIME_ZONE = environ.get('TIME_ZONE', 'UTC')
 
 # If true disables miscellaneous functionality which depends on access to the Internet.
 ISOLATED_DEPLOYMENT = _environ_get_and_map('ISOLATED_DEPLOYMENT', 'False', _AS_BOOL)
+
+# Enables or disables the NetBox Copilot agent globally. When enabled, users can opt to toggle the agent individually.
+COPILOT_ENABLED = _environ_get_and_map('COPILOT_ENABLED', 'False', _AS_BOOL)
