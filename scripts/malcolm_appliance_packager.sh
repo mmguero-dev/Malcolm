@@ -121,6 +121,7 @@ if "$MKDIR" "$DESTDIR"; then
   "$MKDIR" $VERBOSE -p "$DESTDIR/logstash/certs/"
   "$MKDIR" $VERBOSE -p "$DESTDIR/logstash/maps/"
   "$MKDIR" $VERBOSE -p "$DESTDIR/netbox/custom-plugins/requirements/"
+  "$MKDIR" $VERBOSE -p "$DESTDIR/netbox/custom-scripts/"
   "$MKDIR" $VERBOSE -p "$DESTDIR/netbox/media/"
   "$MKDIR" $VERBOSE -p "$DESTDIR/netbox/preload/"
   "$MKDIR" $VERBOSE -p "$DESTDIR/nginx/ca-trust/"

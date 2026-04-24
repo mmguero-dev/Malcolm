@@ -16,6 +16,7 @@ import tarfile
 import tempfile
 import time
 import malcolm_utils
+from pathlib import Path
 
 from distutils.dir_util import copy_tree
 from datetime import datetime
@@ -154,6 +155,14 @@ def parse_args():
         default=os.getenv('NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH', '/opt/netbox-devicetype-library-import'),
         required=False,
         help="Directory containing NetBox Device-Type-Library-Import project and library repo",
+    )
+    parser.add_argument(
+        '--scripts',
+        dest='scripts_dir',
+        type=str,
+        default=os.getenv('NETBOX_CUSTOM_SCRIPTS_PATH', '/opt/netbox-custom-scripts'),
+        required=False,
+        help="Directory containing NetBox custom scripts",
     )
     parser.add_argument(
         '-p',
@@ -856,6 +865,121 @@ def process_device_type_library_import(args, netbox_venv_py):
     return success
 
 
+def process_custom_netbox_scripts(args, netbox_venv_py, manage_script):
+    # ######  Custom Scripts #######################################################################################
+    results = []
+    scripts_path = Path(args.scripts_dir).expanduser().resolve()
+
+    script_importer_cmdline_stub = r"""
+import sys, pathlib
+p = pathlib.Path(sys.argv[1])
+code = p.read_text(encoding="utf-8")
+exec(compile(code, str(p), "exec"), {})
+"""
+
+    if not scripts_path.is_dir():
+        return results
+
+    with malcolm_utils.pushd(os.path.dirname(manage_script)):
+        script_files = sorted(p for p in scripts_path.iterdir() if p.is_file() and p.suffix == ".py")
+        for script_file in script_files:
+            success = False
+            try:
+                logging.info(f"Importing {script_file.name}")
+
+                src_path_literal = repr(str(script_file))
+                dest_dir_literal = repr("/opt/netbox/netbox/scripts/")
+                dest_name_literal = repr(script_file.name)
+
+                script_code = f"""
+import os
+import shutil
+import hashlib
+from django.utils import timezone
+from core.models import DataSource, DataFile
+from extras.models import ScriptModule
+
+try:
+    src_path = {src_path_literal}
+    dest_dir = {dest_dir_literal}
+    dest_name = {dest_name_literal}
+    dest_path = os.path.join(dest_dir, dest_name)
+
+    os.makedirs(dest_dir, exist_ok=True)
+
+    if os.path.exists(src_path):
+        shutil.copy2(src_path, dest_path)
+
+    if os.path.exists(dest_path):
+        ds, _ = DataSource.objects.update_or_create(
+            name=dest_name,
+            defaults={{
+                'type': 'local',
+                'parameters': {{'path': dest_dir}},
+                'enabled': True
+            }}
+        )
+
+        with open(dest_path, 'rb') as f:
+            data = f.read()
+
+        df, _ = DataFile.objects.update_or_create(
+            source=ds,
+            path=dest_name,
+            defaults={{
+                'size': len(data),
+                'hash': hashlib.sha256(data).hexdigest(),
+                'last_updated': timezone.now()
+            }}
+        )
+
+        ScriptModule.objects.update_or_create(
+            data_file=df,
+            defaults={{
+                'data_source': ds,
+                'file_path': df.path,
+                'auto_sync_enabled': True
+            }}
+        )
+        print(f"SUCCESS: {{dest_name}} is fully automated.")
+    else:
+        print(f"WARNING: {{dest_name}} not found in container at {{dest_path}}.")
+except Exception as e:
+    print(f"WARNING: Failed to automate script: {{e}}")
+"""
+                with malcolm_utils.temporary_filename('.py') as tmp_import_script:
+                    with open(tmp_import_script, "w", encoding="utf-8") as file:
+                        file.write(script_code)
+                    err, out = malcolm_utils.run_process(
+                        [
+                            netbox_venv_py,
+                            manage_script,
+                            "nbshell",
+                            "-c",
+                            script_importer_cmdline_stub,
+                            tmp_import_script,
+                        ],
+                        logger=logging,
+                    )
+
+                if err == 0:
+                    success = True
+                    logging.debug(f"Automated {script_file.name}: {out}")
+                else:
+                    logging.error(f"Error {err} automating {script_file.name}: {out}")
+
+                results.append({"script": script_file.name, "success": success, "output": out, "err": err})
+
+            except Exception as e:
+                logging.error(f"{type(e).__name__} uploading {script_file.name}: {e}")
+                results.append({"script": script_file.name, "success": False, "output": str(e), "err": None})
+
+    return results
+
+
+##########################################################################################
+
+
 ###################################################################################################
 # main
 def main():
@@ -863,6 +987,7 @@ def main():
 
     netbox_venv_py = os.path.join(os.path.join(os.path.join(args.netbox_dir, 'venv'), 'bin'), 'python')
     manage_script = os.path.join(os.path.join(args.netbox_dir, 'netbox'), 'manage.py')
+    nb = None
 
     # if there is a database backup .gz in the preload directory, load it up (preferring the newest
     # if there are multiple) instead of populating via API
@@ -880,6 +1005,8 @@ def main():
         sites = ensure_default_sites(args, nb)
         fix_missing_prefix_descriptions(nb)
 
+    process_custom_netbox_scripts(args, netbox_venv_py, manage_script)
+
     process_netbox_initializers(args, netbox_venv_py, manage_script)
 
     if not preload_database_success and (not args.preload_backup_file):
@@ -887,81 +1014,6 @@ def main():
 
 
 ###################################################################################################
-
-
-def automate_openeox_script(netbox_venv_py, manage_script):
-    import logging
-    import malcolm_utils
-    success = False
-    logging.info("Automating Hardware Lifecycle Script Registration")
-
-    script_code = """
-import os
-import shutil
-import hashlib
-from django.utils import timezone
-from core.models import DataSource, DataFile
-from extras.models import ScriptModule
-
-try:
-    src_path = '/usr/local/bin/hardware_lifecycle_auditor.py'
-    dest_dir = '/opt/netbox/netbox/scripts/'
-    dest_path = os.path.join(dest_dir, 'hardware_lifecycle_auditor.py')
-
-    # 1. Safely copy the script to NetBox's writable directory
-    if os.path.exists(src_path):
-        shutil.copy2(src_path, dest_path)
-
-    if os.path.exists(dest_path):
-        # 2. Register Local Data Source
-        ds, _ = DataSource.objects.update_or_create(
-            name='Hardware Lifecycle',
-            defaults={
-                'type': 'local',
-                'parameters': {'path': dest_dir},
-                'enabled': True
-            }
-        )
-
-        with open(dest_path, 'rb') as f:
-            data = f.read()
-
-        df, _ = DataFile.objects.update_or_create(
-            source=ds,
-            path='hardware_lifecycle_auditor.py',
-            defaults={
-                'size': len(data),
-                'hash': hashlib.sha256(data).hexdigest(),
-                'last_updated': timezone.now()
-            }
-        )
-
-        sm, _ = ScriptModule.objects.update_or_create(
-            data_file=df,
-            defaults={
-                'data_source': ds,
-                'file_path': df.path,
-                'auto_sync_enabled': True
-            }
-        )
-        print("SUCCESS: Hardware Lifecycle script is fully automated.")
-    else:
-        print(f"WARNING: {src_path} not found in container.")
-except Exception as e:
-    print(f"WARNING: Failed to automate script: {e}")
-"""
-
-    cmd = [netbox_venv_py, manage_script, "nbshell", "-c", script_code]
-    err, results = malcolm_utils.run_process(cmd, logger=logging)
-
-    if err == 0:
-        logging.debug(f"automate_openeox_script: {results}")
-        success = True
-    else:
-        logging.error(f"{err} automating script: {results}")
-
-    return success
-
 
 ##########################################################################################
 

@@ -170,6 +170,7 @@ PYCODE
   mkdir -p "$MALCOLM_DEST_DIR/logstash/certs/"
   mkdir -p "$MALCOLM_DEST_DIR/logstash/maps/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/custom-plugins/requirements/"
+  mkdir -p "$MALCOLM_DEST_DIR/netbox/custom-scripts/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/media/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/preload/"
   mkdir -p "$MALCOLM_DEST_DIR/nginx/ca-trust/"

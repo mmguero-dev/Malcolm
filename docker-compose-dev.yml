@@ -1317,6 +1317,12 @@ services:
       source: ./netbox/custom-plugins
       target: /opt/netbox-custom-plugins
       read_only: true
+    - type: bind
+      bind:
+        create_host_path: false
+      source: ./netbox/custom-scripts
+      target: /opt/netbox-custom-scripts/configmap
+      read_only: true
     healthcheck:
       test: ["CMD", "/usr/local/bin/container_health.sh"]
       interval: 60s
