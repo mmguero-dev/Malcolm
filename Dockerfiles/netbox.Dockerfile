@@ -25,7 +25,7 @@ ENV PGROUP="ubuntu"
 ENV PUSER_PRIV_DROP=true
 USER root
 
-ENV NETBOX_INITIALIZERS_VERSION="71428297f115069224d5df8ee72e8bf8b1117755"
+ENV NETBOX_INITIALIZERS_VERSION="9fe783d0b422888d8ef309e62598273b698d461f"
 ENV NETBOX_TOPOLOGY_VERSION="4.5.1"
 ENV NETBOX_HEALTHCHECK_VERSION="0.3.0"
 
@@ -53,6 +53,9 @@ ENV NETBOX_CUSTOM_VENV_PACKAGES_PATH=$NETBOX_CUSTOM_VENV_PACKAGES_PATH
 ENV NETBOX_CUSTOM_SCRIPTS_PATH=$NETBOX_CUSTOM_SCRIPTS_PATH
 ENV NETBOX_RUNTIME_SCRIPTS_PATH=/opt/netbox/netbox/scripts
 ENV NETBOX_CONFIG_PATH=/etc/netbox/config
+
+ARG GRANIAN_EXTRA_ARGS="--host=0.0.0.0"
+ENV GRANIAN_EXTRA_ARGS=$GRANIAN_EXTRA_ARGS
 
 ADD --chmod=644 netbox/patch/* /tmp/netbox-patches/
 ADD --chmod=644 netbox/requirements.txt /usr/local/src/
@@ -107,7 +110,6 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
     tr -cd '\11\12\15\40-\176' < "${NETBOX_PATH}/netbox/netbox/configuration.py" > "${NETBOX_PATH}/netbox/netbox/configuration_ascii.py" && \
       mv "${NETBOX_PATH}/netbox/netbox/configuration_ascii.py" "${NETBOX_PATH}/netbox/netbox/configuration.py" && \
     sed -i "s/\('CENSUS_REPORTING_ENABLED',[[:space:]]*\)True/\1False/" "${NETBOX_PATH}/netbox/netbox/settings.py" && \
-    sed -i -E 's@^([[:space:]]*\-\-(state|tmp))([[:space:]])@\1dir\3@g' "${NETBOX_PATH}/launch-netbox.sh" && \
     sed -i '/\/opt\/netbox\/venv\/bin\/activate/a \\n# Install custom plugins \npython3 /usr/local/bin/netbox_install_plugins.py' /opt/netbox/docker-entrypoint.sh && \
     apt-get -q -y --purge remove patch gcc libpq-dev python3-dev gpg && \
       apt-get -q -y --purge autoremove && \
