@@ -395,6 +395,8 @@ def perform_migrations(netbox_venv_py, manage_script):
             os.path.basename(manage_script),
             "migrate",
             "--check",
+            "--no-input",
+            "--no-color",
         ]
         err, results = malcolm_utils.run_process(cmd, logger=logging)
         if err != 0:
@@ -402,21 +404,26 @@ def perform_migrations(netbox_venv_py, manage_script):
                 [
                     "migrate",
                     "--no-input",
+                    "--no-color",
                 ],
                 [
                     "trace_paths",
                     "--no-input",
+                    "--no-color",
                 ],
                 [
                     "remove_stale_contenttypes",
                     "--no-input",
+                    "--no-color",
                 ],
                 [
                     "clearsessions",
+                    "--no-color",
                 ],
                 [
                     "reindex",
                     "--lazy",
+                    "--no-color",
                 ],
             ]:
 
@@ -431,6 +438,7 @@ def perform_migrations(netbox_venv_py, manage_script):
             netbox_venv_py,
             os.path.basename(manage_script),
             "shell",
+            "--no-color",
             "--interface",
             "python",
         ]
@@ -819,6 +827,7 @@ def process_netbox_initializers(args, netbox_venv_py, manage_script):
                             netbox_venv_py,
                             os.path.basename(manage_script),
                             "load_initializer_data",
+                            "--no-color",
                             "--path",
                             tmp_preload_dir,
                         ],

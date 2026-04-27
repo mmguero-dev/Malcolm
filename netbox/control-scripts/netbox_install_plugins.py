@@ -225,27 +225,24 @@ def perform_migrations(netboxVenvPy, manageScript, pluginNames):
                 os.path.basename(manageScript),
                 "makemigrations",
                 plugin,
+                "--no-input",
+                "--no-color",
             ]
             err, results = malcolm_utils.run_process(cmd, logger=logging)
             if err != 0:
                 logging.warning(f'{err} making migrations for {plugin}: {results}')
                 success = False
 
-        cmd = [netboxVenvPy, os.path.basename(manageScript), "migrate"]
-        err, results = malcolm_utils.run_process(cmd, logger=logging)
-        if err != 0:
-            logging.warning(f'{err} migrating: {results}')
-            success = False
-
         cmd = [
             netboxVenvPy,
             os.path.basename(manageScript),
-            "collectstatic",
+            "migrate",
             "--no-input",
+            "--no-color",
         ]
         err, results = malcolm_utils.run_process(cmd, logger=logging)
         if err != 0:
-            logging.warning(f'{err} collecting static files: {results}')
+            logging.warning(f'{err} migrating: {results}')
             success = False
 
     return success
@@ -381,12 +378,35 @@ def install_plugins(args):
         perform_migrations(netboxVenvPy, manageScript, pluginNames)
 
 
+def collect_static(args):
+    netboxVenvPy = os.path.join(os.path.join(os.path.join(args.netboxDir, 'venv'), 'bin'), 'python')
+    manageScript = os.path.join(os.path.join(args.netboxDir, 'netbox'), 'manage.py')
+
+    success = True
+
+    with malcolm_utils.pushd(os.path.dirname(manageScript)):
+        cmd = [
+            netboxVenvPy,
+            os.path.basename(manageScript),
+            "collectstatic",
+            "--no-input",
+            "--no-color",
+        ]
+        err, results = malcolm_utils.run_process(cmd, logger=logging)
+        if err != 0:
+            logging.warning(f'{err} collecting static files: {results}')
+            success = False
+
+    return success
+
+
 ###################################################################################################
 # main
 def main():
     args = parse_args()
     write_local_settings(args)
     install_plugins(args)
+    collect_static(args)
 
 
 ###################################################################################################
