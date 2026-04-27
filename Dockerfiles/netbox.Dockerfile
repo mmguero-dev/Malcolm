@@ -1,4 +1,4 @@
-FROM netboxcommunity/netbox:v4.4.10
+FROM netboxcommunity/netbox:v4.5.8
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -26,8 +26,8 @@ ENV PUSER_PRIV_DROP=true
 USER root
 
 ENV NETBOX_INITIALIZERS_VERSION="71428297f115069224d5df8ee72e8bf8b1117755"
-ENV NETBOX_TOPOLOGY_VERSION="4.4.0"
-ENV NETBOX_HEALTHCHECK_VERSION="0.2.0"
+ENV NETBOX_TOPOLOGY_VERSION="4.5.1"
+ENV NETBOX_HEALTHCHECK_VERSION="0.3.0"
 
 ENV YQ_VERSION="4.53.2"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
@@ -59,11 +59,6 @@ ADD --chmod=644 netbox/requirements.txt /usr/local/src/
 ADD --chmod=644 netbox/config/* /tmp/netbox-config/
 
 RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') && \
-    mv /etc/apt/sources.list.d/unit.list /tmp/ && \
-      apt-get -q update && \
-      apt-get install -q -y --no-install-recommends gpg && \
-      curl -s https://nginx.org/keys/nginx_signing.key | gpg --dearmor > /usr/share/keyrings/nginx-keyring.gpg && \
-      mv /tmp/unit.list /etc/apt/sources.list.d/unit.list && \
     apt-get -q update && \
     apt-get install -q -y --no-install-recommends \
       gcc \
@@ -94,9 +89,9 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
     curl -fsSL -o /usr/bin/yq "${YQ_URL}${BINARCH}" && \
         chmod 755 /usr/bin/yq && \
     usermod -a -G tty ${PUSER} && \
-    mkdir -p /opt/unit "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}" "${NETBOX_PRELOAD_PATH}" && \
+    mkdir -p "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}" "${NETBOX_PRELOAD_PATH}" && \
     cp /tmp/netbox-config/* "${NETBOX_CONFIG_PATH}" && \
-    chown -R ${PUSER}:root /etc/netbox /opt/unit && \
+    chown -R ${PUSER}:root /etc/netbox && \
     chown -R root:root "${NETBOX_PATH}" && \
     cd "$(dirname "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}")" && \
         curl -sSL "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_URL}" | tar xzf - -C ./"$(basename "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}")" --strip-components 1 && \
@@ -107,9 +102,6 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       curl -sSL "${NETBOX_DEVICETYPE_LIBRARY_URL}" | tar xzf - -C ./repo --strip-components 1 && \
       rm -rf ./repo/device-types/WatchGuard && \
     mkdir -p "${NETBOX_PATH}/netbox/netbox" "${NETBOX_CUSTOM_PLUGINS_PATH}/requirements" "${NETBOX_CUSTOM_SCRIPTS_PATH}" "${NETBOX_RUNTIME_SCRIPTS_PATH}" "${NETBOX_CUSTOM_VENV_PACKAGES_PATH}" && \
-      jq '. += { "settings": { "http": { "discard_unsafe_fields": false } } }' /etc/unit/nginx-unit.json | jq 'del(.listeners."[::]:8080")' | jq 'del(.listeners."[::]:8081")' | jq '.routes.main[0].action.share = "`/opt/netbox/netbox${uri.substring(7)}`"' | jq '.routes.main[0].match.uri = "/netbox/static/*"' | jq '.routes.status[0].match.uri = "/netbox/status/*"' > /etc/unit/nginx-unit-new.json && \
-      mv /etc/unit/nginx-unit-new.json /etc/unit/nginx-unit.json && \
-      chmod 644 /etc/unit/nginx-unit.json && \
       chown --silent -R ${PUSER}:${PGROUP} "${NETBOX_CUSTOM_PLUGINS_PATH}" "${NETBOX_CUSTOM_SCRIPTS_PATH}" "${NETBOX_RUNTIME_SCRIPTS_PATH}" "${NETBOX_CUSTOM_VENV_PACKAGES_PATH}" && \
       echo "${NETBOX_CUSTOM_VENV_PACKAGES_PATH}" > "$(${NETBOX_PATH}/venv/bin/python -c 'import sysconfig; print(sysconfig.get_paths()["purelib"])')/netbox-extra.pth" && \
     tr -cd '\11\12\15\40-\176' < "${NETBOX_PATH}/netbox/netbox/configuration.py" > "${NETBOX_PATH}/netbox/netbox/configuration_ascii.py" && \
