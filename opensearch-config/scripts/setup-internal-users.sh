@@ -45,7 +45,9 @@ if [[ -r "${ROLE_MAPPING_YML_ORIG}" ]]; then
 fi
 
 # generate self-signed keys wanted by opensearch security plugin (only used internally)
-[[ -x /usr/local/bin/self_signed_key_gen.sh ]] && \
+if [[ -x /usr/local/bin/self_signed_key_gen.sh ]] && \
+   [[ "${OPENSEARCH_SKIP_SELF_SIGNED_KEY_GEN:-false}" != "true" ]]; \
+then
   /usr/local/bin/self_signed_key_gen.sh -n -p \
     -o "${OPENSEARCH_SECURITY_CERTS_DIR}" \
     -s '/CN=opensearch/OU=ca/O=Malcolm/ST=ID/C=US' \
@@ -53,6 +55,7 @@ fi
     -c '/CN=opensearch-admin/OU=admin/O=Malcolm/ST=ID/C=US' 2>&1 && \
     mv "${OPENSEARCH_SECURITY_CERTS_DIR}"/{client,admin}.crt && \
     mv "${OPENSEARCH_SECURITY_CERTS_DIR}"/{client,admin}.key
+fi
 
 # background setup processes to run after opensearch starts
 [[ -x /usr/local/bin/setup-post-start.sh ]] && \
