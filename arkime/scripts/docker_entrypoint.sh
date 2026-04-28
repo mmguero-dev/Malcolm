@@ -218,10 +218,10 @@ if [[ ! -f "${ARKIME_CONFIG_FILE}" ]] && [[ -r "${ARKIME_DIR}"/etc/config.orig.i
     #   are going to be handled purely based on URI path in the NGINX stuff (nginx/lua/nginx_auth_helpers.lua).
     #   Once all of these permissions are settable at the role level in Arkime, we can uncomment those and revisit it.
     # -SG 2025.06.17
-    RBAC_FILE="$(mktemp)"
-    CONFIG_RBAC_FILE="$(mktemp)"
-    echo -e "\n[user-role-mappings]" >> "${RBAC_FILE}"
     if [[ "${ROLE_BASED_ACCESS,,}" =~ ^(1|true|yes|on)$ ]]; then
+      RBAC_FILE="$(mktemp)"
+      CONFIG_RBAC_FILE="$(mktemp)"
+      echo -e "\n[user-role-mappings]" >> "${RBAC_FILE}"
       echo "arkimeUser=true" >> "${RBAC_FILE}"
       [[ -n "$ROLE_ARKIME_ADMIN" ]] && \
         echo "arkimeAdmin=(vals['x-forwarded-roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_ADMIN')" >> "${RBAC_FILE}"
@@ -237,24 +237,22 @@ if [[ ! -f "${ARKIME_CONFIG_FILE}" ]] && [[ -r "${ARKIME_DIR}"/etc/config.orig.i
         echo "wiseUser=(vals['x-forwarded-roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_WISE_READ_ACCESS')" >> "${RBAC_FILE}"
       [[ -n "$ROLE_ARKIME_WISE_READ_WRITE_ACCESS" ]]  && \
         echo "wiseAdmin=(vals['x-forwarded-roles'] || '').split(',').map(s => s.trim()).includes('$ROLE_ARKIME_WISE_READ_WRITE_ACCESS')" >> "${RBAC_FILE}"
-    else
-      echo "arkimeAdmin=true" >> "${RBAC_FILE}"
+      echo -e "\n" >> "${RBAC_FILE}"
+      awk '
+          FNR==NR { insert_lines[NR] = $0; insert_count = NR; next }
+          /^\[custom-fields\]/ && !inserted {
+              for (i = 1; i <= insert_count; i++) print insert_lines[i]
+              inserted = 1
+          }
+          { print }
+          END {
+              if (!inserted) {
+                  for (i = 1; i <= insert_count; i++) print insert_lines[i]
+              }
+          }
+      ' "${RBAC_FILE}" "${ARKIME_CONFIG_FILE}" > "${CONFIG_RBAC_FILE}" && mv "${CONFIG_RBAC_FILE}" "${ARKIME_CONFIG_FILE}"
+      rm -f "${RBAC_FILE}" "${CONFIG_RBAC_FILE}"
     fi
-    echo -e "\n" >> "${RBAC_FILE}"
-    awk '
-        FNR==NR { insert_lines[NR] = $0; insert_count = NR; next }
-        /^\[custom-fields\]/ && !inserted {
-            for (i = 1; i <= insert_count; i++) print insert_lines[i]
-            inserted = 1
-        }
-        { print }
-        END {
-            if (!inserted) {
-                for (i = 1; i <= insert_count; i++) print insert_lines[i]
-            }
-        }
-    ' "${RBAC_FILE}" "${ARKIME_CONFIG_FILE}" > "${CONFIG_RBAC_FILE}" && mv "${CONFIG_RBAC_FILE}" "${ARKIME_CONFIG_FILE}"
-    rm -f "${RBAC_FILE}" "${CONFIG_RBAC_FILE}"
 
     # make sure permissions and ownership are nice
     chmod 600 "${ARKIME_CONFIG_FILE}" || true
