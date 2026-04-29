@@ -84,13 +84,14 @@ elif [ -z "${ARKIME_WISE_SERVICE_URL}" ] || [ "${ARKIME_WISE_SERVICE_URL,,}" == 
 else
     WISE_URL="${ARKIME_WISE_SERVICE_URL}"
 fi
+while [[ "$WISE_URL" == */ ]]; do WISE_URL="${WISE_URL%/}"; done
 
 WISE_PLUGIN_FILE_BASE="wise.so"
 WISE_PLUGIN_FILE_ESCAPED="$(echo "${WISE_PLUGIN_FILE_BASE}" | sed 's@\.@\\\.@g')"
 sed -i "/plugins=.*${WISE_PLUGIN_FILE_ESCAPED}/s/;\?${WISE_PLUGIN_FILE_ESCAPED}//g" "${ARKIME_CONFIG_FILE}"
 
 if [[ -n "${WISE_URL}" ]] && [[ ! "${WISE_URL}" =~ ^https?://(localhost|127\.0\.0\.1) ]]; then
-    WISE_HTTP_STATUS=$(curl -sk --max-time 10 -A "arkime" -o /dev/null -w "%{http_code}" "${WISE_URL}")
+    WISE_HTTP_STATUS=$(curl -skL --max-time 10 -A "arkime" -o /dev/null -w "%{http_code}" "${WISE_URL}")
     if [[ "${WISE_HTTP_STATUS}" == "401" || "${WISE_HTTP_STATUS}" == "403" ]] && [[ "${WISE_URL}" != "http://arkime:8081" ]] && [[ -r "${OPENSEARCH_CREDS_CONFIG_FILE}" ]]; then
         # we failed auth, so let's grab creds from OPENSEARCH_CREDS_CONFIG_FILE and try that
 
@@ -123,9 +124,8 @@ if [[ -n "${WISE_URL}" ]] && [[ ! "${WISE_URL}" =~ ^https?://(localhost|127\.0\.
 
         # smoosh them all together for the new URL
         TEST_WISE_URL="${WISE_PROTOCOL}${WISE_USER}:${WISE_PASSWORD}@${WISE_HOST_AND_PORT}"
-
-        # see if that works better, and if so, use it
-        curl -skf --max-time 10 -A "arkime" -o /dev/null "${TEST_WISE_URL}" && WISE_URL="${TEST_WISE_URL}"
+        while [[ "$TEST_WISE_URL" == */ ]]; do TEST_WISE_URL="${TEST_WISE_URL%/}"; done
+        WISE_URL="${TEST_WISE_URL}"
     fi
     # set the wiseURL in the config file
     sed -i "s|^\(wiseURL=\).*|\1""${WISE_URL}""|" "${ARKIME_CONFIG_FILE}"
