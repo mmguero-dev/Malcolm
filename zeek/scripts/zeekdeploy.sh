@@ -225,6 +225,13 @@ else
   echo "MetricsPort = $ZEEK_METRICS_PORT" >> ./zeekctl.cfg
 fi
 
+ZEEK_CLUSTER_BACKEND=${ZEEK_CLUSTER_BACKEND:-ZeroMQ}
+if grep --quiet ^ClusterBackend ./zeekctl.cfg; then
+  sed -r -i "s/(ClusterBackend)\s*=\s*.*/\1 = $ZEEK_CLUSTER_BACKEND/" ./zeekctl.cfg
+else
+  echo "ClusterBackend = $ZEEK_CLUSTER_BACKEND" >> ./zeekctl.cfg
+fi
+
 # Increase CommandTimeout for systems where broker crypto handshakes exceed the
 # 60s default, causing ssh_runner muxer BrokenPipeErrors during zeekctl deploy.
 ZEEK_COMMAND_TIMEOUT=${ZEEK_COMMAND_TIMEOUT:-300}

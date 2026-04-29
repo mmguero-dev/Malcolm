@@ -268,8 +268,13 @@ fi
 # $ARKIME_DIR/wiseini/ will be a persistent volume when run under Kubernetes.
 # This allows changes to persist when the wise application edits its own ini file at runtime.
 
-if [[ ! -f "${ARKIME_WISE_CONFIG_FILE}" ]] && [[ -r "${ARKIME_WISE_EXAMPLE_FILE}" ]] && [[ "$LIVE_CAPTURE" == "false" ]]; then
-    cp "${ARKIME_WISE_EXAMPLE_FILE}" "${ARKIME_WISE_CONFIG_FILE}"
+if [[ -r "${ARKIME_WISE_EXAMPLE_FILE}" ]] && [[ "$LIVE_CAPTURE" == "false" ]]; then
+  if [[ ! -f "${ARKIME_WISE_CONFIG_FILE}" ]]; then
+      cp "${ARKIME_WISE_EXAMPLE_FILE}" "${ARKIME_WISE_CONFIG_FILE}"
+  elif [[ ! -s "${ARKIME_WISE_CONFIG_FILE}" ]]; then
+      truncate --size=0 "${ARKIME_WISE_CONFIG_FILE}"
+      tee -a "${ARKIME_WISE_CONFIG_FILE}" < "${ARKIME_WISE_EXAMPLE_FILE}" >/dev/null
+  fi
 fi
 
 if [[  -d "${ARKIME_DIR}/wiseini" ]]; then
