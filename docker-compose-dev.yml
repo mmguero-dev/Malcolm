@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/opensearch.Dockerfile
-    image: ghcr.io/idaholab/malcolm/opensearch:26.04.2
+    image: ghcr.io/idaholab/malcolm/opensearch:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -78,7 +78,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/dashboards-helper.Dockerfile
-    image: ghcr.io/idaholab/malcolm/dashboards-helper:26.04.2
+    image: ghcr.io/idaholab/malcolm/dashboards-helper:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -131,7 +131,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/dashboards.Dockerfile
-    image: ghcr.io/idaholab/malcolm/dashboards:26.04.2
+    image: ghcr.io/idaholab/malcolm/dashboards:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -175,7 +175,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/logstash.Dockerfile
-    image: ghcr.io/idaholab/malcolm/logstash-oss:26.04.2
+    image: ghcr.io/idaholab/malcolm/logstash-oss:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -292,7 +292,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/filebeat.Dockerfile
-    image: ghcr.io/idaholab/malcolm/filebeat-oss:26.04.2
+    image: ghcr.io/idaholab/malcolm/filebeat-oss:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -382,7 +382,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/arkime.Dockerfile
-    image: ghcr.io/idaholab/malcolm/arkime:26.04.2
+    image: ghcr.io/idaholab/malcolm/arkime:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -469,7 +469,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/arkime.Dockerfile
-    image: ghcr.io/idaholab/malcolm/arkime:26.04.2
+    image: ghcr.io/idaholab/malcolm/arkime:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -564,7 +564,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/zeek.Dockerfile
-    image: ghcr.io/idaholab/malcolm/zeek:26.04.2
+    image: ghcr.io/idaholab/malcolm/zeek:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -633,7 +633,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/zeek.Dockerfile
-    image: ghcr.io/idaholab/malcolm/zeek:26.04.2
+    image: ghcr.io/idaholab/malcolm/zeek:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -702,7 +702,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/suricata.Dockerfile
-    image: ghcr.io/idaholab/malcolm/suricata:26.04.2
+    image: ghcr.io/idaholab/malcolm/suricata:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -764,7 +764,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/suricata.Dockerfile
-    image: ghcr.io/idaholab/malcolm/suricata:26.04.2
+    image: ghcr.io/idaholab/malcolm/suricata:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -830,7 +830,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/filescan.Dockerfile
-    image: ghcr.io/idaholab/malcolm/filescan:26.04.2
+    image: ghcr.io/idaholab/malcolm/filescan:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -888,7 +888,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/strelka-backend.Dockerfile
-    image: ghcr.io/idaholab/malcolm/strelka-backend:26.04.2
+    image: ghcr.io/idaholab/malcolm/strelka-backend:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -942,7 +942,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/strelka-frontend.Dockerfile
-    image: ghcr.io/idaholab/malcolm/strelka-frontend:26.04.2
+    image: ghcr.io/idaholab/malcolm/strelka-frontend:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -987,7 +987,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/strelka-manager.Dockerfile
-    image: ghcr.io/idaholab/malcolm/strelka-manager:26.04.2
+    image: ghcr.io/idaholab/malcolm/strelka-manager:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -1031,7 +1031,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/pcap-capture.Dockerfile
-    image: ghcr.io/idaholab/malcolm/pcap-capture:26.04.2
+    image: ghcr.io/idaholab/malcolm/pcap-capture:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -1084,7 +1084,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/pcap-monitor.Dockerfile
-    image: ghcr.io/idaholab/malcolm/pcap-monitor:26.04.2
+    image: ghcr.io/idaholab/malcolm/pcap-monitor:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -1136,7 +1136,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/file-upload.Dockerfile
-    image: ghcr.io/idaholab/malcolm/file-upload:26.04.2
+    image: ghcr.io/idaholab/malcolm/file-upload:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -1176,7 +1176,7 @@ services:
       retries: 3
       start_period: 60s
   htadmin:
-    image: ghcr.io/idaholab/malcolm/htadmin:26.04.2
+    image: ghcr.io/idaholab/malcolm/htadmin:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -1222,7 +1222,7 @@ services:
       retries: 3
       start_period: 60s
   freq:
-    image: ghcr.io/idaholab/malcolm/freq:26.04.2
+    image: ghcr.io/idaholab/malcolm/freq:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -1257,7 +1257,7 @@ services:
       retries: 3
       start_period: 60s
   netbox:
-    image: ghcr.io/idaholab/malcolm/netbox:26.04.2
+    image: ghcr.io/idaholab/malcolm/netbox:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -1330,7 +1330,7 @@ services:
       retries: 3
       start_period: 120s
   postgres:
-    image: ghcr.io/idaholab/malcolm/postgresql:26.04.2
+    image: ghcr.io/idaholab/malcolm/postgresql:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -1371,7 +1371,7 @@ services:
       retries: 3
       start_period: 45s
   valkey:
-    image: ghcr.io/idaholab/malcolm/valkey:26.04.2
+    image: ghcr.io/idaholab/malcolm/valkey:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -1415,7 +1415,7 @@ services:
       retries: 3
       start_period: 45s
   valkey-cache:
-    image: ghcr.io/idaholab/malcolm/valkey:26.04.2
+    image: ghcr.io/idaholab/malcolm/valkey:26.05.0
     profiles: ["malcolm", "hedgehog"]
     logging:
       driver: local
@@ -1454,7 +1454,7 @@ services:
       retries: 3
       start_period: 45s
   api:
-    image: ghcr.io/idaholab/malcolm/api:26.04.2
+    image: ghcr.io/idaholab/malcolm/api:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -1503,7 +1503,7 @@ services:
       retries: 3
       start_period: 60s
   keycloak:
-    image: ghcr.io/idaholab/malcolm/keycloak:26.04.2
+    image: ghcr.io/idaholab/malcolm/keycloak:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local
@@ -1546,7 +1546,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/nginx.Dockerfile
-    image: ghcr.io/idaholab/malcolm/nginx-proxy:26.04.2
+    image: ghcr.io/idaholab/malcolm/nginx-proxy:26.05.0
     profiles: ["malcolm"]
     logging:
       driver: local

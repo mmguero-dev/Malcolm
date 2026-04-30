@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
       - name: valkey-container
-        image: ghcr.io/idaholab/malcolm/valkey:26.04.2
+        image: ghcr.io/idaholab/malcolm/valkey:26.05.0
         imagePullPolicy: Always
         stdin: false
         tty: true
@@ -76,7 +76,7 @@ spec:
             subPath: valkey
       initContainers:
       - name: valkey-dirinit-container
-        image: ghcr.io/idaholab/malcolm/dirinit:26.04.2
+        image: ghcr.io/idaholab/malcolm/dirinit:26.05.0
         imagePullPolicy: Always
         stdin: false
         tty: true
