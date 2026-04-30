@@ -91,7 +91,7 @@ WISE_PLUGIN_FILE_ESCAPED="$(echo "${WISE_PLUGIN_FILE_BASE}" | sed 's@\.@\\\.@g')
 sed -i "/plugins=.*${WISE_PLUGIN_FILE_ESCAPED}/s/;\?${WISE_PLUGIN_FILE_ESCAPED}//g" "${ARKIME_CONFIG_FILE}"
 
 if [[ -n "${WISE_URL}" ]] && [[ ! "${WISE_URL}" =~ ^https?://(localhost|127\.0\.0\.1) ]]; then
-    WISE_HTTP_STATUS=$(curl -skL --max-time 10 -A "arkime" -o /dev/null -w "%{http_code}" "${WISE_URL}")
+    WISE_HTTP_STATUS=$(curl -skL --max-time 10 -A "arkime" -o /dev/null -w "%{http_code}" "${WISE_URL}/")
     if [[ "${WISE_HTTP_STATUS}" == "401" || "${WISE_HTTP_STATUS}" == "403" ]] && [[ "${WISE_URL}" != "http://arkime:8081" ]] && [[ -r "${OPENSEARCH_CREDS_CONFIG_FILE}" ]]; then
         # we failed auth, so let's grab creds from OPENSEARCH_CREDS_CONFIG_FILE and try that
 
