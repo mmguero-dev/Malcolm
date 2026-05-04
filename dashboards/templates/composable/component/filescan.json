@@ -5,7 +5,10 @@
         "filescan": {
           "properties": {
             "hits": {
-              "type": "short"
+              "type": "short",
+              "meta": {
+                "description": ""
+              }
             },
             "rules": {
               "type": "nested",
@@ -14,33 +17,54 @@
               "include_in_root": false,
               "properties": {
                 "scanner": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "tree": {
               "properties": {
                 "root": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "node": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "parent": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "depth": {
-                  "type": "short"
+                  "type": "short",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             }
           }
         },
         "strelka": {
-          "type": "flat_object"
+          "type": "flat_object",
+          "meta": {
+            "description": ""
+          }
         }
       }
     }

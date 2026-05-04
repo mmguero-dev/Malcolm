@@ -7,16 +7,28 @@
             "broker": {
               "properties": {
                 "event_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "event_action": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "peer_ip": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "peer_port": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "peer_message": {
                   "type": "keyword",
@@ -25,6 +37,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
@@ -32,26 +47,44 @@
             "capture_loss": {
               "properties": {
                 "ts_delta": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "peer": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "gaps": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "acks": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "percent_lost": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "cluster": {
               "properties": {
                 "node": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "node_message": {
                   "type": "keyword",
@@ -60,6 +93,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
@@ -67,7 +103,10 @@
             "config": {
               "properties": {
                 "value_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "value_old": {
                   "type": "keyword",
@@ -76,6 +115,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "value_new": {
@@ -85,26 +127,44 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "location": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "packet_filter": {
               "properties": {
                 "node": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "filter": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "init": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "success": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "failure_reason": {
                   "type": "keyword",
@@ -113,6 +173,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
@@ -126,6 +189,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
@@ -133,7 +199,10 @@
             "reporter": {
               "properties": {
                 "level": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "msg": {
                   "type": "keyword",
@@ -142,92 +211,176 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "location": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "stats": {
               "properties": {
                 "peer": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mem": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "pkts_proc": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "bytes_recv": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "pkts_dropped": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "pkts_link": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "pkt_lag": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "pkts_filtered": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "events_proc": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "events_queued": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "active_tcp_conns": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "active_udp_conns": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "active_icmp_conns": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tcp_conns": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "udp_conns": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "icmp_conns": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "timers": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "active_timers": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "files": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "active_files": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "dns_requests": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "active_dns_requests": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reassem_tcp_size": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reassem_file_size": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reassem_frag_size": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reassem_unknown_size": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             }

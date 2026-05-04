@@ -14,10 +14,16 @@
             "analyzer": {
               "properties": {
                 "analyzer_kind": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "analyzer_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cause": {
                   "type": "keyword",
@@ -26,6 +32,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "failure_data": {
@@ -35,6 +44,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "failure_reason": {
@@ -44,6 +56,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
@@ -51,142 +66,268 @@
             "conn": {
               "properties": {
                 "conn_state": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "conn_state_description": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "duration": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "history": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "inner_vlan": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ja4l": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ja4ls": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ja4t": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ja4ts": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "local_orig": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "local_resp": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "long": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "missed_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "orig_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "orig_ip_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "orig_pkts": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "resp_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "resp_ip_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "resp_pkts": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tunnel_parents": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "vlan": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "dce_rpc": {
               "properties": {
                 "endpoint": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "named_pipe": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "operation": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "rtt": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "dhcp": {
               "properties": {
                 "assigned_ip": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_fqdn": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_message": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_software": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "domain": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "duration": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "host_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ja4d": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "lease_time": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mac": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "msg_types": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "requested_ip": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_message": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_software": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "trans_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "vendor_class_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "dns": {
               "properties": {
                 "AA": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "answers": {
                   "type": "keyword",
@@ -195,83 +336,158 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "opcode": {
-                  "type": "short"
+                  "type": "short",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "opcode_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "qclass": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "qclass_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "qtype": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "qtype_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "query": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "RA": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "rcode": {
-                  "type": "short"
+                  "type": "short",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "rcode_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "RD": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "rejected": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "rtt": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "TC": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "trans_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "TTLs": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "Z": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "files": {
               "properties": {
                 "analyzers": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "depth": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "duration": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "extracted": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "extracted_cutoff": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "extracted_size": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "extracted_uri": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "filename": {
                   "type": "keyword",
@@ -280,106 +496,196 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "ftime": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "local_orig": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "md5": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mime_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "missing_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "overflow_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "parent_fuid": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "seen_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "sha1": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "sha256": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ssdeep": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "timedout": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tlsh": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "total_bytes": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ftp": {
               "properties": {
                 "arg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "command": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "data_channel": {
                   "properties": {
                     "orig_h": {
-                      "type": "ip"
+                      "type": "ip",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "passive": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "resp_h": {
-                      "type": "ip"
+                      "type": "ip",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "resp_p": {
-                      "type": "integer"
+                      "type": "integer",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
                 "file_size": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mime_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reply_code": {
-                  "type": "short"
+                  "type": "short",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reply_msg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "fuid": {
-              "type": "keyword"
+              "type": "keyword",
+              "meta": {
+                "description": ""
+              }
             },
             "gquic": {
               "properties": {
                 "cyu": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cyutags": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tag_count": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "user_agent": {
                   "type": "keyword",
@@ -388,32 +694,56 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "http": {
               "properties": {
                 "client_header_names": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "host": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "info_code": {
-                  "type": "short"
+                  "type": "short",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "info_msg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ja4h": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "method": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "orig_filenames": {
                   "type": "keyword",
@@ -422,16 +752,28 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "orig_fuids": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "orig_mime_types": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "origin": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "post_password_plain": {
                   "type": "keyword",
@@ -440,6 +782,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "post_username": {
@@ -449,10 +794,16 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "proxied": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "referrer": {
                   "type": "keyword",
@@ -461,10 +812,16 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "request_body_len": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "resp_filenames": {
                   "type": "keyword",
@@ -473,32 +830,59 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "resp_fuids": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "resp_mime_types": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "response_body_len": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_header_names": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "status_code": {
-                  "type": "short"
+                  "type": "short",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "status_msg": {
                   "type": "keyword",
-                  "ignore_above": 1024
+                  "ignore_above": 1024,
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tags": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "trans_depth": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "uri": {
                   "type": "keyword",
@@ -507,6 +891,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "user_agent": {
@@ -516,17 +903,26 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "intel": {
               "properties": {
                 "cif_confidence": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "file_description": {
                   "type": "keyword",
@@ -536,129 +932,246 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "file_mime_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "seen_node": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "seen_where": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
-                "confidence" : {
-                  "type": "float"
+                "confidence": {
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
-                "threat_score" : {
-                  "type": "float"
+                "threat_score": {
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
-                "verdict" : {
-                  "type": "keyword"
+                "verdict": {
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
-                "verdict_source" : {
-                  "type": "keyword"
+                "verdict_source": {
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
-                "associated" : {
-                  "type": "keyword"
+                "associated": {
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
-                "category" : {
-                  "type": "keyword"
+                "category": {
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
-                "campaigns" : {
-                  "type": "keyword"
+                "campaigns": {
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
-                "reports" : {
-                  "type": "keyword"
+                "reports": {
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ipsec": {
               "properties": {
                 "certificates": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "doi": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "exchange_type": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "flag_a": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "flag_c": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "flag_e": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "flag_i": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "flag_r": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "flag_v": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "flags": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "hash": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "initiator_spi": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ke_dh_groups": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "length": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "maj_ver": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "message_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "min_ver": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "notify_messages": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "proposals": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "protocol_id": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "responder_spi": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "situation": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "transform_attributes": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "transforms": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "vendor_ids": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "irc": {
               "properties": {
                 "addl": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "command": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "dcc_file_name": {
                   "type": "keyword",
@@ -667,41 +1180,74 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "dcc_file_size": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "dcc_mime_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "nick": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "value": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "kerberos": {
               "properties": {
                 "cipher": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_cert_fuid": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_cert_subject": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "auth_ticket_sha256": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "new_ticket_sha256": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cname": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "error_msg": {
                   "type": "keyword",
@@ -710,67 +1256,118 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "forwardable": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "from": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "renewable": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "request_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_cert_fuid": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_cert_subject": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "sname": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "success": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "till": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "known_certs": {
               "properties": {
                 "issuer_subject": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "serial": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "subject": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "known_routers": {
               "properties": {
                 "ttl": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "hlim": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "known_services": {
               "properties": {
                 "iana_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "iana_description": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
@@ -784,10 +1381,16 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "message_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "object": {
                   "type": "keyword",
@@ -796,19 +1399,34 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "operation": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "result_code": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "result_message": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
@@ -822,6 +1440,9 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "base_object": {
@@ -831,10 +1452,16 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "deref": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "filter": {
                   "type": "keyword",
@@ -844,22 +1471,40 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "message_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "result_code": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "result_count": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "result_message": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "scope": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
@@ -872,86 +1517,152 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "confused": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "success": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "mqtt_connect": {
               "properties": {
                 "client_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "connect_status": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "proto_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "proto_version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "will_payload": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "will_topic": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "mqtt_publish": {
               "properties": {
                 "from_client": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "payload": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "payload_dict": {
                   "properties": {
                     "messageType": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
                 "payload_len": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "qos": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "retain": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "status": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "topic": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "mqtt_subscribe": {
               "properties": {
                 "ack": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "action": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "granted_qos_level": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "qos_levels": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "topics": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
@@ -965,10 +1676,16 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "cmd": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "response": {
                   "type": "keyword",
@@ -977,26 +1694,44 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "rows": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "success": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "notice": {
               "properties": {
                 "actions": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "dropped": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "dst": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "file_desc": {
                   "type": "keyword",
@@ -1006,10 +1741,16 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "file_mime_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "msg": {
                   "type": "keyword",
@@ -1018,16 +1759,28 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "n": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "note": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "p": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "peer_descr": {
                   "type": "keyword",
@@ -1037,6 +1790,9 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "remote_location_city": {
@@ -1046,16 +1802,28 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "remote_location_country_code": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "remote_location_latitude": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "remote_location_longitude": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "remote_location_region": {
                   "type": "keyword",
@@ -1064,10 +1832,16 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "src": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "sub": {
                   "type": "keyword",
@@ -1078,256 +1852,484 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "suppress_for": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ntlm": {
               "properties": {
                 "domain": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "host": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_dns_computer": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_nb_computer": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_tree": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "status": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "success": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ntp": {
               "properties": {
                 "mode": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mode_str": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "num_exts": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "org_time": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "poll": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "precision": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "rec_time": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ref_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ref_time": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "root_delay": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "root_disp": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "stratum": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "xmt_time": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ocsp": {
               "properties": {
                 "certStatus": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "hashAlgorithm": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "issuerKeyHash": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "issuerNameHash": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "nextUpdate": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "revokereason": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "revoketime": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "serialNumber": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "thisUpdate": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ospf": {
               "properties": {
                 "advert_router": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "area_id": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "backup_router": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "desig_router": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "dest_router_id": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "fwd_addrs": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "interface_id": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "intra_prefixes": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "link_data": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "link_id": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "link_prefixes": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "link_state_id": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "link_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "lsa_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "metric": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "metrics": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "neighbor_interface_id": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "neighbor_router_id": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "neighbors": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "netmask": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ospf_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "prefix": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "route_tags": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "router_id": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "routers": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "pe": {
               "properties": {
                 "compile_ts": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "has_cert_table": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "has_debug_data": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "has_export_table": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "has_import_table": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "is_64bit": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "is_exe": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "machine": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "os": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "section_names": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "subsystem": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "uses_aslr": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "uses_code_integrity": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "uses_dep": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "uses_seh": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "postgresql": {
               "properties": {
                 "database": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "application_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "frontend": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "frontend_arg": {
                   "type": "keyword",
@@ -1337,10 +2339,16 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "backend": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "backend_arg": {
                   "type": "keyword",
@@ -1350,97 +2358,178 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "rows": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "radius": {
               "properties": {
                 "connect_info": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "framed_addr": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mac": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reply_msg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "result": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ttl": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tunnel_client": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "rdp": {
               "properties": {
                 "cert_count": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cert_permanent": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cert_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_build": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_channels": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_dig_product_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cookie": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "desktop_height": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "desktop_width": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "encryption_level": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "encryption_method": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "keyboard_layout": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "requested_color_depth": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "result": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "security_protocol": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "redis": {
               "properties": {
                 "cmd_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cmd_key": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cmd_value": {
                   "type": "keyword",
@@ -1449,57 +2538,102 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "success": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reply": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "rfb": {
               "properties": {
                 "auth": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "authentication_method": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_major_version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_minor_version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "desktop_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "height": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_major_version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_minor_version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "share_flag": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "width": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "signatures": {
               "properties": {
                 "host_count": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "signature_count": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "signature_id": {
                   "type": "keyword",
@@ -1509,6 +2643,9 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "sub_message": {
@@ -1520,6 +2657,9 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
@@ -1527,52 +2667,100 @@
             "sip": {
               "properties": {
                 "call_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "content_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "date": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "method": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reply_to": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "request_body_len": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "request_from": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "request_path": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "request_to": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "response_body_len": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "response_from": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "response_path": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "response_to": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "seq": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "status_code": {
-                  "type": "short"
+                  "type": "short",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "status_msg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "subject": {
                   "type": "keyword",
@@ -1581,10 +2769,16 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "trans_depth": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "uri": {
                   "type": "keyword",
@@ -1593,6 +2787,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "user_agent": {
@@ -1602,38 +2799,68 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "warning": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "smb_cmd": {
               "properties": {
                 "argument": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "command": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "rtt": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "status": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "sub_command": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tree": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tree_service": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "user": {
                   "type": "keyword",
@@ -1642,26 +2869,44 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "smb_files": {
               "properties": {
                 "action": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "data_len_req": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "data_len_rsp": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "data_offset_req": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "name": {
                   "type": "keyword",
@@ -1670,6 +2915,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "path": {
@@ -1679,6 +2927,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "prev_name": {
@@ -1688,44 +2939,80 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "size": {
-                  "type": "long"
+                  "type": "long",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "times_accessed": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "times_changed": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "times_created": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "times_modified": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ts": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "orig_h": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "orig_p": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "resp_h": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "resp_p": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "smb_mapping": {
               "properties": {
                 "native_file_system": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "path": {
                   "type": "keyword",
@@ -1734,38 +3021,68 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "resource_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "share_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "smtp": {
               "properties": {
                 "cc": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "date": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "first_received": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "from": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "helo": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "in_reply_to": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "is_webmail": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "last_reply": {
                   "type": "keyword",
@@ -1774,31 +3091,58 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "last_reply_code": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "last_reply_msg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mailfrom": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "msg_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "path": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "rcptto": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "reply_to": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "second_received": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "subject": {
                   "type": "keyword",
@@ -1807,16 +3151,28 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "tls": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "to": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "trans_depth": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "user_agent": {
                   "type": "keyword",
@@ -1825,69 +3181,126 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "x_originating_ip": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "snmp": {
               "properties": {
                 "community": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "display_string": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "duration": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "get_bulk_requests": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "get_requests": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "get_responses": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "set_requests": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "up_since": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "socks": {
               "properties": {
                 "bound_host": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "bound_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "bound_port": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "request_host": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "request_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "request_port": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_status": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
@@ -1900,14 +3313,23 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "software_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "unparsed_version": {
                   "type": "keyword",
-                  "ignore_above": 1024
+                  "ignore_above": 1024,
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "url": {
                   "type": "keyword",
@@ -1916,78 +3338,147 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "version_addl": {
                   "type": "keyword",
-                  "ignore_above": 1024
+                  "ignore_above": 1024,
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version_major": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version_minor": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version_minor2": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version_minor3": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ssh": {
               "properties": {
                 "auth_attempts": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "auth_success": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cipher_alg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "compression_alg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cshka": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "direction": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "hassh": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "hasshAlgorithms": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "hasshServer": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "hasshServerAlgorithms": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "hasshVersion": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ja4ssh": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "host_key_fingerprint": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "host_key_alg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "kex_alg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mac_alg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "remote_location_city": {
                   "type": "keyword",
@@ -1996,16 +3487,28 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "remote_location_country_code": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "remote_location_latitude": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "remote_location_longitude": {
-                  "type": "float"
+                  "type": "float",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "remote_location_region": {
                   "type": "keyword",
@@ -2014,79 +3517,148 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "server": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "sshka": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "version": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ssl": {
               "properties": {
                 "cert_chain_fps": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cert_chain_fuids": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "cipher": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_cert_chain_fps": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_cert_chain_fuids": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_issuer": {
                   "properties": {
                     "C": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "CN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "DC": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "emailAddress": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "GN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "initials": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "L": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "O": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "OU": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "pseudonym": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "serialNumber": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "SN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "ST": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "title": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
@@ -2097,48 +3669,90 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "client_subject": {
                   "properties": {
                     "C": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "CN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "emailAddress": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "GN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "initials": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "L": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "O": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "OU": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "pseudonym": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "serialNumber": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "SN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "ST": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "title": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
@@ -2149,57 +3763,108 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "curve": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "established": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "issuer": {
                   "properties": {
                     "C": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "CN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "DC": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "emailAddress": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "GN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "initials": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "L": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "O": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "OU": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "pseudonym": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "serialNumber": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "SN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "ST": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "title": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
@@ -2210,78 +3875,150 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "last_alert": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "next_protocol": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "resumed": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_name": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "sni_matches_cert": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ssl_history": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "ssl_version": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "subject": {
                   "properties": {
                     "C": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "CN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "description": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "emailAddress": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "GN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "initials": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "L": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "O": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "OU": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "postalCode": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "pseudonym": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "serialNumber": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "SN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "ST": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "street": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "title": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
@@ -2292,17 +4029,26 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "validation_status": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "stun": {
               "properties": {
                 "attr_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "attr_val": {
                   "type": "keyword",
@@ -2312,36 +4058,60 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "class": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "method": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "trans_id": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "stun_nat": {
               "properties": {
                 "lan_addr": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "wan_addr": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "wan_port": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "syslog": {
               "properties": {
                 "facility": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "message": {
                   "type": "keyword",
@@ -2350,17 +4120,26 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "severity": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "tds": {
               "properties": {
                 "command": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
@@ -2374,13 +4153,19 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "parameters": {
                   "type": "nested",
                   "properties": {
                     "P1": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
@@ -2391,6 +4176,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
@@ -2398,7 +4186,10 @@
             "tds_sql_batch": {
               "properties": {
                 "header_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "query": {
                   "type": "keyword",
@@ -2407,6 +4198,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
@@ -2414,54 +4208,96 @@
             "tftp": {
               "properties": {
                 "block_acked": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "block_sent": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "error_code": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "error_msg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "fname": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "mode": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "size": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "uid_data": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "wrq": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "ts": {
-              "type": "date"
+              "type": "date",
+              "meta": {
+                "description": ""
+              }
             },
             "tunnel": {
               "properties": {
                 "action": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "tunnel_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "uid": {
-              "type": "keyword"
+              "type": "keyword",
+              "meta": {
+                "description": ""
+              }
             },
             "websocket": {
               "properties": {
                 "host": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "uri": {
                   "type": "keyword",
@@ -2470,6 +4306,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "user_agent": {
@@ -2479,19 +4318,34 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "subprotocol": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_protocols": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "server_extensions": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_extensions": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
@@ -2506,92 +4360,170 @@
                       "type": "text",
                       "norms": false
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "notice": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "source": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "wireguard": {
               "properties": {
                 "established": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "initiations": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "receiver_index": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "responses": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "sender_index": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 }
               }
             },
             "x509": {
               "properties": {
                 "basic_constraints_ca": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "basic_constraints_path_len": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_curve": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_exponent": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_issuer": {
                   "properties": {
                     "C": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "CN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "DC": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "emailAddress": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "GN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "initials": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "L": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "O": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "OU": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "pseudonym": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "serialNumber": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "SN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "ST": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "title": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
@@ -2602,81 +4534,156 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "certificate_key_alg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_key_length": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_key_type": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_not_valid_after": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_not_valid_before": {
-                  "type": "date"
+                  "type": "date",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_serial": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_sig_alg": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "certificate_subject": {
                   "properties": {
                     "C": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "CN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "DC": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "description": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "emailAddress": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "GN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "initials": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "L": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "O": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "OU": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "postalCode": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "pseudonym": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "serialNumber": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "SN": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "ST": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "street": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     },
                     "title": {
-                      "type": "keyword"
+                      "type": "keyword",
+                      "meta": {
+                        "description": ""
+                      }
                     }
                   }
                 },
@@ -2687,19 +4694,34 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "certificate_version": {
-                  "type": "integer"
+                  "type": "integer",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "client_cert": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "fingerprint": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "host_cert": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "san_dns": {
                   "type": "keyword",
@@ -2708,13 +4730,22 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 },
                 "san_email": {
-                  "type": "keyword"
+                  "type": "keyword",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "san_ip": {
-                  "type": "ip"
+                  "type": "ip",
+                  "meta": {
+                    "description": ""
+                  }
                 },
                 "san_uri": {
                   "type": "keyword",
@@ -2723,6 +4754,9 @@
                     "text": {
                       "type": "text"
                     }
+                  },
+                  "meta": {
+                    "description": ""
                   }
                 }
               }
