@@ -56,7 +56,7 @@ class PresentationMode(Enum):
 ###################################################################################################
 # Constants for Malcolm image prefix and dotfile secret key
 MALCOLM_IMAGE_PREFIX = "ghcr.io/idaholab/malcolm/"
-MALCOLM_VERSION = "26.05.0"
+MALCOLM_VERSION = "26.05.1"
 
 ###################################################################################################
 # Constants for Malcolm configmap directory replacer
