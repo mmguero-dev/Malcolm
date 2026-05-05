@@ -9,6 +9,7 @@
 [Threat Intelligence](#/dashboard/36ed695f-edcc-47c1-b0ec-50d20c93ce0f)
 [Files](#/dashboard/9ee51f94-3316-4fc5-bd89-93a52af69714)
 [File Scanning](#/dashboard/248cae60-eff9-11f0-b83f-8f35d6995138)
+[File Tree](#/dashboard/4ff567d0-48a6-11f1-9604-d962b9b51f3a)
 [Executables](#/dashboard/0a490422-0ce9-44bf-9a2d-19329ddde8c3)
 [Software](#/dashboard/87d990cc-9e0b-41e5-b8fe-b10ae1da0c85)
 [Zeek Known Summary](#/dashboard/89d1cc50-974c-11ed-bb6b-3fb06c879b11)
