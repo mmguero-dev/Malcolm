@@ -1,7 +1,7 @@
 # <a name="UpgradePlan"></a>Upgrading Malcolm
 
 * [Upgrading Malcolm](#UpgradePlan)
-    - [Scenario 1: Malcolm was installed from the ISO installer or a prepackaged or GitHub release tarball](#UpgradeISOEnv)
+    - [Scenario 1: Malcolm was installed from the ISO installer or a prepackaged or release tarball](#UpgradeISOEnv)
     - [Scenario 2: Malcolm was installed from a GitHub clone](#UpgradeGitEnv)
     - [Final Steps](#UpgradeFinalSteps)
 
@@ -9,7 +9,7 @@ At this time there is not an "official" version upgrade procedure for Malcolm, a
 
 The Malcolm project uses [calendar versioning](https://calver.org/) for its [releases]({{ site.github.repository_url }}/releases/latest). A careful reading of the release notes between the source and target version before upgrading Malcolm is highly recommended.
 
-## <a name="UpgradeISOEnv"></a> Scenario 1: Malcolm was installed from the [ISO installer](malcolm-hedgehog-e2e-iso-install.md#ISOInstallMalcolm) or a [prepackaged or GitHub release tarball](development.md#Packager)
+## <a name="UpgradeISOEnv"></a> Scenario 1: Malcolm was installed from the [ISO installer](malcolm-hedgehog-e2e-iso-install.md#ISOInstallMalcolm) or a [prepackaged or release tarball](development.md#Packager)
 
 This section walks through upgrading a Malcolm system (installed via the [ISO Installation](malcolm-hedgehog-e2e-iso-install.md#ISOInstallMalcolm)) to the [latest release]({{ site.github.repository_url }}/releases/latest) of Malcolm (`v{{ site.malcolm.version }}` at the time of this writing), including the underlying Linux system upgrade, Docker image refresh, Malcolm application file replacement, configuration review, and startup.
 
