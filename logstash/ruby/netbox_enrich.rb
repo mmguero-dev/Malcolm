@@ -8,7 +8,7 @@ require 'fuzzystringmatch'
 require 'ipaddr'
 require 'json'
 require 'lru_reredux'
-require 'psych'
+require 'yaml'
 require 'uri'
 require 'stringex_lite'
 

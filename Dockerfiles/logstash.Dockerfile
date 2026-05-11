@@ -16,7 +16,7 @@ RUN microdnf -y install \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     python3 manuf-oui-parse.py -o vendor_macs.yaml
 
-FROM docker.elastic.co/logstash/logstash-oss:9.2.8
+FROM docker.elastic.co/logstash/logstash-oss:9.4.0
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
@@ -83,14 +83,16 @@ RUN set -x && \
     curl -fsSL -o /usr/local/bin/yq "${YQ_URL}${BINARCH}" && \
         chmod 755 /usr/local/bin/yq && \
     export JAVA_HOME=/usr/share/logstash/jdk && \
-    /usr/share/logstash/vendor/jruby/bin/jruby -S gem install bundler && \
+    logstash-plugin install --preserve logstash-output-opensearch && \
+        /usr/share/logstash/bin/ruby -e 'path = Dir["/usr/share/logstash/vendor/bundle/jruby/3.4.0/gems/psych-*/lib/psych/class_loader.rb"].first or abort "psych class_loader not found"; text = File.read(path); changed = text.gsub!(/constants\.each do \|const\|\n\s+konst = const_get const\n\s+class_eval <<~RUBY, __FILE__, __LINE__ \+ 1\n\s+def #\{const\.to_s\.downcase\}\n\s+load #\{konst\.inspect\}\n\s+end\n\s+RUBY\n\s+end/, "constants.each do |const|\n      konst = const_get const\n      define_method(const.to_s.downcase) { load konst }\n    end"); abort "psych patch did not apply" unless changed; File.write(path, text)' && \
+        grep -n 'define_method' /usr/share/logstash/vendor/bundle/jruby/3.4.0/gems/psych-*/lib/psych/class_loader.rb && \
         echo "gem 'concurrent-ruby'" >> /usr/share/logstash/Gemfile && \
         echo "gem 'deep_merge'" >> /usr/share/logstash/Gemfile && \
         echo "gem 'fuzzy-string-match'" >> /usr/share/logstash/Gemfile && \
         echo "gem 'lru_reredux', git: 'https://github.com/mmguero-dev/lru_reredux'" >> /usr/share/logstash/Gemfile && \
         echo "gem 'stringex'" >> /usr/share/logstash/Gemfile && \
         /usr/share/logstash/bin/ruby -S bundle install && \
-    logstash-plugin install --preserve logstash-output-opensearch && \
+        /usr/share/logstash/bin/ruby -e 'path = Dir["/usr/share/logstash/vendor/bundle/jruby/3.4.0/gems/psych-*/lib/psych/class_loader.rb"].first or abort "psych class_loader not found"; text = File.read(path); unless text.include?("define_method(const.to_s.downcase)"); text.gsub!(/constants\.each do \|const\|\n\s+konst = const_get const\n\s+class_eval <<~RUBY, __FILE__, __LINE__ \+ 1\n\s+def #\{const\.to_s\.downcase\}\n\s+load #\{konst\.inspect\}\n\s+end\n\s+RUBY\n\s+end/, "constants.each do |const|\n      konst = const_get const\n      define_method(const.to_s.downcase) { load konst }\n    end"); abort "psych patch did not apply after bundle install" unless text.include?("define_method(const.to_s.downcase)"); File.write(path, text); end' && \
     microdnf clean all && \
     rm -rf \
         /root/.bundle \
