@@ -710,6 +710,8 @@ class MalcolmSource extends WISESource {
       "suricata.tunnel.depth",
       "suricata.tunnel.dest_ip",
       "suricata.tunnel.dest_port",
+      "suricata.tunnel.pcap_cnt",
+      "suricata.tunnel.pkt_src",
       "suricata.tunnel.proto",
       "suricata.tunnel.src_ip",
       "suricata.tunnel.src_port",

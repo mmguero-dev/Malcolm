@@ -1801,6 +1801,12 @@
                 "dest_port": {
                   "type": "integer"
                 },
+                "pcap_cnt": {
+                  "type": "integer"
+                },
+                "pkt_src": {
+                  "type": "keyword"
+                },
                 "proto": {
                   "type": "keyword"
                 },
