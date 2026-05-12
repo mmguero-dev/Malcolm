@@ -153,7 +153,7 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 #### Actions
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of actions. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -163,7 +163,7 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 #### Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -241,7 +241,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 #### C12.22  - Transport Protocol
 
-**Purpose:** A pie chart showing the proportional distribution of c12.22  transport protocol. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Transport Protocol for C12.22 . Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -260,7 +260,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 *The source IP addresses of C12.22 traffic*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of c12.22 source ips. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IPs values for C12.22. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -278,7 +278,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 *The destination addresses for C12.22 traffic*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of c12.22 destination ips. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IPs values for C12.22. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -294,7 +294,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 #### C12.22 - Users
 
-**Purpose:** A horizontal bar chart ranking c12.22 users by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Users for C12.22 by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -313,7 +313,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 *C12.22 EPSEM services by count*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of c12.22 epsem services. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of EPSEM Services values for C12.22. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -332,7 +332,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 *AP Titles as shown in the C12.22 network traffic*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of c12.22 ap titles. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of AP Titles values for C12.22. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -350,7 +350,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 *The C12.22 actions seen in network traffic.*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of c12.22 actions. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Actions values for C12.22. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -369,7 +369,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 *ANSI C122.22 results seen in network traffic*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of c12.22 results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Results values for C12.22. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -387,7 +387,7 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 *ANSI C12.22 passwords seen in network traffic*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of c12.22 users and passwords. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Users and Passwords values for C12.22. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -480,7 +480,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Traffic by Network Segment
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of traffic by network segment. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -495,7 +495,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Network Site
 
-**Purpose:** A pie chart showing the proportional distribution of network site. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -515,7 +515,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Protocol by Network Segment
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of protocol by network segment. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -528,7 +528,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Event Severity by Network Segment
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of event severity by network segment. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -540,7 +540,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Source Device Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of source device type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -551,7 +551,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Notice, Alert and Signature by Network Segment
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notice, alert and signature by network segment. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -564,7 +564,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Destination Device Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of destination device type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -575,7 +575,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Source Device Role
 
-**Purpose:** A horizontal bar chart ranking source device role by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -584,7 +584,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Destination Device Role
 
-**Purpose:** A horizontal bar chart ranking destination device role by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -617,7 +617,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Uninventoried Internal Source IPs
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of uninventoried internal source ips. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -638,7 +638,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 #### Uninventoried Internal Destination IPs
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of uninventoried internal destination ips. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -735,7 +735,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 *BACnet Device Vendors from i-am messages*
 
-**Purpose:** A pie chart showing the proportional distribution of bacnet device vendors. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Device Vendors for BACnet. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -752,7 +752,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 *BACnet Virtual Link Control Functions (Link-Layer Control)*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bacnet bvlc functions. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of BVLC Functions values for BACnet. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -767,7 +767,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 #### ATT&CK for ICS Tactic - BACnet
 
-**Purpose:** A horizontal bar chart ranking att&ck for ics tactic bacnet by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking BACnet for ATT&CK for ICS Tactic by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -783,7 +783,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 #### BACnet - Actions and Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bacnet actions and results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Actions and Results values for BACnet. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -795,7 +795,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 *BACnet Application Layer Protocol Data Unit types and services*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bacnet protocol data units (pdus). Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Protocol Data Units (PDUs) values for BACnet. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -810,7 +810,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 #### ATT&CK for ICS Notices - BACnet
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of att&ck for ics notices bacnet. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of BACnet values for ATT&CK for ICS Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -828,7 +828,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 *Source IP Addresses from bacnet.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bacnet source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for BACnet. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -839,7 +839,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 *Destination IP Addresses from bacnet.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bacnet destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for BACnet. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -850,7 +850,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 *Results from BACnet i-am and i-have commands*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bacnet device discovery. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Device Discovery values for BACnet. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -880,7 +880,7 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 *Results from BACnet Read-Property and Write-Property Commands*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bacnet  read and write property . Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Read and Write Property  values for BACnet . Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1002,7 +1002,7 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 
 #### BSAP - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bsap source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for BSAP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1021,7 +1021,7 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 
 #### BSAP IP - Function
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bsap ip function. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Function values for BSAP IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1039,7 +1039,7 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 
 #### BSAP - Transport
 
-**Purpose:** A pie chart showing the proportional distribution of bsap transport. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Transport for BSAP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -1058,7 +1058,7 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 
 #### BSAP Serial - RDB Function
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bsap serial rdb function. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of RDB Function values for BSAP Serial. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1078,7 +1078,7 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 
 #### BSAP Serial - Function
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bsap serial function. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Function values for BSAP Serial. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1136,7 +1136,7 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 
 #### BSAP - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of bsap destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for BSAP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1182,7 +1182,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Service By Destination Country
 
-**Purpose:** A pie chart showing the proportional distribution of connections service by destination country. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Service By Destination Country for Connections. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -1201,7 +1201,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1219,7 +1219,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1237,7 +1237,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Source Country
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections source country. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source Country values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1256,7 +1256,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Responder Bytes
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections responder bytes. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Responder Bytes values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1275,7 +1275,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Missed Bytes
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections missed bytes. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Missed Bytes values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1294,7 +1294,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Connection State
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections connection state. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Connection State values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1403,7 +1403,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Total Bytes Per Source/Destination IP Pair
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections total bytes per source/destination ip pair. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Total Bytes Per Source/Destination IP Pair values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1421,7 +1421,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1439,7 +1439,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Source MAC OUI
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections source mac oui. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source MAC OUI values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1458,7 +1458,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Destination MAC OUI
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections destination mac oui. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination MAC OUI values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1477,7 +1477,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Source MAC Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections source mac address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source MAC Address values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1497,7 +1497,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Destination MAC Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of connections destination mac address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination MAC Address values for Connections. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -1555,7 +1555,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Connections - Protocol
 
-**Purpose:** A pie chart showing the proportional distribution of connections protocol. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Protocol for Connections. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -1592,7 +1592,7 @@ The Connections dashboard covers all network-layer connection records observed o
 
 #### Network Layer
 
-**Purpose:** A pie chart showing the proportional distribution of network layer. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -2057,7 +2057,7 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 #### DCE/RPC - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dce/rpc source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for DCE/RPC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2073,7 +2073,7 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 #### DCE/RPC - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dce/rpc destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for DCE/RPC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2089,7 +2089,7 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 #### DCE/RPC - Endpoint
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dce/rpc endpoint. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Endpoint values for DCE/RPC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2105,7 +2105,7 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 #### DCE/RPC - Named Pipe
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dce/rpc named pipe. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Named Pipe values for DCE/RPC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2122,7 +2122,7 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 #### DCE/RPC - Operation
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dce/rpc operation. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Operation values for DCE/RPC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2138,7 +2138,7 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 #### DCE/RPC - Round Trip Time
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dce/rpc round trip time. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Round Trip Time values for DCE/RPC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2171,7 +2171,7 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 #### DCE/RPC - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dce/rpc destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for DCE/RPC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2187,7 +2187,7 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 #### DCE/RPC - Summary
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dce/rpc summary. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Summary values for DCE/RPC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2251,7 +2251,7 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 
 #### DHCP - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dhcp destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for DHCP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2272,7 +2272,7 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 
 #### DHCP - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dhcp source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for DHCP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2293,7 +2293,7 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 
 #### DHCP - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dhcp destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for DHCP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2336,7 +2336,7 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 
 #### DHCP - IP to MAC Assignment
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dhcp ip to mac assignment. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of IP to MAC Assignment values for DHCP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2357,7 +2357,7 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 
 #### DHCP - Client Software
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dhcp client software. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Client Software values for DHCP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2378,7 +2378,7 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 
 #### DHCP - Server Software
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dhcp server software. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Server Software values for DHCP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2399,7 +2399,7 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 
 #### DHCP - JA4D Fingerprint
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dhcp ja4d fingerprint. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of JA4D Fingerprint values for DHCP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2456,7 +2456,7 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 
 *Source IP Addresses from dnp3.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dnp3 source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for DNP3. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2474,7 +2474,7 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 
 *Destination IP Addresses from dnp3.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dnp3 destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for DNP3. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2492,7 +2492,7 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 
 *DNP3 function in request packet from dnp3.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dnp3 function request. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Function Request values for DNP3. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2510,7 +2510,7 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 
 *DNP3 function in reply packet from dnp3.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dnp3 function reply. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Function Reply values for DNP3. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2551,7 +2551,7 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 
 *DNP3 Internal Indicators from dnp3.iin in dnp3.log*
 
-**Purpose:** A pie chart showing the proportional distribution of dnp3 internal indicators overview. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Internal Indicators Overview for DNP3. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -2569,7 +2569,7 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 
 *Overview of DNP3 objects from READ-RESPONSE messages in dnp3_objects.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dnp3 objects overview. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Objects Overview values for DNP3. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2587,7 +2587,7 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 
 *Overview of DNP3 control functions from dnp3_control.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dnp3 control overview. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Control Overview values for DNP3. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2676,7 +2676,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS - Server
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns server. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Server values for DNS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2690,7 +2690,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS - Client
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns client. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Client values for DNS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2704,7 +2704,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS - Query Class
 
-**Purpose:** A pie chart showing the proportional distribution of dns query class. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Query Class for DNS. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -2719,7 +2719,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS - Query/Answer
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns query/answer. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Query/Answer values for DNS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2776,7 +2776,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS - Answers
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns answers. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Answers values for DNS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2790,7 +2790,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS - Response Code (Name)
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns response code (name). Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Response Code (Name) values for DNS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2805,7 +2805,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS - Query Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns query type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Query Type values for DNS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2820,7 +2820,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS - Protocol
 
-**Purpose:** A pie chart showing the proportional distribution of dns protocol. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Protocol for DNS. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -2835,7 +2835,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 #### DNS Queries by Randomness
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns queries by randomness. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2870,7 +2870,7 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 * ID: [4a073440-b286-11eb-a4d4-09fa12a6ebd4](#/dashboard/4a073440-b286-11eb-a4d4-09fa12a6ebd4)
 
-The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.org/wiki/EtherCAT) industrial Ethernet traffic, used in high-speed motion control and automation systems. It captures command types, slave addresses, working counters, and communication patterns between master and slave devices. This dashboard is useful for detecting anomalous EtherCAT traffic that could indicate device tampering or unauthorized access to automation equipment.
+The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.org/wiki/EtherCAT) industrial Ethernet traffic, used in high-speed motion control and automation systems. It captures command types, server addresses, working counters, and communication patterns between client and server devices. This dashboard is useful for detecting anomalous EtherCAT traffic that could indicate device tampering or unauthorized access to automation equipment.
 
 ### Visualizations
 
@@ -2905,7 +2905,7 @@ The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.
 
 #### EtherCAT - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ethercat source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for EtherCAT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2919,7 +2919,7 @@ The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.
 
 #### EtherCAT - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ethercat destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for EtherCAT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2933,7 +2933,7 @@ The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.
 
 #### EtherCAT - Commands
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ethercat commands. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Commands values for EtherCAT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -2947,7 +2947,7 @@ The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.
 
 #### EtherCAT - Register Types and Commands
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ethercat register types and commands. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Register Types and Commands values for EtherCAT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3023,7 +3023,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 #### Ethernet/IP - Commands
 
-**Purpose:** A horizontal bar chart ranking ethernet/ip commands by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Commands for Ethernet/IP by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -3041,7 +3041,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 #### EtherNet/IP - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ethernet/ip source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for EtherNet/IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3050,7 +3050,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 #### ATT&CK for ICS Tactic - EtherNet/IP and CIP
 
-**Purpose:** A horizontal bar chart ranking att&ck for ics tactic ethernet/ip and cip by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking EtherNet/IP and CIP for ATT&CK for ICS Tactic by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -3067,7 +3067,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 #### ATT&CK for ICS Notices - EtherNet/IP and CIP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of att&ck for ics notices ethernet/ip and cip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of EtherNet/IP and CIP values for ATT&CK for ICS Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3084,7 +3084,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 #### EtherNet/IP - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ethernet/ip destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for EtherNet/IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3095,7 +3095,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 *CIP Identity Results*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of cip device identity. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Device Identity values for CIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3114,7 +3114,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 *CIP Services and Status*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of cip services. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Services values for CIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3135,7 +3135,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 *Includes: Session Identifier, Sender Context, EtherNet/IP Command, Data Length, and Status*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ethernet/ip  detailed information. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of  Detailed Information values for EtherNet/IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3228,7 +3228,7 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 * ID: [248cae60-eff9-11f0-b83f-8f35d6995138](#/dashboard/248cae60-eff9-11f0-b83f-8f35d6995138)
 
-The File Scanning dashboard consolidates results from file analysis tools integrated with Zeek, including YARA rule matches and file hash lookups. It tracks files observed in network traffic, their MIME types, associated hashes, and any signatures they triggered. This dashboard is useful for hunting malware, tracking file transfers across the network, and validating whether transferred files are known-bad or suspicious.
+The File Scanning dashboard consolidates results from Malcolm's [automatic file extraction and scanning](file-scanning.md#ZeekFileExtraction) capability provided by [Strelka](https://target.github.io/strelka/#/), including those from [YARA](https://github.com/VirusTotal/yara), [ClamAV](https://www.clamav.net/), and [many others](https://target.github.io/strelka/#/?id=scanner-list). It tracks files observed in network traffic, their MIME types, the contents of archive files, and signatures and reports generated by the scanners. This dashboard is useful for hunting malware, tracking file transfers across the network, and validating whether transferred files are known-bad or suspicious. For a more general-purpose dashboard dealing with file transfers, see [Files](#files).
 
 ### Visualizations
 
@@ -3278,7 +3278,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - File Source
 
-**Purpose:** A horizontal bar chart ranking file scanning file source by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking File Source for File Scanning by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -3300,7 +3300,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - Scanners With Hits
 
-**Purpose:** A pie chart showing the proportional distribution of file scanning scanners with hits. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Scanners With Hits for File Scanning. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -3322,7 +3322,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - Triggered Rules
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file scanning triggered rules. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Triggered Rules values for File Scanning. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3344,7 +3344,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - Severity
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file scanning severity. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Severity values for File Scanning. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3368,7 +3368,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - MIME Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file scanning mime type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table providing a categorical breakdown of the MIME types of files scanned. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3390,7 +3390,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - Tactic and Technique
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file scanning tactic and technique. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Tactic and Technique values for File Scanning. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3414,7 +3414,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - All Scanners
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file scanning all scanners. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of All Scanners values for File Scanning. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3459,7 +3459,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file scanning source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for File Scanning. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3481,7 +3481,7 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 #### File Scanning - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file scanning destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for File Scanning. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3529,13 +3529,13 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 * ID: [4ff567d0-48a6-11f1-9604-d962b9b51f3a](#/dashboard/4ff567d0-48a6-11f1-9604-d962b9b51f3a)
 
-The File Tree dashboard presents a hierarchical breakdown of files observed in network traffic, organized by directory path or protocol context. It is useful for understanding the structure of file transfers—particularly over protocols like SMB or FTP—and identifying patterns in what data is being accessed or exfiltrated. Analysts can drill into specific directories or file categories to investigate suspicious file activity.
+The File Tree dashboard presents a hierarchical breakdown of files observed in network traffic, particularly with regards to [archived files](file-scanning.md#ScanningArchivedFiles) such as ZIP files or tarballs, allowing parent/child relationships between nested files to be explored.
 
 ### Visualizations
 
 #### File Scanning - MIME Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file scanning mime type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table providing a categorical breakdown of the MIME types of files scanned. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3557,7 +3557,7 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 
 #### File Tree - Logs
 
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
+**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records associated with scanned files. Supports drilling into specific events, filtering, and exporting for further investigation.
 
 **Fields / Aggregations:**
 
@@ -3576,7 +3576,7 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 
 #### File Tree
 
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
+**Purpose:** A custom Vega visualization providing a specialized view of the underlying data, presenting a hierarchical breakdown of files observed in network traffic, particularly with regards to [archived files](file-scanning.md#ScanningArchivedFiles) such as ZIP files or tarballs, allowing parent/child relationships between nested files to be explored.
 
 **Fields / Aggregations:**
 
@@ -3620,7 +3620,7 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 
 * ID: [9ee51f94-3316-4fc5-bd89-93a52af69714](#/dashboard/9ee51f94-3316-4fc5-bd89-93a52af69714)
 
-The Files dashboard provides an overview of all files observed traversing the network as captured by Zeek's file analysis framework. It covers file types by MIME category, transfer volumes, source and destination hosts, and file hashes. Analysts can identify unusual file types, large file movements, and track specific files of interest across the captured traffic.
+The Files dashboard provides an overview of all files observed traversing the network as captured by Zeek's [file analysis framework](file-scanning.md#ZeekFileExtraction). It covers file types by the context of the transfer (e.g., protocol), MIME type, path and filename (where applicable), transfer volumes, source and destination hosts, and file hashes. When file preservation is enabled, users have download access to the files in question. Analysts can identify unusual file types, large file transfers, and track specific files of interest across the captured traffic.
 
 ### Visualizations
 
@@ -3641,7 +3641,7 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 #### Files - Files By Size (Bytes)
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of files files by size (bytes). Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Files By Size (Bytes) values for Files. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3655,9 +3655,9 @@ The Files dashboard provides an overview of all files observed traversing the ne
 * `zeek.files.seen_bytes`
 
 
-#### FIles - Destination IP Address
+#### Files - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of files destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for FIles. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3670,9 +3670,9 @@ The Files dashboard provides an overview of all files observed traversing the ne
 * timestamp
 
 
-#### FIles - Source IP Address
+#### Files - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of files source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for FIles. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3702,7 +3702,7 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 #### Files - Source
 
-**Purpose:** A horizontal bar chart ranking files source by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Source for Files by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -3717,7 +3717,7 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 #### Files - MIME Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of files mime type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of MIME Type values for Files. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3726,7 +3726,7 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 #### Files - Paths
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of files paths. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table providing a categorical breakdown of filenames and paths. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3737,7 +3737,7 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 #### Extracted File Downloads
 
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
+**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual file logs and which includes a hyperlink providing download access to the files themselves, depending on file preservation settings.
 
 **Fields / Aggregations:**
 
@@ -3791,7 +3791,7 @@ The FTP dashboard covers all [File Transfer Protocol (FTP)](https://en.wikipedia
 
 #### FTP - Argument
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ftp argument. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Argument values for FTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3806,7 +3806,7 @@ The FTP dashboard covers all [File Transfer Protocol (FTP)](https://en.wikipedia
 
 #### FTP - Commands and Replies
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ftp commands and replies. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Commands and Replies values for FTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3823,7 +3823,7 @@ The FTP dashboard covers all [File Transfer Protocol (FTP)](https://en.wikipedia
 
 #### FTP - Reply
 
-**Purpose:** A pie chart showing the proportional distribution of ftp reply. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Reply for FTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -3838,7 +3838,7 @@ The FTP dashboard covers all [File Transfer Protocol (FTP)](https://en.wikipedia
 
 #### FTP - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ftp source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for FTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3852,7 +3852,7 @@ The FTP dashboard covers all [File Transfer Protocol (FTP)](https://en.wikipedia
 
 #### FTP - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ftp destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for FTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3867,7 +3867,7 @@ The FTP dashboard covers all [File Transfer Protocol (FTP)](https://en.wikipedia
 
 #### FTP - Username
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ftp username. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Username values for FTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3968,7 +3968,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ge srtp source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for GE SRTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -3991,7 +3991,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ge srtp destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for GE SRTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4014,7 +4014,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - Actions and Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ge srtp actions and results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Actions and Results values for GE SRTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4037,7 +4037,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - Panel Run Switch
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp panel run switch. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Panel Run Switch for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4061,7 +4061,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - Panel Enable Switch
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp panel enable switch. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Panel Enable Switch for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4085,7 +4085,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - PLC Fault Entry Present
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp plc fault entry present. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of PLC Fault Entry Present for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4109,7 +4109,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - I/O Fault Entry Present
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp i/o fault entry present. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of I/O Fault Entry Present for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4133,7 +4133,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - Programmer Attachment
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp programmer attachment. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Programmer Attachment for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4157,7 +4157,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - PLC State
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ge srtp plc state. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of PLC State values for GE SRTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4180,7 +4180,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - Constant Sweep Mode
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp constant sweep mode. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Constant Sweep Mode for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4204,7 +4204,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - Oversweep Flag
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp oversweep flag. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Oversweep Flag for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4228,7 +4228,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - PLC Fault Table Changed
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp plc fault table changed. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of PLC Fault Table Changed for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4252,7 +4252,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - I/O Fault Table Changed
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp i/o fault table changed. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of I/O Fault Table Changed for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4276,7 +4276,7 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 #### GE SRTP - OEM Protection
 
-**Purpose:** A pie chart showing the proportional distribution of ge srtp oem protection. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of OEM Protection for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4370,7 +4370,7 @@ The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.
 
 #### GENISYS - Station Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of genisys station address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Station Address values for GENISYS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4387,7 +4387,7 @@ The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.
 
 #### GENISYS - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of genisys source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for GENISYS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4404,7 +4404,7 @@ The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.
 
 #### GENISYS - Action
 
-**Purpose:** A horizontal bar chart ranking genisys action by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Action for GENISYS by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -4421,7 +4421,7 @@ The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.
 
 #### GENISYS - Message Direction
 
-**Purpose:** A pie chart showing the proportional distribution of genisys message direction. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Message Direction for GENISYS. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4439,7 +4439,7 @@ The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.
 
 #### GENISYS - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of genisys destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for GENISYS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4456,7 +4456,7 @@ The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.
 
 #### GENISYS - Result
 
-**Purpose:** A horizontal bar chart ranking genisys result by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Result for GENISYS by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -4532,7 +4532,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### HART-IP - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of hart-ip source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for HART-IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4548,7 +4548,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### HART-IP - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of hart-ip destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for HART-IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4564,7 +4564,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### HART-IP - Actions and Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of hart-ip actions and results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Actions and Results values for HART-IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4580,7 +4580,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### HART-IP - Universal Commands Device Profile and Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of hart-ip universal commands device profile and type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Universal Commands Device Profile and Type values for HART-IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4594,7 +4594,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### HART-IP - Universal Commands Message and Response
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of hart-ip universal commands message and response. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Universal Commands Message and Response values for HART-IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4608,7 +4608,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### HART-IP - PDU Command
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of hart-ip pdu command. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of PDU Command values for HART-IP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4626,7 +4626,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Header Version
 
-**Purpose:** A pie chart showing the proportional distribution of header version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4644,7 +4644,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Protocol Major Revision
 
-**Purpose:** A pie chart showing the proportional distribution of protocol major revision. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4657,7 +4657,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Insecure Session
 
-**Purpose:** A pie chart showing the proportional distribution of insecure session. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4670,7 +4670,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Audit Log Insecure Syslog Connection
 
-**Purpose:** A pie chart showing the proportional distribution of audit log insecure syslog connection. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4689,7 +4689,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Session Summary: Writes Occurred
 
-**Purpose:** A pie chart showing the proportional distribution of session summary: writes occurred. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4702,7 +4702,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Device Malfunction (Token Passing PDU)
 
-**Purpose:** A pie chart showing the proportional distribution of device malfunction (token passing pdu). Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4721,7 +4721,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Device Malfunction (Direct PDU)
 
-**Purpose:** A pie chart showing the proportional distribution of device malfunction (direct pdu). Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4740,7 +4740,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Configuration Changed (Token Passing PDU)
 
-**Purpose:** A pie chart showing the proportional distribution of configuration changed (token passing pdu). Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4759,7 +4759,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Configuration Changed (Direct PDU)
 
-**Purpose:** A pie chart showing the proportional distribution of configuration changed (direct pdu). Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4778,7 +4778,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Maintenance Required
 
-**Purpose:** A pie chart showing the proportional distribution of maintenance required. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4797,7 +4797,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Function Check
 
-**Purpose:** A pie chart showing the proportional distribution of function check. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4816,7 +4816,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Failure
 
-**Purpose:** A pie chart showing the proportional distribution of failure. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4835,7 +4835,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Device Variable Alert
 
-**Purpose:** A pie chart showing the proportional distribution of device variable alert. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4854,7 +4854,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Critical Power Failure
 
-**Purpose:** A pie chart showing the proportional distribution of critical power failure. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4873,7 +4873,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 #### Out of Specification
 
-**Purpose:** A pie chart showing the proportional distribution of out of specification. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -4934,7 +4934,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP - Sites
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of http sites. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Sites values for HTTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4950,7 +4950,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP - Sites Hosting EXEs
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of http sites hosting exes. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Sites Hosting EXEs values for HTTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4959,7 +4959,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP - URIs
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of http uris. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of URIs values for HTTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4976,7 +4976,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of http source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for HTTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -4992,7 +4992,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of http destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for HTTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5008,7 +5008,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP - User Agent
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of http user agent. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of User Agent values for HTTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5025,7 +5025,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP - Referrer
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of http referrer. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Referrer values for HTTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5091,7 +5091,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP  - Status and Method
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of http  status and method. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Status and Method values for HTTP . Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5125,7 +5125,7 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 #### HTTP - Version
 
-**Purpose:** A pie chart showing the proportional distribution of http version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Version for HTTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -5229,7 +5229,7 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 #### Best Guess Protocol - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of best guess protocol destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for Best Guess Protocol. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5245,7 +5245,7 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 #### Best Guess - Summary
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of best guess summary. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Summary values for Best Guess. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5262,7 +5262,7 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 #### Best Guess Protocol - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of best guess protocol source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for Best Guess Protocol. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5278,7 +5278,7 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 #### Best Guess - Category
 
-**Purpose:** A horizontal bar chart ranking best guess category by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Category for Best Guess by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -5352,7 +5352,7 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 #### ICS/IoT External Traffic
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ics/iot external traffic. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5370,7 +5370,7 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 #### Network Layer
 
-**Purpose:** A pie chart showing the proportional distribution of network layer. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -5388,7 +5388,7 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 #### ICS/IoT Actions and Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ics/iot actions and results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5404,7 +5404,7 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 #### ATT&CK for ICS Tactic
 
-**Purpose:** A horizontal bar chart ranking att&ck for ics tactic by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -5421,7 +5421,7 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 #### ICS/IoT Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ics/iot source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5437,7 +5437,7 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 #### ICS Tactics and Techniques
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ics tactics and techniques. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5456,7 +5456,7 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 #### ICS/IoT Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ics/iot destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5593,7 +5593,7 @@ The IRC dashboard covers [Internet Relay Chat (IRC)](https://en.wikipedia.org/wi
 
 #### IRC - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of irc destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for IRC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5609,7 +5609,7 @@ The IRC dashboard covers [Internet Relay Chat (IRC)](https://en.wikipedia.org/wi
 
 #### IRC - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of irc source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for IRC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5625,7 +5625,7 @@ The IRC dashboard covers [Internet Relay Chat (IRC)](https://en.wikipedia.org/wi
 
 #### IRC - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of irc destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for IRC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5657,7 +5657,7 @@ The IRC dashboard covers [Internet Relay Chat (IRC)](https://en.wikipedia.org/wi
 
 #### IRC - Destination Country
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of irc destination country. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Country values for IRC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5675,7 +5675,7 @@ The IRC dashboard covers [Internet Relay Chat (IRC)](https://en.wikipedia.org/wi
 
 #### IRC - Command
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of irc command. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Command values for IRC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5733,7 +5733,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Client
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of kerberos client. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Client values for Kerberos. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5750,7 +5750,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Success Status
 
-**Purpose:** A pie chart showing the proportional distribution of kerberos success status. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Success Status for Kerberos. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -5766,7 +5766,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Server
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of kerberos server. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Server values for Kerberos. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5783,7 +5783,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Cipher
 
-**Purpose:** A pie chart showing the proportional distribution of kerberos cipher. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Cipher for Kerberos. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -5800,7 +5800,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of kerberos source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for Kerberos. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5816,7 +5816,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of kerberos destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for Kerberos. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5832,7 +5832,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Service
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of kerberos service. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Service values for Kerberos. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5865,7 +5865,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Request Types
 
-**Purpose:** A pie chart showing the proportional distribution of kerberos request types. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Request Types for Kerberos. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -5881,7 +5881,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Renewable Ticket Requested
 
-**Purpose:** A pie chart showing the proportional distribution of kerberos renewable ticket requested. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Renewable Ticket Requested for Kerberos. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -5898,7 +5898,7 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 #### Kerberos - Destination Ports
 
-**Purpose:** A horizontal bar chart ranking kerberos destination ports by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Destination Ports for Kerberos by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -5978,7 +5978,7 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 
 #### LDAP - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ldap source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for LDAP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -5997,7 +5997,7 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 
 #### LDAP - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ldap destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for LDAP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6034,7 +6034,7 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 
 #### LDAP - Bind
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ldap bind. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Bind values for LDAP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6054,7 +6054,7 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 
 #### LDAP - Search Scope
 
-**Purpose:** A horizontal bar chart ranking ldap search scope by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Search Scope for LDAP by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -6073,7 +6073,7 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 
 #### LDAP - Result Code
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ldap result code. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Result Code values for LDAP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6091,7 +6091,7 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 
 #### LDAP - Operation
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ldap operation. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Operation values for LDAP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6159,7 +6159,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 *Source IP Addresses from modbus.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of modbus source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for Modbus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6179,7 +6179,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 *Destination IP Addresses from modbus.log*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of modbus destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for Modbus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6199,7 +6199,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 *Modbus observed client and server devices*
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of modbus observed clients and servers. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Observed Clients and Servers values for Modbus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6213,7 +6213,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 *Modbus Observed Clients and Servers Chart*
 
-**Purpose:** A pie chart showing the proportional distribution of modbus observed client/server ratio. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Observed Client/Server Ratio for Modbus. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -6248,7 +6248,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 #### Modbus - Functions and Exceptions
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of modbus functions and exceptions. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Functions and Exceptions values for Modbus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6265,7 +6265,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 #### Modbus - Request and Response
 
-**Purpose:** A horizontal bar chart ranking modbus request and response by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Request and Response for Modbus by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -6283,7 +6283,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 #### Modbus - Reads
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of modbus reads. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Reads values for Modbus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6305,7 +6305,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 #### Modbus - Writes
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of modbus writes. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Writes values for Modbus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6327,7 +6327,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 #### Modbus - Transport
 
-**Purpose:** A pie chart showing the proportional distribution of modbus transport. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Transport for Modbus. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -6345,7 +6345,7 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 #### Modbus - Device Identification Objects
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of modbus device identification objects. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Device Identification Objects values for Modbus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6502,7 +6502,7 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 
 #### MQTT - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of mqtt source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for MQTT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6516,7 +6516,7 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 
 #### MQTT - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of mqtt destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for MQTT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6530,7 +6530,7 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 
 #### MQTT - Protocol
 
-**Purpose:** A pie chart showing the proportional distribution of mqtt protocol. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Protocol for MQTT. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -6547,7 +6547,7 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 
 #### MQTT - Client ID
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of mqtt client id. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Client ID values for MQTT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6563,7 +6563,7 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 
 #### MQTT - Subscription
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of mqtt subscription. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Subscription values for MQTT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6579,7 +6579,7 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 
 #### MQTT - Publish
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of mqtt publish. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Publish values for MQTT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6595,7 +6595,7 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 
 #### MQTT - Publish Payload
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of mqtt publish payload. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Publish Payload values for MQTT. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6667,7 +6667,7 @@ The MySQL dashboard provides visibility into [MySQL](https://en.wikipedia.org/wi
 
 #### MySQL - Success
 
-**Purpose:** A pie chart showing the proportional distribution of mysql success. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Success for MySQL. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -6682,7 +6682,7 @@ The MySQL dashboard provides visibility into [MySQL](https://en.wikipedia.org/wi
 
 #### MySQL - Commands
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of mysql commands. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Commands values for MySQL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6742,7 +6742,7 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 #### NTLM - Hostname
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntlm hostname. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Hostname values for NTLM. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6760,7 +6760,7 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 #### NTLM - Domain Name
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntlm domain name. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Domain Name values for NTLM. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6778,7 +6778,7 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 #### NTLM - Username
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntlm username. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Username values for NTLM. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6797,7 +6797,7 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 #### NTLM - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntlm destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for NTLM. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6815,7 +6815,7 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 #### NTLM - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntlm source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for NTLM. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6833,7 +6833,7 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 #### NTLM - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntlm destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for NTLM. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6869,7 +6869,7 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 #### NTLM - Hostname to Username
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntlm hostname to username. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Hostname to Username values for NTLM. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -6888,7 +6888,7 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 #### NTLM - Success
 
-**Purpose:** A pie chart showing the proportional distribution of ntlm success. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Success for NTLM. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -6986,7 +6986,7 @@ The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/
 
 #### NTP - Stratum
 
-**Purpose:** A horizontal bar chart ranking ntp stratum by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Stratum for NTP by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -7003,7 +7003,7 @@ The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/
 
 #### NTP - Version
 
-**Purpose:** A pie chart showing the proportional distribution of ntp version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Version for NTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7020,7 +7020,7 @@ The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/
 
 #### NTP - Mode
 
-**Purpose:** A pie chart showing the proportional distribution of ntp mode. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Mode for NTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7037,7 +7037,7 @@ The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/
 
 #### NTP - Polling Interval
 
-**Purpose:** A horizontal bar chart ranking ntp polling interval by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Polling Interval for NTP by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -7055,7 +7055,7 @@ The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/
 
 #### NTP - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntp source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for NTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7072,7 +7072,7 @@ The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/
 
 #### NTP - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ntp destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for NTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7134,7 +7134,7 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 #### Omron FINS - Action and Result
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of omron fins action and result. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Action and Result values for Omron FINS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7151,7 +7151,7 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 #### Omron FINS - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of omron fins source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for Omron FINS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7168,7 +7168,7 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 #### Omron FINS - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of omron fins destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for Omron FINS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7186,7 +7186,7 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 #### Omron FINS - Controller Model and Version
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of omron fins controller model and version. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Controller Model and Version values for Omron FINS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7205,7 +7205,7 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 #### Omron FINS - Files/Volumes
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of omron fins files/volumes. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Files/Volumes values for Omron FINS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7223,7 +7223,7 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 #### Omron FINS - Transport Protocol
 
-**Purpose:** A pie chart showing the proportional distribution of omron fins transport protocol. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Transport Protocol for Omron FINS. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7240,7 +7240,7 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 #### Omron FINS - Data Type
 
-**Purpose:** A pie chart showing the proportional distribution of omron fins data type. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Data Type for Omron FINS. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7258,7 +7258,7 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 #### Omron FINS - Address, Node, and Unit
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of omron fins address, node, and unit. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Address, Node, and Unit values for Omron FINS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7335,7 +7335,7 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 #### OPCUA Binary - Actions
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of opcua binary actions. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Actions values for OPCUA Binary. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7344,7 +7344,7 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 #### OPCUA Binary - Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of opcua binary results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Results values for OPCUA Binary. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7353,7 +7353,7 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 #### OPCUA Binary - URLs and URIs
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of opcua binary urls and uris. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of URLs and URIs values for OPCUA Binary. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7362,7 +7362,7 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 #### OPCUA Binary - User
 
-**Purpose:** A horizontal bar chart ranking opcua binary user by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking User for OPCUA Binary by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -7379,7 +7379,7 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 #### OPCUA Binary - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of opcua binary source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for OPCUA Binary. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7395,7 +7395,7 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 #### OPCUA Binary - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of opcua binary destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for OPCUA Binary. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7428,7 +7428,7 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 #### OPCUA Binary - Software
 
-**Purpose:** A horizontal bar chart ranking opcua binary software by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Software for OPCUA Binary by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -7445,7 +7445,7 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 #### OPCUA Binary - Protocol Version
 
-**Purpose:** A pie chart showing the proportional distribution of opcua binary protocol version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Protocol Version for OPCUA Binary. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7545,7 +7545,7 @@ The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia
 
 #### OSPF - Packet Type
 
-**Purpose:** A pie chart showing the proportional distribution of ospf packet type. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Packet Type for OSPF. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7565,7 +7565,7 @@ The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia
 
 #### OSPF - Link State Advertisement
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ospf link state advertisement. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Link State Advertisement values for OSPF. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7585,7 +7585,7 @@ The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia
 
 #### OSPF - Link Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ospf link type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Link Type values for OSPF. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7605,7 +7605,7 @@ The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia
 
 #### OSPF - Area and Router
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ospf area and router. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Area and Router values for OSPF. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7625,7 +7625,7 @@ The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia
 
 #### OSPF - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ospf source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for OSPF. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7645,7 +7645,7 @@ The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia
 
 #### OSPF - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ospf destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for OSPF. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7665,7 +7665,7 @@ The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia
 
 #### OSPF - All IP Addresses
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ospf all ip addresses. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of All IP Addresses values for OSPF. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7734,7 +7734,7 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 #### Connections - Service By Destination Country
 
-**Purpose:** A pie chart showing the proportional distribution of connections service by destination country. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Service By Destination Country for Connections. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7752,7 +7752,7 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 #### Log Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of log type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7779,7 +7779,7 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 #### DNS - Queries
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns queries. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Queries values for DNS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7793,7 +7793,7 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 #### Log Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of log source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7803,7 +7803,7 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 #### Application Protocol
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of application protocol. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7813,7 +7813,7 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 #### Actions and Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of actions and results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7865,7 +7865,7 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 #### PE - OS
 
-**Purpose:** A pie chart showing the proportional distribution of pe os. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of OS for PE. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7878,7 +7878,7 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 #### PE - Subsystem
 
-**Purpose:** A pie chart showing the proportional distribution of pe subsystem. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Subsystem for PE. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -7891,7 +7891,7 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 #### PE - Section Name
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of pe section name. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Section Name values for PE. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7905,7 +7905,7 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 #### PE - Machine
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of pe machine. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Machine values for PE. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -7931,7 +7931,7 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 #### Capa Signatures
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of capa signatures. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8016,7 +8016,7 @@ The PostgreSQL dashboard covers [PostgreSQL](https://en.wikipedia.org/wiki/Postg
 
 #### PostgreSQL - Database
 
-**Purpose:** A horizontal bar chart ranking postgresql database by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Database for PostgreSQL by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -8036,7 +8036,7 @@ The PostgreSQL dashboard covers [PostgreSQL](https://en.wikipedia.org/wiki/Postg
 
 #### PostgreSQL - Action and Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of postgresql action and results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Action and Results values for PostgreSQL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8056,7 +8056,7 @@ The PostgreSQL dashboard covers [PostgreSQL](https://en.wikipedia.org/wiki/Postg
 
 #### PostgreSQL - Application
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of postgresql application. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Application values for PostgreSQL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8076,7 +8076,7 @@ The PostgreSQL dashboard covers [PostgreSQL](https://en.wikipedia.org/wiki/Postg
 
 #### PostgreSQL - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of postgresql source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for PostgreSQL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8096,7 +8096,7 @@ The PostgreSQL dashboard covers [PostgreSQL](https://en.wikipedia.org/wiki/Postg
 
 #### PostgreSQL - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of postgresql destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for PostgreSQL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8116,7 +8116,7 @@ The PostgreSQL dashboard covers [PostgreSQL](https://en.wikipedia.org/wiki/Postg
 
 #### PostgreSQL - User
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of postgresql user. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of User values for PostgreSQL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8185,7 +8185,7 @@ The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET)
 
 #### PROFINET - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of profinet source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for PROFINET. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8203,7 +8203,7 @@ The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET)
 
 #### PROFINET - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of profinet destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for PROFINET. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8221,7 +8221,7 @@ The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET)
 
 #### PROFINET - Operation
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of profinet operation. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Operation values for PROFINET. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8238,7 +8238,7 @@ The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET)
 
 #### PROFINET - Operation Details
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of profinet operation details. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Operation Details values for PROFINET. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8257,7 +8257,7 @@ The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET)
 
 #### PROFINET I/O CM - Operation
 
-**Purpose:** A horizontal bar chart ranking profinet i/o cm operation by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Operation for PROFINET I/O CM by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -8366,7 +8366,7 @@ The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki
 
 #### QUIC - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of quic source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for QUIC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8381,7 +8381,7 @@ The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki
 
 #### QUIC - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of quic destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for QUIC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8396,7 +8396,7 @@ The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki
 
 #### QUIC - User Agent
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of quic user agent. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of User Agent values for QUIC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8411,7 +8411,7 @@ The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki
 
 #### QUIC - Server Name
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of quic server name. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Server Name values for QUIC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8426,7 +8426,7 @@ The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki
 
 #### QUIC - CYU Fingerprint
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of quic cyu fingerprint. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of CYU Fingerprint values for QUIC. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8443,7 +8443,7 @@ The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki
 
 #### QUIC - Version
 
-**Purpose:** A pie chart showing the proportional distribution of quic version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Version for QUIC. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -8485,7 +8485,7 @@ The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)
 
 #### RADIUS - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of radius source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for RADIUS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8502,7 +8502,7 @@ The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)
 
 #### RADIUS - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of radius destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for RADIUS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8519,7 +8519,7 @@ The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)
 
 #### RADIUS - MAC
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of radius mac. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of MAC values for RADIUS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8536,7 +8536,7 @@ The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)
 
 #### RADIUS - Connection Information
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of radius connection information. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Connection Information values for RADIUS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8571,7 +8571,7 @@ The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)
 
 #### RADIUS - Username
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of radius username. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Username values for RADIUS. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8588,7 +8588,7 @@ The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)
 
 #### RADIUS - Authentication Result
 
-**Purpose:** A pie chart showing the proportional distribution of radius authentication result. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Authentication Result for RADIUS. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -8650,7 +8650,7 @@ The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.or
 
 #### RDP - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rdp source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for RDP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8668,7 +8668,7 @@ The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.or
 
 #### RDP - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rdp destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for RDP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8686,7 +8686,7 @@ The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.or
 
 #### RDP - Cookie
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rdp cookie. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Cookie values for RDP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8705,7 +8705,7 @@ The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.or
 
 #### RDP - Result
 
-**Purpose:** A pie chart showing the proportional distribution of rdp result. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Result for RDP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -8723,7 +8723,7 @@ The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.or
 
 #### RDP - Keyboard Layout
 
-**Purpose:** A pie chart showing the proportional distribution of rdp keyboard layout. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Keyboard Layout for RDP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -8777,7 +8777,7 @@ The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.or
 
 #### RDP - Encryption
 
-**Purpose:** A pie chart showing the proportional distribution of rdp encryption. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Encryption for RDP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -8874,7 +8874,7 @@ The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memor
 
 #### Redis - Success
 
-**Purpose:** A pie chart showing the proportional distribution of redis success. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Success for Redis. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -8892,7 +8892,7 @@ The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memor
 
 #### Redis - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of redis source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for Redis. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8909,7 +8909,7 @@ The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memor
 
 #### Redis - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of redis destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for Redis. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8926,7 +8926,7 @@ The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memor
 
 #### Redis - Action and Result
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of redis action and result. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Action and Result values for Redis. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8943,7 +8943,7 @@ The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memor
 
 #### Redis - Key
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of redis key. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Key values for Redis. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -8960,7 +8960,7 @@ The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memor
 
 #### Redis - Key and Value
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of redis key and value. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Key and Value values for Redis. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9022,7 +9022,7 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 #### RFB - Authentication Status
 
-**Purpose:** A pie chart showing the proportional distribution of rfb authentication status. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Authentication Status for RFB. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -9039,7 +9039,7 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 #### RFB - Exclusive Session
 
-**Purpose:** A pie chart showing the proportional distribution of rfb exclusive session. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Exclusive Session for RFB. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -9056,7 +9056,7 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 #### RFB - Desktop Name
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rfb desktop name. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Desktop Name values for RFB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9073,7 +9073,7 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 #### RFB - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rfb source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for RFB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9090,7 +9090,7 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 #### RFB - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rfb destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for RFB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9107,7 +9107,7 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 #### RFB - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rfb destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for RFB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9124,7 +9124,7 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 #### RFB - Server Version
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rfb server version. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Server Version values for RFB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9143,7 +9143,7 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 #### RFB - Client Version
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of rfb client version. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Client Version values for RFB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9261,7 +9261,7 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 
 #### ROC Plus - Action
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of roc plus action. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Action values for ROC Plus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9280,7 +9280,7 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 
 #### ROC Plus - Result
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of roc plus result. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Result values for ROC Plus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9318,7 +9318,7 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 
 #### ROC Plus - Transport Protocol
 
-**Purpose:** A pie chart showing the proportional distribution of roc plus transport protocol. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Transport Protocol for ROC Plus. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -9337,7 +9337,7 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 
 #### ROC Plus - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of roc plus source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for ROC Plus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9357,7 +9357,7 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 
 #### ROC Plus - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of roc plus destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for ROC Plus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9377,7 +9377,7 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 
 #### ROC Plus - File Transfer Directory
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of roc plus file transfer directory. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of File Transfer Directory values for ROC Plus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9397,7 +9397,7 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 
 #### ROC Plus - File Transfer Filename
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of roc plus file transfer filename. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of File Transfer Filename values for ROC Plus. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9483,7 +9483,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### S7comm Operations
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of s7comm operations. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9501,7 +9501,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### S7comm Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of s7comm source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9519,7 +9519,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### S7comm Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of s7comm destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9537,7 +9537,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### S7comm Plus Version
 
-**Purpose:** A pie chart showing the proportional distribution of s7comm plus version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -9553,7 +9553,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### S7comm Devices
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of s7comm devices. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9575,7 +9575,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### S7comm Read-SZL
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of s7comm read-szl. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9593,7 +9593,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### ATT&CK for ICS Tactic - S7comm
 
-**Purpose:** A horizontal bar chart ranking att&ck for ics tactic s7comm by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking S7comm for ATT&CK for ICS Tactic by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -9609,7 +9609,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### ATT&CK for ICS Notices - S7comm
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of att&ck for ics notices s7comm. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of S7comm values for ATT&CK for ICS Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9625,7 +9625,7 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 #### S7comm - Upload/Download File Names
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of s7comm upload/download file names. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Upload/Download File Names values for S7comm. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9671,7 +9671,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### Normalized Event Category
 
-**Purpose:** A horizontal bar chart ranking normalized event category by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -9681,7 +9681,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### Notice, Alert and Signature - Summary
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notice, alert and signature summary. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Summary values for Notice, Alert and Signature. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9699,7 +9699,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### Outdated/Insecure Application Protocols
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of outdated/insecure application protocols. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9709,7 +9709,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### Vulnerabilities
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of vulnerabilities. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9729,7 +9729,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### Clear-text Transmission of Passwords
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of clear-text transmission of passwords . Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9756,7 +9756,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### Outbound Internal Traffic by Country
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of outbound internal traffic by country. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9765,7 +9765,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### Inbound External Traffic by Country
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of inbound external traffic by country. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9783,7 +9783,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### DNS Queries by Randomness
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of dns queries by randomness. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9846,7 +9846,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity Tags
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of severity tags. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9885,7 +9885,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Notices
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of severity notices. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Notices values for Severity. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9902,7 +9902,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Application Protocol
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of severity application protocol. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Application Protocol values for Severity. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9912,7 +9912,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Socket Family
 
-**Purpose:** A pie chart showing the proportional distribution of severity socket family. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Socket Family for Severity. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -9932,7 +9932,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### File Types by Transport
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of file types by transport. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9947,7 +9947,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of severity source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for Severity. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -9967,7 +9967,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of severity destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for Severity. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10027,7 +10027,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Destination OUI
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of severity destination oui. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination OUI values for Severity. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10048,7 +10048,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Source OUI
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of severity source oui. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source OUI values for Severity. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10069,7 +10069,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Actions and Results
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of actions and results. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10148,7 +10148,7 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 #### Signatures - Name
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of signatures name. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Name values for Signatures. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10163,7 +10163,7 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 #### Signatures - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of signatures source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for Signatures. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10178,7 +10178,7 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 #### Signatures - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of signatures destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for Signatures. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10219,7 +10219,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of sip source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for SIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10235,7 +10235,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of sip destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for SIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10251,7 +10251,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - Destination Country
 
-**Purpose:** A pie chart showing the proportional distribution of sip destination country. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Destination Country for SIP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -10268,7 +10268,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - Request Path
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of sip request path. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Request Path values for SIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10285,7 +10285,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - URI
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of sip uri. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of URI values for SIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10302,7 +10302,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - User Agent
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of sip user agent. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of User Agent values for SIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10319,7 +10319,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - Content Type
 
-**Purpose:** A pie chart showing the proportional distribution of sip content type. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Content Type for SIP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -10351,7 +10351,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of sip destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for SIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10383,7 +10383,7 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 #### SIP - Status
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of sip status. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Status values for SIP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10442,7 +10442,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smb source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for SMB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10458,7 +10458,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smb destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for SMB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10474,7 +10474,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB - Version
 
-**Purpose:** A pie chart showing the proportional distribution of smb version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Version for SMB. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -10490,7 +10490,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB - FIle Path
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smb file path. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of FIle Path values for SMB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10507,7 +10507,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB - File Name
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smb file name. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of File Name values for SMB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10524,7 +10524,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB - File/Path Summary
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smb file/path summary. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of File/Path Summary values for SMB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10558,7 +10558,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smb destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for SMB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10574,7 +10574,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB - Relevant Notices
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smb relevant notices. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Relevant Notices values for SMB. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10589,7 +10589,7 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 #### SMB Action
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smb action. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10647,7 +10647,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - Subject
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smtp subject. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Subject values for SMTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10664,7 +10664,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP  - Destination Country
 
-**Purpose:** A pie chart showing the proportional distribution of smtp  destination country. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Destination Country for SMTP . Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -10681,7 +10681,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - "From" Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smtp "from" address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of "From" Address values for SMTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10697,7 +10697,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - "To" Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smtp "to" address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of "To" Address values for SMTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10714,7 +10714,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - TLS
 
-**Purpose:** A pie chart showing the proportional distribution of smtp tls. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of TLS for SMTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -10731,7 +10731,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smtp source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for SMTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10747,7 +10747,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smtp destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for SMTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10763,7 +10763,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - User Agent
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smtp user agent. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of User Agent values for SMTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10779,7 +10779,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of smtp destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for SMTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10811,7 +10811,7 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 #### SMTP - Webmail
 
-**Purpose:** A pie chart showing the proportional distribution of smtp webmail. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Webmail for SMTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -10870,7 +10870,7 @@ The SNMP dashboard covers [Simple Network Management Protocol (SNMP)](https://en
 
 #### SNMP - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of snmp source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for SNMP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10886,7 +10886,7 @@ The SNMP dashboard covers [Simple Network Management Protocol (SNMP)](https://en
 
 #### SNMP - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of snmp destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for SNMP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10902,7 +10902,7 @@ The SNMP dashboard covers [Simple Network Management Protocol (SNMP)](https://en
 
 #### SNMP - Session Duration
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of snmp session duration. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Session Duration values for SNMP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10936,7 +10936,7 @@ The SNMP dashboard covers [Simple Network Management Protocol (SNMP)](https://en
 
 #### SNMP - Community String
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of snmp community string. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Community String values for SNMP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -10952,7 +10952,7 @@ The SNMP dashboard covers [Simple Network Management Protocol (SNMP)](https://en
 
 #### SNMP - PDU Type
 
-**Purpose:** A horizontal bar chart ranking snmp pdu type by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking PDU Type for SNMP by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -11034,7 +11034,7 @@ The Software dashboard tracks software versions and products observed in network
 
 #### Software - Summary
 
-**Purpose:** A pie chart showing the proportional distribution of software summary. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Summary for Software. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -11091,7 +11091,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssh source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for SSH. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11108,7 +11108,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssh destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for SSH. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11125,7 +11125,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH - Client/Server
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssh client/server. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Client/Server values for SSH. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11161,7 +11161,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH -Server
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssh -server. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11179,7 +11179,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH - Version
 
-**Purpose:** A pie chart showing the proportional distribution of ssh version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Version for SSH. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -11197,7 +11197,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH - Client Algorithms
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssh client algorithms. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Client Algorithms values for SSH. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11215,7 +11215,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH - Server Algorithms
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssh server algorithms. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Server Algorithms values for SSH. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11233,7 +11233,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH - HASSH Client Hash
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssh hassh client hash. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of HASSH Client Hash values for SSH. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11251,7 +11251,7 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 #### SSH - HASSH Server Hash
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssh hassh server hash. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of HASSH Server Hash values for SSH. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11330,7 +11330,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Version
 
-**Purpose:** A pie chart showing the proportional distribution of ssl version. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Version for SSL. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -11349,7 +11349,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11367,7 +11367,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11385,7 +11385,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Destination Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl destination address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Address values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11403,7 +11403,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Server
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl server. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Server values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11442,7 +11442,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Validation Status
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl validation status. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Validation Status values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11478,7 +11478,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Relevant Notices
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl relevant notices. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Relevant Notices values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11493,7 +11493,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Connection Established
 
-**Purpose:** A pie chart showing the proportional distribution of ssl connection established. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Connection Established for SSL. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -11511,7 +11511,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Certificate Fingerprint
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl certificate fingerprint. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Certificate Fingerprint values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11530,7 +11530,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Elliptic Curve
 
-**Purpose:** A horizontal bar chart ranking ssl elliptic curve by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Elliptic Curve for SSL by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -11549,7 +11549,7 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 #### SSL - Next Protocol
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl next protocol. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Next Protocol values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11632,7 +11632,7 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 #### STUN - Attribute Type
 
-**Purpose:** A horizontal bar chart ranking stun attribute type by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Attribute Type for STUN by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -11649,7 +11649,7 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 #### STUN - Method and Class
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of stun method and class. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Method and Class values for STUN. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11666,7 +11666,7 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 #### STUN - Class
 
-**Purpose:** A pie chart showing the proportional distribution of stun class. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Class for STUN. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -11683,7 +11683,7 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 #### STUN - Action and Result
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of stun action and result. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Action and Result values for STUN. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11701,7 +11701,7 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 #### STUN - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of stun source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for STUN. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11718,7 +11718,7 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 #### STUN - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of stun destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for STUN. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11735,7 +11735,7 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 #### STUN - LAN
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of stun lan. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of LAN values for STUN. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11752,7 +11752,7 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 #### STUN - WAN
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of stun wan. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of WAN values for STUN. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11860,7 +11860,7 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 #### Alert Category
 
-**Purpose:** A horizontal bar chart ranking alert category by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -11875,7 +11875,7 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 #### Alerts - Target
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of alerts target. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Target values for Alerts. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11890,7 +11890,7 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 #### Alerts - Name
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of alerts name. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Name values for Alerts. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11905,7 +11905,7 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 #### Alerts - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of alerts source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for Alerts. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11920,7 +11920,7 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 #### Alerts - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of alerts destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for Alerts. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11936,7 +11936,7 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 #### Alerts - Destination Country
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of alerts destination country. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Country values for Alerts. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -11952,7 +11952,7 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 #### Alerts - Source Country
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of alerts source country. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source Country values for Alerts. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12032,7 +12032,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of synchrophasor source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for Synchrophasor. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12051,7 +12051,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of synchrophasor destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for Synchrophasor. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12070,7 +12070,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Action
 
-**Purpose:** A horizontal bar chart ranking synchrophasor action by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Action for Synchrophasor by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -12087,7 +12087,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Frame Types
 
-**Purpose:** A horizontal bar chart ranking synchrophasor frame types by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Frame Types for Synchrophasor by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -12104,7 +12104,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Transport
 
-**Purpose:** A pie chart showing the proportional distribution of synchrophasor transport. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Transport for Synchrophasor. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -12123,7 +12123,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Stations
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of synchrophasor stations. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Stations values for Synchrophasor. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12141,7 +12141,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Phasors
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of synchrophasor phasors. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Phasors values for Synchrophasor. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12159,7 +12159,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Analog Channels
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of synchrophasor analog channels. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Analog Channels values for Synchrophasor. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12177,7 +12177,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Digital Channels
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of synchrophasor digital channels. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Digital Channels values for Synchrophasor. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12195,7 +12195,7 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 #### Synchrophasor - Data Modified
 
-**Purpose:** A pie chart showing the proportional distribution of synchrophasor data modified. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Data Modified for Synchrophasor. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -12315,7 +12315,7 @@ The Syslog dashboard presents [syslog](https://en.wikipedia.org/wiki/Syslog) mes
 
 #### Syslog - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of syslog source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for Syslog. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12331,7 +12331,7 @@ The Syslog dashboard presents [syslog](https://en.wikipedia.org/wiki/Syslog) mes
 
 #### Syslog - Destination IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of syslog destination ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Address values for Syslog. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12347,7 +12347,7 @@ The Syslog dashboard presents [syslog](https://en.wikipedia.org/wiki/Syslog) mes
 
 #### Syslog - Destination Port
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of syslog destination port. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Port values for Syslog. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12379,7 +12379,7 @@ The Syslog dashboard presents [syslog](https://en.wikipedia.org/wiki/Syslog) mes
 
 #### Syslog - Severity
 
-**Purpose:** A pie chart showing the proportional distribution of syslog severity. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Severity for Syslog. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -12395,7 +12395,7 @@ The Syslog dashboard presents [syslog](https://en.wikipedia.org/wiki/Syslog) mes
 
 #### Syslog - Facility
 
-**Purpose:** A horizontal bar chart ranking syslog facility by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Facility for Syslog by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -12411,7 +12411,7 @@ The Syslog dashboard presents [syslog](https://en.wikipedia.org/wiki/Syslog) mes
 
 #### Syslog - Protocol
 
-**Purpose:** A pie chart showing the proportional distribution of syslog protocol. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Protocol for Syslog. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -12499,7 +12499,7 @@ The Tabular Data Stream (TDS) dashboard covers [Microsoft SQL Server's Tabular D
 
 #### Tabular Data Stream - Command
 
-**Purpose:** A pie chart showing the proportional distribution of tabular data stream command. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Command for Tabular Data Stream. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -12513,7 +12513,7 @@ The Tabular Data Stream (TDS) dashboard covers [Microsoft SQL Server's Tabular D
 
 #### Tabular Data Stream - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tabular data stream source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12528,7 +12528,7 @@ The Tabular Data Stream (TDS) dashboard covers [Microsoft SQL Server's Tabular D
 
 #### Tabular Data Stream - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tabular data stream destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12598,7 +12598,7 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 #### Tabular Data Stream - RPC Procedure
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tabular data stream rpc procedure. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of RPC Procedure values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12613,7 +12613,7 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 #### Tabular Data Stream - RPC Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tabular data stream rpc source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of RPC Source IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12628,7 +12628,7 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 #### Tabular Data Stream - RPC Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tabular data stream rpc destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of RPC Destination IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12698,7 +12698,7 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 #### Tabular Data Stream - SQL Header Type
 
-**Purpose:** A pie chart showing the proportional distribution of tabular data stream sql header type. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of SQL Header Type for Tabular Data Stream. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -12713,7 +12713,7 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 #### Tabular Data Stream - SQL Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tabular data stream sql source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of SQL Source IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12728,7 +12728,7 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 #### Tabular Data Stream - SQL Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tabular data stream sql destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of SQL Destination IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12743,7 +12743,7 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 #### Tabular Data Stream - SQL Query
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tabular data stream sql query. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of SQL Query values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12785,7 +12785,7 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 #### Telnet, rlogin and rsh - Login Success
 
-**Purpose:** A pie chart showing the proportional distribution of telnet, rlogin and rsh login success. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Login Success for Telnet, rlogin and rsh. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -12819,7 +12819,7 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 #### Telnet, rlogin and rsh - Login Attempts with Cleartext Passwords
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of values in this category. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Login Attempts with Cleartext Passwords values for Telnet, rlogin and rsh. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12837,7 +12837,7 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 #### Telnet, rsh and rlogin - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of telnet, rsh and rlogin source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for Telnet, rsh and rlogin. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12854,7 +12854,7 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 #### Telnet, rlogin and rsh - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of telnet, rlogin and rsh destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for Telnet, rlogin and rsh. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12934,7 +12934,7 @@ The TFTP dashboard covers [Trivial File Transfer Protocol (TFTP)](https://en.wik
 
 #### TFTP - Filename
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tftp filename. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Filename values for TFTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12952,7 +12952,7 @@ The TFTP dashboard covers [Trivial File Transfer Protocol (TFTP)](https://en.wik
 
 #### TFTP - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tftp source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for TFTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12970,7 +12970,7 @@ The TFTP dashboard covers [Trivial File Transfer Protocol (TFTP)](https://en.wik
 
 #### TFTP - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tftp destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for TFTP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -12988,7 +12988,7 @@ The TFTP dashboard covers [Trivial File Transfer Protocol (TFTP)](https://en.wik
 
 #### TFTP - Transfer Mode
 
-**Purpose:** A pie chart showing the proportional distribution of tftp transfer mode. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Transfer Mode for TFTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -13006,7 +13006,7 @@ The TFTP dashboard covers [Trivial File Transfer Protocol (TFTP)](https://en.wik
 
 #### TFTP - Operation Results
 
-**Purpose:** A pie chart showing the proportional distribution of tftp operation results. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Operation Results for TFTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -13072,7 +13072,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - Observed In
 
-**Purpose:** A pie chart showing the proportional distribution of intel observed in. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Observed In for Intel. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -13092,7 +13092,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - Indicator Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of intel indicator source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Indicator Source values for Intel. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13112,7 +13112,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of intel source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for Intel. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13132,7 +13132,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of intel destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for Intel. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13152,7 +13152,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - Indicator
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of intel indicator. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Indicator values for Intel. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13172,7 +13172,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - MIME Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of intel mime type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of MIME Type values for Intel. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13193,7 +13193,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - Indicator Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of intel indicator type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Indicator Type values for Intel. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13253,7 +13253,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - Indicator Description
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of intel indicator description. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Indicator Description values for Intel. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13273,7 +13273,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 #### Intel - Indicator Category
 
-**Purpose:** A horizontal bar chart ranking intel indicator category by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking Indicator Category for Intel by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -13360,7 +13360,7 @@ The Tunnels dashboard provides visibility into network [tunneling](https://en.wi
 
 #### Tunnels - Type
 
-**Purpose:** A pie chart showing the proportional distribution of tunnels type. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Type for Tunnels. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -13376,7 +13376,7 @@ The Tunnels dashboard provides visibility into network [tunneling](https://en.wi
 
 #### Tunnels - Destination Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tunnels destination address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Address values for Tunnels. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13392,7 +13392,7 @@ The Tunnels dashboard provides visibility into network [tunneling](https://en.wi
 
 #### Tunnels - Source IP Address
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of tunnels source ip address. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Address values for Tunnels. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13523,7 +13523,7 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 
 #### WebSocket - Source IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of websocket source ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP values for WebSocket. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13543,7 +13543,7 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 
 #### WebSocket - Destination IP
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of websocket destination ip. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP values for WebSocket. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13563,7 +13563,7 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 
 #### WebSocket - Client Extensions
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of websocket client extensions. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Client Extensions values for WebSocket. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13583,7 +13583,7 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 
 #### WebSocket - Server Extensions
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of websocket server extensions. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Server Extensions values for WebSocket. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13603,7 +13603,7 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 
 #### WebSocket - Protocols
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of websocket protocols. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Protocols values for WebSocket. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13623,7 +13623,7 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 
 #### WebSocket - User Agent Name
 
-**Purpose:** A horizontal bar chart ranking websocket user agent name by frequency. Provides a clear visual comparison of relative occurrence across categories.
+**Purpose:** A horizontal bar chart ranking User Agent Name for WebSocket by frequency. Provides a clear visual comparison of relative occurrence across categories.
 
 **Fields / Aggregations:**
 
@@ -13644,7 +13644,7 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 
 #### WebSocket - URI
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of websocket uri. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of URI values for WebSocket. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13709,7 +13709,7 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 #### X.509 - Certificate Signing Algorithm
 
-**Purpose:** A pie chart showing the proportional distribution of x.509 certificate signing algorithm. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Certificate Signing Algorithm for X.509. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -13724,7 +13724,7 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 #### X.509 - Certificate Subject
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of x.509 certificate subject. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Certificate Subject values for X.509. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13740,7 +13740,7 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 #### X.509 - Certificate Issuer
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of x.509 certificate issuer. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Certificate Issuer values for X.509. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13803,7 +13803,7 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 #### SSL - Relevant Notices
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ssl relevant notices. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Relevant Notices values for SSL. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13818,7 +13818,7 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 #### OCSP - Certificate Revocation
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of ocsp certificate revocation. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Certificate Revocation values for OCSP. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13833,7 +13833,7 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 #### X.509 - Is Host Certificate
 
-**Purpose:** A pie chart showing the proportional distribution of x.509 is host certificate. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Is Host Certificate for X.509. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -13848,7 +13848,7 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 #### X.509 - Is Client Certificate
 
-**Purpose:** A pie chart showing the proportional distribution of x.509 is client certificate. Highlights which categories dominate and surfaces minority categories that may be unusual.
+**Purpose:** A pie chart showing the proportional distribution of Is Client Certificate for X.509. Highlights which categories dominate and surfaces minority categories that may be unusual.
 
 **Fields / Aggregations:**
 
@@ -13863,7 +13863,7 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 #### X.509 - Certificate Fingerprint
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of x.509 certificate fingerprint. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Certificate Fingerprint values for X.509. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13937,7 +13937,7 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 #### Log Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of log source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13964,7 +13964,7 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 #### Observed Device Types
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of observed device types. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13981,7 +13981,7 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 #### Observed Devices
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of observed devices. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -13998,7 +13998,7 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 #### IANA Service Name and Transport Protocol Port Number Registry
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of values in this category. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14033,7 +14033,7 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 #### Observed Software
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of observed software. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14051,7 +14051,7 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 #### Uninventoried Observed Hosts
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of uninventoried observed hosts. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14066,7 +14066,7 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 #### Uninventoried Observed Services
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of uninventoried observed services. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14166,7 +14166,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notices - Source IP Addresses
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notices source ip addresses. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source IP Addresses values for Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14181,7 +14181,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notices - Destination IP Addresses
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notices destination ip addresses. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination IP Addresses values for Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14196,7 +14196,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notices - Notice Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notices notice type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Notice Type values for Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14211,7 +14211,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notices - File MIME Type
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notices file mime type. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of File MIME Type values for Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14227,7 +14227,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notices - File Description
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notices file description. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of File Description values for Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14259,7 +14259,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notice - Message Details
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notice message details. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Message Details values for Notice. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14304,7 +14304,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notices - Notice Types by Source and Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notices notice types by source and destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Notice Types by Source and Destination values for Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14319,7 +14319,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notices - Destination Country
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notices destination country. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination Country values for Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14335,7 +14335,7 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 #### Notices - Source Country
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of notices source country. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source Country values for Notices. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14376,7 +14376,7 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 #### Weird - Source
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of weird source. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Source values for Weird. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14391,7 +14391,7 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 #### Weird - Destination
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of weird destination. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Destination values for Weird. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
@@ -14421,7 +14421,7 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 #### Weird - Name
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of weird name. Useful for identifying top values and spotting outliers.
+**Purpose:** A ranked frequency table of Name values for Weird. Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
