@@ -111,6 +111,9 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       mv "${NETBOX_PATH}/netbox/netbox/configuration_ascii.py" "${NETBOX_PATH}/netbox/netbox/configuration.py" && \
     sed -i "s/\('CENSUS_REPORTING_ENABLED',[[:space:]]*\)True/\1False/" "${NETBOX_PATH}/netbox/netbox/settings.py" && \
     sed -i '/\/opt\/netbox\/venv\/bin\/activate/a \\n# Install custom plugins \npython3 /usr/local/bin/netbox_install_plugins.py' /opt/netbox/docker-entrypoint.sh && \
+    rm -f /opt/netbox/launch-netbox.sh /opt/netbox/super_user.py && \
+      ln -s /usr/local/bin/launch-netbox.sh /opt/netbox/launch-netbox.sh && \
+      ln -s /usr/local/bin/netbox_superuser_create.py /opt/netbox/super_user.py && \
     apt-get -q -y --purge remove patch gcc libpq-dev python3-dev gpg && \
       apt-get -q -y --purge autoremove && \
       apt-get clean && \
