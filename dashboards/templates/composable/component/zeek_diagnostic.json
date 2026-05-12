@@ -7,28 +7,16 @@
             "broker": {
               "properties": {
                 "event_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "event_action": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "peer_ip": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "peer_port": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "peer_message": {
                   "type": "keyword",
@@ -37,9 +25,6 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 }
               }
@@ -47,44 +32,26 @@
             "capture_loss": {
               "properties": {
                 "ts_delta": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 },
                 "peer": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "gaps": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "acks": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "percent_lost": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 }
               }
             },
             "cluster": {
               "properties": {
                 "node": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "node_message": {
                   "type": "keyword",
@@ -93,9 +60,6 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 }
               }
@@ -103,10 +67,7 @@
             "config": {
               "properties": {
                 "value_name": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "value_old": {
                   "type": "keyword",
@@ -115,9 +76,6 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "value_new": {
@@ -127,44 +85,26 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "location": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "packet_filter": {
               "properties": {
                 "node": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "filter": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "init": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "success": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "failure_reason": {
                   "type": "keyword",
@@ -173,9 +113,6 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 }
               }
@@ -189,9 +126,6 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 }
               }
@@ -199,10 +133,7 @@
             "reporter": {
               "properties": {
                 "level": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "msg": {
                   "type": "keyword",
@@ -211,176 +142,92 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "location": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "stats": {
               "properties": {
                 "peer": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "mem": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "pkts_proc": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "bytes_recv": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "pkts_dropped": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "pkts_link": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "pkt_lag": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 },
                 "pkts_filtered": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "events_proc": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "events_queued": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "active_tcp_conns": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "active_udp_conns": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "active_icmp_conns": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "tcp_conns": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "udp_conns": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "icmp_conns": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "timers": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "active_timers": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "files": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "active_files": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "dns_requests": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "active_dns_requests": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "reassem_tcp_size": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "reassem_file_size": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "reassem_frag_size": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "reassem_unknown_size": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 }
               }
             }
