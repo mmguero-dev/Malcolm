@@ -5,130 +5,70 @@
         "destination": {
           "properties": {
             "ip_reverse_dns": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "oui": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "device": {
               "properties": {
                 "discovered": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "uninventoried": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cluster": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "device_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "id": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "manufacturer": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "name": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "role": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "service": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "site": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "url": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "details": {
-                  "type": "flat_object",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "flat_object"
                 }
               }
             },
             "segment": {
               "properties": {
                 "id": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "name": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "site": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tenant": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "url": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "details": {
-                  "type": "flat_object",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "flat_object"
                 }
               }
             }
@@ -137,103 +77,61 @@
         "event": {
           "properties": {
             "freq_score_v1": {
-              "type": "float",
-              "meta": {
-                "description": ""
-              }
+              "type": "float"
             },
             "freq_score_v2": {
-              "type": "float",
-              "meta": {
-                "description": ""
-              }
+              "type": "float"
             },
             "hits": {
-              "type": "long",
-              "meta": {
-                "description": ""
-              }
+              "type": "long"
             },
             "result": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "severity_tags": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             }
           }
         },
         "file": {
           "properties": {
             "source": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "entropy": {
-              "type": "float",
-              "meta": {
-                "description": ""
-              }
+              "type": "float"
             },
             "strings": {
               "type": "wildcard",
               "ignore_above": 4096,
               "doc_values": false,
-              "normalizer": "lowercase",
-              "meta": {
-                "description": ""
-              }
+              "normalizer": "lowercase"
             }
           }
         },
         "network": {
           "properties": {
             "is_orig": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "protocol_version": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             }
           }
         },
         "related": {
           "properties": {
             "discovered": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "uninventoried": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "mac": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "oui": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "password": {
               "type": "keyword",
@@ -242,182 +140,98 @@
                 "text": {
                   "type": "text"
                 }
-              },
-              "meta": {
-                "description": ""
               }
             },
             "device_id": {
-              "type": "integer",
-              "meta": {
-                "description": ""
-              }
+              "type": "integer"
             },
             "device_name": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "device_type": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "manufacturer": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "role": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "service": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "site": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             }
           }
         },
         "source": {
           "properties": {
             "ip_reverse_dns": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "oui": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "device": {
               "properties": {
                 "discovered": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "uninventoried": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cluster": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "device_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "id": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "manufacturer": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "name": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "role": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "service": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "site": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "url": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "details": {
-                  "type": "flat_object",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "flat_object"
                 }
               }
             },
             "segment": {
               "properties": {
                 "id": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "name": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "site": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tenant": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "url": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "details": {
-                  "type": "flat_object",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "flat_object"
                 }
               }
             }
@@ -428,20 +242,14 @@
             "client": {
               "properties": {
                 "ja4": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "server": {
               "properties": {
                 "ja4s": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             }

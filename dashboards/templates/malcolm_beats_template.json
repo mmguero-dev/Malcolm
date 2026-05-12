@@ -40,34 +40,19 @@
     "mappings": {
       "properties": {
         "timestamp": {
-          "type": "date",
-          "meta": {
-            "description": ""
-          }
+          "type": "date"
         },
         "node": {
-          "type": "keyword",
-          "meta": {
-            "description": ""
-          }
+          "type": "keyword"
         },
         "event.result": {
-          "type": "keyword",
-          "meta": {
-            "description": ""
-          }
+          "type": "keyword"
         },
         "os.family": {
-          "type": "keyword",
-          "meta": {
-            "description": ""
-          }
+          "type": "keyword"
         },
         "os.type": {
-          "type": "keyword",
-          "meta": {
-            "description": ""
-          }
+          "type": "keyword"
         }
       }
     }

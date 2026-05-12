@@ -7,244 +7,130 @@
             "alert": {
               "properties": {
                 "action": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "metadata": {
                   "properties": {
                     "confidence": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "created_at": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "malware_family": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "performance_impact": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "reviewed_at": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "signature_severity": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "updated_at": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "rev": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "severity": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
             "anomaly": {
               "properties": {
                 "app_proto": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "code": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "event": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "event_no": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "layer": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "app_proto_expected": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "app_proto_orig": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "app_proto_tc": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "app_proto_ts": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "dhcp": {
               "properties": {
                 "assigned_ip": {
-                  "type": "ip",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "ip"
                 },
                 "client_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "client_ip": {
-                  "type": "ip",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "ip"
                 },
                 "client_mac": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "dhcp_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "dns_servers": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "hostname": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "lease_time": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "next_server_ip": {
-                  "type": "ip",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "ip"
                 },
                 "params": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "rebinding_time": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "relay_ip": {
-                  "type": "ip",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "ip"
                 },
                 "renewal_time": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "requested_ip": {
-                  "type": "ip",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "ip"
                 },
                 "routers": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "subnet_mask": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
@@ -253,398 +139,206 @@
                 "application": {
                   "properties": {
                     "complete": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "control": {
                       "properties": {
                         "con": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "fin": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "fir": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "sequence": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "uns": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         }
                       }
                     },
                     "function_code": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "objects": {
                       "type": "nested",
                       "properties": {
                         "count": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "group": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "prefix_code": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "qualifier": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "range_code": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "start": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "stop": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "variation": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "points": {
                           "type": "nested",
                           "properties": {
                             "authentication_key": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "block_number": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "challenge_data_len": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "chatter_filter": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "comm_lost": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "count": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "cr": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "created": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "data.mac_value": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "data.wrapped_key_data": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "delay_ms": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "file_data": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "file_handle": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "file_size": {
-                              "type": "long",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "long"
                             },
                             "filename": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "filename_offset": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "filename_size": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "index": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "key_status": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "key_wrap_alg": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "ksq": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "local_forced": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "mal": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "maximum_block_size": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "offtime": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "online": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "ontime": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "op_type": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "operational_mode": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "optional_text": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "over_range": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "permissions": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "prefix": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "qu": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "reference_err": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "remote_forced": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "request_id": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "reserved": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "reserved0": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "reserved1": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "restart": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "size": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "state": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "status_code": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "tcc": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "timestamp": {
-                              "type": "date",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "date"
                             },
                             "user_number": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "usr": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "value": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             }
                           }
                         }
@@ -655,50 +349,29 @@
                 "control": {
                   "properties": {
                     "dir": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "fcb": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "fcv": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "function_code": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "pri": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "dst": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "iin": {
                   "properties": {
                     "indicators": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
@@ -707,248 +380,131 @@
                     "application": {
                       "properties": {
                         "complete": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "control": {
                           "properties": {
                             "con": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "fin": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "fir": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "sequence": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "uns": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             }
                           }
                         },
                         "function_code": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "objects": {
                           "type": "nested",
                           "properties": {
                             "count": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "group": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "prefix_code": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "qualifier": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "range_code": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "start": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "stop": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "variation": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "points": {
                               "type": "nested",
                               "properties": {
                                 "authentication_key": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "count": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "cr": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "created": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "file_size": {
-                                  "type": "long",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "long"
                                 },
                                 "filename": {
-                                  "type": "keyword",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "keyword"
                                 },
                                 "filename_offset": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "filename_size": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "index": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "maximum_block_size": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "offtime": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "ontime": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "op_type": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "operational_mode": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "permissions": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "prefix": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "qu": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "request_id": {
-                                  "type": "keyword",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "keyword"
                                 },
                                 "reserved": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "size": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "status_code": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "tcc": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "timestamp": {
-                                  "type": "date",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "date"
                                 },
                                 "user_number": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 }
                               }
                             }
@@ -959,54 +515,30 @@
                     "control": {
                       "properties": {
                         "dir": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "fcb": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "fcv": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "function_code": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "pri": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         }
                       }
                     },
                     "dst": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "src": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "type": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
@@ -1015,332 +547,173 @@
                     "application": {
                       "properties": {
                         "complete": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "control": {
                           "properties": {
                             "con": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "fin": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "fir": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             },
                             "sequence": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "uns": {
-                              "type": "keyword",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "keyword"
                             }
                           }
                         },
                         "function_code": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "objects": {
                           "type": "nested",
                           "properties": {
                             "count": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "group": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "prefix_code": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "qualifier": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "range_code": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "start": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "stop": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "variation": {
-                              "type": "integer",
-                              "meta": {
-                                "description": ""
-                              }
+                              "type": "integer"
                             },
                             "points": {
                               "type": "nested",
                               "properties": {
                                 "challenge_data_len": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "chatter_filter": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "comm_lost": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "count": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "cr": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "data.challenge_data": {
-                                  "type": "keyword",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "keyword"
                                 },
                                 "data.mac_value": {
-                                  "type": "keyword",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "keyword"
                                 },
                                 "delay_ms": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "file_handle": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "file_size": {
-                                  "type": "long",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "long"
                                 },
                                 "index": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "key_status": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "key_wrap_alg": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "ksq": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "local_forced": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "mal": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "maximum_block_size": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "offtime": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "online": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "ontime": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "op_type": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "optional_text": {
-                                  "type": "keyword",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "keyword"
                                 },
                                 "over_range": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "prefix": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "qu": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "reference_err": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "remote_forced": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "request_id": {
-                                  "type": "keyword",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "keyword"
                                 },
                                 "reserved": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "reserved0": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "reserved1": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "restart": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "size": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "state": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "status_code": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "tcc": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "user_number": {
-                                  "type": "integer",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "integer"
                                 },
                                 "value": {
-                                  "type": "keyword",
-                                  "meta": {
-                                    "description": ""
-                                  }
+                                  "type": "keyword"
                                 }
                               }
                             }
@@ -1351,464 +724,254 @@
                     "control": {
                       "properties": {
                         "dir": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "fcb": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "fcv": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "function_code": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "pri": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         }
                       }
                     },
                     "dst": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "iin": {
                       "properties": {
                         "indicators": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         }
                       }
                     },
                     "src": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "type": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "src": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "dns": {
               "properties": {
                 "aa": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "answer": {
                   "properties": {
                     "aa": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "authorities": {
                       "properties": {
                         "rrname": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "rrtype": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "ttl": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         }
                       }
                     },
                     "flags": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "id": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "qr": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "ra": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "rcode": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "rrname": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "rrtype": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "type": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "version": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     }
                   }
                 },
                 "answers": {
                   "properties": {
                     "rdata": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "rrname": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "rrtype": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "ttl": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     }
                   }
                 },
                 "authorities": {
                   "properties": {
                     "rdata": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "rrname": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "rrtype": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "ttl": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     }
                   }
                 },
                 "flags": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "qr": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "queries": {
                   "properties": {
                     "id": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "opcode": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "rrname": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "rrtype": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "tx_id": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "type": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "ra": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "rd": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "rcode": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "rrname": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "rrtype": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tc": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tx_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "version": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
             "email": {
               "properties": {
                 "attachment": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "body_md5": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cc": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "from": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "status": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "subject_md5": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "to": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "fileinfo": {
               "properties": {
                 "end": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "file_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "filename": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "gaps": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "magic": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "md5": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "sha1": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "sha256": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "sid": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "size": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "start": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "state": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tx_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
@@ -1816,168 +979,90 @@
               "type": "nested",
               "properties": {
                 "end": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "filename": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "gaps": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "size": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "start": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "state": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tx_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "flow": {
               "properties": {
                 "age": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "alerted": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "bytes_toclient": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "bytes_toserver": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "emergency": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "end": {
-                  "type": "date",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "date"
                 },
                 "pkts_toclient": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "pkts_toserver": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "reason": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "start": {
-                  "type": "date",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "date"
                 },
                 "state": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "flow_id": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "ftp": {
               "properties": {
                 "command ": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "command": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "command_data": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "completion_code": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "dynamic_port": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "reply": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "reply_received": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
@@ -1986,1100 +1071,605 @@
                 "content_range": {
                   "properties": {
                     "end": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "raw": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "size": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "start": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     }
                   }
                 },
                 "hostname": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "http_content_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "http_method": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "http_port": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "http_refer": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "http_request_body": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "http_request_body_printable": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "http_response_body": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "http_response_body_printable": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "http_user_agent": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "length": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "redirect": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "request_headers": {
                   "properties": {
                     "name": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "value": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "response_headers": {
                   "properties": {
                     "name": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "value": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "url": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "icmp_code": {
-              "type": "integer",
-              "meta": {
-                "description": ""
-              }
+              "type": "integer"
             },
             "icmp_type": {
-              "type": "integer",
-              "meta": {
-                "description": ""
-              }
+              "type": "integer"
             },
             "ikev2": {
               "properties": {
                 "alg_auth": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "alg_dh": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "alg_enc": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "alg_esn": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "alg_prf": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "errors": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "exchange_type": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "init_spi": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "message_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "notify": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "payload": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "resp_spi": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "role": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "version_major": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "version_minor": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
             "in_iface": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "krb5": {
               "properties": {
                 "cname": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "encryption": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "error_code": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "failed_request": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "msg_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "realm": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "sname": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "weak_encryption": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "netflow": {
               "properties": {
                 "age": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "bytes": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "end": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "max_ttl": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "min_ttl": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "pkts": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "start": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "nfs": {
               "properties": {
                 "file_tx": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "filename": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "hhash": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "id": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "procedure": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "rename": {
                   "properties": {
                     "from": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "to": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "status": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "version": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
             "pcap_cnt": {
-              "type": "integer",
-              "meta": {
-                "description": ""
-              }
+              "type": "integer"
             },
             "pcap_filename": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             },
             "rdp": {
               "properties": {
                 "channels": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "client": {
                   "properties": {
                     "build": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "capabilities": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "client_name": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "color_depth": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "connection_hint": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "desktop_height": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "desktop_width": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "function_keys": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "id": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "keyboard_layout": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "keyboard_type": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "product_id": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "version": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "cookie": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "error_code": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "event_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "protocol": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "reason": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "server_supports": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tx_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "x509_serials": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "response_icmp_code": {
-              "type": "integer",
-              "meta": {
-                "description": ""
-              }
+              "type": "integer"
             },
             "response_icmp_type": {
-              "type": "integer",
-              "meta": {
-                "description": ""
-              }
+              "type": "integer"
             },
             "rpc": {
               "properties": {
                 "auth_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "creds": {
                   "properties": {
                     "gid": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "machine_name": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "uid": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     }
                   }
                 },
                 "status": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "xid": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
             "sip": {
               "properties": {
                 "code": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "method": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "reason": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "request_line": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "response_line": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "uri": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "version": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "smb": {
               "properties": {
                 "access": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "accessed": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "changed": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "client_dialects": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "client_dialects[]": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "client_guid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "command": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "created": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "dcerpc": {
                   "properties": {
                     "call_id": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "interfaces": {
                       "properties": {
                         "ack_reason": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "ack_result": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "uuid": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "version": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         }
                       }
                     },
                     "opnum": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "req": {
                       "properties": {
                         "frag_cnt": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "stub_data_size": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         }
                       }
                     },
                     "request": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "res": {
                       "properties": {
                         "frag_cnt": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         },
                         "stub_data_size": {
-                          "type": "integer",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "integer"
                         }
                       }
                     },
                     "response": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "dialect": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "directory": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "disposition": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "filename": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "fuid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "function": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "id": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "kerberos": {
                   "properties": {
                     "realm": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "snames": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "modified": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "named_pipe": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "ntlmssp": {
                   "properties": {
                     "domain": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "host": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "user": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "rename": {
                   "properties": {
                     "from": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "to": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "request": {
                   "properties": {
                     "native_lm": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "native_os": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "response": {
                   "properties": {
                     "native_lm": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "native_os": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "server_guid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "service": {
                   "properties": {
                     "request": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "response": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "session_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "set_info": {
                   "properties": {
                     "class": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "info_level": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "share": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "share_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "size": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "status": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "status_code": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tree_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "smtp": {
               "properties": {
                 "helo": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "snmp": {
               "properties": {
                 "community": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "error": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "pdu_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "trap_address": {
-                  "type": "ip",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "ip"
                 },
                 "trap_oid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "trap_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "usm": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "vars": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "version": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
@@ -3088,230 +1678,128 @@
                 "client": {
                   "properties": {
                     "proto_version": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "software_version": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 },
                 "server": {
                   "properties": {
                     "proto_version": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     },
                     "software_version": {
-                      "type": "keyword",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "keyword"
                     }
                   }
                 }
               }
             },
             "stream": {
-              "type": "integer",
-              "meta": {
-                "description": ""
-              }
+              "type": "integer"
             },
             "tcp": {
               "properties": {
                 "ack": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cwr": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "ecn": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "fin": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "psh": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "rst": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "state": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "syn": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tcp_flags": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tcp_flags_tc": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tcp_flags_ts": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "urg": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "tftp": {
               "properties": {
                 "file": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "mode": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "packet": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "timestamp": {
-              "type": "date",
-              "meta": {
-                "description": ""
-              }
+              "type": "date"
             },
             "tls": {
               "properties": {
                 "fingerprint": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "from_proto": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "issuerdn": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "notafter": {
-                  "type": "date",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "date"
                 },
                 "notbefore": {
-                  "type": "date",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "date"
                 },
                 "serial": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "session_resumed": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "sni": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "subject": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "version": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "tunnel": {
               "properties": {
                 "depth": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "dest_ip": {
-                  "type": "ip",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "ip"
                 },
                 "dest_port": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "pcap_cnt": {
                   "type": "integer"
@@ -3320,30 +1808,18 @@
                   "type": "keyword"
                 },
                 "proto": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "src_ip": {
-                  "type": "ip",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "ip"
                 },
                 "src_port": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
             "tx_id": {
-              "type": "keyword",
-              "meta": {
-                "description": ""
-              }
+              "type": "keyword"
             }
           }
         }
