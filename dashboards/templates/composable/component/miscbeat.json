@@ -11,62 +11,35 @@
                 "text": {
                   "type": "text"
                 }
-              },
-              "meta": {
-                "description": ""
               }
             },
             "aide": {
               "properties": {
                 "start_time": {
-                  "type": "date",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "date"
                 },
                 "end_time": {
-                  "type": "date",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "date"
                 },
                 "run_time_seconds": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "aide_version": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "number_of_entries": {
                   "properties": {
                     "total": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "added": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "removed": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     },
                     "changed": {
-                      "type": "integer",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "integer"
                     }
                   }
                 },
@@ -80,9 +53,6 @@
                         "text": {
                           "type": "text"
                         }
-                      },
-                      "meta": {
-                        "description": ""
                       }
                     }
                   }
@@ -94,9 +64,6 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "changed": {
@@ -106,9 +73,6 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "removed": {
@@ -118,38 +82,23 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "databases": {
-                  "type": "flat_object",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "flat_object"
                 }
               }
             },
             "cpu": {
               "properties": {
                 "cpu_p": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 },
                 "system_p": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 },
                 "user_p": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 }
               }
             },
@@ -158,50 +107,29 @@
                 "Mem": {
                   "properties": {
                     "free": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "total": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "used": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "used_p": {
-                      "type": "float",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "float"
                     }
                   }
                 },
                 "Swap": {
                   "properties": {
                     "free": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "total": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "used": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     }
                   }
                 }
@@ -210,63 +138,36 @@
             "disk": {
               "properties": {
                 "read_size": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "write_size": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "df": {
                   "properties": {
                     "size": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "used": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "avail": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "details": {
                       "type": "nested",
                       "properties": {
                         "target": {
-                          "type": "keyword",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "keyword"
                         },
                         "size": {
-                          "type": "long",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "long"
                         },
                         "used": {
-                          "type": "long",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "long"
                         },
                         "avail": {
-                          "type": "long",
-                          "meta": {
-                            "description": ""
-                          }
+                          "type": "long"
                         }
                       }
                     }
@@ -279,96 +180,57 @@
                 "bytes": {
                   "properties": {
                     "tx": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "rx": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "total": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     }
                   }
                 },
                 "packets": {
                   "properties": {
                     "tx": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "rx": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "total": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     }
                   }
                 },
                 "errors": {
                   "properties": {
                     "tx": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "rx": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "total": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     }
                   }
                 },
                 "drops": {
                   "properties": {
                     "tx": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "rx": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "total": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     }
                   }
                 },
                 "interface": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
@@ -378,226 +240,121 @@
             "kmsg": {
               "properties": {
                 "priority": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "sequence": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "sec": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "usec": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
             "proc": {
               "properties": {
                 "alive": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "proc_name": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "pid": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "mem": {
                   "properties": {
                     "VmPeak": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmSize": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmLck": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmHWM": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmRSS": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmData": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmStk": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmExe": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmLib": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmPTE": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     },
                     "VmSwap": {
-                      "type": "long",
-                      "meta": {
-                        "description": ""
-                      }
+                      "type": "long"
                     }
                   }
                 },
                 "fd": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 }
               }
             },
             "systemd": {
               "properties": {
                 "audit_loginuid": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "audit_session": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "boot_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cpu_usage_nsec": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "device": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "glib_domain": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "glib_old_log_api": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "hostname": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "invocation_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "job_id": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "job_result": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "job_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "kernel_device": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "kernel_subsystem": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "leader": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "machine_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "message": {
                   "type": "keyword",
@@ -606,76 +363,40 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "message_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "nm_device": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "nm_log_domains": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "nm_log_level": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "priority": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "runtime_scope": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "selinux_context": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "session_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "source_monotonic_timestamp": {
-                  "type": "long",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "long"
                 },
                 "source_realtime_timestamp": {
-                  "type": "date",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "date"
                 },
                 "stream_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "syslog_raw": {
                   "type": "keyword",
@@ -684,16 +405,10 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "syslog_timestamp": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "systemd_cgroup": {
                   "type": "keyword",
@@ -702,606 +417,309 @@
                     "text": {
                       "type": "text"
                     }
-                  },
-                  "meta": {
-                    "description": ""
                   }
                 },
                 "systemd_invocation_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "systemd_session": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "systemd_slice": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "systemd_unit": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "systemd_user_slice": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "systemd_user_unit": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "timestamp_boottime": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 },
                 "timestamp_monotonic": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 },
                 "udev_devnode": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "udev_sysname": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "unit": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "user_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "user_invocation_id": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "user_unit": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "userspace_usec": {
-                  "type": "integer",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "integer"
                 },
                 "wp_object": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "wp_object_type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "thermal": {
               "properties": {
                 "name": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "temp": {
-                  "type": "float",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "float"
                 },
                 "type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             },
             "auditlog": {
               "properties": {
                 "ARCH": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "AUID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "EGID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "EUID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "FSGID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "FSUID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "GID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "OGID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "OLD-AUID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "OUID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "SADDR": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "SGID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "SUID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "SYSCALL": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "UID": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "a0": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "a1": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "a2": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "a3": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "acct": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "addr": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "arch": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "argc": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "auid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cap_fe": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cap_fi": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cap_fp": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cap_frootid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cap_fver": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "cmd": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "comm": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "dev": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "egid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "entries": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "euid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "exe": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "exit": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "family": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "fsgid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "fsuid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "gid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "grantors": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "hostname": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "inode": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "item": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "items": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "key": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "mode": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "msg": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "name": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "nametype": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "nlnk-fam": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "nlnk-pid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "ogid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "old-auid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "old-ses": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "old_prom": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "op": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "ouid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "pid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "ppid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "proctitle": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "prom": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "rdev": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "res": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "saddr": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "saddr_fam": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "ses": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "sgid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "subj": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "success": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "suid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "syscall": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "table": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "terminal": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "tty": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "type": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 },
                 "uid": {
-                  "type": "keyword",
-                  "meta": {
-                    "description": ""
-                  }
+                  "type": "keyword"
                 }
               }
             }
