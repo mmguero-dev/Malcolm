@@ -1,4 +1,4 @@
-# Dashboard Documentation
+# Malcolm Dashboard Reference
 
 > This document provides user-focused descriptions of all available dashboards and their visualizations. Use it to understand what each dashboard monitors, what data it surfaces, and how to interpret individual panels.
 
@@ -96,6 +96,8 @@
 
 ## Actions and Results
 
+* ID: [a33e0a50-afcd-11ea-993f-b7d8522a8bed](#/dashboard/a33e0a50-afcd-11ea-993f-b7d8522a8bed)
+
 The Actions and Results dashboard provides a cross-protocol view of operation types and their outcomes across all monitored ICS and IT protocols. It aggregates event action and result fields to show what commands were issued, which succeeded or failed, and which hosts were involved. This is useful for detecting anomalous command patterns, failed authentication attempts, and unauthorized operations across protocols.
 
 ### Visualizations
@@ -106,16 +108,16 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### Total Number of Logs
@@ -124,7 +126,7 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 **Fields / Aggregations:**
 
-    * `event.provider`
+* `event.provider`
 
 
 #### Top Actions by Service
@@ -133,9 +135,9 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 **Fields / Aggregations:**
 
-    * `event.action`
-    * `network.protocol`
-    * `timestamp`
+* `event.action`
+* `network.protocol`
+* timestamp
 
 
 #### Top Results by Service
@@ -144,9 +146,9 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 **Fields / Aggregations:**
 
-    * `event.result`
-    * `network.protocol`
-    * `timestamp`
+* `event.result`
+* `network.protocol`
+* timestamp
 
 
 #### Actions
@@ -155,8 +157,8 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 **Fields / Aggregations:**
 
-    * `event.action`
-    * `network.protocol`
+* `event.action`
+* `network.protocol`
 
 
 #### Results
@@ -165,8 +167,8 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 **Fields / Aggregations:**
 
-    * `event.result`
-    * `network.protocol`
+* `event.result`
+* `network.protocol`
 
 
 #### All Logs
@@ -175,21 +177,23 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 ---
 
 ## ANSI C12.22
+
+* ID: [db51fc00-673b-11f0-8230-37b935257dd0](#/dashboard/db51fc00-673b-11f0-8230-37b935257dd0)
 
 *ANSI C12.22 visualizations*
 
@@ -205,15 +209,15 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.dataset`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - Logs Over Time
@@ -224,15 +228,15 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.dataset`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22  - Transport Protocol
@@ -241,15 +245,15 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - Source IPs
@@ -260,14 +264,14 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - Destination IPs
@@ -278,14 +282,14 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - Users
@@ -294,15 +298,15 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - EPSEM Services
@@ -313,15 +317,15 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.epsem_service`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.epsem_service`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - AP Titles
@@ -332,14 +336,14 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - Actions
@@ -350,15 +354,15 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.action`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - Results
@@ -369,14 +373,14 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - Users and Passwords
@@ -387,16 +391,16 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `related.password`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `related.password`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 #### C12.22 - Logs
@@ -405,17 +409,17 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.called_ap_invocation_id`
-    * `zeek.c1222.called_ap_title`
-    * `zeek.c1222.calling_ap_invocation_id`
-    * `zeek.c1222.calling_ap_title`
-    * `zeek.c1222.calling_auth_value`
-    * `zeek.c1222.elements`
-    * `zeek.c1222.is_encrypted_epsem`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.c1222.called_ap_invocation_id`
+* `zeek.c1222.called_ap_title`
+* `zeek.c1222.calling_ap_invocation_id`
+* `zeek.c1222.calling_ap_title`
+* `zeek.c1222.calling_auth_value`
+* `zeek.c1222.elements`
+* `zeek.c1222.is_encrypted_epsem`
 
 
 #### C12.22 - Service Error Logs
@@ -424,12 +428,12 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
 
 
 #### C12.22 - User Information Logs
@@ -438,14 +442,14 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.epsem_service`
-    * `zeek.c1222_user_information.encrypted_epsem`
-    * `zeek.c1222_user_information.epsem_control`
-    * `zeek.c1222_user_information.mac`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.c1222.epsem_service`
+* `zeek.c1222_user_information.encrypted_epsem`
+* `zeek.c1222_user_information.epsem_control`
+* `zeek.c1222_user_information.mac`
 
 
 #### C12.22 and Related - Logs
@@ -454,19 +458,21 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.c1222.ap_title`
-    * `zeek.c1222.req_resp`
+* `destination.ip`
+* `event.event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.c1222.ap_title`
+* `zeek.c1222.req_resp`
 
 
 ---
 
 ## Asset Interaction Analysis
+
+* ID: [677ee170-809e-11ed-8d5b-07069f823b6f](#/dashboard/677ee170-809e-11ed-8d5b-07069f823b6f)
 
 The Asset Interaction Analysis dashboard maps the communication relationships between hosts on the network, providing a behavioral picture of which assets talk to which. It uses connection and protocol data to surface interaction patterns, unusual peer relationships, and potentially unauthorized lateral movement. Security teams use this dashboard to understand normal communication baselines and flag deviations that may indicate compromise or misconfiguration.
 
@@ -478,13 +484,13 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.segment.name`
-    * `network.bytes`
-    * `network.direction`
-    * `network.packets`
-    * `related.site`
-    * `source.segment.name`
-    * `timestamp`
+* `destination.segment.name`
+* `network.bytes`
+* `network.direction`
+* `network.packets`
+* `related.site`
+* `source.segment.name`
+* timestamp
 
 
 #### Network Site
@@ -493,7 +499,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `related.site`
+* `related.site`
 
 
 #### Cross Segment Traffic
@@ -502,9 +508,9 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.segment.name`
-    * `source.segment.name`
-    * `timestamp`
+* `destination.segment.name`
+* `source.segment.name`
+* timestamp
 
 
 #### Protocol by Network Segment
@@ -513,11 +519,11 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `network.name`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `related.site`
+* `network.name`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `related.site`
 
 
 #### Event Severity by Network Segment
@@ -526,10 +532,10 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `event.risk_score`
-    * `event.severity_tags`
-    * `network.name`
-    * `related.site`
+* `event.risk_score`
+* `event.severity_tags`
+* `network.name`
+* `related.site`
 
 
 #### Source Device Type
@@ -538,9 +544,9 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `source.device.device_type`
-    * `source.device.manufacturer`
-    * `source.device.role`
+* `source.device.device_type`
+* `source.device.manufacturer`
+* `source.device.role`
 
 
 #### Notice, Alert and Signature by Network Segment
@@ -549,11 +555,11 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `event.provider`
-    * `network.name`
-    * `related.site`
-    * `rule.category`
+* `event.dataset`
+* `event.provider`
+* `network.name`
+* `related.site`
+* `rule.category`
 
 
 #### Destination Device Type
@@ -562,9 +568,9 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.device.device_type`
-    * `destination.device.manufacturer`
-    * `destination.device.role`
+* `destination.device.device_type`
+* `destination.device.manufacturer`
+* `destination.device.role`
 
 
 #### Source Device Role
@@ -573,7 +579,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `source.device.role`
+* `source.device.role`
 
 
 #### Destination Device Role
@@ -582,7 +588,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.device.role`
+* `destination.device.role`
 
 
 #### Source Device Log Counts
@@ -591,10 +597,10 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `source.device.device_type`
-    * `source.device.manufacturer`
-    * `source.device.name`
-    * `source.device.role`
+* `source.device.device_type`
+* `source.device.manufacturer`
+* `source.device.name`
+* `source.device.role`
 
 
 #### Destination Device Log Counts
@@ -603,10 +609,10 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.device.device_type`
-    * `destination.device.manufacturer`
-    * `destination.device.name`
-    * `destination.device.role`
+* `destination.device.device_type`
+* `destination.device.manufacturer`
+* `destination.device.name`
+* `destination.device.role`
 
 
 #### Uninventoried Internal Source IPs
@@ -615,19 +621,19 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.oui`
-    * `destination.segment.name`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `network.protocol`
-    * `network.transport`
-    * `related.site`
-    * `source.ip`
-    * `source.oui`
-    * `source.segment.name`
-    * `source.segment.site`
+* `destination.ip`
+* `destination.oui`
+* `destination.segment.name`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `network.protocol`
+* `network.transport`
+* `related.site`
+* `source.ip`
+* `source.oui`
+* `source.segment.name`
+* `source.segment.site`
 
 
 #### Uninventoried Internal Destination IPs
@@ -636,19 +642,19 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.oui`
-    * `destination.segment.name`
-    * `destination.segment.site`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `network.protocol`
-    * `network.transport`
-    * `related.site`
-    * `source.ip`
-    * `source.oui`
-    * `source.segment.name`
+* `destination.ip`
+* `destination.oui`
+* `destination.segment.name`
+* `destination.segment.site`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `network.protocol`
+* `network.transport`
+* `related.site`
+* `source.ip`
+* `source.oui`
+* `source.segment.name`
 
 
 #### Uninventoried Internal Assets - Logs
@@ -657,18 +663,18 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.oui`
-    * `destination.segment.name`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `network.protocol`
-    * `network.transport`
-    * `related.site`
-    * `source.ip`
-    * `source.oui`
-    * `source.segment.name`
+* `destination.ip`
+* `destination.oui`
+* `destination.segment.name`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `network.protocol`
+* `network.transport`
+* `related.site`
+* `source.ip`
+* `source.oui`
+* `source.segment.name`
 
 
 #### Uninventoried Observed Services - Logs
@@ -677,22 +683,24 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `destination.segment.name`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `related.site`
-    * `source.ip`
+* `destination.ip`
+* `destination.port`
+* `destination.segment.name`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `related.site`
+* `source.ip`
 
 
 ---
 
 ## BACnet
+
+* ID: [2bec1490-eb94-11e9-a384-0fcf32210194](#/dashboard/2bec1490-eb94-11e9-a384-0fcf32210194)
 
 *Dashboard for the BACnet (Building Automation and Control Networks) Protocol*
 
@@ -708,7 +716,7 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
+* `event.dataset`
 
 
 #### BACnet - Logs Over Time
@@ -719,8 +727,8 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `timestamp`
+* `event.dataset`
+* timestamp
 
 
 #### BACnet - Device Vendors
@@ -731,13 +739,13 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bacnet.instance_number`
-    * `zeek.bacnet.pdu_service`
-    * `zeek.bacnet_discovery.object_type`
-    * `zeek.bacnet_discovery.vendor`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.bacnet.instance_number`
+* `zeek.bacnet.pdu_service`
+* `zeek.bacnet_discovery.object_type`
+* `zeek.bacnet_discovery.vendor`
 
 
 #### BACnet - BVLC Functions
@@ -748,13 +756,13 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bacnet.bvlc_function`
-    * `zeek.bacnet.invoke_id`
-    * `zeek.bacnet.pdu_service`
-    * `zeek.bacnet.pdu_type`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.bacnet.bvlc_function`
+* `zeek.bacnet.invoke_id`
+* `zeek.bacnet.pdu_service`
+* `zeek.bacnet.pdu_type`
 
 
 #### ATT&CK for ICS Tactic - BACnet
@@ -763,14 +771,14 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### BACnet - Actions and Results
@@ -779,8 +787,8 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `event.action`
-    * `event.result`
+* `event.action`
+* `event.result`
 
 
 #### BACnet - Protocol Data Units (PDUs)
@@ -791,13 +799,13 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bacnet.bvlc_function`
-    * `zeek.bacnet.invoke_id`
-    * `zeek.bacnet.pdu_service`
-    * `zeek.bacnet.pdu_type`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.bacnet.bvlc_function`
+* `zeek.bacnet.invoke_id`
+* `zeek.bacnet.pdu_service`
+* `zeek.bacnet.pdu_type`
 
 
 #### ATT&CK for ICS Notices - BACnet
@@ -806,14 +814,14 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### BACnet - Source IP
@@ -824,7 +832,7 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `source.ip`
+* `source.ip`
 
 
 #### BACnet - Destination IP
@@ -835,7 +843,7 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
+* `destination.ip`
 
 
 #### BACnet - Device Discovery
@@ -846,13 +854,13 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bacnet.instance_number`
-    * `zeek.bacnet.pdu_service`
-    * `zeek.bacnet_discovery.object_type`
-    * `zeek.bacnet_discovery.vendor`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.bacnet.instance_number`
+* `zeek.bacnet.pdu_service`
+* `zeek.bacnet_discovery.object_type`
+* `zeek.bacnet_discovery.vendor`
 
 
 #### BACnet - Trends
@@ -861,14 +869,14 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-    * `event.dataset`
-    * `scheme`
-    * `zeek.bacnet_property.property`
-    * `zeek.bacnet_property.value`
+* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
+* `event.dataset`
+* `scheme`
+* `zeek.bacnet_property.property`
+* `zeek.bacnet_property.value`
 
 
-#### BACnet  - Read and Write Property 
+#### BACnet  - Read and Write Property
 
 *Results from BACnet Read-Property and Write-Property Commands*
 
@@ -876,14 +884,14 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bacnet.instance_number`
-    * `zeek.bacnet.pdu_service`
-    * `zeek.bacnet_property.object_type`
-    * `zeek.bacnet_property.property`
-    * `zeek.bacnet_property.value`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.bacnet.instance_number`
+* `zeek.bacnet.pdu_service`
+* `zeek.bacnet_property.object_type`
+* `zeek.bacnet_property.property`
+* `zeek.bacnet_property.value`
 
 
 #### BACnet - Logs
@@ -892,13 +900,13 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bacnet.bvlc_function`
-    * `zeek.bacnet.invoke_id`
-    * `zeek.bacnet.pdu_service`
-    * `zeek.bacnet.pdu_type`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.bacnet.bvlc_function`
+* `zeek.bacnet.invoke_id`
+* `zeek.bacnet.pdu_service`
+* `zeek.bacnet.pdu_type`
 
 
 #### BACnet - Property Logs
@@ -907,14 +915,14 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bacnet.instance_number`
-    * `zeek.bacnet.pdu_service`
-    * `zeek.bacnet_property.object_type`
-    * `zeek.bacnet_property.property`
-    * `zeek.bacnet_property.value`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.bacnet.instance_number`
+* `zeek.bacnet.pdu_service`
+* `zeek.bacnet_property.object_type`
+* `zeek.bacnet_property.property`
+* `zeek.bacnet_property.value`
 
 
 #### BACnet - Discovery Logs
@@ -923,13 +931,13 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bacnet.instance_number`
-    * `zeek.bacnet.pdu_service`
-    * `zeek.bacnet_discovery.object_type`
-    * `zeek.bacnet_discovery.vendor`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.bacnet.instance_number`
+* `zeek.bacnet.pdu_service`
+* `zeek.bacnet_discovery.object_type`
+* `zeek.bacnet_discovery.vendor`
 
 
 #### BACnet Device Control - Logs
@@ -938,17 +946,19 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.result`
-    * `source.ip`
-    * `zeek.bacnet.invoke_id`
-    * `zeek.uid`
+* `destination.ip`
+* `event.action`
+* `event.result`
+* `source.ip`
+* `zeek.bacnet.invoke_id`
+* `zeek.uid`
 
 
 ---
 
 ## BSAP
+
+* ID: [ca5799a0-56b5-11eb-b749-576de068f8ad](#/dashboard/ca5799a0-56b5-11eb-b749-576de068f8ad)
 
 The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic used in ABB and Bristol Babcock control systems, common in oil and gas and chemical process environments. It logs function codes, device addresses, and communication pairs observed by Zeek. Security teams can use this dashboard to detect unauthorized commands to BSAP-enabled field devices and monitor for unexpected communication sources.
 
@@ -960,16 +970,16 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### BSAP - Logs Over Time
@@ -978,16 +988,16 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### BSAP - Source IP
@@ -996,17 +1006,17 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### BSAP IP - Function
@@ -1015,16 +1025,16 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bsap_ip_rdb.app_func_code`
-    * `zeek.bsap_ip_rdb.func_code`
-    * `zeek.bsap_ip_rdb.node_status`
-    * `zeek.bsap_ip_rdb.variable_count`
-    * `zeek.bsap_ip_rdb.variables`
+* `destination.ip`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.bsap_ip_rdb.app_func_code`
+* `zeek.bsap_ip_rdb.func_code`
+* `zeek.bsap_ip_rdb.node_status`
+* `zeek.bsap_ip_rdb.variable_count`
+* `zeek.bsap_ip_rdb.variables`
 
 
 #### BSAP - Transport
@@ -1033,17 +1043,17 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* timestamp
 
 
 #### BSAP Serial - RDB Function
@@ -1052,18 +1062,18 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bsap_serial_header.dfun`
-    * `zeek.bsap_serial_header.nsb`
-    * `zeek.bsap_serial_header.sfun`
-    * `zeek.bsap_serial_header.type_name`
-    * `zeek.bsap_serial_rdb.func_code`
-    * `zeek.bsap_serial_rdb.variable_count`
-    * `zeek.bsap_serial_rdb.variables`
+* `destination.ip`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.bsap_serial_header.dfun`
+* `zeek.bsap_serial_header.nsb`
+* `zeek.bsap_serial_header.sfun`
+* `zeek.bsap_serial_header.type_name`
+* `zeek.bsap_serial_rdb.func_code`
+* `zeek.bsap_serial_rdb.variable_count`
+* `zeek.bsap_serial_rdb.variables`
 
 
 #### BSAP Serial - Function
@@ -1072,18 +1082,18 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bsap_serial_header.dfun`
-    * `zeek.bsap_serial_header.nsb`
-    * `zeek.bsap_serial_header.sfun`
-    * `zeek.bsap_serial_header.type_name`
-    * `zeek.bsap_serial_rdb.func_code`
-    * `zeek.bsap_serial_rdb.variable_count`
-    * `zeek.bsap_serial_rdb.variables`
+* `destination.ip`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.bsap_serial_header.dfun`
+* `zeek.bsap_serial_header.nsb`
+* `zeek.bsap_serial_header.sfun`
+* `zeek.bsap_serial_header.type_name`
+* `zeek.bsap_serial_rdb.func_code`
+* `zeek.bsap_serial_rdb.variable_count`
+* `zeek.bsap_serial_rdb.variables`
 
 
 #### BSAP IP - Logs
@@ -1092,16 +1102,16 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bsap_ip_rdb.app_func_code`
-    * `zeek.bsap_ip_rdb.func_code`
-    * `zeek.bsap_ip_rdb.node_status`
-    * `zeek.bsap_ip_rdb.variable_count`
-    * `zeek.bsap_ip_rdb.variables`
+* `destination.ip`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.bsap_ip_rdb.app_func_code`
+* `zeek.bsap_ip_rdb.func_code`
+* `zeek.bsap_ip_rdb.node_status`
+* `zeek.bsap_ip_rdb.variable_count`
+* `zeek.bsap_ip_rdb.variables`
 
 
 #### BSAP Serial - Logs
@@ -1110,18 +1120,18 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.bsap_serial_header.dfun`
-    * `zeek.bsap_serial_header.nsb`
-    * `zeek.bsap_serial_header.sfun`
-    * `zeek.bsap_serial_header.type_name`
-    * `zeek.bsap_serial_rdb.func_code`
-    * `zeek.bsap_serial_rdb.variable_count`
-    * `zeek.bsap_serial_rdb.variables`
+* `destination.ip`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.bsap_serial_header.dfun`
+* `zeek.bsap_serial_header.nsb`
+* `zeek.bsap_serial_header.sfun`
+* `zeek.bsap_serial_header.type_name`
+* `zeek.bsap_serial_rdb.func_code`
+* `zeek.bsap_serial_rdb.variable_count`
+* `zeek.bsap_serial_rdb.variables`
 
 
 #### BSAP - Destination IP
@@ -1130,21 +1140,23 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 ---
 
 ## Connections
+
+* ID: [abdd7550-2c7c-40dc-947e-f6d186a158c4](#/dashboard/abdd7550-2c7c-40dc-947e-f6d186a158c4)
 
 The Connections dashboard covers all network-layer connection records captured by Zeek and Suricata, including TCP, UDP, and ICMP flows. It surfaces data on conversation volumes, data transfer sizes, connection durations, geographic origins and destinations, and top talkers by byte count. Users can identify chatty hosts, large data transfers, long-lived connections, and cross-border traffic that may warrant further investigation.
 
@@ -1156,16 +1168,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Service By Destination Country
@@ -1174,17 +1186,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Source IP Address
@@ -1193,16 +1205,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Destination IP Address
@@ -1211,16 +1223,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Source Country
@@ -1229,17 +1241,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.geo.country_code2`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.geo.country_code2`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Responder Bytes
@@ -1248,17 +1260,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `server.bytes`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `server.bytes`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Missed Bytes
@@ -1267,17 +1279,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.conn.missed_bytes`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.conn.missed_bytes`
 
 
 #### Connections - Connection State
@@ -1286,17 +1298,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.conn.conn_state_description`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.conn.conn_state_description`
 
 
 #### Connections - Top 10 - Total Bytes By Connection
@@ -1305,16 +1317,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Top 10 - Total Bytes By Destination IP
@@ -1323,16 +1335,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Top 10 - Total Bytes By Destination Port
@@ -1341,16 +1353,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Top 10 - Total Bytes By Source IP
@@ -1359,16 +1371,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Log Count
@@ -1377,16 +1389,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Total Bytes Per Source/Destination IP Pair
@@ -1395,16 +1407,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Destination Port
@@ -1413,16 +1425,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Source MAC OUI
@@ -1431,17 +1443,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.oui`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.oui`
+* `source.port`
+* timestamp
 
 
 #### Connections - Destination MAC OUI
@@ -1450,17 +1462,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.oui`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.oui`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Source MAC Address
@@ -1469,18 +1481,18 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.mac`
-    * `source.oui`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.mac`
+* `source.oui`
+* `source.port`
+* timestamp
 
 
 #### Connections - Destination MAC Address
@@ -1489,18 +1501,18 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.mac`
-    * `destination.oui`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.mac`
+* `destination.oui`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Top 10 - Total Bytes By Source MAC OUI
@@ -1509,17 +1521,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.oui`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.oui`
+* `source.port`
+* timestamp
 
 
 #### Connections - Top 10 - Total Bytes By Destination MAC OUI
@@ -1528,17 +1540,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.oui`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.oui`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Protocol
@@ -1547,16 +1559,16 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Long Connections - Log Count
@@ -1565,17 +1577,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.conn.long`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.conn.long`
 
 
 #### Network Layer
@@ -1584,17 +1596,17 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Connections - Logs
@@ -1603,21 +1615,23 @@ The Connections dashboard covers all network-layer connection records captured b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.community_id`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.community_id`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Destination - Originator Bytes (region map)
+
+* ID: [55e332d0-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/55e332d0-3f99-11e9-a58e-8bdedb0915e8)
 
 This geographic dashboard maps total bytes sent by originators to each destination region, using a world map view based on GeoIP data. It allows analysts to quickly visualize the geographic distribution of outbound data flows and identify unusual volumes of traffic directed to specific countries or regions. This view is useful for detecting data exfiltration to unexpected geographic locations.
 
@@ -1629,22 +1643,24 @@ This geographic dashboard maps total bytes sent by originators to each destinati
 
 **Fields / Aggregations:**
 
-    * `client.bytes`
-    * `destination.geo.country_iso_code`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `client.bytes`
+* `destination.geo.country_iso_code`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Destination - Responder Bytes
+
+* ID: [d4fd6afd-15cb-42bf-8a25-03dd8e59b327](#/dashboard/d4fd6afd-15cb-42bf-8a25-03dd8e59b327)
 
 This dashboard shows inbound byte volumes received by destinations, providing a ranked view of which hosts or subnets are receiving the most data from network responders. It helps identify hosts receiving unusually large data volumes, which may indicate data staging, bulk downloads, or C2 communication. Analysts can use this to prioritize investigation of high-volume data recipients.
 
@@ -1656,22 +1672,24 @@ This dashboard shows inbound byte volumes received by destinations, providing a 
 
 **Fields / Aggregations:**
 
-    * `destination.geo.location`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `server.bytes`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.location`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `server.bytes`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Destination - Responder Bytes (region map)
+
+* ID: [77fc9960-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/77fc9960-3f99-11e9-a58e-8bdedb0915e8)
 
 This geographic map dashboard visualizes responder byte volumes by destination region, providing a geographic breakdown of inbound data flows. It highlights which countries or regions are the source of the most data being delivered to monitored destinations. Useful for identifying geographic sources of large inbound data transfers that may be associated with threat actor infrastructure.
 
@@ -1683,22 +1701,24 @@ This geographic map dashboard visualizes responder byte volumes by destination r
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_iso_code`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `server.bytes`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.country_iso_code`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `server.bytes`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Destination - Sum of Total Bytes
+
+* ID: [60d78fbd-471c-4f59-a9e3-189b33a13644](#/dashboard/60d78fbd-471c-4f59-a9e3-189b33a13644)
 
 This dashboard ranks destination hosts by total bytes in both directions, providing a clear view of the highest-traffic destinations. It is useful for identifying internal hosts involved in large data transfers and detecting data exfiltration or bulk communication to unexpected destinations. Analysts can correlate high-traffic destinations with known services to flag anomalous activity.
 
@@ -1710,21 +1730,23 @@ This dashboard ranks destination hosts by total bytes in both directions, provid
 
 **Fields / Aggregations:**
 
-    * `destination.geo.location`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.location`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Destination - Sum of Total Bytes (region map)
+
+* ID: [a16110b0-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/a16110b0-3f99-11e9-a58e-8bdedb0915e8)
 
 This geographic map dashboard shows total byte volumes by destination region, combining both inbound and outbound bytes into a single view. It provides a quick geographic summary of where the most network traffic is directed. Analysts use it to identify geographic concentrations of network activity and flag traffic to high-risk regions.
 
@@ -1736,21 +1758,23 @@ This geographic map dashboard shows total byte volumes by destination region, co
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_iso_code`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.country_iso_code`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Destination - Top Connection Duration
+
+* ID: [0aed0e23-c8ac-4f2b-9f68-d04b6e7666b0](#/dashboard/0aed0e23-c8ac-4f2b-9f68-d04b6e7666b0)
 
 This dashboard surfaces the longest-lived connections to each destination, helping identify persistent beaconing, slow data exfiltration, and long-running C2 sessions. Long connection durations to unusual destinations are a common indicator of command-and-control communication. Analysts can use this view to triage connections that have been active for unusually extended periods.
 
@@ -1762,22 +1786,24 @@ This dashboard surfaces the longest-lived connections to each destination, helpi
 
 **Fields / Aggregations:**
 
-    * `destination.geo.location`
-    * `destination.ip`
-    * `destination.port`
-    * `event.duration`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.location`
+* `destination.ip`
+* `destination.port`
+* `event.duration`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Destination - Top Connection Duration (region map)
+
+* ID: [b9f247c0-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/b9f247c0-3f99-11e9-a58e-8bdedb0915e8)
 
 This geographic map dashboard maps the longest connection durations by destination region, providing a geographic view of persistent connections. It helps identify sustained communication with hosts in specific countries or regions, which can indicate beaconing or long-lived C2 channels. Analysts can quickly see which geographic areas are associated with the most persistent connections.
 
@@ -1789,22 +1815,24 @@ This geographic map dashboard maps the longest connection durations by destinati
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_iso_code`
-    * `destination.ip`
-    * `destination.port`
-    * `event.duration`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.country_iso_code`
+* `destination.ip`
+* `destination.port`
+* `event.duration`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Source - Originator Bytes
+
+* ID: [b50c8d17-6ed3-4de6-aed4-5181032810b2](#/dashboard/b50c8d17-6ed3-4de6-aed4-5181032810b2)
 
 This dashboard ranks source hosts by the total bytes they have sent as connection originators, highlighting the most active data senders on the network. Unusually high originator byte counts from a single source may indicate bulk data exfiltration or a compromised host involved in large-scale data transfer. Analysts can use this view to identify outlier sources and investigate their communication patterns.
 
@@ -1816,22 +1844,24 @@ This dashboard ranks source hosts by the total bytes they have sent as connectio
 
 **Fields / Aggregations:**
 
-    * `client.bytes`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.geo.location`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `client.bytes`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.geo.location`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Source - Originator Bytes (region map)
+
+* ID: [d41fe630-3f98-11e9-a58e-8bdedb0915e8](#/dashboard/d41fe630-3f98-11e9-a58e-8bdedb0915e8)
 
 This geographic map dashboard visualizes originator byte volumes by source region, showing which geographic areas are generating the most outbound traffic. It is useful for identifying regions associated with high-volume data originators and detecting unexpected geographic sources of large data transfers. Security teams can cross-reference with threat intelligence to flag originator activity from high-risk regions.
 
@@ -1843,22 +1873,24 @@ This geographic map dashboard visualizes originator byte volumes by source regio
 
 **Fields / Aggregations:**
 
-    * `client.bytes`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.geo.country_iso_code`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `client.bytes`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.geo.country_iso_code`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Source - Responder Bytes (region map)
+
+* ID: [ed8a6640-3f98-11e9-a58e-8bdedb0915e8](#/dashboard/ed8a6640-3f98-11e9-a58e-8bdedb0915e8)
 
 This geographic map visualizes responder byte volumes by source region, showing which countries or areas are associated with the highest inbound data receipt. It provides a geographic view of which regions' hosts are receiving the most response data. Useful for identifying geographic clusters of high data-receipt activity that may warrant deeper investigation.
 
@@ -1870,22 +1902,24 @@ This geographic map visualizes responder byte volumes by source region, showing 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `server.bytes`
-    * `source.geo.country_iso_code`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `server.bytes`
+* `source.geo.country_iso_code`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Source - Sum of Total Bytes
+
+* ID: [f394057d-1b16-4174-b994-7045f423a416](#/dashboard/f394057d-1b16-4174-b994-7045f423a416)
 
 This dashboard ranks source hosts by their total network byte volume across all connections, giving a combined view of both sent and received data. Top sources by total bytes represent the most network-active hosts and may warrant investigation if they are not known high-volume systems. Analysts use this as a quick indicator of which hosts have the highest overall network presence.
 
@@ -1897,21 +1931,23 @@ This dashboard ranks source hosts by their total network byte volume across all 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.geo.location`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.geo.location`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Source - Sum of Total Bytes (region map)
+
+* ID: [1ce42250-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/1ce42250-3f99-11e9-a58e-8bdedb0915e8)
 
 This geographic map dashboard shows total byte volumes by source region, combining sent and received bytes for a comprehensive geographic activity view. It provides an at-a-glance summary of which regions are the most network-active. Useful for detecting geographic concentrations of high-volume traffic that may indicate targeted activity.
 
@@ -1923,21 +1959,23 @@ This geographic map dashboard shows total byte volumes by source region, combini
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.geo.country_iso_code`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.geo.country_iso_code`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Source - Top Connection Duration
+
+* ID: [e09a4b86-29b5-4256-bb3b-802ac9f90404](#/dashboard/e09a4b86-29b5-4256-bb3b-802ac9f90404)
 
 This dashboard surfaces the longest-lived connections originating from each source host, helping identify persistent communication channels and potential beaconing. Long-lived connections from a single source to an external host are a common indicator of command-and-control or data exfiltration over persistent sessions. Analysts can use this to prioritize investigation of sources maintaining unusually long connections.
 
@@ -1949,22 +1987,24 @@ This dashboard surfaces the longest-lived connections originating from each sour
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.duration`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.geo.location`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.duration`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.geo.location`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## Connections - Source - Top Connection Duration (region map)
+
+* ID: [39abfe30-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/39abfe30-3f99-11e9-a58e-8bdedb0915e8)
 
 This geographic map dashboard maps the longest connection durations by source region, showing which geographic areas are associated with the most persistent originating connections. It complements the source duration table view with a geographic context, helping analysts identify regions involved in long-lived communication. Useful for detecting persistent cross-border connections that may indicate ongoing C2 or data exfiltration activity.
 
@@ -1976,22 +2016,24 @@ This geographic map dashboard maps the longest connection durations by source re
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.duration`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.geo.country_iso_code`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.duration`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.geo.country_iso_code`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## DCE/RPC
+
+* ID: [432af556-c5c0-4cc3-8166-b274b4e3a406](#/dashboard/432af556-c5c0-4cc3-8166-b274b4e3a406)
 
 The DCE/RPC dashboard provides visibility into Distributed Computing Environment / Remote Procedure Call traffic as logged by Zeek, which underlies many Windows protocols including DCOM and WMI. It surfaces endpoint UUIDs, operations, named pipes, and the hosts involved in RPC exchanges. Security teams can use this dashboard to detect lateral movement via WMI or DCOM, identify unusual RPC service calls, and spot DCE/RPC-based reconnaissance.
 
@@ -2003,14 +2045,14 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Source IP Address
@@ -2019,14 +2061,14 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Destination IP Address
@@ -2035,14 +2077,14 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Endpoint
@@ -2051,14 +2093,14 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Named Pipe
@@ -2067,15 +2109,15 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.named_pipe`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.named_pipe`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Operation
@@ -2084,14 +2126,14 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Round Trip Time
@@ -2100,15 +2142,15 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
-    * `zeek.dce_rpc.rtt`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
+* `zeek.dce_rpc.rtt`
 
 
 #### DCE/RPC - Log Count
@@ -2117,14 +2159,14 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Destination Port
@@ -2133,14 +2175,14 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Summary
@@ -2149,15 +2191,15 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.named_pipe`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.named_pipe`
+* `zeek.dce_rpc.operation`
 
 
 #### DCE/RPC - Logs
@@ -2166,19 +2208,21 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.dce_rpc.endpoint`
-    * `zeek.dce_rpc.operation`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.dce_rpc.endpoint`
+* `zeek.dce_rpc.operation`
 
 
 ---
 
 ## DHCP
+
+* ID: [2d98bb8e-214c-4374-837b-20e1bcd63a5e](#/dashboard/2d98bb8e-214c-4374-837b-20e1bcd63a5e)
 
 The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured by Zeek, including IP address assignments, hostname registrations, and lease activity. It provides a real-time picture of which devices are joining the network and what addresses they are receiving. Analysts can use it for asset discovery, detecting rogue DHCP servers, and correlating IP addresses with hostnames at specific points in time.
 
@@ -2190,19 +2234,19 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 #### DHCP - Destination IP Address
@@ -2211,19 +2255,19 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 #### DHCP - Source IP Address
@@ -2232,19 +2276,19 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 #### DHCP - Destination Port
@@ -2253,20 +2297,20 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `destination.port`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 #### DHCP - Log Count
@@ -2275,19 +2319,19 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 #### DHCP - IP to MAC Assignment
@@ -2296,19 +2340,19 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 #### DHCP - Client Software
@@ -2317,19 +2361,19 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 #### DHCP - Server Software
@@ -2338,19 +2382,19 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 #### DHCP - JA4D Fingerprint
@@ -2359,20 +2403,20 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
-    * `zeek.dhcp.vendor_class_id`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
+* `zeek.dhcp.vendor_class_id`
 
 
 #### DHCP - Logs
@@ -2381,24 +2425,26 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dhcp.ja4d`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `source.mac`
-    * `timestamp`
-    * `zeek.dhcp.assigned_ip`
-    * `zeek.dhcp.client_software`
-    * `zeek.dhcp.domain`
-    * `zeek.dhcp.host_name`
-    * `zeek.dhcp.msg_types`
-    * `zeek.dhcp.server_software`
+* `destination.ip`
+* `dhcp.ja4d`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* `source.mac`
+* timestamp
+* `zeek.dhcp.assigned_ip`
+* `zeek.dhcp.client_software`
+* `zeek.dhcp.domain`
+* `zeek.dhcp.host_name`
+* `zeek.dhcp.msg_types`
+* `zeek.dhcp.server_software`
 
 
 ---
 
 ## DNP3
+
+* ID: [870a5862-6c26-4a08-99fd-0c06cda85ba3](#/dashboard/870a5862-6c26-4a08-99fd-0c06cda85ba3)
 
 *Dashboard for the DNP3 Protocol*
 
@@ -2414,14 +2460,14 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3.fc_reply`
-    * `zeek.dnp3.iin_flags`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dnp3.fc_reply`
+* `zeek.dnp3.iin_flags`
 
 
 #### DNP3 - Destination IP
@@ -2432,14 +2478,14 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3.fc_reply`
-    * `zeek.dnp3.iin_flags`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dnp3.fc_reply`
+* `zeek.dnp3.iin_flags`
 
 
 #### DNP3 - Function Request
@@ -2450,14 +2496,14 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3.fc_reply`
-    * `zeek.dnp3.iin_flags`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dnp3.fc_reply`
+* `zeek.dnp3.iin_flags`
 
 
 #### DNP3 - Function Reply
@@ -2468,14 +2514,14 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3.fc_reply`
-    * `zeek.dnp3.iin_flags`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dnp3.fc_reply`
+* `zeek.dnp3.iin_flags`
 
 
 #### DNP3 - Log Count
@@ -2486,7 +2532,7 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
+* `event.dataset`
 
 
 #### DNP3 - Logs Over Time
@@ -2497,8 +2543,8 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `timestamp`
+* `event.dataset`
+* timestamp
 
 
 #### DNP3 - Internal Indicators Overview
@@ -2509,14 +2555,14 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3.fc_reply`
-    * `zeek.dnp3.iin_flags`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dnp3.fc_reply`
+* `zeek.dnp3.iin_flags`
 
 
 #### DNP3 - Objects Overview
@@ -2527,14 +2573,14 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3_objects.object_count`
-    * `zeek.dnp3_objects.object_type`
-    * `zeek.dnp3_objects.range_high`
-    * `zeek.dnp3_objects.range_low`
+* `destination.ip`
+* `event.action`
+* `source.ip`
+* timestamp
+* `zeek.dnp3_objects.object_count`
+* `zeek.dnp3_objects.object_type`
+* `zeek.dnp3_objects.range_high`
+* `zeek.dnp3_objects.range_low`
 
 
 #### DNP3 - Control Overview
@@ -2545,17 +2591,17 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3_control.block_type`
-    * `zeek.dnp3_control.clear_bit`
-    * `zeek.dnp3_control.function_code`
-    * `zeek.dnp3_control.index_number`
-    * `zeek.dnp3_control.operation_type`
-    * `zeek.dnp3_control.status_code`
-    * `zeek.dnp3_control.trip_control_code`
+* `destination.ip`
+* `event.action`
+* `source.ip`
+* timestamp
+* `zeek.dnp3_control.block_type`
+* `zeek.dnp3_control.clear_bit`
+* `zeek.dnp3_control.function_code`
+* `zeek.dnp3_control.index_number`
+* `zeek.dnp3_control.operation_type`
+* `zeek.dnp3_control.status_code`
+* `zeek.dnp3_control.trip_control_code`
 
 
 #### DNP3 - Trends
@@ -2564,10 +2610,10 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-    * `event.action`
-    * `scheme`
-    * `zeek.dnp3_control.function_code`
+* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
+* `event.action`
+* `scheme`
+* `zeek.dnp3_control.function_code`
 
 
 #### DNP3 - Logs
@@ -2576,14 +2622,14 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3.fc_reply`
-    * `zeek.dnp3.iin_flags`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dnp3.fc_reply`
+* `zeek.dnp3.iin_flags`
 
 
 #### DNP3 - Control Logs
@@ -2592,14 +2638,14 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3_control.clear_bit`
-    * `zeek.dnp3_control.function_code`
-    * `zeek.dnp3_control.operation_type`
-    * `zeek.dnp3_control.status_code`
-    * `zeek.dnp3_control.trip_control_code`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.dnp3_control.clear_bit`
+* `zeek.dnp3_control.function_code`
+* `zeek.dnp3_control.operation_type`
+* `zeek.dnp3_control.status_code`
+* `zeek.dnp3_control.trip_control_code`
 
 
 #### DNP3 - Objects Logs
@@ -2608,19 +2654,21 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dnp3_objects.object_count`
-    * `zeek.dnp3_objects.object_type`
-    * `zeek.dnp3_objects.range_high`
-    * `zeek.dnp3_objects.range_low`
+* `destination.ip`
+* `event.action`
+* `source.ip`
+* timestamp
+* `zeek.dnp3_objects.object_count`
+* `zeek.dnp3_objects.object_type`
+* `zeek.dnp3_objects.range_high`
+* `zeek.dnp3_objects.range_low`
 
 
 ---
 
 ## DNS
+
+* ID: [2cf94cd0-ecab-40a5-95a7-8419f3a39cd9](#/dashboard/2cf94cd0-ecab-40a5-95a7-8419f3a39cd9)
 
 The DNS dashboard provides a comprehensive view of DNS activity observed on the network as captured by Zeek. It covers query volumes over time, top queried domains, response codes, query types, and the hosts generating DNS traffic. Analysts use it to detect DNS-based threats such as data exfiltration via DNS tunneling, domain generation algorithm (DGA) activity, and unusually high query rates.
 
@@ -2632,12 +2680,12 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS - Client
@@ -2646,12 +2694,12 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS - Query Class
@@ -2660,13 +2708,13 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.qclass_name`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.qclass_name`
+* `zeek.dns.query`
 
 
 #### DNS - Query/Answer
@@ -2675,12 +2723,12 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS - Log Count Over Time
@@ -2689,12 +2737,12 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS - Destination Port
@@ -2703,13 +2751,13 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS - Log Count
@@ -2718,12 +2766,12 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS - Answers
@@ -2732,12 +2780,12 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS - Response Code (Name)
@@ -2746,13 +2794,13 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
-    * `zeek.dns.rcode_name`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
+* `zeek.dns.rcode_name`
 
 
 #### DNS - Query Type
@@ -2761,13 +2809,13 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.qtype_name`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.qtype_name`
+* `zeek.dns.query`
 
 
 #### DNS - Protocol
@@ -2776,13 +2824,13 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS Queries by Randomness
@@ -2791,15 +2839,15 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dns.host`
-    * `event.freq_score_v1`
-    * `event.freq_score_v2`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `dns.host`
+* `event.freq_score_v1`
+* `event.freq_score_v2`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### DNS - Logs
@@ -2808,17 +2856,19 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 ---
 
 ## EtherCAT
+
+* ID: [4a073440-b286-11eb-a4d4-09fa12a6ebd4](#/dashboard/4a073440-b286-11eb-a4d4-09fa12a6ebd4)
 
 The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet traffic, used in high-speed motion control and automation systems. It captures command types, slave addresses, working counters, and communication patterns between master and slave devices. This dashboard is useful for detecting anomalous EtherCAT traffic that could indicate device tampering or unauthorized access to automation equipment.
 
@@ -2830,12 +2880,12 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 **Fields / Aggregations:**
 
-    * `destination.mac`
-    * `destination.oui`
-    * `event.action`
-    * `event.dataset`
-    * `source.mac`
-    * `source.oui`
+* `destination.mac`
+* `destination.oui`
+* `event.action`
+* `event.dataset`
+* `source.mac`
+* `source.oui`
 
 
 #### EtherCAT - Log Count Over Time
@@ -2844,13 +2894,13 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 **Fields / Aggregations:**
 
-    * `destination.mac`
-    * `destination.oui`
-    * `event.action`
-    * `event.dataset`
-    * `source.mac`
-    * `source.oui`
-    * `timestamp`
+* `destination.mac`
+* `destination.oui`
+* `event.action`
+* `event.dataset`
+* `source.mac`
+* `source.oui`
+* timestamp
 
 
 #### EtherCAT - Source
@@ -2859,12 +2909,12 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 **Fields / Aggregations:**
 
-    * `destination.mac`
-    * `destination.oui`
-    * `event.action`
-    * `event.dataset`
-    * `source.mac`
-    * `source.oui`
+* `destination.mac`
+* `destination.oui`
+* `event.action`
+* `event.dataset`
+* `source.mac`
+* `source.oui`
 
 
 #### EtherCAT - Destination
@@ -2873,12 +2923,12 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 **Fields / Aggregations:**
 
-    * `destination.mac`
-    * `destination.oui`
-    * `event.action`
-    * `event.dataset`
-    * `source.mac`
-    * `source.oui`
+* `destination.mac`
+* `destination.oui`
+* `event.action`
+* `event.dataset`
+* `source.mac`
+* `source.oui`
 
 
 #### EtherCAT - Commands
@@ -2887,12 +2937,12 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 **Fields / Aggregations:**
 
-    * `destination.mac`
-    * `destination.oui`
-    * `event.action`
-    * `event.dataset`
-    * `source.mac`
-    * `source.oui`
+* `destination.mac`
+* `destination.oui`
+* `event.action`
+* `event.dataset`
+* `source.mac`
+* `source.oui`
 
 
 #### EtherCAT - Register Types and Commands
@@ -2901,13 +2951,13 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 **Fields / Aggregations:**
 
-    * `destination.mac`
-    * `destination.oui`
-    * `event.action`
-    * `event.dataset`
-    * `source.mac`
-    * `source.oui`
-    * `zeek.ecat_registers.register_type`
+* `destination.mac`
+* `destination.oui`
+* `event.action`
+* `event.dataset`
+* `source.mac`
+* `source.oui`
+* `zeek.ecat_registers.register_type`
 
 
 #### EtherCAT Registers - Logs
@@ -2916,14 +2966,14 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 **Fields / Aggregations:**
 
-    * `destination.mac`
-    * `destination.oui`
-    * `event.action`
-    * `source.mac`
-    * `source.oui`
-    * `zeek.ecat_registers.register_addr`
-    * `zeek.ecat_registers.register_type`
-    * `zeek.ecat_registers.server_addr`
+* `destination.mac`
+* `destination.oui`
+* `event.action`
+* `source.mac`
+* `source.oui`
+* `zeek.ecat_registers.register_addr`
+* `zeek.ecat_registers.register_type`
+* `zeek.ecat_registers.server_addr`
 
 
 #### Logs - EtherCAT
@@ -2932,17 +2982,19 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 **Fields / Aggregations:**
 
-    * `destination.mac`
-    * `destination.oui`
-    * `event.action`
-    * `event.dataset`
-    * `source.mac`
-    * `source.oui`
+* `destination.mac`
+* `destination.oui`
+* `event.action`
+* `event.dataset`
+* `source.mac`
+* `source.oui`
 
 
 ---
 
 ## EtherNet/IP
+
+* ID: [29a1b290-eb98-11e9-a384-0fcf32210194](#/dashboard/29a1b290-eb98-11e9-a384-0fcf32210194)
 
 *Dashboard for Ethernet/IP and CIP Protocols*
 
@@ -2956,7 +3008,7 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
+* `event.dataset`
 
 
 #### EtherNet/IP - Logs Over Time
@@ -2965,8 +3017,8 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `timestamp`
+* `event.dataset`
+* timestamp
 
 
 #### Ethernet/IP - Commands
@@ -2975,16 +3027,16 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.cip.packet_correlation_id`
-    * `zeek.enip.options`
-    * `zeek.enip.sender_context`
-    * `zeek.enip.session_handle`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.cip.packet_correlation_id`
+* `zeek.enip.options`
+* `zeek.enip.sender_context`
+* `zeek.enip.session_handle`
 
 
 #### EtherNet/IP - Source IP
@@ -2993,7 +3045,7 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `source.ip`
+* `source.ip`
 
 
 #### ATT&CK for ICS Tactic - EtherNet/IP and CIP
@@ -3002,15 +3054,15 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
-    * `zeek.cip.packet_correlation_id`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.cip.packet_correlation_id`
+* `zeek.notice.msg`
 
 
 #### ATT&CK for ICS Notices - EtherNet/IP and CIP
@@ -3019,15 +3071,15 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
-    * `zeek.cip.packet_correlation_id`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.cip.packet_correlation_id`
+* `zeek.notice.msg`
 
 
 #### EtherNet/IP - Destination IP
@@ -3036,7 +3088,7 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
+* `destination.ip`
 
 
 #### CIP - Device Identity
@@ -3047,15 +3099,15 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.cip.packet_correlation_id`
-    * `zeek.cip_identity.device_type_name`
-    * `zeek.cip_identity.product_name`
-    * `zeek.cip_identity.revision`
-    * `zeek.cip_identity.serial_number`
-    * `zeek.cip_identity.vendor_name`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.cip.packet_correlation_id`
+* `zeek.cip_identity.device_type_name`
+* `zeek.cip_identity.product_name`
+* `zeek.cip_identity.revision`
+* `zeek.cip_identity.serial_number`
+* `zeek.cip_identity.vendor_name`
 
 
 #### CIP - Services
@@ -3066,17 +3118,17 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.cip.cip_sequence_count`
-    * `zeek.cip.class_id`
-    * `zeek.cip.class_name`
-    * `zeek.cip.direction`
-    * `zeek.cip.instance_id`
-    * `zeek.cip.packet_correlation_id`
+* `destination.ip`
+* `event.action`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.cip.cip_sequence_count`
+* `zeek.cip.class_id`
+* `zeek.cip.class_name`
+* `zeek.cip.direction`
+* `zeek.cip.instance_id`
+* `zeek.cip.packet_correlation_id`
 
 
 #### EtherNet/IP -  Detailed Information
@@ -3087,17 +3139,17 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.cip.packet_correlation_id`
-    * `zeek.enip.length`
-    * `zeek.enip.options`
-    * `zeek.enip.sender_context`
-    * `zeek.enip.session_handle`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.cip.packet_correlation_id`
+* `zeek.enip.length`
+* `zeek.enip.options`
+* `zeek.enip.sender_context`
+* `zeek.enip.session_handle`
 
 
 #### CIP - Logs
@@ -3106,17 +3158,17 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.cip.cip_sequence_count`
-    * `zeek.cip.class_id`
-    * `zeek.cip.class_name`
-    * `zeek.cip.direction`
-    * `zeek.cip.instance_id`
-    * `zeek.cip.packet_correlation_id`
+* `destination.ip`
+* `event.action`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.cip.cip_sequence_count`
+* `zeek.cip.class_id`
+* `zeek.cip.class_name`
+* `zeek.cip.direction`
+* `zeek.cip.instance_id`
+* `zeek.cip.packet_correlation_id`
 
 
 #### CIP - Identity Logs
@@ -3125,15 +3177,15 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.cip.packet_correlation_id`
-    * `zeek.cip_identity.device_type_name`
-    * `zeek.cip_identity.product_name`
-    * `zeek.cip_identity.revision`
-    * `zeek.cip_identity.serial_number`
-    * `zeek.cip_identity.vendor_name`
+* `destination.ip`
+* `source.ip`
+* timestamp
+* `zeek.cip.packet_correlation_id`
+* `zeek.cip_identity.device_type_name`
+* `zeek.cip_identity.product_name`
+* `zeek.cip_identity.revision`
+* `zeek.cip_identity.serial_number`
+* `zeek.cip_identity.vendor_name`
 
 
 #### Ethernet/IP - Logs
@@ -3142,16 +3194,16 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.cip.packet_correlation_id`
-    * `zeek.enip.options`
-    * `zeek.enip.sender_context`
-    * `zeek.enip.session_handle`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.cip.packet_correlation_id`
+* `zeek.enip.options`
+* `zeek.enip.sender_context`
+* `zeek.enip.session_handle`
 
 
 #### CIP - IO Logs
@@ -3160,19 +3212,21 @@ The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.cip.packet_correlation_id`
-    * `zeek.cip_io.connection_id`
-    * `zeek.cip_io.data_length`
-    * `zeek.cip_io.sequence_number`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.cip.packet_correlation_id`
+* `zeek.cip_io.connection_id`
+* `zeek.cip_io.data_length`
+* `zeek.cip_io.sequence_number`
 
 
 ---
 
 ## File Scanning
+
+* ID: [248cae60-eff9-11f0-b83f-8f35d6995138](#/dashboard/248cae60-eff9-11f0-b83f-8f35d6995138)
 
 The File Scanning dashboard consolidates results from file analysis tools integrated with Zeek, including YARA rule matches and file hash lookups. It tracks files observed in network traffic, their MIME types, associated hashes, and any signatures they triggered. This dashboard is useful for hunting malware, tracking file transfers across the network, and validating whether transferred files are known-bad or suspicious.
 
@@ -3184,20 +3238,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - Hits Over Time
@@ -3206,20 +3260,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - File Source
@@ -3228,20 +3282,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - Scanners With Hits
@@ -3250,20 +3304,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - Triggered Rules
@@ -3272,20 +3326,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - Severity
@@ -3294,22 +3348,22 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.risk_score`
-    * `event.severity_tags`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `event.risk_score`
+* `event.severity_tags`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - MIME Type
@@ -3318,20 +3372,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - Tactic and Technique
@@ -3340,22 +3394,22 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - All Scanners
@@ -3364,21 +3418,21 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.module`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `event.module`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### Files Scanned by Nesting Depth
@@ -3387,20 +3441,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - Source IP
@@ -3409,20 +3463,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - Destination IP
@@ -3431,20 +3485,20 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Scanning - Logs
@@ -3453,25 +3507,27 @@ The File Scanning dashboard consolidates results from file analysis tools integr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 ---
 
 ## File Tree
+
+* ID: [4ff567d0-48a6-11f1-9604-d962b9b51f3a](#/dashboard/4ff567d0-48a6-11f1-9604-d962b9b51f3a)
 
 The File Tree dashboard presents a hierarchical breakdown of files observed in network traffic, organized by directory path or protocol context. It is useful for understanding the structure of file transfers—particularly over protocols like SMB or FTP—and identifying patterns in what data is being accessed or exfiltrated. Analysts can drill into specific directories or file categories to investigate suspicious file activity.
 
@@ -3483,20 +3539,20 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Tree - Logs
@@ -3505,17 +3561,17 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.name`
-    * `file.source`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.name`
+* `file.source`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### File Tree
@@ -3524,16 +3580,16 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 
 **Fields / Aggregations:**
 
-    * `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-    * `field`
-    * `file.name`
-    * `filescan.tree.node`
-    * `filescan.tree.parent`
-    * `filescan.tree.root`
-    * `scheme`
-    * `signal`
-    * `zeek.files.filename`
-    * `zeek.ts`
+* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
+* `field`
+* `file.name`
+* `filescan.tree.node`
+* `filescan.tree.parent`
+* `filescan.tree.root`
+* `scheme`
+* `signal`
+* `zeek.files.filename`
+* `zeek.ts`
 
 
 #### Files Scanned by Nesting Depth
@@ -3542,25 +3598,27 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.entropy`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `filescan.hits`
-    * `filescan.tree.depth`
-    * `rule.name`
-    * `rule.ruleset`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `destination.ip`
+* `event.id`
+* `file.entropy`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* `filescan.hits`
+* `filescan.tree.depth`
+* `rule.name`
+* `rule.ruleset`
+* `source.ip`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 ---
 
 ## Files
+
+* ID: [9ee51f94-3316-4fc5-bd89-93a52af69714](#/dashboard/9ee51f94-3316-4fc5-bd89-93a52af69714)
 
 The Files dashboard provides an overview of all files observed traversing the network as captured by Zeek's file analysis framework. It covers file types by MIME category, transfer volumes, source and destination hosts, and file hashes. Analysts can identify unusual file types, large file movements, and track specific files of interest across the captured traffic.
 
@@ -3572,13 +3630,13 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.path`
-    * `file.source`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.path`
+* `file.source`
+* `source.ip`
+* timestamp
 
 
 #### Files - Files By Size (Bytes)
@@ -3587,14 +3645,14 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.path`
-    * `file.source`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.files.seen_bytes`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.path`
+* `file.source`
+* `source.ip`
+* timestamp
+* `zeek.files.seen_bytes`
 
 
 #### FIles - Destination IP Address
@@ -3603,13 +3661,13 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.path`
-    * `file.source`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.path`
+* `file.source`
+* `source.ip`
+* timestamp
 
 
 #### FIles - Source IP Address
@@ -3618,13 +3676,13 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.path`
-    * `file.source`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.path`
+* `file.source`
+* `source.ip`
+* timestamp
 
 
 #### Files - Log Count
@@ -3633,13 +3691,13 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.path`
-    * `file.source`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.path`
+* `file.source`
+* `source.ip`
+* timestamp
 
 
 #### Files - Source
@@ -3648,13 +3706,13 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.path`
-    * `file.source`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.path`
+* `file.source`
+* `source.ip`
+* timestamp
 
 
 #### Files - MIME Type
@@ -3663,7 +3721,7 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `file.mime_type`
+* `file.mime_type`
 
 
 #### Files - Paths
@@ -3672,9 +3730,9 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `file.path`
-    * `network.protocol`
+* `event.dataset`
+* `file.path`
+* `network.protocol`
 
 
 #### Extracted File Downloads
@@ -3683,13 +3741,13 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `file.mime_type`
-    * `file.name`
-    * `file.size`
-    * `file.source`
-    * `timestamp`
-    * `zeek.files.extracted_uri`
+* `event.id`
+* `file.mime_type`
+* `file.name`
+* `file.size`
+* `file.source`
+* timestamp
+* `zeek.files.extracted_uri`
 
 
 #### Files - Logs
@@ -3698,18 +3756,20 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.path`
-    * `file.source`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.path`
+* `file.source`
+* `source.ip`
+* timestamp
 
 
 ---
 
 ## FTP
+
+* ID: [078b9aa5-9bd4-4f02-ae5e-cf80fa6f887b](#/dashboard/078b9aa5-9bd4-4f02-ae5e-cf80fa6f887b)
 
 The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, including commands, arguments, reply codes, and transfer participants. It provides insight into file staging, unauthorized file transfers, and FTP authentication patterns. This is a useful dashboard for investigating data exfiltration over FTP and identifying misconfigured FTP servers accessible to unauthorized clients.
 
@@ -3721,12 +3781,12 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ftp.command`
+* `zeek.ftp.reply_msg`
 
 
 #### FTP - Argument
@@ -3735,13 +3795,13 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.arg`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ftp.arg`
+* `zeek.ftp.command`
+* `zeek.ftp.reply_msg`
 
 
 #### FTP - Commands and Replies
@@ -3750,15 +3810,15 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_code`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ftp.command`
+* `zeek.ftp.reply_code`
+* `zeek.ftp.reply_msg`
 
 
 #### FTP - Reply
@@ -3767,13 +3827,13 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ftp.command`
+* `zeek.ftp.reply_msg`
 
 
 #### FTP - Source
@@ -3782,12 +3842,12 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ftp.command`
+* `zeek.ftp.reply_msg`
 
 
 #### FTP - Destination
@@ -3796,13 +3856,13 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ftp.command`
+* `zeek.ftp.reply_msg`
 
 
 #### FTP - Username
@@ -3811,13 +3871,13 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.ftp.command`
+* `zeek.ftp.reply_msg`
 
 
 #### FTP - Log Count
@@ -3826,12 +3886,12 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ftp.command`
+* `zeek.ftp.reply_msg`
 
 
 #### FTP - Logs
@@ -3840,17 +3900,19 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ftp.command`
-    * `zeek.ftp.reply_msg`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ftp.command`
+* `zeek.ftp.reply_msg`
 
 
 ---
 
 ## GE SRTP
+
+* ID: [e233a570-45d9-11ef-96a6-432365601033](#/dashboard/e233a570-45d9-11ef-96a6-432365601033)
 
 *Dashboard for the GE SRTP Protocol*
 
@@ -3864,21 +3926,21 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Logs Over Time
@@ -3887,21 +3949,21 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Source IP
@@ -3910,21 +3972,21 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Destination IP
@@ -3933,21 +3995,21 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Actions and Results
@@ -3956,21 +4018,21 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Panel Run Switch
@@ -3979,22 +4041,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.front_panel_run_switch`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.front_panel_run_switch`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Panel Enable Switch
@@ -4003,22 +4065,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.front_panel_enable_switch`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.front_panel_enable_switch`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - PLC Fault Entry Present
@@ -4027,22 +4089,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_fault_entry_present`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_fault_entry_present`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - I/O Fault Entry Present
@@ -4051,22 +4113,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.io_fault_entry_present`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.io_fault_entry_present`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Programmer Attachment
@@ -4075,22 +4137,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.programmer_attachment`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.programmer_attachment`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - PLC State
@@ -4099,21 +4161,21 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Constant Sweep Mode
@@ -4122,22 +4184,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.constant_sweep_mode`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.constant_sweep_mode`
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Oversweep Flag
@@ -4146,22 +4208,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.oversweep_flag`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.oversweep_flag`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - PLC Fault Table Changed
@@ -4170,22 +4232,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_fault_entry_last_read`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_fault_entry_last_read`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - I/O Fault Table Changed
@@ -4194,22 +4256,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.io_fault_entry_last_read`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.io_fault_entry_last_read`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - OEM Protection
@@ -4218,22 +4280,22 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.oem_protected`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.oem_protected`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 #### GE SRTP - Logs
@@ -4242,26 +4304,28 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ge_srtp.data_length`
-    * `zeek.ge_srtp.memory_offset`
-    * `zeek.ge_srtp.packet_number`
-    * `zeek.ge_srtp.plc_state`
-    * `zeek.ge_srtp.segment_selector`
-    * `zeek.ge_srtp.sequence_number_1`
-    * `zeek.ge_srtp.sequence_number_2`
-    * `zeek.ge_srtp.srtp_type`
-    * `zeek.ge_srtp.total_packet_number`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.memory_offset`
+* `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.segment_selector`
+* `zeek.ge_srtp.sequence_number_1`
+* `zeek.ge_srtp.sequence_number_2`
+* `zeek.ge_srtp.srtp_type`
+* `zeek.ge_srtp.total_packet_number`
 
 
 ---
 
 ## GENISYS
+
+* ID: [03207c00-d07e-11ec-b4a7-d1b4003706b7](#/dashboard/03207c00-d07e-11ec-b4a7-d1b4003706b7)
 
 *Dashboard for the GENISYS Protocol*
 
@@ -4275,15 +4339,15 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 #### GENISYS - Log Count Over Time
@@ -4292,16 +4356,16 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 #### GENISYS - Station Address
@@ -4310,15 +4374,15 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 #### GENISYS - Source
@@ -4327,15 +4391,15 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 #### GENISYS - Action
@@ -4344,15 +4408,15 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 #### GENISYS - Message Direction
@@ -4361,16 +4425,16 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.genisys.direction`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.genisys.direction`
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 #### GENISYS - Destination
@@ -4379,15 +4443,15 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 #### GENISYS - Result
@@ -4396,15 +4460,15 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 #### GENISYS - Logs
@@ -4413,20 +4477,22 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.genisys.payload`
-    * `zeek.genisys.server`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.genisys.payload`
+* `zeek.genisys.server`
 
 
 ---
 
 ## HART-IP
+
+* ID: [3a9e3440-75e2-11ef-8138-03748f839a49](#/dashboard/3a9e3440-75e2-11ef-8138-03748f839a49)
 
 The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over IP traffic, used to communicate with smart field instruments in process control environments. It logs command codes, device addresses, response codes, and communication participants. Security teams monitoring process control networks can use this to detect unauthorized read or write commands to smart sensors and field devices.
 
@@ -4438,14 +4504,14 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
 
 
 #### HART-IP - Logs Over Time
@@ -4454,14 +4520,14 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
 
 
 #### HART-IP - Source IP
@@ -4470,14 +4536,14 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
 
 
 #### HART-IP - Destination IP
@@ -4486,14 +4552,14 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
 
 
 #### HART-IP - Actions and Results
@@ -4502,14 +4568,14 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
 
 
 #### HART-IP - Universal Commands Device Profile and Type
@@ -4518,12 +4584,12 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip_universal_commands.read_unique_identifier_response_device_profile`
-    * `zeek.hart_ip_universal_commands.read_unique_identifier_response_expanded_device_type`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip_universal_commands.read_unique_identifier_response_device_profile`
+* `zeek.hart_ip_universal_commands.read_unique_identifier_response_expanded_device_type`
 
 
 #### HART-IP - Universal Commands Message and Response
@@ -4532,12 +4598,12 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip_universal_commands.read_message_response_message`
-    * `zeek.hart_ip_universal_commands.write_message_message_string`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip_universal_commands.read_message_response_message`
+* `zeek.hart_ip_universal_commands.write_message_message_string`
 
 
 #### HART-IP - PDU Command
@@ -4546,16 +4612,16 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Header Version
@@ -4564,16 +4630,16 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Protocol Major Revision
@@ -4582,11 +4648,11 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip_universal_commands.read_unique_identifier_response_hart_protocol_major_revision`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip_universal_commands.read_unique_identifier_response_hart_protocol_major_revision`
 
 
 #### Insecure Session
@@ -4595,11 +4661,11 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip_session_record.session_log_record_session_status_summary_insecure_session`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip_session_record.session_log_record_session_status_summary_insecure_session`
 
 
 #### Audit Log Insecure Syslog Connection
@@ -4608,17 +4674,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.read_audit_log_server_status_insecure_syslog_connection`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.read_audit_log_server_status_insecure_syslog_connection`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Session Summary: Writes Occurred
@@ -4627,11 +4693,11 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip_session_record.session_log_record_session_status_summary_writes_occured`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip_session_record.session_log_record_session_status_summary_writes_occured`
 
 
 #### Device Malfunction (Token Passing PDU)
@@ -4640,17 +4706,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
-    * `zeek.hart_ip.token_passing_pdu_contents_response_device_status_device_malfunction`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
+* `zeek.hart_ip.token_passing_pdu_contents_response_device_status_device_malfunction`
 
 
 #### Device Malfunction (Direct PDU)
@@ -4659,17 +4725,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.direct_pdu_device_status_device_malfunction`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.direct_pdu_device_status_device_malfunction`
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Configuration Changed (Token Passing PDU)
@@ -4678,17 +4744,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
-    * `zeek.hart_ip.token_passing_pdu_contents_response_device_status_configuration_changed`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
+* `zeek.hart_ip.token_passing_pdu_contents_response_device_status_configuration_changed`
 
 
 #### Configuration Changed (Direct PDU)
@@ -4697,17 +4763,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.direct_pdu_device_status_configuration_changed`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.direct_pdu_device_status_configuration_changed`
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Maintenance Required
@@ -4716,17 +4782,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.direct_pdu_extended_status_maintenance_required`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.direct_pdu_extended_status_maintenance_required`
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Function Check
@@ -4735,17 +4801,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.direct_pdu_extended_status_function_check`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.direct_pdu_extended_status_function_check`
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Failure
@@ -4754,17 +4820,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.direct_pdu_extended_status_failure`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.direct_pdu_extended_status_failure`
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Device Variable Alert
@@ -4773,17 +4839,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.direct_pdu_extended_status_device_variable_alert`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.direct_pdu_extended_status_device_variable_alert`
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Critical Power Failure
@@ -4792,17 +4858,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.direct_pdu_extended_status_critical_power_failure`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.direct_pdu_extended_status_critical_power_failure`
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### Out of Specification
@@ -4811,17 +4877,17 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.hart_ip.direct_pdu_extended_status_out_of_specification`
-    * `zeek.hart_ip.header_sequence_number`
-    * `zeek.hart_ip.header_version`
-    * `zeek.hart_ip.token_passing_pdu_command_number`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.hart_ip.direct_pdu_extended_status_out_of_specification`
+* `zeek.hart_ip.header_sequence_number`
+* `zeek.hart_ip.header_version`
+* `zeek.hart_ip.token_passing_pdu_command_number`
 
 
 #### HART-IP - Logs
@@ -4830,19 +4896,21 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
 
 
 ---
 
 ## HTTP
+
+* ID: [37041ee1-79c0-4684-a436-3173b0e89876](#/dashboard/37041ee1-79c0-4684-a436-3173b0e89876)
 
 The HTTP dashboard covers all web traffic observed by Zeek, including request methods, URIs, response codes, user agents, and host headers. It provides insight into web browsing behavior, application traffic, file downloads, and server responses across the monitored network. This is a key dashboard for investigating web-based attacks, unauthorized downloads, and unusual HTTP patterns that may indicate compromise.
 
@@ -4854,14 +4922,14 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Sites
@@ -4870,14 +4938,14 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Sites Hosting EXEs
@@ -4886,7 +4954,7 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `zeek.http.host`
+* `zeek.http.host`
 
 
 #### HTTP - URIs
@@ -4895,15 +4963,15 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
-    * `zeek.http.uri`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
+* `zeek.http.uri`
 
 
 #### HTTP - Source IP Address
@@ -4912,14 +4980,14 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Destination IP Address
@@ -4928,14 +4996,14 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - User Agent
@@ -4944,15 +5012,15 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Referrer
@@ -4961,15 +5029,15 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.referrer`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.referrer`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Destination Port
@@ -4978,14 +5046,14 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Destination Country
@@ -4994,15 +5062,15 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Log Count
@@ -5011,14 +5079,14 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP  - Status and Method
@@ -5027,14 +5095,14 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Unique Usernames and Passwords
@@ -5043,16 +5111,16 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.password`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.password`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Version
@@ -5061,15 +5129,15 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - File Type
@@ -5078,15 +5146,15 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `file.mime_type`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `file.mime_type`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Logs
@@ -5095,14 +5163,14 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.http.host`
-    * `zeek.http.method`
-    * `zeek.http.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.http.host`
+* `zeek.http.method`
+* `zeek.http.status_msg`
 
 
 #### HTTP - Method and Status
@@ -5111,14 +5179,16 @@ The HTTP dashboard covers all web traffic observed by Zeek, including request me
 
 **Fields / Aggregations:**
 
-    * `event.action`
-    * `event.result`
-    * `timestamp`
+* `event.action`
+* `event.result`
+* timestamp
 
 
 ---
 
 ## ICS Best Guess
+
+* ID: [12e3a130-d83b-11eb-a0b0-f328ce09b0b7](#/dashboard/12e3a130-d83b-11eb-a0b0-f328ce09b0b7)
 
 The ICS Best Guess dashboard surfaces connections that exhibit characteristics consistent with industrial control system (ICS) or operational technology (OT) protocols, even when not definitively identified. It flags traffic that heuristically resembles ICS protocols based on port, behavior, and tagging logic. This dashboard is a useful tool for discovering shadow ICS/OT devices or unrecognized protocols in environments where all OT traffic should be accounted for.
 
@@ -5130,14 +5200,14 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.bestguess.category`
-    * `zeek.bestguess.name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `protocol`
+* `source.ip`
+* `source.port`
+* `zeek.bestguess.category`
+* `zeek.bestguess.name`
 
 
 #### Best Guess - Log Count Over Time
@@ -5146,15 +5216,15 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.bestguess.category`
-    * `zeek.bestguess.name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `protocol`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.bestguess.category`
+* `zeek.bestguess.name`
 
 
 #### Best Guess Protocol - Destination
@@ -5163,14 +5233,14 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.bestguess.category`
-    * `zeek.bestguess.name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `protocol`
+* `source.ip`
+* `source.port`
+* `zeek.bestguess.category`
+* `zeek.bestguess.name`
 
 
 #### Best Guess - Summary
@@ -5179,15 +5249,15 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.transport`
-    * `protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.bestguess.category`
-    * `zeek.bestguess.name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.transport`
+* `protocol`
+* `source.ip`
+* `source.port`
+* `zeek.bestguess.category`
+* `zeek.bestguess.name`
 
 
 #### Best Guess Protocol - Source
@@ -5196,14 +5266,14 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.bestguess.category`
-    * `zeek.bestguess.name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `protocol`
+* `source.ip`
+* `source.port`
+* `zeek.bestguess.category`
+* `zeek.bestguess.name`
 
 
 #### Best Guess - Category
@@ -5212,14 +5282,14 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.bestguess.category`
-    * `zeek.bestguess.name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `protocol`
+* `source.ip`
+* `source.port`
+* `zeek.bestguess.category`
+* `zeek.bestguess.name`
 
 
 #### Best Guess - Logs
@@ -5228,19 +5298,21 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.bestguess.category`
-    * `zeek.bestguess.name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `protocol`
+* `source.ip`
+* `source.port`
+* `zeek.bestguess.category`
+* `zeek.bestguess.name`
 
 
 ---
 
 ## ICS/IoT Security Overview
+
+* ID: [4a4bde20-4760-11ea-949c-bbb5a9feecbf](#/dashboard/4a4bde20-4760-11ea-949c-bbb5a9feecbf)
 
 The ICS/IoT Security Overview dashboard aggregates security-relevant data specific to industrial control and IoT network traffic. It presents ICS log volumes, protocol distribution, external connectivity, ATT&CK for ICS tactic mapping, and unusual actions or results. Security teams use it to monitor the risk posture of OT/ICS environments and quickly surface tactics or techniques that map to known ICS attack patterns.
 
@@ -5252,14 +5324,14 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### ICS/IoT Traffic Over Time
@@ -5268,14 +5340,14 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### ICS/IoT External Traffic
@@ -5284,16 +5356,16 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `source.geo.country_name`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `source.geo.country_name`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Network Layer
@@ -5302,16 +5374,16 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### ICS/IoT Actions and Results
@@ -5320,14 +5392,14 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### ATT&CK for ICS Tactic
@@ -5336,15 +5408,15 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `threat.tactic.name`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* `threat.tactic.name`
+* timestamp
 
 
 #### ICS/IoT Source IP
@@ -5353,14 +5425,14 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### ICS Tactics and Techniques
@@ -5369,17 +5441,17 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `rule.category`
-    * `source.ip`
-    * `source.port`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `rule.category`
+* `source.ip`
+* `source.port`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
 
 
 #### ICS/IoT Destination IP
@@ -5388,14 +5460,14 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### ICS/IoT Logs
@@ -5404,14 +5476,14 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### ACID on ATT&CK for ICS
@@ -5420,19 +5492,21 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.notice.msg`
 
 
 ---
 
 ## IP Connections Tree
+
+* ID: [89714140-a2d5-11f0-b5ae-e139a66d2205](#/dashboard/89714140-a2d5-11f0-b5ae-e139a66d2205)
 
 *Trees are Malcolm analytics designed to be utilized by analysts to assist in tracking lateral movement across a network.*
 
@@ -5446,15 +5520,15 @@ The IP Connections Tree dashboard presents network connection data in a hierarch
 
 **Fields / Aggregations:**
 
-    * `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-    * `destination.ip`
-    * `event.id`
-    * `field`
-    * `scheme`
-    * `signal`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.conn.conn_state`
+* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
+* `destination.ip`
+* `event.id`
+* `field`
+* `scheme`
+* `signal`
+* `source.ip`
+* timestamp
+* `zeek.conn.conn_state`
 
 
 #### Connections Tree From Source
@@ -5463,15 +5537,15 @@ The IP Connections Tree dashboard presents network connection data in a hierarch
 
 **Fields / Aggregations:**
 
-    * `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-    * `destination.ip`
-    * `event.id`
-    * `field`
-    * `scheme`
-    * `signal`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.conn.conn_state`
+* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
+* `destination.ip`
+* `event.id`
+* `field`
+* `scheme`
+* `signal`
+* `source.ip`
+* timestamp
+* `zeek.conn.conn_state`
 
 
 #### Connections - Logs
@@ -5480,20 +5554,22 @@ The IP Connections Tree dashboard presents network connection data in a hierarch
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---
 
 ## IRC
+
+* ID: [76f2f912-80da-44cd-ab66-6a73c8344cc3](#/dashboard/76f2f912-80da-44cd-ab66-6a73c8344cc3)
 
 The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek, tracking channels, nicknames, commands, and communication hosts. IRC is frequently used as a command-and-control channel by botnets and malware, making this dashboard a useful tool for detecting C2 communication and bot activity. Analysts can identify unexpected IRC traffic in environments where it is not a legitimate business tool.
 
@@ -5505,14 +5581,14 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.irc.command`
-    * `zeek.irc.nick`
-    * `zeek.irc.value`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.irc.command`
+* `zeek.irc.nick`
+* `zeek.irc.value`
 
 
 #### IRC - Destination IP Address
@@ -5521,14 +5597,14 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.irc.command`
-    * `zeek.irc.nick`
-    * `zeek.irc.value`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.irc.command`
+* `zeek.irc.nick`
+* `zeek.irc.value`
 
 
 #### IRC - Source IP Address
@@ -5537,14 +5613,14 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.irc.command`
-    * `zeek.irc.nick`
-    * `zeek.irc.value`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.irc.command`
+* `zeek.irc.nick`
+* `zeek.irc.value`
 
 
 #### IRC - Destination Port
@@ -5553,14 +5629,14 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.irc.command`
-    * `zeek.irc.nick`
-    * `zeek.irc.value`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.irc.command`
+* `zeek.irc.nick`
+* `zeek.irc.value`
 
 
 #### IRC - Log Count
@@ -5569,14 +5645,14 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.irc.command`
-    * `zeek.irc.nick`
-    * `zeek.irc.value`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.irc.command`
+* `zeek.irc.nick`
+* `zeek.irc.value`
 
 
 #### IRC - Destination Country
@@ -5585,16 +5661,16 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 **Fields / Aggregations:**
 
-    * `destination.geo.city_name`
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.irc.command`
-    * `zeek.irc.nick`
-    * `zeek.irc.value`
+* `destination.geo.city_name`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.irc.command`
+* `zeek.irc.nick`
+* `zeek.irc.value`
 
 
 #### IRC - Command
@@ -5603,14 +5679,14 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.irc.command`
-    * `zeek.irc.nick`
-    * `zeek.irc.value`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.irc.command`
+* `zeek.irc.nick`
+* `zeek.irc.value`
 
 
 #### IRC - Logs
@@ -5619,19 +5695,21 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.irc.command`
-    * `zeek.irc.nick`
-    * `zeek.irc.value`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.irc.command`
+* `zeek.irc.nick`
+* `zeek.irc.value`
 
 
 ---
 
 ## Kerberos
+
+* ID: [82da3101-2a9c-4ae2-bb61-d447a3fbe673](#/dashboard/82da3101-2a9c-4ae2-bb61-d447a3fbe673)
 
 The Kerberos dashboard surfaces authentication traffic from Kerberos as logged by Zeek, covering ticket requests, error codes, service names, and participating hosts. It is useful for detecting Kerberoasting, AS-REP roasting, ticket forgery, and other Active Directory authentication abuse patterns. Analysts can use the error code breakdown to identify failed authentication spikes and unusual service ticket requests.
 
@@ -5643,14 +5721,14 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Client
@@ -5659,15 +5737,15 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.cname`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.cname`
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Success Status
@@ -5676,14 +5754,14 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Server
@@ -5692,15 +5770,15 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.sname`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.sname`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Cipher
@@ -5709,15 +5787,15 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.cipher`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.cipher`
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Source IP Address
@@ -5726,14 +5804,14 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Destination IP Address
@@ -5742,14 +5820,14 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Service
@@ -5758,15 +5836,15 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.sname`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.sname`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Log Count
@@ -5775,14 +5853,14 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Request Types
@@ -5791,14 +5869,14 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Renewable Ticket Requested
@@ -5807,15 +5885,15 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.renewable`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.renewable`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Destination Ports
@@ -5824,14 +5902,14 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 #### Kerberos - Logs
@@ -5840,19 +5918,21 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.kerberos.error_msg`
-    * `zeek.kerberos.request_type`
-    * `zeek.kerberos.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.kerberos.error_msg`
+* `zeek.kerberos.request_type`
+* `zeek.kerberos.success`
 
 
 ---
 
 ## LDAP
+
+* ID: [05e3e000-f118-11e9-acda-83a8e29e1a24](#/dashboard/05e3e000-f118-11e9-acda-83a8e29e1a24)
 
 The LDAP dashboard tracks Lightweight Directory Access Protocol queries and responses as observed by Zeek, covering bind operations, search queries, object targets, and results. It is particularly useful for identifying Active Directory enumeration, unauthorized directory queries, and LDAP injection attempts. Analysts can review top querying hosts and common search targets to baseline legitimate directory usage against anomalous activity.
 
@@ -5864,17 +5944,17 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ldap.argument`
-    * `zeek.ldap.message_id`
-    * `zeek.ldap.object`
-    * `zeek.ldap.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ldap.argument`
+* `zeek.ldap.message_id`
+* `zeek.ldap.object`
+* `zeek.ldap.version`
 
 
 #### LDAP - Logs
@@ -5883,17 +5963,17 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ldap.argument`
-    * `zeek.ldap.message_id`
-    * `zeek.ldap.object`
-    * `zeek.ldap.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ldap.argument`
+* `zeek.ldap.message_id`
+* `zeek.ldap.object`
+* `zeek.ldap.version`
 
 
 #### LDAP - Source IP
@@ -5902,17 +5982,17 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ldap.argument`
-    * `zeek.ldap.message_id`
-    * `zeek.ldap.object`
-    * `zeek.ldap.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ldap.argument`
+* `zeek.ldap.message_id`
+* `zeek.ldap.object`
+* `zeek.ldap.version`
 
 
 #### LDAP - Destination IP
@@ -5921,17 +6001,17 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ldap.argument`
-    * `zeek.ldap.message_id`
-    * `zeek.ldap.object`
-    * `zeek.ldap.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.ldap.argument`
+* `zeek.ldap.message_id`
+* `zeek.ldap.object`
+* `zeek.ldap.version`
 
 
 #### LDAP - Log Count
@@ -5940,16 +6020,16 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### LDAP - Bind
@@ -5958,18 +6038,18 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ldap.argument`
-    * `zeek.ldap.message_id`
-    * `zeek.ldap.object`
-    * `zeek.ldap.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
+* `zeek.ldap.argument`
+* `zeek.ldap.message_id`
+* `zeek.ldap.object`
+* `zeek.ldap.version`
 
 
 #### LDAP - Search Scope
@@ -5978,17 +6058,17 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `zeek.ldap_search.base_object`
-    * `zeek.ldap_search.filter`
-    * `zeek.ldap_search.message_id`
-    * `zeek.ldap_search.result_count`
-    * `zeek.ldap_search.scope`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `zeek.ldap_search.base_object`
+* `zeek.ldap_search.filter`
+* `zeek.ldap_search.message_id`
+* `zeek.ldap_search.result_count`
+* `zeek.ldap_search.scope`
 
 
 #### LDAP - Result Code
@@ -5997,16 +6077,16 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### LDAP - Operation
@@ -6015,16 +6095,16 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### LDAP Search - Logs
@@ -6033,21 +6113,23 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `zeek.ldap_search.base_object`
-    * `zeek.ldap_search.filter`
-    * `zeek.ldap_search.message_id`
-    * `zeek.ldap_search.result_count`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `zeek.ldap_search.base_object`
+* `zeek.ldap_search.filter`
+* `zeek.ldap_search.message_id`
+* `zeek.ldap_search.result_count`
 
 
 ---
 
 ## Modbus
+
+* ID: [152f29dc-51a2-4f53-93e9-6e92765567b8](#/dashboard/152f29dc-51a2-4f53-93e9-6e92765567b8)
 
 *Dashboard for the Modbus Protocol*
 
@@ -6061,16 +6143,16 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.network_direction`
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
 
 
 #### Modbus - Source IP
@@ -6081,16 +6163,16 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.network_direction`
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
 
 
 #### Modbus - Destination IP
@@ -6101,16 +6183,16 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.network_direction`
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
 
 
 #### Modbus - Observed Clients and Servers
@@ -6121,10 +6203,10 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `network.direction`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.known_modbus.device_type`
+* `network.direction`
+* `source.ip`
+* timestamp
+* `zeek.known_modbus.device_type`
 
 
 #### Modbus - Observed Client/Server Ratio
@@ -6135,10 +6217,10 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `network.direction`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.known_modbus.device_type`
+* `network.direction`
+* `source.ip`
+* timestamp
+* `zeek.known_modbus.device_type`
 
 
 #### Modbus - Log Count
@@ -6149,7 +6231,7 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
+* `event.dataset`
 
 
 #### Modbus - Logs Over Time
@@ -6160,8 +6242,8 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `timestamp`
+* `event.dataset`
+* timestamp
 
 
 #### Modbus - Functions and Exceptions
@@ -6170,15 +6252,15 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.unit_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `zeek.modbus.network_direction`
+* `zeek.modbus.unit_id`
 
 
 #### Modbus - Request and Response
@@ -6187,16 +6269,16 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.network_direction`
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
 
 
 #### Modbus - Reads
@@ -6205,20 +6287,20 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
-    * `zeek.modbus_detailed.address`
-    * `zeek.modbus_detailed.link_id`
-    * `zeek.modbus_detailed.matched`
-    * `zeek.modbus_detailed.quantity`
-    * `zeek.modbus_detailed.request_values`
-    * `zeek.modbus_detailed.response_values`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
+* `zeek.modbus_detailed.address`
+* `zeek.modbus_detailed.link_id`
+* `zeek.modbus_detailed.matched`
+* `zeek.modbus_detailed.quantity`
+* `zeek.modbus_detailed.request_values`
+* `zeek.modbus_detailed.response_values`
 
 
 #### Modbus - Writes
@@ -6227,20 +6309,20 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
-    * `zeek.modbus_detailed.address`
-    * `zeek.modbus_detailed.link_id`
-    * `zeek.modbus_detailed.matched`
-    * `zeek.modbus_detailed.quantity`
-    * `zeek.modbus_detailed.request_values`
-    * `zeek.modbus_detailed.response_values`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
+* `zeek.modbus_detailed.address`
+* `zeek.modbus_detailed.link_id`
+* `zeek.modbus_detailed.matched`
+* `zeek.modbus_detailed.quantity`
+* `zeek.modbus_detailed.request_values`
+* `zeek.modbus_detailed.response_values`
 
 
 #### Modbus - Transport
@@ -6249,16 +6331,16 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Modbus - Device Identification Objects
@@ -6267,20 +6349,20 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
-    * `zeek.modbus_detailed.link_id`
-    * `zeek.modbus_read_device_identification.conformity_level`
-    * `zeek.modbus_read_device_identification.device_id_code`
-    * `zeek.modbus_read_device_identification.object_id`
-    * `zeek.modbus_read_device_identification.object_value`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.network_direction`
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
+* `zeek.modbus_detailed.link_id`
+* `zeek.modbus_read_device_identification.conformity_level`
+* `zeek.modbus_read_device_identification.device_id_code`
+* `zeek.modbus_read_device_identification.object_id`
+* `zeek.modbus_read_device_identification.object_value`
 
 
 #### Modbus - Trends
@@ -6289,12 +6371,12 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-    * `event.id`
-    * `scheme`
-    * `timestamp`
-    * `zeek.modbus_detailed.matched`
-    * `zeek.modbus_detailed.request_values`
+* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
+* `event.id`
+* `scheme`
+* timestamp
+* `zeek.modbus_detailed.matched`
+* `zeek.modbus_detailed.request_values`
 
 
 #### Modbus - Detailed
@@ -6303,20 +6385,20 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
-    * `zeek.modbus_detailed.address`
-    * `zeek.modbus_detailed.link_id`
-    * `zeek.modbus_detailed.matched`
-    * `zeek.modbus_detailed.quantity`
-    * `zeek.modbus_detailed.request_values`
-    * `zeek.modbus_detailed.response_values`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
+* `zeek.modbus_detailed.address`
+* `zeek.modbus_detailed.link_id`
+* `zeek.modbus_detailed.matched`
+* `zeek.modbus_detailed.quantity`
+* `zeek.modbus_detailed.request_values`
+* `zeek.modbus_detailed.response_values`
 
 
 #### Modbus - Mask Write
@@ -6325,17 +6407,17 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.unit_id`
-    * `zeek.modbus_detailed.address`
-    * `zeek.modbus_detailed.link_id`
-    * `zeek.modbus_mask_write_register.and_mask`
-    * `zeek.modbus_mask_write_register.or_mask`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.modbus.network_direction`
+* `zeek.modbus.unit_id`
+* `zeek.modbus_detailed.address`
+* `zeek.modbus_detailed.link_id`
+* `zeek.modbus_mask_write_register.and_mask`
+* `zeek.modbus_mask_write_register.or_mask`
 
 
 #### Modbus - Read Write Multiple
@@ -6344,18 +6426,18 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.unit_id`
-    * `zeek.modbus_detailed.link_id`
-    * `zeek.modbus_read_write_multiple_registers.read_registers`
-    * `zeek.modbus_read_write_multiple_registers.read_start_address`
-    * `zeek.modbus_read_write_multiple_registers.write_registers`
-    * `zeek.modbus_read_write_multiple_registers.write_start_address`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.modbus.network_direction`
+* `zeek.modbus.unit_id`
+* `zeek.modbus_detailed.link_id`
+* `zeek.modbus_read_write_multiple_registers.read_registers`
+* `zeek.modbus_read_write_multiple_registers.read_start_address`
+* `zeek.modbus_read_write_multiple_registers.write_registers`
+* `zeek.modbus_read_write_multiple_registers.write_start_address`
 
 
 #### Modbus - Read Device Identification
@@ -6364,25 +6446,27 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.modbus.network_direction`
-    * `zeek.modbus.trans_id`
-    * `zeek.modbus.unit_id`
-    * `zeek.modbus_detailed.link_id`
-    * `zeek.modbus_read_device_identification.conformity_level`
-    * `zeek.modbus_read_device_identification.device_id_code`
-    * `zeek.modbus_read_device_identification.object_id`
-    * `zeek.modbus_read_device_identification.object_value`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* timestamp
+* `zeek.modbus.network_direction`
+* `zeek.modbus.trans_id`
+* `zeek.modbus.unit_id`
+* `zeek.modbus_detailed.link_id`
+* `zeek.modbus_read_device_identification.conformity_level`
+* `zeek.modbus_read_device_identification.device_id_code`
+* `zeek.modbus_read_device_identification.object_id`
+* `zeek.modbus_read_device_identification.object_value`
 
 
 ---
 
 ## MQTT
+
+* ID: [87a32f90-ef58-11e9-974e-9d600036d105](#/dashboard/87a32f90-ef58-11e9-974e-9d600036d105)
 
 The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, widely used in IoT devices and lightweight machine-to-machine communication. It tracks topic names, QoS levels, client IDs, and broker/client communication patterns observed by Zeek. This dashboard is useful for asset discovery in IoT environments, detecting unauthorized MQTT brokers, and identifying sensitive topics being published or subscribed to by unexpected clients.
 
@@ -6394,12 +6478,12 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
 
 
 #### MQTT - Log Count Over Time
@@ -6408,12 +6492,12 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
 
 
 #### MQTT - Source IP
@@ -6422,12 +6506,12 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
 
 
 #### MQTT - Destination IP
@@ -6436,12 +6520,12 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
 
 
 #### MQTT - Protocol
@@ -6450,15 +6534,15 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mqtt_connect.client_id`
-    * `zeek.mqtt_connect.connect_status`
-    * `zeek.mqtt_connect.proto_name`
-    * `zeek.mqtt_connect.proto_version`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mqtt_connect.client_id`
+* `zeek.mqtt_connect.connect_status`
+* `zeek.mqtt_connect.proto_name`
+* `zeek.mqtt_connect.proto_version`
 
 
 #### MQTT - Client ID
@@ -6467,14 +6551,14 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mqtt_connect.client_id`
-    * `zeek.mqtt_connect.connect_status`
-    * `zeek.mqtt_connect.proto_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mqtt_connect.client_id`
+* `zeek.mqtt_connect.connect_status`
+* `zeek.mqtt_connect.proto_name`
 
 
 #### MQTT - Subscription
@@ -6483,14 +6567,14 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mqtt_subscribe.ack`
-    * `zeek.mqtt_subscribe.action`
-    * `zeek.mqtt_subscribe.topics`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mqtt_subscribe.ack`
+* `zeek.mqtt_subscribe.action`
+* `zeek.mqtt_subscribe.topics`
 
 
 #### MQTT - Publish
@@ -6499,14 +6583,14 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mqtt_publish.from_client`
-    * `zeek.mqtt_publish.status`
-    * `zeek.mqtt_publish.topic`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mqtt_publish.from_client`
+* `zeek.mqtt_publish.status`
+* `zeek.mqtt_publish.topic`
 
 
 #### MQTT - Publish Payload
@@ -6515,16 +6599,16 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mqtt_publish.from_client`
-    * `zeek.mqtt_publish.payload`
-    * `zeek.mqtt_publish.payload_len`
-    * `zeek.mqtt_publish.status`
-    * `zeek.mqtt_publish.topic`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mqtt_publish.from_client`
+* `zeek.mqtt_publish.payload`
+* `zeek.mqtt_publish.payload_len`
+* `zeek.mqtt_publish.status`
+* `zeek.mqtt_publish.topic`
 
 
 #### MQTT - All Logs
@@ -6533,17 +6617,19 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
 
 
 ---
 
 ## MySQL
+
+* ID: [50ced171-1b10-4c3f-8b67-2db9635661a6](#/dashboard/50ced171-1b10-4c3f-8b67-2db9635661a6)
 
 The MySQL dashboard provides visibility into MySQL database protocol traffic as captured by Zeek, including command types, user credentials (where visible), affected rows, and connection metadata. It helps detect unauthorized database access, SQL operations from unexpected hosts, and unusual query patterns. Security teams can use this to enforce database access policies and identify potential data exfiltration over MySQL connections.
 
@@ -6555,13 +6641,13 @@ The MySQL dashboard provides visibility into MySQL database protocol traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mysql.cmd`
-    * `zeek.mysql.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mysql.cmd`
+* `zeek.mysql.success`
 
 
 #### MySQL - Log Count
@@ -6570,13 +6656,13 @@ The MySQL dashboard provides visibility into MySQL database protocol traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mysql.cmd`
-    * `zeek.mysql.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mysql.cmd`
+* `zeek.mysql.success`
 
 
 #### MySQL - Success
@@ -6585,13 +6671,13 @@ The MySQL dashboard provides visibility into MySQL database protocol traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mysql.cmd`
-    * `zeek.mysql.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mysql.cmd`
+* `zeek.mysql.success`
 
 
 #### MySQL - Commands
@@ -6600,15 +6686,15 @@ The MySQL dashboard provides visibility into MySQL database protocol traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mysql.arg`
-    * `zeek.mysql.cmd`
-    * `zeek.mysql.response`
-    * `zeek.mysql.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mysql.arg`
+* `zeek.mysql.cmd`
+* `zeek.mysql.response`
+* `zeek.mysql.success`
 
 
 #### MySQL - Logs
@@ -6617,18 +6703,20 @@ The MySQL dashboard provides visibility into MySQL database protocol traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.mysql.cmd`
-    * `zeek.mysql.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.mysql.cmd`
+* `zeek.mysql.success`
 
 
 ---
 
 ## NTLM
+
+* ID: [543118a9-02d7-43fe-b669-b8652177fc37](#/dashboard/543118a9-02d7-43fe-b669-b8652177fc37)
 
 The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Zeek, including NTLM challenge-response exchanges, domain information, and authentication outcomes. It provides insight into legacy authentication usage and helps detect NTLM relay attacks, credential brute-forcing, and pass-the-hash activity. Security teams can use this dashboard to identify systems still relying on NTLM where Kerberos should be used.
 
@@ -6640,16 +6728,16 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Hostname
@@ -6658,16 +6746,16 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Domain Name
@@ -6676,16 +6764,16 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Username
@@ -6694,17 +6782,17 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Destination IP Address
@@ -6713,16 +6801,16 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Source IP Address
@@ -6731,16 +6819,16 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Destination Port
@@ -6749,16 +6837,16 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Log Count
@@ -6767,16 +6855,16 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Hostname to Username
@@ -6785,17 +6873,17 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 #### NTLM - Success
@@ -6804,17 +6892,17 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
-    * `zeek.ntlm.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
+* `zeek.ntlm.success`
 
 
 #### NTLM - Logs
@@ -6823,21 +6911,23 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntlm.domain`
-    * `zeek.ntlm.host`
-    * `zeek.ntlm.server_dns_computer`
-    * `zeek.ntlm.server_nb_computer`
-    * `zeek.ntlm.server_tree`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntlm.domain`
+* `zeek.ntlm.host`
+* `zeek.ntlm.server_dns_computer`
+* `zeek.ntlm.server_nb_computer`
+* `zeek.ntlm.server_tree`
 
 
 ---
 
 ## NTP
+
+* ID: [af5df620-eeb6-11e9-bdef-65a192b7f586](#/dashboard/af5df620-eeb6-11e9-bdef-65a192b7f586)
 
 The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, providing insight into time synchronization activity across the environment. It tracks NTP stratum levels, reference IDs, version numbers, and communication pairs. Analysts can detect NTP amplification abuse, rogue time sources, and unusual NTP query volumes that could indicate reconnaissance or DDoS preparation.
 
@@ -6849,15 +6939,15 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 #### NTP - Log Count
@@ -6866,15 +6956,15 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 #### NTP - Log Count Over Time
@@ -6883,15 +6973,15 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 #### NTP - Stratum
@@ -6900,15 +6990,15 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 #### NTP - Version
@@ -6917,15 +7007,15 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 #### NTP - Mode
@@ -6934,15 +7024,15 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 #### NTP - Polling Interval
@@ -6951,16 +7041,16 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.poll`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.poll`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 #### NTP - Source IP
@@ -6969,15 +7059,15 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 #### NTP - Destination IP
@@ -6986,21 +7076,23 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ntp.mode_str`
-    * `zeek.ntp.org_time`
-    * `zeek.ntp.stratum`
-    * `zeek.ntp.version`
-    * `zeek.ntp.xmt_time`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ntp.mode_str`
+* `zeek.ntp.org_time`
+* `zeek.ntp.stratum`
+* `zeek.ntp.version`
+* `zeek.ntp.xmt_time`
 
 
 ---
 
 ## Omron FINS
+
+* ID: [c899f8b0-d36b-11ef-b619-17836b3bbf47](#/dashboard/c899f8b0-d36b-11ef-b619-17836b3bbf47)
 
 The Omron FINS dashboard provides visibility into the Factory Interface Network Service (FINS) protocol used by Omron PLCs and automation equipment. It tracks command codes, memory area designations, unit addresses, and source/destination host pairs. This dashboard is useful for detecting unauthorized command execution against Omron controllers, including memory reads, writes, and PLC status queries.
 
@@ -7012,15 +7104,15 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
 
 
 #### Omron FINS - Logs Over Time
@@ -7029,15 +7121,15 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
 
 
 #### Omron FINS - Action and Result
@@ -7046,15 +7138,15 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
 
 
 #### Omron FINS - Source IP
@@ -7063,15 +7155,15 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
 
 
 #### Omron FINS - Destination IP
@@ -7080,16 +7172,16 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
 
 
 #### Omron FINS - Controller Model and Version
@@ -7098,17 +7190,17 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
-    * `zeek.omron_fins_detail.controller_model`
-    * `zeek.omron_fins_detail.controller_version`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
+* `zeek.omron_fins_detail.controller_model`
+* `zeek.omron_fins_detail.controller_version`
 
 
 #### Omron FINS - Files/Volumes
@@ -7117,16 +7209,16 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `file.path`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
 
 
 #### Omron FINS - Transport Protocol
@@ -7135,15 +7227,15 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
 
 
 #### Omron FINS - Data Type
@@ -7152,16 +7244,16 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.icf_data_type`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.icf_data_type`
+* `zeek.omron_fins.link_id`
 
 
 #### Omron FINS - Address, Node, and Unit
@@ -7170,22 +7262,22 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.destination_network_address`
-    * `zeek.omron_fins.destination_node_number`
-    * `zeek.omron_fins.destination_unit_address`
-    * `zeek.omron_fins.link_id`
-    * `zeek.omron_fins.service_id`
-    * `zeek.omron_fins.source_network_address`
-    * `zeek.omron_fins.source_node_number`
-    * `zeek.omron_fins.source_unit_address`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.destination_network_address`
+* `zeek.omron_fins.destination_node_number`
+* `zeek.omron_fins.destination_unit_address`
+* `zeek.omron_fins.link_id`
+* `zeek.omron_fins.service_id`
+* `zeek.omron_fins.source_network_address`
+* `zeek.omron_fins.source_node_number`
+* `zeek.omron_fins.source_unit_address`
 
 
 #### Omron FINS - All Logs
@@ -7194,20 +7286,22 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.omron_fins.link_id`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.omron_fins.link_id`
 
 
 ---
 
 ## OPCUA Binary
+
+* ID: [dd87edd0-796a-11ec-9ce6-b395c1ff58f4](#/dashboard/dd87edd0-796a-11ec-9ce6-b395c1ff58f4)
 
 The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traffic, the modern standard for industrial data exchange between PLCs, SCADA systems, and enterprise applications. It captures service types, node IDs, security policy, and communication pairs observed by Zeek. Analysts can use this to detect unauthorized OPC UA connections, unusual browsing or write operations, and unexpected cross-zone OPC UA traffic.
 
@@ -7219,14 +7313,14 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `url.original`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `url.original`
 
 
 #### OPCUA Binary - Traffic Over Time
@@ -7235,8 +7329,8 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `timestamp`
+* `event.dataset`
+* timestamp
 
 
 #### OPCUA Binary - Actions
@@ -7245,7 +7339,7 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `event.action`
+* `event.action`
 
 
 #### OPCUA Binary - Results
@@ -7254,7 +7348,7 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `event.result`
+* `event.result`
 
 
 #### OPCUA Binary - URLs and URIs
@@ -7263,7 +7357,7 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `url.original`
+* `url.original`
 
 
 #### OPCUA Binary - User
@@ -7272,15 +7366,15 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `url.original`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* `url.original`
 
 
 #### OPCUA Binary - Source
@@ -7289,14 +7383,14 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `zeek.opcua_binary.opcua_link_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `zeek.opcua_binary.opcua_link_id`
 
 
 #### OPCUA Binary - Destination
@@ -7305,14 +7399,14 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `zeek.opcua_binary.opcua_link_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `zeek.opcua_binary.opcua_link_id`
 
 
 #### OPCUA Binary - Password Count
@@ -7321,15 +7415,15 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `related.password`
-    * `source.ip`
-    * `url.original`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `related.password`
+* `source.ip`
+* `url.original`
 
 
 #### OPCUA Binary - Software
@@ -7338,15 +7432,15 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `url.original`
-    * `zeek.software.name`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `url.original`
+* `zeek.software.name`
 
 
 #### OPCUA Binary - Protocol Version
@@ -7355,15 +7449,15 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.protocol_version`
-    * `source.ip`
-    * `url.original`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.protocol_version`
+* `source.ip`
+* `url.original`
 
 
 #### OPCUA Binary - Logs
@@ -7372,14 +7466,14 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `zeek.opcua_binary.opcua_link_id`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `zeek.opcua_binary.opcua_link_id`
 
 
 #### OPCUA Binary and Related - Logs
@@ -7388,19 +7482,21 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `url.original`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `url.original`
 
 
 ---
 
 ## OSPF
+
+* ID: [1cc01ff0-5205-11ec-a62c-7bc80e88f3f0](#/dashboard/1cc01ff0-5205-11ec-a62c-7bc80e88f3f0)
 
 The OSPF dashboard covers Open Shortest Path First routing protocol traffic as observed by Zeek. It tracks message types (Hello, DBD, LSR, LSU, LSAck), router IDs, area IDs, and neighbor relationships. Security teams can use this to detect unauthorized OSPF neighbors attempting to inject false routing information, which could redirect traffic or enable man-in-the-middle attacks.
 
@@ -7412,18 +7508,18 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - Log Count Over Time
@@ -7432,19 +7528,19 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - Packet Type
@@ -7453,18 +7549,18 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - Link State Advertisement
@@ -7473,18 +7569,18 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - Link Type
@@ -7493,18 +7589,18 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - Area and Router
@@ -7513,18 +7609,18 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - Source IP
@@ -7533,18 +7629,18 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - Destination IP
@@ -7553,18 +7649,18 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - All IP Addresses
@@ -7573,19 +7669,19 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `related.ip`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `related.ip`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 #### OSPF - Logs
@@ -7594,23 +7690,25 @@ The OSPF dashboard covers Open Shortest Path First routing protocol traffic as o
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `network.protocol_version`
-    * `source.ip`
-    * `zeek.ospf.area_id`
-    * `zeek.ospf.backup_router`
-    * `zeek.ospf.desig_router`
-    * `zeek.ospf.interface_id`
-    * `zeek.ospf.link_type`
-    * `zeek.ospf.lsa_type`
-    * `zeek.ospf.neighbors`
-    * `zeek.ospf.router_id`
+* `destination.ip`
+* `event.action`
+* `network.protocol_version`
+* `source.ip`
+* `zeek.ospf.area_id`
+* `zeek.ospf.backup_router`
+* `zeek.ospf.desig_router`
+* `zeek.ospf.interface_id`
+* `zeek.ospf.link_type`
+* `zeek.ospf.lsa_type`
+* `zeek.ospf.neighbors`
+* `zeek.ospf.router_id`
 
 
 ---
 
 ## Overview
+
+* ID: [0ad3d7c2-3441-485e-9dfe-dbb22e84e576](#/dashboard/0ad3d7c2-3441-485e-9dfe-dbb22e84e576)
 
 The Overview dashboard provides a high-level summary of all network traffic and log activity across the monitored environment. It aggregates events from every data source into a single view, showing total log volume, protocol distribution, and top communicating hosts. Analysts use it as a starting point to assess overall activity levels and quickly identify unusual spikes or new protocol traffic before drilling into protocol-specific dashboards.
 
@@ -7622,16 +7720,16 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### Connections - Service By Destination Country
@@ -7640,16 +7738,16 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Log Type
@@ -7658,16 +7756,16 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### Total Number of Logs
@@ -7676,7 +7774,7 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `event.provider`
+* `event.provider`
 
 
 #### DNS - Queries
@@ -7685,12 +7783,12 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### Log Source
@@ -7699,8 +7797,8 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `event.ingested`
-    * `host.name`
+* `event.ingested`
+* `host.name`
 
 
 #### Application Protocol
@@ -7709,8 +7807,8 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `network.protocol`
-    * `network.protocol_version`
+* `network.protocol`
+* `network.protocol_version`
 
 
 #### Actions and Results
@@ -7719,9 +7817,9 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
+* `event.action`
+* `event.result`
+* `network.protocol`
 
 
 #### All Logs
@@ -7730,21 +7828,23 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 ---
 
 ## PE
+
+* ID: [0a490422-0ce9-44bf-9a2d-19329ddde8c3](#/dashboard/0a490422-0ce9-44bf-9a2d-19329ddde8c3)
 
 The PE (Portable Executable) dashboard provides visibility into Windows PE file analysis data from Zeek, covering OS targets, machine types, subsystems, section names, and capability signatures. It helps analysts understand what executable files have been observed in network traffic and identify suspicious characteristics such as unusual sections or capability flags. This dashboard is particularly useful during malware investigations to quickly characterize executables transferring across the network.
 
@@ -7756,11 +7856,11 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `timestamp`
-    * `zeek.pe.machine`
-    * `zeek.pe.os`
-    * `zeek.pe.subsystem`
+* `event.id`
+* timestamp
+* `zeek.pe.machine`
+* `zeek.pe.os`
+* `zeek.pe.subsystem`
 
 
 #### PE - OS
@@ -7769,11 +7869,11 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `timestamp`
-    * `zeek.pe.machine`
-    * `zeek.pe.os`
-    * `zeek.pe.subsystem`
+* `event.id`
+* timestamp
+* `zeek.pe.machine`
+* `zeek.pe.os`
+* `zeek.pe.subsystem`
 
 
 #### PE - Subsystem
@@ -7782,11 +7882,11 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `timestamp`
-    * `zeek.pe.machine`
-    * `zeek.pe.os`
-    * `zeek.pe.subsystem`
+* `event.id`
+* timestamp
+* `zeek.pe.machine`
+* `zeek.pe.os`
+* `zeek.pe.subsystem`
 
 
 #### PE - Section Name
@@ -7795,12 +7895,12 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `timestamp`
-    * `zeek.pe.machine`
-    * `zeek.pe.os`
-    * `zeek.pe.section_names`
-    * `zeek.pe.subsystem`
+* `event.id`
+* timestamp
+* `zeek.pe.machine`
+* `zeek.pe.os`
+* `zeek.pe.section_names`
+* `zeek.pe.subsystem`
 
 
 #### PE - Machine
@@ -7809,11 +7909,11 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `timestamp`
-    * `zeek.pe.machine`
-    * `zeek.pe.os`
-    * `zeek.pe.subsystem`
+* `event.id`
+* timestamp
+* `zeek.pe.machine`
+* `zeek.pe.os`
+* `zeek.pe.subsystem`
 
 
 #### PE - Log Count
@@ -7822,11 +7922,11 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `timestamp`
-    * `zeek.pe.machine`
-    * `zeek.pe.os`
-    * `zeek.pe.subsystem`
+* `event.id`
+* timestamp
+* `zeek.pe.machine`
+* `zeek.pe.os`
+* `zeek.pe.subsystem`
 
 
 #### Capa Signatures
@@ -7835,9 +7935,9 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `rule.name`
-    * `timestamp`
+* `event.id`
+* `rule.name`
+* timestamp
 
 
 #### Executable Capabilities
@@ -7846,9 +7946,9 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `rule.name`
-    * `timestamp`
+* `event.id`
+* `rule.name`
+* timestamp
 
 
 #### PE - Logs
@@ -7857,16 +7957,18 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `timestamp`
-    * `zeek.pe.machine`
-    * `zeek.pe.os`
-    * `zeek.pe.subsystem`
+* `event.id`
+* timestamp
+* `zeek.pe.machine`
+* `zeek.pe.os`
+* `zeek.pe.subsystem`
 
 
 ---
 
 ## PostgreSQL
+
+* ID: [f2c0da10-d2c5-11ef-8864-d58a560dc292](#/dashboard/f2c0da10-d2c5-11ef-8864-d58a560dc292)
 
 The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured by Zeek, including connection metadata, command types, and host pairs. It provides visibility into who is accessing PostgreSQL instances and what types of operations they are performing. Analysts can detect unauthorized database access, unexpected client connections, and unusual query volumes that may indicate automated data extraction.
 
@@ -7878,18 +7980,18 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 #### PostgreSQL - Log Count Over Time
@@ -7898,18 +8000,18 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 #### PostgreSQL - Database
@@ -7918,18 +8020,18 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 #### PostgreSQL - Action and Results
@@ -7938,18 +8040,18 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 #### PostgreSQL - Application
@@ -7958,18 +8060,18 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 #### PostgreSQL - Source IP
@@ -7978,18 +8080,18 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 #### PostgreSQL - Destination IP
@@ -7998,18 +8100,18 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 #### PostgreSQL - User
@@ -8018,18 +8120,18 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 #### PostgreSQL - Logs
@@ -8038,23 +8140,25 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.postgresql.application_name`
-    * `zeek.postgresql.backend_arg`
-    * `zeek.postgresql.database`
-    * `zeek.postgresql.frontend_arg`
-    * `zeek.postgresql.rows`
+* `destination.ip`
+* `event.action`
+* `event.id`
+* `event.result`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.postgresql.application_name`
+* `zeek.postgresql.backend_arg`
+* `zeek.postgresql.database`
+* `zeek.postgresql.frontend_arg`
+* `zeek.postgresql.rows`
 
 
 ---
 
 ## PROFINET
+
+* ID: [a7514350-eba6-11e9-a384-0fcf32210194](#/dashboard/a7514350-eba6-11e9-a384-0fcf32210194)
 
 The PROFINET dashboard covers PROFINET industrial communication protocol traffic, commonly used in manufacturing automation with Siemens and other ICS vendors. It tracks DCP (Discovery and Configuration Protocol), IO (real-time I/O), and DCE/RPC sub-protocol activity between PLCs, HMIs, and I/O devices. Security teams use it to detect unauthorized device discovery, configuration changes, and unusual PROFINET communication patterns.
 
@@ -8066,7 +8170,7 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
+* `event.dataset`
 
 
 #### PROFINET - Logs Over Time
@@ -8075,8 +8179,8 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `timestamp`
+* `event.dataset`
+* timestamp
 
 
 #### PROFINET - Source IP
@@ -8085,16 +8189,16 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.profinet.index`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.profinet.index`
 
 
 #### PROFINET - Destination IP
@@ -8103,16 +8207,16 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.profinet.index`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.profinet.index`
 
 
 #### PROFINET - Operation
@@ -8121,15 +8225,15 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.profinet.block_version`
-    * `zeek.profinet.index`
-    * `zeek.profinet.operation_type`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.profinet.block_version`
+* `zeek.profinet.index`
+* `zeek.profinet.operation_type`
 
 
 #### PROFINET - Operation Details
@@ -8138,17 +8242,17 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.profinet.block_version`
-    * `zeek.profinet.index`
-    * `zeek.profinet.operation_type`
-    * `zeek.profinet.slot_number`
-    * `zeek.profinet.subslot_number`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.profinet.block_version`
+* `zeek.profinet.index`
+* `zeek.profinet.operation_type`
+* `zeek.profinet.slot_number`
+* `zeek.profinet.subslot_number`
 
 
 #### PROFINET I/O CM - Operation
@@ -8157,17 +8261,17 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.profinet_io_cm.operation`
-    * `zeek.profinet_io_cm.packet_type`
-    * `zeek.profinet_io_cm.sequence_num`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.profinet_io_cm.operation`
+* `zeek.profinet_io_cm.packet_type`
+* `zeek.profinet_io_cm.sequence_num`
 
 
 #### PROFINET and Related - Logs
@@ -8176,16 +8280,16 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.profinet.index`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.profinet.index`
 
 
 #### PROFINET I/O CM - Logs
@@ -8194,20 +8298,22 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.profinet_io_cm.sequence_num`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.profinet_io_cm.sequence_num`
 
 
 ---
 
 ## QUIC
+
+* ID: [11ddd980-e388-11e9-b568-cf17de8e860c](#/dashboard/11ddd980-e388-11e9-b568-cf17de8e860c)
 
 The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based transport used by modern HTTPS and HTTP/3 connections. It covers connection metadata, server names, versions, and host communication pairs as observed by Zeek. This dashboard is useful for tracking QUIC-based web traffic, identifying applications using QUIC, and detecting attempts to bypass inspection by tunneling traffic over QUIC.
 
@@ -8219,13 +8325,13 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
 
 
 #### QUIC - Logs
@@ -8234,13 +8340,13 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
 
 
 #### QUIC - Log Count Over Time
@@ -8249,13 +8355,13 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
 
 
 #### QUIC - Source IP Address
@@ -8264,13 +8370,13 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
 
 
 #### QUIC - Destination IP Address
@@ -8279,13 +8385,13 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
 
 
 #### QUIC - User Agent
@@ -8294,13 +8400,13 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
 
 
 #### QUIC - Server Name
@@ -8309,13 +8415,13 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
 
 
 #### QUIC - CYU Fingerprint
@@ -8324,15 +8430,15 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.gquic.cyu`
-    * `zeek.gquic.cyutags`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.gquic.cyu`
+* `zeek.gquic.cyutags`
 
 
 #### QUIC - Version
@@ -8341,18 +8447,20 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `quic.host`
-    * `quic.version`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
+* `destination.ip`
+* `event.id`
+* `quic.host`
+* `quic.version`
+* `source.ip`
+* timestamp
+* `user_agent.original`
 
 
 ---
 
 ## RADIUS
+
+* ID: [ae79b7d1-4281-4095-b2f6-fa7eafda9970](#/dashboard/ae79b7d1-4281-4095-b2f6-fa7eafda9970)
 
 The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol traffic as logged by Zeek, tracking authentication requests, results, username attributes, and NAS identifiers. RADIUS is used for centralized network access authentication, and this dashboard helps detect brute-force attempts, authentication bypass, and rogue RADIUS clients. Analysts can correlate failed authentication spikes with specific NAS devices and usernames.
 
@@ -8364,15 +8472,15 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 #### RADIUS - Source IP Address
@@ -8381,15 +8489,15 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 #### RADIUS - Destination IP Address
@@ -8398,15 +8506,15 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 #### RADIUS - MAC
@@ -8415,15 +8523,15 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 #### RADIUS - Connection Information
@@ -8432,16 +8540,16 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.connect_info`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.connect_info`
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 #### RADIUS - Log Count
@@ -8450,15 +8558,15 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 #### RADIUS - Username
@@ -8467,15 +8575,15 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 #### RADIUS - Authentication Result
@@ -8484,15 +8592,15 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 #### RADIUS - Logs
@@ -8501,20 +8609,22 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.radius.framed_addr`
-    * `zeek.radius.mac`
-    * `zeek.radius.result`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.user`
+* `source.ip`
+* timestamp
+* `zeek.radius.framed_addr`
+* `zeek.radius.mac`
+* `zeek.radius.result`
 
 
 ---
 
 ## RDP
+
+* ID: [7f41913f-cba8-43f5-82a8-241b7ead03e0](#/dashboard/7f41913f-cba8-43f5-82a8-241b7ead03e0)
 
 The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, including connection metadata, authentication outcomes, security protocols, and host certificates. It provides visibility into remote desktop usage and helps detect unauthorized remote access, brute-force attempts, and RDP-based lateral movement. This is a high-value dashboard during incident response when adversaries frequently leverage RDP for interactive access.
 
@@ -8526,16 +8636,16 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Source IP Address
@@ -8544,16 +8654,16 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Destination IP Address
@@ -8562,16 +8672,16 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Cookie
@@ -8580,17 +8690,17 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.cookie`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.cookie`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Result
@@ -8599,16 +8709,16 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Keyboard Layout
@@ -8617,16 +8727,16 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Client Version
@@ -8635,16 +8745,16 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Log Count
@@ -8653,16 +8763,16 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Encryption
@@ -8671,17 +8781,17 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_level`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_level`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 #### RDP - Connections Tree
@@ -8690,14 +8800,14 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-    * `destination.ip`
-    * `event.id`
-    * `field`
-    * `scheme`
-    * `signal`
-    * `source.ip`
-    * `timestamp`
+* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
+* `destination.ip`
+* `event.id`
+* `field`
+* `scheme`
+* `signal`
+* `source.ip`
+* timestamp
 
 
 #### RDP - Logs
@@ -8706,21 +8816,23 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rdp.client_build`
-    * `zeek.rdp.encryption_method`
-    * `zeek.rdp.keyboard_layout`
-    * `zeek.rdp.result`
-    * `zeek.rdp.security_protocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rdp.client_build`
+* `zeek.rdp.encryption_method`
+* `zeek.rdp.keyboard_layout`
+* `zeek.rdp.result`
+* `zeek.rdp.security_protocol`
 
 
 ---
 
 ## Redis
+
+* ID: [ef0f9be0-7d3d-11f0-9ca7-8bfd0076f5c9](#/dashboard/ef0f9be0-7d3d-11f0-9ca7-8bfd0076f5c9)
 
 The Redis dashboard covers Redis in-memory data store protocol traffic as logged by Zeek, including command types, return values, and communication pairs. Redis is commonly exposed unintentionally without authentication, making it a frequent target for unauthorized access and data manipulation. Analysts can use this dashboard to detect unexpected Redis clients, dangerous commands (FLUSHDB, CONFIG), and unauthorized access to cached data.
 
@@ -8732,15 +8844,15 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
 
 
 #### Redis - Log Count
@@ -8749,15 +8861,15 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
 
 
 #### Redis - Success
@@ -8766,16 +8878,16 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
-    * `zeek.redis.success`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
+* `zeek.redis.success`
 
 
 #### Redis - Source
@@ -8784,15 +8896,15 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
 
 
 #### Redis - Destination
@@ -8801,15 +8913,15 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
 
 
 #### Redis - Action and Result
@@ -8818,15 +8930,15 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
 
 
 #### Redis - Key
@@ -8835,15 +8947,15 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
 
 
 #### Redis - Key and Value
@@ -8852,16 +8964,16 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
-    * `zeek.redis.cmd_value`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
+* `zeek.redis.cmd_value`
 
 
 #### Redis - Logs
@@ -8870,20 +8982,22 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.redis.cmd_key`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.redis.cmd_key`
 
 
 ---
 
 ## RFB
+
+* ID: [f77bf097-18a8-465c-b634-eb2acc7a4f26](#/dashboard/f77bf097-18a8-465c-b634-eb2acc7a4f26)
 
 The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as captured by Zeek, including desktop sharing connections, authentication types, and host pairs. It helps identify remote desktop activity outside of expected channels and detect unauthorized VNC access to internal systems. Analysts can use it to baseline legitimate VNC usage and flag unexpected desktop-sharing sessions.
 
@@ -8895,15 +9009,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Authentication Status
@@ -8912,15 +9026,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Exclusive Session
@@ -8929,15 +9043,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Desktop Name
@@ -8946,15 +9060,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Source IP Address
@@ -8963,15 +9077,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Destination IP Address
@@ -8980,15 +9094,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Destination Port
@@ -8997,15 +9111,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Server Version
@@ -9014,17 +9128,17 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.server_major_version`
-    * `zeek.rfb.server_minor_version`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.server_major_version`
+* `zeek.rfb.server_minor_version`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Client Version
@@ -9033,17 +9147,17 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.client_major_version`
-    * `zeek.rfb.client_minor_version`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.client_major_version`
+* `zeek.rfb.client_minor_version`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Authentication Method
@@ -9052,15 +9166,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Log Count
@@ -9069,15 +9183,15 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 #### RFB - Logs
@@ -9086,20 +9200,22 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.rfb.auth`
-    * `zeek.rfb.authentication_method`
-    * `zeek.rfb.desktop_name`
-    * `zeek.rfb.share_flag`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.rfb.auth`
+* `zeek.rfb.authentication_method`
+* `zeek.rfb.desktop_name`
+* `zeek.rfb.share_flag`
 
 
 ---
 
 ## ROC Plus
+
+* ID: [cbf2e4d0-29e8-11f0-862c-2dfee4f08125](#/dashboard/cbf2e4d0-29e8-11f0-862c-2dfee4f08125)
 
 The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to communicate with remote operations controllers commonly found in oil and gas environments. It logs parameter group and logic numbers, operation types, and communication participants. Security teams can use this dashboard to detect unauthorized reads or writes to ROC devices and monitor for unexpected communication patterns in pipeline control systems.
 
@@ -9111,17 +9227,17 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - Traffic Over Time
@@ -9130,17 +9246,17 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - Action
@@ -9149,17 +9265,17 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - Result
@@ -9168,17 +9284,17 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - Packet Size
@@ -9187,17 +9303,17 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - Transport Protocol
@@ -9206,17 +9322,17 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - Source IP
@@ -9225,18 +9341,18 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - Destination IP
@@ -9245,18 +9361,18 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - File Transfer Directory
@@ -9265,18 +9381,18 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `file.directory`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `file.directory`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - File Transfer Filename
@@ -9285,18 +9401,18 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `file.name`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `file.name`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 #### ROC Plus - All Logs
@@ -9305,22 +9421,24 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `network.bytes`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.roc_plus.link_id`
-    * `zeek.roc_plus.packet_type`
+* `destination.ip`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `network.bytes`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.roc_plus.link_id`
+* `zeek.roc_plus.packet_type`
 
 
 ---
 
 ## S7comm / S7comm Plus
+
+* ID: [e76d05c0-eb9f-11e9-a384-0fcf32210194](#/dashboard/e76d05c0-eb9f-11e9-a384-0fcf32210194)
 
 The S7comm dashboard provides visibility into Siemens S7 protocol communication used to program and control Siemens PLCs, a frequent target in ICS attacks. It surfaces function codes, block types, CPU data, and communication pairs between engineering stations and PLCs. This is a critical dashboard for detecting unauthorized PLC programming, reading of sensitive memory areas, and reconnaissance against Siemens control systems.
 
@@ -9332,16 +9450,16 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.s7comm.pdu_reference`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* `zeek.s7comm.pdu_reference`
+* `zeek.uid`
 
 
 #### S7comm - Logs Over Time
@@ -9350,17 +9468,17 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.s7comm.pdu_reference`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.s7comm.pdu_reference`
+* `zeek.uid`
 
 
 #### S7comm Operations
@@ -9369,16 +9487,16 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.s7comm.pdu_reference`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* `zeek.s7comm.pdu_reference`
+* `zeek.uid`
 
 
 #### S7comm Source IP
@@ -9387,16 +9505,16 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.s7comm.pdu_reference`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* `zeek.s7comm.pdu_reference`
+* `zeek.uid`
 
 
 #### S7comm Destination IP
@@ -9405,16 +9523,16 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.s7comm.pdu_reference`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* `zeek.s7comm.pdu_reference`
+* `zeek.uid`
 
 
 #### S7comm Plus Version
@@ -9423,14 +9541,14 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `network.protocol_version`
-    * `source.ip`
-    * `source.port`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `network.protocol_version`
+* `source.ip`
+* `source.port`
+* `zeek.uid`
 
 
 #### S7comm Devices
@@ -9439,20 +9557,20 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.s7comm.pdu_reference`
-    * `zeek.s7comm_known_devices.automation_system_name`
-    * `zeek.s7comm_known_devices.module_name`
-    * `zeek.s7comm_known_devices.module_serial`
-    * `zeek.s7comm_known_devices.plant_name`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* `zeek.s7comm.pdu_reference`
+* `zeek.s7comm_known_devices.automation_system_name`
+* `zeek.s7comm_known_devices.module_name`
+* `zeek.s7comm_known_devices.module_serial`
+* `zeek.s7comm_known_devices.plant_name`
+* `zeek.uid`
 
 
 #### S7comm Read-SZL
@@ -9461,16 +9579,16 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `source.ip`
-    * `source.port`
-    * `zeek.s7comm.pdu_reference`
-    * `zeek.s7comm_read_szl.method`
-    * `zeek.s7comm_read_szl.szl_index`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `source.ip`
+* `source.port`
+* `zeek.s7comm.pdu_reference`
+* `zeek.s7comm_read_szl.method`
+* `zeek.s7comm_read_szl.szl_index`
+* `zeek.uid`
 
 
 #### ATT&CK for ICS Tactic - S7comm
@@ -9479,14 +9597,14 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### ATT&CK for ICS Notices - S7comm
@@ -9495,14 +9613,14 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `threat.tactic.name`
-    * `threat.technique.name`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### S7comm - Upload/Download File Names
@@ -9511,16 +9629,16 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `zeek.s7comm_upload_download.block_type`
-    * `zeek.s7comm_upload_download.destination_filesystem`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* `zeek.s7comm_upload_download.block_type`
+* `zeek.s7comm_upload_download.destination_filesystem`
+* `zeek.uid`
 
 
 #### S7comm and Related - Logs
@@ -9529,21 +9647,23 @@ The S7comm dashboard provides visibility into Siemens S7 protocol communication 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `source.port`
-    * `zeek.s7comm.pdu_reference`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* `source.port`
+* `zeek.s7comm.pdu_reference`
+* `zeek.uid`
 
 
 ---
 
 ## Security Overview
+
+* ID: [95479950-41f2-11ea-88fa-7151df485405](#/dashboard/95479950-41f2-11ea-88fa-7151df485405)
 
 The Security Overview dashboard offers a consolidated view of security-relevant events across all monitored protocols. It combines alert data, notice events, and categorized rule hits to give analysts an at-a-glance picture of the threat landscape. This is a useful starting point for daily triage, providing trend lines, category breakdowns, and top event sources to focus attention where it matters most.
 
@@ -9555,8 +9675,8 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `network.transport`
-    * `rule.category`
+* `network.transport`
+* `rule.category`
 
 
 #### Notice, Alert and Signature - Summary
@@ -9565,16 +9685,16 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.id`
-    * `event.module`
-    * `event.provider`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
+* `destination.ip`
+* `event.dataset`
+* `event.id`
+* `event.module`
+* `event.provider`
+* `event.severity_tags`
+* `network.protocol`
+* `rule.category`
+* `rule.name`
+* `source.ip`
 
 
 #### Outdated/Insecure Application Protocols
@@ -9583,8 +9703,8 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `network.protocol`
-    * `network.protocol_version`
+* `network.protocol`
+* `network.protocol_version`
 
 
 #### Vulnerabilities
@@ -9593,28 +9713,28 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.id`
-    * `event.module`
-    * `event.provider`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `vulnerability.id`
+* `destination.ip`
+* `event.dataset`
+* `event.id`
+* `event.module`
+* `event.provider`
+* `event.severity_tags`
+* `network.protocol`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `vulnerability.id`
 
 
-#### Clear-text Transmission of Passwords 
+#### Clear-text Transmission of Passwords
 
 **Purpose:** A ranked frequency table providing a categorical breakdown of clear-text transmission of passwords . Useful for identifying top values and spotting outliers.
 
 **Fields / Aggregations:**
 
-    * `network.protocol`
-    * `related.user`
+* `network.protocol`
+* `related.user`
 
 
 #### Inbound Access By Protocol Over Time
@@ -9623,15 +9743,15 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Outbound Internal Traffic by Country
@@ -9640,7 +9760,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
+* `destination.geo.country_name`
 
 
 #### Inbound External Traffic by Country
@@ -9649,7 +9769,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `source.geo.country_name`
+* `source.geo.country_name`
 
 
 #### File Transfers
@@ -9658,7 +9778,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `file.mime_type`
+* `file.mime_type`
 
 
 #### DNS Queries by Randomness
@@ -9667,15 +9787,15 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `dns.host`
-    * `event.freq_score_v1`
-    * `event.freq_score_v2`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.dns.answers`
-    * `zeek.dns.query`
+* `destination.ip`
+* `dns.host`
+* `event.freq_score_v1`
+* `event.freq_score_v2`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 #### Connections by Destination Country (region map)
@@ -9684,16 +9804,16 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_code2`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.bytes`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.geo.country_code2`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.bytes`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Notice, Alert, and Signature - Logs
@@ -9702,21 +9822,23 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.dataset`
-    * `event.id`
-    * `event.module`
-    * `event.provider`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
+* `destination.ip`
+* `event.dataset`
+* `event.id`
+* `event.module`
+* `event.provider`
+* `event.severity_tags`
+* `network.protocol`
+* `rule.category`
+* `rule.name`
+* `source.ip`
 
 
 ---
 
 ## Severity
+
+* ID: [d2dd0180-06b1-11ec-8c6b-353266ade330](#/dashboard/d2dd0180-06b1-11ec-8c6b-353266ade330)
 
 The Severity dashboard organizes all detected events and alerts by their assigned severity level, from informational notices through critical findings. It draws from both Zeek notices and Suricata alert data to present a ranked view of the most impactful activity in the environment. Analysts use it to prioritize response actions and track whether high-severity event counts are increasing or decreasing over time.
 
@@ -9728,18 +9850,18 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.risk_score`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.risk_score`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
 
 
 #### Severity Score Occurrences
@@ -9748,17 +9870,17 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `event.severity`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `event.severity`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### Severity - Notices
@@ -9767,15 +9889,15 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.risk_score`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
-    * `zeek.notice.note`
+* `destination.ip`
+* `event.id`
+* `event.risk_score`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
+* `zeek.notice.note`
 
 
 #### Severity - Application Protocol
@@ -9784,8 +9906,8 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `event.risk_score`
-    * `network.protocol`
+* `event.risk_score`
+* `network.protocol`
 
 
 #### Severity - Socket Family
@@ -9794,18 +9916,18 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `source.ip`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `source.ip`
 
 
 #### File Types by Transport
@@ -9814,13 +9936,13 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `file.mime_type`
-    * `file.path`
-    * `file.source`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `file.mime_type`
+* `file.path`
+* `file.source`
+* `source.ip`
+* timestamp
 
 
 #### Severity - Source IP
@@ -9829,18 +9951,18 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.risk_score`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.risk_score`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
 
 
 #### Severity - Destination IP
@@ -9849,18 +9971,18 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.risk_score`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.risk_score`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
 
 
 #### Severity - Originating Country
@@ -9869,18 +9991,18 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `source.geo.country_iso_code`
-    * `source.ip`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `source.geo.country_iso_code`
+* `source.ip`
 
 
 #### Severity - Responding Country
@@ -9889,18 +10011,18 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_iso_code`
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
+* `destination.geo.country_iso_code`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
 
 
 #### Severity - Destination OUI
@@ -9909,19 +10031,19 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.oui`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.risk_score`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
+* `destination.ip`
+* `destination.oui`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.risk_score`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
 
 
 #### Severity - Source OUI
@@ -9930,19 +10052,19 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.risk_score`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
-    * `source.oui`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.risk_score`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
+* `source.oui`
 
 
 #### Actions and Results
@@ -9951,9 +10073,9 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `event.action`
-    * `event.result`
-    * `network.protocol`
+* `event.action`
+* `event.result`
+* `network.protocol`
 
 
 #### Severity-Scored Logs
@@ -9962,22 +10084,24 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.result`
-    * `event.severity`
-    * `event.severity_tags`
-    * `network.protocol`
-    * `network.transport`
-    * `source.ip`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.result`
+* `event.severity`
+* `event.severity_tags`
+* `network.protocol`
+* `network.transport`
+* `source.ip`
 
 
 ---
 
 ## Signatures
+
+* ID: [665d1610-523d-11e9-a30e-e3576242f3ed](#/dashboard/665d1610-523d-11e9-a30e-e3576242f3ed)
 
 The Signatures dashboard focuses on rule-based detections, showing which signatures have fired and how frequently. It covers both Suricata alert rules and Zeek notice signatures, providing a breakdown by rule name, category, and originating host. This dashboard helps tune detection coverage—identifying which signatures generate the most noise versus those that rarely fire but may be highly significant.
 
@@ -9989,7 +10113,7 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 **Fields / Aggregations:**
 
-    * `timestamp`
+* timestamp
 
 
 #### Signatures - Log Count
@@ -9998,13 +10122,13 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.original`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `event.original`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
 
 
 #### Signatures - Logs
@@ -10013,13 +10137,13 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.original`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `event.original`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
 
 
 #### Signatures - Name
@@ -10028,13 +10152,13 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.original`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `event.original`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
 
 
 #### Signatures - Source IP
@@ -10043,13 +10167,13 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.original`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `event.original`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
 
 
 #### Signatures - Destination IP
@@ -10058,18 +10182,20 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `event.original`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `event.id`
+* `event.original`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
 
 
 ---
 
 ## SIP
+
+* ID: [0b2354ae-0fe9-4fd9-b156-1c3870e5c7aa](#/dashboard/0b2354ae-0fe9-4fd9-b156-1c3870e5c7aa)
 
 The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, including call setup, methods, response codes, user agents, and communication pairs. SIP is used for VoIP and unified communications and can be targeted for toll fraud, call hijacking, and reconnaissance of telephony infrastructure. Analysts can detect unusual SIP activity, rogue clients, high volumes of failed authentication, and unauthorized INVITE or REGISTER messages.
 
@@ -10081,14 +10207,14 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Source IP Address
@@ -10097,14 +10223,14 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Destination IP Address
@@ -10113,14 +10239,14 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Destination Country
@@ -10129,15 +10255,15 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Request Path
@@ -10146,15 +10272,15 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.request_path`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.request_path`
+* `zeek.sip.status_msg`
 
 
 #### SIP - URI
@@ -10163,15 +10289,15 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
-    * `zeek.sip.uri`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
+* `zeek.sip.uri`
 
 
 #### SIP - User Agent
@@ -10180,15 +10306,15 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Content Type
@@ -10197,14 +10323,14 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Method
@@ -10213,14 +10339,14 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Destination Port
@@ -10229,14 +10355,14 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Log Count
@@ -10245,14 +10371,14 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Status
@@ -10261,15 +10387,15 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_code`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_code`
+* `zeek.sip.status_msg`
 
 
 #### SIP - Logs
@@ -10278,19 +10404,21 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.sip.content_type`
-    * `zeek.sip.status_msg`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.sip.content_type`
+* `zeek.sip.status_msg`
 
 
 ---
 
 ## SMB
+
+* ID: [42e831b9-41a9-4f35-8b7d-e1566d368773](#/dashboard/42e831b9-41a9-4f35-8b7d-e1566d368773)
 
 The SMB dashboard provides visibility into Server Message Block protocol traffic as logged by Zeek, covering file sharing, named pipe operations, and authentication activity. It surfaces the commands used, files accessed, share names, and hosts involved in SMB communication. This is a critical dashboard for detecting lateral movement, credential relay attacks, and ransomware staging behavior that frequently leverages SMB.
 
@@ -10302,14 +10430,14 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
 
 
 #### SMB - Source IP Address
@@ -10318,14 +10446,14 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
 
 
 #### SMB - Destination IP Address
@@ -10334,14 +10462,14 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
 
 
 #### SMB - Version
@@ -10350,14 +10478,14 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
 
 
 #### SMB - FIle Path
@@ -10366,15 +10494,15 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.smb_files.path`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
+* `zeek.smb_files.path`
 
 
 #### SMB - File Name
@@ -10383,15 +10511,15 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.smb_files.name`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
+* `zeek.smb_files.name`
 
 
 #### SMB - File/Path Summary
@@ -10400,16 +10528,16 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.smb_files.name`
-    * `zeek.smb_files.path`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
+* `zeek.smb_files.name`
+* `zeek.smb_files.path`
 
 
 #### SMB - Log Count
@@ -10418,14 +10546,14 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
 
 
 #### SMB - Destination Port
@@ -10434,14 +10562,14 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
 
 
 #### SMB - Relevant Notices
@@ -10450,13 +10578,13 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### SMB Action
@@ -10465,14 +10593,14 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
 
 
 #### SMB - Logs
@@ -10481,19 +10609,21 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
 
 
 ---
 
 ## SMTP
+
+* ID: [bb827f8e-639e-468c-93c8-9f5bc132eb8f](#/dashboard/bb827f8e-639e-468c-93c8-9f5bc132eb8f)
 
 The SMTP dashboard covers email traffic observed on the network as captured by Zeek's SMTP log. It tracks message senders, recipients, mail servers, attachment details, and transmission metadata. Analysts use it to investigate phishing activity, unauthorized mail relay, and unusual email flow patterns that could indicate account compromise or malware communication.
 
@@ -10505,14 +10635,14 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - Subject
@@ -10521,15 +10651,15 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.subject`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.subject`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP  - Destination Country
@@ -10538,15 +10668,15 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - "From" Address
@@ -10555,14 +10685,14 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - "To" Address
@@ -10571,15 +10701,15 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.rcptto`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.rcptto`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - TLS
@@ -10588,15 +10718,15 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.tls`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.tls`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - Source IP Address
@@ -10605,14 +10735,14 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - Destination IP Address
@@ -10621,14 +10751,14 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - User Agent
@@ -10637,14 +10767,14 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - Destination Port
@@ -10653,14 +10783,14 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - Log Count
@@ -10669,14 +10799,14 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - Webmail
@@ -10685,15 +10815,15 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.is_webmail`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.is_webmail`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 #### SMTP - Logs
@@ -10702,19 +10832,21 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `user_agent.original`
-    * `zeek.smtp.mailfrom`
-    * `zeek.smtp.x_originating_ip`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `user_agent.original`
+* `zeek.smtp.mailfrom`
+* `zeek.smtp.x_originating_ip`
 
 
 ---
 
 ## SNMP
+
+* ID: [4e5f106e-c60a-4226-8f64-d534abb912ab](#/dashboard/4e5f106e-c60a-4226-8f64-d534abb912ab)
 
 The SNMP dashboard covers Simple Network Management Protocol traffic as captured by Zeek, including get/set operations, community strings (if visible), and managed device identifiers. It provides insight into network device monitoring activity and helps detect unauthorized SNMP polling, community string brute-forcing, and SNMP-based information gathering. Analysts can identify which hosts are querying network infrastructure devices and flag unexpected management traffic.
 
@@ -10726,14 +10858,14 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.snmp.community`
-    * `zeek.snmp.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.snmp.community`
+* `zeek.snmp.version`
 
 
 #### SNMP - Source IP Address
@@ -10742,14 +10874,14 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.snmp.community`
-    * `zeek.snmp.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.snmp.community`
+* `zeek.snmp.version`
 
 
 #### SNMP - Destination IP Address
@@ -10758,14 +10890,14 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.snmp.community`
-    * `zeek.snmp.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.snmp.community`
+* `zeek.snmp.version`
 
 
 #### SNMP - Session Duration
@@ -10774,15 +10906,15 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.snmp.community`
-    * `zeek.snmp.duration`
-    * `zeek.snmp.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.snmp.community`
+* `zeek.snmp.duration`
+* `zeek.snmp.version`
 
 
 #### SNMP - Log Count
@@ -10791,15 +10923,15 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.snmp.community`
-    * `zeek.snmp.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
+* `zeek.snmp.community`
+* `zeek.snmp.version`
 
 
 #### SNMP - Community String
@@ -10808,14 +10940,14 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.snmp.community`
-    * `zeek.snmp.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.snmp.community`
+* `zeek.snmp.version`
 
 
 #### SNMP - PDU Type
@@ -10824,15 +10956,15 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.protocol_version`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.snmp.community`
-    * `zeek.snmp.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.protocol_version`
+* `source.ip`
+* timestamp
+* `zeek.snmp.community`
+* `zeek.snmp.version`
 
 
 #### SNMP - Logs
@@ -10841,14 +10973,14 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.snmp.community`
-    * `zeek.snmp.version`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.snmp.community`
+* `zeek.snmp.version`
 
 
 #### SNMP - Version and PDU Type
@@ -10857,14 +10989,16 @@ The SNMP dashboard covers Simple Network Management Protocol traffic as captured
 
 **Fields / Aggregations:**
 
-    * `event.action`
-    * `network.protocol_version`
-    * `timestamp`
+* `event.action`
+* `network.protocol_version`
+* timestamp
 
 
 ---
 
 ## Software
+
+* ID: [87d990cc-9e0b-41e5-b8fe-b10ae1da0c85](#/dashboard/87d990cc-9e0b-41e5-b8fe-b10ae1da0c85)
 
 The Software dashboard tracks software versions and products observed in network traffic, as identified by Zeek's Software framework. It surfaces client and server software names, versions, and the hosts running them, enabling asset management and vulnerability correlation. This is particularly useful for identifying outdated or vulnerable software versions in use across the environment.
 
@@ -10876,12 +11010,12 @@ The Software dashboard tracks software versions and products observed in network
 
 **Fields / Aggregations:**
 
-    * `source.ip`
-    * `timestamp`
-    * `url.full`
-    * `zeek.software.name`
-    * `zeek.software.software_type`
-    * `zeek.software.unparsed_version`
+* `source.ip`
+* timestamp
+* `url.full`
+* `zeek.software.name`
+* `zeek.software.software_type`
+* `zeek.software.unparsed_version`
 
 
 #### Software - Log Count
@@ -10890,12 +11024,12 @@ The Software dashboard tracks software versions and products observed in network
 
 **Fields / Aggregations:**
 
-    * `source.ip`
-    * `timestamp`
-    * `url.full`
-    * `zeek.software.name`
-    * `zeek.software.software_type`
-    * `zeek.software.unparsed_version`
+* `source.ip`
+* timestamp
+* `url.full`
+* `zeek.software.name`
+* `zeek.software.software_type`
+* `zeek.software.unparsed_version`
 
 
 #### Software - Summary
@@ -10904,14 +11038,14 @@ The Software dashboard tracks software versions and products observed in network
 
 **Fields / Aggregations:**
 
-    * `source.ip`
-    * `timestamp`
-    * `url.full`
-    * `zeek.software.name`
-    * `zeek.software.software_type`
-    * `zeek.software.unparsed_version`
-    * `zeek.software.version_major`
-    * `zeek.software.version_minor`
+* `source.ip`
+* timestamp
+* `url.full`
+* `zeek.software.name`
+* `zeek.software.software_type`
+* `zeek.software.unparsed_version`
+* `zeek.software.version_major`
+* `zeek.software.version_minor`
 
 
 #### Software - Logs
@@ -10920,17 +11054,19 @@ The Software dashboard tracks software versions and products observed in network
 
 **Fields / Aggregations:**
 
-    * `source.ip`
-    * `timestamp`
-    * `url.full`
-    * `zeek.software.name`
-    * `zeek.software.software_type`
-    * `zeek.software.unparsed_version`
+* `source.ip`
+* timestamp
+* `url.full`
+* `zeek.software.name`
+* `zeek.software.software_type`
+* `zeek.software.unparsed_version`
 
 
 ---
 
 ## SSH
+
+* ID: [caef3ade-d289-4d05-a511-149f3e97f238](#/dashboard/caef3ade-d289-4d05-a511-149f3e97f238)
 
 The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering connection counts, authentication outcomes, client and server versions, and geographic origins. It provides visibility into remote access activity and helps detect brute-force attempts, unauthorized access, and unusual geographic sources of SSH connections. Analysts can correlate version data to identify outdated SSH implementations that may be vulnerable.
 
@@ -10942,15 +11078,15 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 #### SSH - Source IP Address
@@ -10959,15 +11095,15 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 #### SSH - Destination IP Address
@@ -10976,15 +11112,15 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 #### SSH - Client/Server
@@ -10993,17 +11129,17 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.client`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.server`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.client`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.server`
+* `zeek.ssh.sshka`
 
 
 #### SSH - Log Count
@@ -11012,15 +11148,15 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 #### SSH -Server
@@ -11029,16 +11165,16 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.server`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.server`
+* `zeek.ssh.sshka`
 
 
 #### SSH - Version
@@ -11047,16 +11183,16 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
-    * `zeek.ssh.version`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
+* `zeek.ssh.version`
 
 
 #### SSH - Client Algorithms
@@ -11065,16 +11201,16 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.hasshAlgorithms`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.hasshAlgorithms`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 #### SSH - Server Algorithms
@@ -11083,16 +11219,16 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.hasshServerAlgorithms`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.hasshServerAlgorithms`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 #### SSH - HASSH Client Hash
@@ -11101,16 +11237,16 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.hassh`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.hassh`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 #### SSH - HASSH Server Hash
@@ -11119,16 +11255,16 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.hasshServer`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.hasshServer`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 #### SSH - Connections Tree
@@ -11137,14 +11273,14 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-    * `destination.ip`
-    * `event.id`
-    * `field`
-    * `scheme`
-    * `signal`
-    * `source.ip`
-    * `timestamp`
+* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
+* `destination.ip`
+* `event.id`
+* `field`
+* `scheme`
+* `signal`
+* `source.ip`
+* timestamp
 
 
 #### SSH - Logs
@@ -11153,20 +11289,22 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssh.auth_success`
-    * `zeek.ssh.cipher_alg`
-    * `zeek.ssh.mac_alg`
-    * `zeek.ssh.sshka`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssh.auth_success`
+* `zeek.ssh.cipher_alg`
+* `zeek.ssh.mac_alg`
+* `zeek.ssh.sshka`
 
 
 ---
 
 ## SSL
+
+* ID: [7f77b58a-df3e-4cc2-b782-fd7f8bad8ffb](#/dashboard/7f77b58a-df3e-4cc2-b782-fd7f8bad8ffb)
 
 The SSL/TLS dashboard presents certificate and connection data from encrypted traffic as captured by Zeek's SSL log. It surfaces certificate subjects, issuers, validation errors, cipher suites, and TLS versions in use across the environment. Analysts can use it to identify self-signed or expired certificates, weak cipher usage, and potentially malicious use of encryption to hide command-and-control traffic.
 
@@ -11178,16 +11316,16 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Version
@@ -11196,17 +11334,17 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.ssl_version`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.ssl_version`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Source IP Address
@@ -11215,16 +11353,16 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Destination Port
@@ -11233,16 +11371,16 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Destination Address
@@ -11251,16 +11389,16 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Server
@@ -11269,18 +11407,18 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.freq_score_v1`
-    * `event.freq_score_v2`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.freq_score_v1`
+* `event.freq_score_v2`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Destination Country
@@ -11289,17 +11427,17 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Validation Status
@@ -11308,16 +11446,16 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Log Count
@@ -11326,16 +11464,16 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Relevant Notices
@@ -11344,13 +11482,13 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### SSL - Connection Established
@@ -11359,16 +11497,16 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Certificate Fingerprint
@@ -11377,17 +11515,17 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
-    * `zeek.x509.fingerprint`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
+* `zeek.x509.fingerprint`
 
 
 #### SSL - Elliptic Curve
@@ -11396,17 +11534,17 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.curve`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.curve`
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Next Protocol
@@ -11415,17 +11553,17 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.next_protocol`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.next_protocol`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 #### SSL - Logs
@@ -11434,21 +11572,23 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.ssl.established`
-    * `zeek.ssl.server_name`
-    * `zeek.ssl.sni_matches_cert`
-    * `zeek.ssl.ssl_history`
-    * `zeek.ssl.validation_status`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.ssl.established`
+* `zeek.ssl.server_name`
+* `zeek.ssl.sni_matches_cert`
+* `zeek.ssl.ssl_history`
+* `zeek.ssl.validation_status`
 
 
 ---
 
 ## STUN
+
+* ID: [fa477130-2b8a-11ec-a9f2-3911c8571bfd](#/dashboard/fa477130-2b8a-11ec-a9f2-3911c8571bfd)
 
 The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as observed by Zeek, which is used by applications like WebRTC to establish peer-to-peer connections through firewalls. It tracks binding requests, responses, software identifiers, and communication pairs. Analysts can use this dashboard to identify applications using STUN-based NAT traversal and flag unexpected STUN traffic that may be used for covert communication channels.
 
@@ -11460,16 +11600,16 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `event.id`
-    * `event.provider`
-    * `event.result`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `event.id`
+* `event.provider`
+* `event.result`
+* `network.protocol`
+* `source.ip`
+* timestamp
 
 
 #### STUN - Log Count Over Time
@@ -11478,16 +11618,16 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.stun.attr_type`
-    * `zeek.stun.class`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.stun.attr_type`
+* `zeek.stun.class`
 
 
 #### STUN - Attribute Type
@@ -11496,15 +11636,15 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun.attr_type`
-    * `zeek.stun.class`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun.attr_type`
+* `zeek.stun.class`
 
 
 #### STUN - Method and Class
@@ -11513,15 +11653,15 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun.attr_type`
-    * `zeek.stun.class`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun.attr_type`
+* `zeek.stun.class`
 
 
 #### STUN - Class
@@ -11530,15 +11670,15 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun.attr_type`
-    * `zeek.stun.class`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun.attr_type`
+* `zeek.stun.class`
 
 
 #### STUN - Action and Result
@@ -11547,16 +11687,16 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun.attr_type`
-    * `zeek.stun.class`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun.attr_type`
+* `zeek.stun.class`
 
 
 #### STUN - Source IP
@@ -11565,15 +11705,15 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun.attr_type`
-    * `zeek.stun.class`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun.attr_type`
+* `zeek.stun.class`
 
 
 #### STUN - Destination IP
@@ -11582,15 +11722,15 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun.attr_type`
-    * `zeek.stun.class`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun.attr_type`
+* `zeek.stun.class`
 
 
 #### STUN - LAN
@@ -11599,15 +11739,15 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun_nat.lan_addr`
-    * `zeek.stun_nat.wan_addr`
-    * `zeek.stun_nat.wan_port`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun_nat.lan_addr`
+* `zeek.stun_nat.wan_addr`
+* `zeek.stun_nat.wan_port`
 
 
 #### STUN - WAN
@@ -11616,15 +11756,15 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun_nat.lan_addr`
-    * `zeek.stun_nat.wan_addr`
-    * `zeek.stun_nat.wan_port`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun_nat.lan_addr`
+* `zeek.stun_nat.wan_addr`
+* `zeek.stun_nat.wan_port`
 
 
 #### STUN - Logs
@@ -11633,15 +11773,15 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun.attr_type`
-    * `zeek.stun.class`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun.attr_type`
+* `zeek.stun.class`
 
 
 #### STUN NAT - Logs
@@ -11650,20 +11790,22 @@ The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.is_orig`
-    * `source.ip`
-    * `source.port`
-    * `zeek.stun_nat.lan_addr`
-    * `zeek.stun_nat.wan_addr`
-    * `zeek.stun_nat.wan_port`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.is_orig`
+* `source.ip`
+* `source.port`
+* `zeek.stun_nat.lan_addr`
+* `zeek.stun_nat.wan_addr`
+* `zeek.stun_nat.wan_port`
 
 
 ---
 
 ## Suricata Alerts
+
+* ID: [5694ca60-cbdf-11ec-a50a-5fedd672f5c5](#/dashboard/5694ca60-cbdf-11ec-a50a-5fedd672f5c5)
 
 The Suricata Alerts dashboard surfaces all alerts generated by the Suricata network intrusion detection engine. It presents alert volume over time, rule categories, top alert names, and the source and destination hosts triggering detections. Analysts can use it to identify active threats, track alert trends, and investigate which hosts are most involved in flagged activity.
 
@@ -11675,13 +11817,13 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `vulnerability.category`
 
 
 #### Alerts - Log Count Over Time
@@ -11690,14 +11832,14 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `vulnerability.category`
 
 
 #### Alerts - Tags
@@ -11706,14 +11848,14 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `tags`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `tags`
+* `vulnerability.category`
 
 
 #### Alert Category
@@ -11722,13 +11864,13 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `vulnerability.category`
 
 
 #### Alerts - Target
@@ -11737,13 +11879,13 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `vulnerability.category`
 
 
 #### Alerts - Name
@@ -11752,13 +11894,13 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `vulnerability.category`
 
 
 #### Alerts - Source
@@ -11767,13 +11909,13 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `vulnerability.category`
 
 
 #### Alerts - Destination
@@ -11782,14 +11924,14 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `vulnerability.category`
 
 
 #### Alerts - Destination Country
@@ -11798,14 +11940,14 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.geo.country_name`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `vulnerability.category`
 
 
 #### Alerts - Source Country
@@ -11814,14 +11956,14 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.geo.country_name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.geo.country_name`
+* `source.ip`
+* `vulnerability.category`
 
 
 #### Suricata Alerts - Logs
@@ -11830,18 +11972,20 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.id`
-    * `rule.name`
-    * `source.ip`
-    * `vulnerability.category`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.id`
+* `rule.name`
+* `source.ip`
+* `vulnerability.category`
 
 
 ---
 
 ## Synchrophasor
+
+* ID: [2cc56240-e460-11ed-a9d5-9f591c284cb4](#/dashboard/2cc56240-e460-11ed-a9d5-9f591c284cb4)
 
 *Dashboard for the DNP3 Protocol*
 
@@ -11855,15 +11999,15 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.uid`
 
 
 #### Synchrophasor - Log Count Over Time
@@ -11872,18 +12016,18 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `network.protocol_version`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.synchrophasor.data_frame_count`
-    * `zeek.synchrophasor.data_rate`
-    * `zeek.synchrophasor.data_stream_id`
-    * `zeek.synchrophasor.frame_size_tot`
-    * `zeek.synchrophasor.history`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `network.protocol_version`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.synchrophasor.data_frame_count`
+* `zeek.synchrophasor.data_rate`
+* `zeek.synchrophasor.data_stream_id`
+* `zeek.synchrophasor.frame_size_tot`
+* `zeek.synchrophasor.history`
+* `zeek.uid`
 
 
 #### Synchrophasor - Source
@@ -11892,17 +12036,17 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `network.protocol_version`
-    * `network.transport`
-    * `source.ip`
-    * `zeek.synchrophasor.data_frame_count`
-    * `zeek.synchrophasor.data_rate`
-    * `zeek.synchrophasor.data_stream_id`
-    * `zeek.synchrophasor.frame_size_tot`
-    * `zeek.synchrophasor.history`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `network.protocol_version`
+* `network.transport`
+* `source.ip`
+* `zeek.synchrophasor.data_frame_count`
+* `zeek.synchrophasor.data_rate`
+* `zeek.synchrophasor.data_stream_id`
+* `zeek.synchrophasor.frame_size_tot`
+* `zeek.synchrophasor.history`
+* `zeek.uid`
 
 
 #### Synchrophasor - Destination
@@ -11911,17 +12055,17 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `network.protocol_version`
-    * `network.transport`
-    * `source.ip`
-    * `zeek.synchrophasor.data_frame_count`
-    * `zeek.synchrophasor.data_rate`
-    * `zeek.synchrophasor.data_stream_id`
-    * `zeek.synchrophasor.frame_size_tot`
-    * `zeek.synchrophasor.history`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `network.protocol_version`
+* `network.transport`
+* `source.ip`
+* `zeek.synchrophasor.data_frame_count`
+* `zeek.synchrophasor.data_rate`
+* `zeek.synchrophasor.data_stream_id`
+* `zeek.synchrophasor.frame_size_tot`
+* `zeek.synchrophasor.history`
+* `zeek.uid`
 
 
 #### Synchrophasor - Action
@@ -11930,15 +12074,15 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.uid`
 
 
 #### Synchrophasor - Frame Types
@@ -11947,15 +12091,15 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.uid`
 
 
 #### Synchrophasor - Transport
@@ -11964,17 +12108,17 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `network.protocol_version`
-    * `network.transport`
-    * `source.ip`
-    * `zeek.synchrophasor.data_frame_count`
-    * `zeek.synchrophasor.data_rate`
-    * `zeek.synchrophasor.data_stream_id`
-    * `zeek.synchrophasor.frame_size_tot`
-    * `zeek.synchrophasor.history`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `network.protocol_version`
+* `network.transport`
+* `source.ip`
+* `zeek.synchrophasor.data_frame_count`
+* `zeek.synchrophasor.data_rate`
+* `zeek.synchrophasor.data_stream_id`
+* `zeek.synchrophasor.frame_size_tot`
+* `zeek.synchrophasor.history`
+* `zeek.uid`
 
 
 #### Synchrophasor - Stations
@@ -11983,16 +12127,16 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.synchrophasor_cfg_detail.station_name`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.synchrophasor_cfg_detail.station_name`
+* `zeek.uid`
 
 
 #### Synchrophasor - Phasors
@@ -12001,16 +12145,16 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.synchrophasor_cfg_detail.phnam`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.synchrophasor_cfg_detail.phnam`
+* `zeek.uid`
 
 
 #### Synchrophasor - Analog Channels
@@ -12019,16 +12163,16 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.synchrophasor_cfg_detail.annam`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.synchrophasor_cfg_detail.annam`
+* `zeek.uid`
 
 
 #### Synchrophasor - Digital Channels
@@ -12037,16 +12181,16 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.synchrophasor_cfg_detail.dgnam`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.synchrophasor_cfg_detail.dgnam`
+* `zeek.uid`
 
 
 #### Synchrophasor - Data Modified
@@ -12055,16 +12199,16 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.synchrophasor_data_detail.data_modified`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.synchrophasor_data_detail.data_modified`
+* `zeek.uid`
 
 
 #### Synchrophasor - Rate of Change of Frequency Over Time
@@ -12073,17 +12217,17 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.synchrophasor_data_detail.rocof`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.synchrophasor_data_detail.rocof`
+* `zeek.uid`
 
 
 #### Synchrophasor - Frequency Deviation From Nominal Over Time
@@ -12092,17 +12236,17 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.synchrophasor_data_detail.freq_dev_mhz`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.synchrophasor_data_detail.freq_dev_mhz`
+* `zeek.uid`
 
 
 #### Synchrophasor and Related - Logs
@@ -12111,15 +12255,15 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.dataset`
-    * `network.transport`
-    * `source.ip`
-    * `totDataBytes`
-    * `zeek.synchrophasor.frame_type`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.dataset`
+* `network.transport`
+* `source.ip`
+* `totDataBytes`
+* `zeek.synchrophasor.frame_type`
+* `zeek.uid`
 
 
 #### Synchrophasor - Logs
@@ -12128,22 +12272,24 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `network.protocol_version`
-    * `network.transport`
-    * `source.ip`
-    * `zeek.synchrophasor.data_frame_count`
-    * `zeek.synchrophasor.data_rate`
-    * `zeek.synchrophasor.data_stream_id`
-    * `zeek.synchrophasor.frame_size_tot`
-    * `zeek.synchrophasor.history`
-    * `zeek.uid`
+* `destination.ip`
+* `destination.port`
+* `network.protocol_version`
+* `network.transport`
+* `source.ip`
+* `zeek.synchrophasor.data_frame_count`
+* `zeek.synchrophasor.data_rate`
+* `zeek.synchrophasor.data_stream_id`
+* `zeek.synchrophasor.frame_size_tot`
+* `zeek.synchrophasor.history`
+* `zeek.uid`
 
 
 ---
 
 ## Syslog
+
+* ID: [92985909-dc29-4533-9e80-d3182a0ecf1d](#/dashboard/92985909-dc29-4533-9e80-d3182a0ecf1d)
 
 *Syslog messages observed in network traffic*
 
@@ -12157,14 +12303,14 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 #### Syslog - Source IP Address
@@ -12173,14 +12319,14 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 #### Syslog - Destination IP Address
@@ -12189,14 +12335,14 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 #### Syslog - Destination Port
@@ -12205,14 +12351,14 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 #### Syslog - Log Count
@@ -12221,14 +12367,14 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 #### Syslog - Severity
@@ -12237,14 +12383,14 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 #### Syslog - Facility
@@ -12253,14 +12399,14 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 #### Syslog - Protocol
@@ -12269,15 +12415,15 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.transport`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.transport`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 #### Syslog (Zeek) - Logs
@@ -12286,19 +12432,21 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.syslog.facility`
-    * `zeek.syslog.message`
-    * `zeek.syslog.severity`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.syslog.facility`
+* `zeek.syslog.message`
+* `zeek.syslog.severity`
 
 
 ---
 
 ## Tabular Data Stream
+
+* ID: [bed185a0-ef82-11e9-b38a-2db3ee640e88](#/dashboard/bed185a0-ef82-11e9-b38a-2db3ee640e88)
 
 The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol traffic as logged by Zeek, including login metadata, query activity, and response codes. It provides visibility into database connections and helps detect unauthorized SQL Server access and unusual database activity. Analysts can identify which clients are connecting to SQL Server instances and detect patterns consistent with SQL injection or data exfiltration.
 
@@ -12310,13 +12458,13 @@ The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds.command`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds.command`
 
 
 #### Tabular Data Stream - Log Count
@@ -12325,13 +12473,13 @@ The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds.command`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds.command`
 
 
 #### Tabular Data Stream - Log Count Over Time
@@ -12340,13 +12488,13 @@ The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds.command`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds.command`
 
 
 #### Tabular Data Stream - Command
@@ -12355,12 +12503,12 @@ The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds.command`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds.command`
 
 
 #### Tabular Data Stream - Source IP
@@ -12369,13 +12517,13 @@ The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds.command`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds.command`
 
 
 #### Tabular Data Stream - Destination IP
@@ -12384,18 +12532,20 @@ The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol tra
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.dataset`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds.command`
+* `destination.ip`
+* `destination.port`
+* `event.dataset`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds.command`
 
 
 ---
 
 ## Tabular Data Stream - RPC
+
+* ID: [32587740-ef88-11e9-b38a-2db3ee640e88](#/dashboard/32587740-ef88-11e9-b38a-2db3ee640e88)
 
 The Tabular Data Stream - RPC dashboard focuses on remote procedure call operations within Microsoft SQL Server TDS traffic, including stored procedure execution and batch operations. It surfaces the RPC procedure names, parameters, and originating hosts, providing detailed insight into programmatic database interactions. Security teams can use this to detect unauthorized stored procedure execution and unusual RPC-based SQL Server communication.
 
@@ -12407,13 +12557,13 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_rpc.parameter`
-    * `zeek.tds_rpc.procedure_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_rpc.parameter`
+* `zeek.tds_rpc.procedure_name`
 
 
 #### Tabular Data Stream - RPC Log Count
@@ -12422,13 +12572,13 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_rpc.parameter`
-    * `zeek.tds_rpc.procedure_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_rpc.parameter`
+* `zeek.tds_rpc.procedure_name`
 
 
 #### Tabular Data Stream - RPC Log Count Over Time
@@ -12437,13 +12587,13 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_rpc.parameter`
-    * `zeek.tds_rpc.procedure_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_rpc.parameter`
+* `zeek.tds_rpc.procedure_name`
 
 
 #### Tabular Data Stream - RPC Procedure
@@ -12452,13 +12602,13 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_rpc.parameter`
-    * `zeek.tds_rpc.procedure_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_rpc.parameter`
+* `zeek.tds_rpc.procedure_name`
 
 
 #### Tabular Data Stream - RPC Source IP
@@ -12467,13 +12617,13 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_rpc.parameter`
-    * `zeek.tds_rpc.procedure_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_rpc.parameter`
+* `zeek.tds_rpc.procedure_name`
 
 
 #### Tabular Data Stream - RPC Destination IP
@@ -12482,18 +12632,20 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_rpc.parameter`
-    * `zeek.tds_rpc.procedure_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_rpc.parameter`
+* `zeek.tds_rpc.procedure_name`
 
 
 ---
 
 ## Tabular Data Stream - SQL
+
+* ID: [fa141950-ef89-11e9-b38a-2db3ee640e88](#/dashboard/fa141950-ef89-11e9-b38a-2db3ee640e88)
 
 The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity within Microsoft SQL Server TDS traffic, capturing query text snippets, affected rows, and communication metadata. It provides a window into the types of SQL queries being executed against SQL Server instances. Analysts can use this to detect data harvesting queries, schema enumeration, and unauthorized or unusual SQL activity from unexpected clients.
 
@@ -12505,13 +12657,13 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_sql_batch.header_type`
-    * `zeek.tds_sql_batch.query`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_sql_batch.header_type`
+* `zeek.tds_sql_batch.query`
 
 
 #### Tabular Data Stream - SQL Log Count
@@ -12520,13 +12672,13 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_sql_batch.header_type`
-    * `zeek.tds_sql_batch.query`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_sql_batch.header_type`
+* `zeek.tds_sql_batch.query`
 
 
 #### Tabular Data Stream - SQL Log Count Over Time
@@ -12535,13 +12687,13 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_sql_batch.header_type`
-    * `zeek.tds_sql_batch.query`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_sql_batch.header_type`
+* `zeek.tds_sql_batch.query`
 
 
 #### Tabular Data Stream - SQL Header Type
@@ -12550,13 +12702,13 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_sql_batch.header_type`
-    * `zeek.tds_sql_batch.query`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_sql_batch.header_type`
+* `zeek.tds_sql_batch.query`
 
 
 #### Tabular Data Stream - SQL Source IP
@@ -12565,13 +12717,13 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_sql_batch.header_type`
-    * `zeek.tds_sql_batch.query`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_sql_batch.header_type`
+* `zeek.tds_sql_batch.query`
 
 
 #### Tabular Data Stream - SQL Destination IP
@@ -12580,13 +12732,13 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_sql_batch.header_type`
-    * `zeek.tds_sql_batch.query`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_sql_batch.header_type`
+* `zeek.tds_sql_batch.query`
 
 
 #### Tabular Data Stream - SQL Query
@@ -12595,18 +12747,20 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.tds_sql_batch.header_type`
-    * `zeek.tds_sql_batch.query`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* timestamp
+* `zeek.tds_sql_batch.header_type`
+* `zeek.tds_sql_batch.query`
 
 
 ---
 
 ## Telnet, rlogin and rsh
+
+* ID: [c2549e10-7f2e-11ea-9f8a-1fe1327e2cd2](#/dashboard/c2549e10-7f2e-11ea-9f8a-1fe1327e2cd2)
 
 The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access protocols as captured by Zeek, providing visibility into unencrypted interactive sessions. These protocols transmit credentials and session data in cleartext, making them high-risk when observed on modern networks. Analysts can use this dashboard to identify legacy systems still using insecure remote access protocols and investigate any such sessions as potential security incidents.
 
@@ -12618,15 +12772,15 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
-    * `user`
-    * `zeek.login.client_user`
-    * `zeek.login.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* timestamp
+* `user`
+* `zeek.login.client_user`
+* `zeek.login.success`
 
 
 #### Telnet, rlogin and rsh - Login Success
@@ -12635,15 +12789,15 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
-    * `user`
-    * `zeek.login.client_user`
-    * `zeek.login.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* timestamp
+* `user`
+* `zeek.login.client_user`
+* `zeek.login.success`
 
 
 #### Telnet, rlogin and rsh - Log Count Over Time
@@ -12652,15 +12806,15 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
-    * `user`
-    * `zeek.login.client_user`
-    * `zeek.login.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* timestamp
+* `user`
+* `zeek.login.client_user`
+* `zeek.login.success`
 
 
 #### Telnet, rlogin and rsh - Login Attempts with Cleartext Passwords
@@ -12669,16 +12823,16 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.protocol`
-    * `related.user`
-    * `source.ip`
-    * `timestamp`
-    * `user`
-    * `zeek.login.client_user`
-    * `zeek.login.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.protocol`
+* `related.user`
+* `source.ip`
+* timestamp
+* `user`
+* `zeek.login.client_user`
+* `zeek.login.success`
 
 
 #### Telnet, rsh and rlogin - Source
@@ -12687,15 +12841,15 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
-    * `user`
-    * `zeek.login.client_user`
-    * `zeek.login.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* timestamp
+* `user`
+* `zeek.login.client_user`
+* `zeek.login.success`
 
 
 #### Telnet, rlogin and rsh - Destination
@@ -12704,15 +12858,15 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
-    * `user`
-    * `zeek.login.client_user`
-    * `zeek.login.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* timestamp
+* `user`
+* `zeek.login.client_user`
+* `zeek.login.success`
 
 
 #### Telnet, rlogin and rsh - Logs
@@ -12721,20 +12875,22 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `network.protocol`
-    * `source.ip`
-    * `timestamp`
-    * `user`
-    * `zeek.login.client_user`
-    * `zeek.login.success`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `network.protocol`
+* `source.ip`
+* timestamp
+* `user`
+* `zeek.login.client_user`
+* `zeek.login.success`
 
 
 ---
 
 ## TFTP
+
+* ID: [bf5efbb0-60f1-11eb-9d60-dbf0411cfc48](#/dashboard/bf5efbb0-60f1-11eb-9d60-dbf0411cfc48)
 
 The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by Zeek, including file names, transfer directions, block counts, and host pairs. TFTP is commonly used for network device firmware updates and PXE boot, but also frequently abused for unauthorized file transfers due to its lack of authentication. Analysts can detect unexpected TFTP activity, unauthorized firmware or configuration file transfers, and TFTP servers that should not be accessible.
 
@@ -12746,16 +12902,16 @@ The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tftp.mode`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tftp.mode`
 
 
 #### TFTP - Log Count Over Time
@@ -12764,16 +12920,16 @@ The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tftp.mode`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tftp.mode`
 
 
 #### TFTP - Filename
@@ -12782,16 +12938,16 @@ The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tftp.mode`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tftp.mode`
 
 
 #### TFTP - Source IP
@@ -12800,16 +12956,16 @@ The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tftp.mode`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tftp.mode`
 
 
 #### TFTP - Destination IP
@@ -12818,16 +12974,16 @@ The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tftp.mode`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tftp.mode`
 
 
 #### TFTP - Transfer Mode
@@ -12836,16 +12992,16 @@ The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tftp.mode`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tftp.mode`
 
 
 #### TFTP - Operation Results
@@ -12854,16 +13010,16 @@ The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tftp.mode`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tftp.mode`
 
 
 #### TFTP - Logs
@@ -12872,21 +13028,23 @@ The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.action`
-    * `event.id`
-    * `event.result`
-    * `file.path`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tftp.mode`
+* `destination.ip`
+* `destination.port`
+* `event.action`
+* `event.id`
+* `event.result`
+* `file.path`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tftp.mode`
 
 
 ---
 
 ## Threat Intelligence
+
+* ID: [36ed695f-edcc-47c1-b0ec-50d20c93ce0f](#/dashboard/36ed695f-edcc-47c1-b0ec-50d20c93ce0f)
 
 The Threat Intelligence dashboard presents matches between observed network traffic and threat intelligence indicators, as detected by Zeek's Intel framework. It shows which indicators have been seen, their types (IP, domain, URL, etc.), the sources providing the intelligence, and which network hosts were involved. Analysts can use this dashboard to identify confirmed IOC matches and prioritize incident response based on indicator severity and frequency.
 
@@ -12898,18 +13056,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Observed In
@@ -12918,18 +13076,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Indicator Source
@@ -12938,18 +13096,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Source IP
@@ -12958,18 +13116,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Destination IP
@@ -12978,18 +13136,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Indicator
@@ -12998,18 +13156,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - MIME Type
@@ -13018,19 +13176,19 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `file.mime_type`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `file.mime_type`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Indicator Type
@@ -13039,18 +13197,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Logs
@@ -13059,18 +13217,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Log Count
@@ -13079,18 +13237,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Indicator Description
@@ -13099,18 +13257,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Indicator Category
@@ -13119,18 +13277,18 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Tags
@@ -13139,19 +13297,19 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `tags`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `tags`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 #### Intel - Unique Indicators
@@ -13160,23 +13318,25 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `threat.indicator.description`
-    * `threat.indicator.name`
-    * `threat.indicator.provider`
-    * `threat.indicator.reference`
-    * `threat.indicator.type`
-    * `timestamp`
-    * `zeek.intel.category`
-    * `zeek.intel.seen_where`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `threat.indicator.description`
+* `threat.indicator.name`
+* `threat.indicator.provider`
+* `threat.indicator.reference`
+* `threat.indicator.type`
+* timestamp
+* `zeek.intel.category`
+* `zeek.intel.seen_where`
 
 
 ---
 
 ## Tunnels
+
+* ID: [11be6381-beef-40a7-bdce-88c5398392fc](#/dashboard/11be6381-beef-40a7-bdce-88c5398392fc)
 
 The Tunnels dashboard provides visibility into network tunneling activity as detected by Zeek, covering protocols like GRE, IP-in-IP, and application-layer tunnels. It surfaces tunnel types, encapsulated protocols, and the hosts involved in tunneling activity. Analysts can use this to detect covert communication channels, VPN bypass attempts, and unauthorized encapsulation that may be used to hide malicious traffic.
 
@@ -13188,14 +13348,14 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tunnel.action`
-    * `zeek.tunnel.tunnel_type`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tunnel.action`
+* `zeek.tunnel.tunnel_type`
 
 
 #### Tunnels - Type
@@ -13204,14 +13364,14 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tunnel.action`
-    * `zeek.tunnel.tunnel_type`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tunnel.action`
+* `zeek.tunnel.tunnel_type`
 
 
 #### Tunnels - Destination Address
@@ -13220,14 +13380,14 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tunnel.action`
-    * `zeek.tunnel.tunnel_type`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tunnel.action`
+* `zeek.tunnel.tunnel_type`
 
 
 #### Tunnels - Source IP Address
@@ -13236,14 +13396,14 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tunnel.action`
-    * `zeek.tunnel.tunnel_type`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tunnel.action`
+* `zeek.tunnel.tunnel_type`
 
 
 #### Tunnels - Country
@@ -13252,15 +13412,15 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tunnel.action`
-    * `zeek.tunnel.tunnel_type`
+* `destination.geo.country_name`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tunnel.action`
+* `zeek.tunnel.tunnel_type`
 
 
 #### Tunnels - Action
@@ -13269,14 +13429,14 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tunnel.action`
-    * `zeek.tunnel.tunnel_type`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tunnel.action`
+* `zeek.tunnel.tunnel_type`
 
 
 #### Tunnels - Log Count
@@ -13285,14 +13445,14 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tunnel.action`
-    * `zeek.tunnel.tunnel_type`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tunnel.action`
+* `zeek.tunnel.tunnel_type`
 
 
 #### Tunnels - Logs
@@ -13301,19 +13461,21 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
-    * `zeek.tunnel.action`
-    * `zeek.tunnel.tunnel_type`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `source.ip`
+* `source.port`
+* timestamp
+* `zeek.tunnel.action`
+* `zeek.tunnel.tunnel_type`
 
 
 ---
 
 ## WebSocket
+
+* ID: [b8cf5890-87ed-11ef-ae18-dbcd34795edb](#/dashboard/b8cf5890-87ed-11ef-ae18-dbcd34795edb)
 
 The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as logged by Zeek, tracking the web hosts, URIs, and connection patterns involved in persistent WebSocket connections. WebSocket connections are used by modern web applications for real-time communication and can also be abused for covert C2 channels. Analysts can use this dashboard to identify unexpected WebSocket usage and flag connections to suspicious or unauthorized endpoints.
 
@@ -13325,18 +13487,18 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - Logs Over Time
@@ -13345,18 +13507,18 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - Source IP
@@ -13365,18 +13527,18 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - Destination IP
@@ -13385,18 +13547,18 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - Client Extensions
@@ -13405,18 +13567,18 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - Server Extensions
@@ -13425,18 +13587,18 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - Protocols
@@ -13445,18 +13607,18 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - User Agent Name
@@ -13465,19 +13627,19 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.name`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.name`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - URI
@@ -13486,18 +13648,18 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 #### WebSocket - Logs
@@ -13506,23 +13668,25 @@ The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `related.hosts`
-    * `source.ip`
-    * `timestamp`
-    * `url.original`
-    * `user_agent.original`
-    * `zeek.websocket.client_extensions`
-    * `zeek.websocket.client_protocols`
-    * `zeek.websocket.server_extensions`
-    * `zeek.websocket.subprotocol`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `related.hosts`
+* `source.ip`
+* timestamp
+* `url.original`
+* `user_agent.original`
+* `zeek.websocket.client_extensions`
+* `zeek.websocket.client_protocols`
+* `zeek.websocket.server_extensions`
+* `zeek.websocket.subprotocol`
 
 
 ---
 
 ## X.509
+
+* ID: [024062a6-48d6-498f-a91a-3bf2da3a3cd3](#/dashboard/024062a6-48d6-498f-a91a-3bf2da3a3cd3)
 
 The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessions, providing a detailed inventory of certificates seen on the network. It covers certificate subjects, issuers, signing algorithms, key lengths, and whether certificates are used for host or client authentication. This dashboard helps identify weak cryptographic configurations, expired or untrusted certificates, and certificate anomalies that may indicate impersonation or MitM attacks.
 
@@ -13534,13 +13698,13 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Certificate Signing Algorithm
@@ -13549,13 +13713,13 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Certificate Subject
@@ -13564,14 +13728,14 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_subject_full`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_subject_full`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Certificate Issuer
@@ -13580,14 +13744,14 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_issuer_full`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_issuer_full`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Certificate Key Length
@@ -13596,14 +13760,14 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_key_length`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_key_length`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Certificate Key Algorithm
@@ -13612,14 +13776,14 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_key_alg`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_key_alg`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Log Count
@@ -13628,13 +13792,13 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### SSL - Relevant Notices
@@ -13643,13 +13807,13 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### OCSP - Certificate Revocation
@@ -13658,13 +13822,13 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `zeek.ocsp.certStatus`
-    * `zeek.ocsp.nextUpdate`
-    * `zeek.ocsp.revokereason`
-    * `zeek.ocsp.revoketime`
-    * `zeek.ocsp.serialNumber`
-    * `zeek.ocsp.thisUpdate`
+* `event.id`
+* `zeek.ocsp.certStatus`
+* `zeek.ocsp.nextUpdate`
+* `zeek.ocsp.revokereason`
+* `zeek.ocsp.revoketime`
+* `zeek.ocsp.serialNumber`
+* `zeek.ocsp.thisUpdate`
 
 
 #### X.509 - Is Host Certificate
@@ -13673,13 +13837,13 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Is Client Certificate
@@ -13688,13 +13852,13 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Certificate Fingerprint
@@ -13703,14 +13867,14 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.fingerprint`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.fingerprint`
+* `zeek.x509.host_cert`
 
 
 #### X.509 - Logs
@@ -13719,13 +13883,13 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `timestamp`
-    * `zeek.x509.certificate_issuer.CN`
-    * `zeek.x509.certificate_sig_alg`
-    * `zeek.x509.certificate_subject.CN`
-    * `zeek.x509.certificate_version`
-    * `zeek.x509.client_cert`
-    * `zeek.x509.host_cert`
+* timestamp
+* `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_sig_alg`
+* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_version`
+* `zeek.x509.client_cert`
+* `zeek.x509.host_cert`
 
 
 #### OCSP - Logs
@@ -13734,18 +13898,20 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 **Fields / Aggregations:**
 
-    * `event.id`
-    * `zeek.ocsp.certStatus`
-    * `zeek.ocsp.nextUpdate`
-    * `zeek.ocsp.revokereason`
-    * `zeek.ocsp.revoketime`
-    * `zeek.ocsp.serialNumber`
-    * `zeek.ocsp.thisUpdate`
+* `event.id`
+* `zeek.ocsp.certStatus`
+* `zeek.ocsp.nextUpdate`
+* `zeek.ocsp.revokereason`
+* `zeek.ocsp.revoketime`
+* `zeek.ocsp.serialNumber`
+* `zeek.ocsp.thisUpdate`
 
 
 ---
 
 ## Zeek Known Summary
+
+* ID: [89d1cc50-974c-11ed-bb6b-3fb06c879b11](#/dashboard/89d1cc50-974c-11ed-bb6b-3fb06c879b11)
 
 The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which track hosts, services, and certificates that have been observed on the network. It provides an inventory-style view of known devices, services, and software in the environment. This is useful for asset discovery, baselining normal behavior, and identifying new or unexpected hosts and services appearing on the network.
 
@@ -13757,16 +13923,16 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `network.direction`
-    * `network.name`
-    * `network.protocol`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
+* `event.dataset`
+* `network.direction`
+* `network.name`
+* `network.protocol`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
 
 
 #### Log Source
@@ -13775,8 +13941,8 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `event.ingested`
-    * `host.name`
+* `event.ingested`
+* `host.name`
 
 
 #### Observed Protocols Cloud
@@ -13785,15 +13951,15 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `network.name`
-    * `network.protocol`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
+* `event.dataset`
+* `network.name`
+* `network.protocol`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
 
 
 #### Observed Device Types
@@ -13802,15 +13968,15 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `network.name`
-    * `network.protocol`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
+* `event.dataset`
+* `network.name`
+* `network.protocol`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
 
 
 #### Observed Devices
@@ -13819,15 +13985,15 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `event.dataset`
-    * `network.name`
-    * `network.protocol`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
+* `event.dataset`
+* `network.name`
+* `network.protocol`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
 
 
 #### IANA Service Name and Transport Protocol Port Number Registry
@@ -13836,19 +14002,19 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `destination.port`
-    * `network.name`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
-    * `zeek.known_services.iana_description`
-    * `zeek.known_services.iana_name`
+* `destination.port`
+* `network.name`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
+* `zeek.known_services.iana_description`
+* `zeek.known_services.iana_name`
 
 
 #### Observed Software Categories
@@ -13857,12 +14023,12 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `source.ip`
-    * `timestamp`
-    * `url.full`
-    * `zeek.software.name`
-    * `zeek.software.software_type`
-    * `zeek.software.unparsed_version`
+* `source.ip`
+* timestamp
+* `url.full`
+* `zeek.software.name`
+* `zeek.software.software_type`
+* `zeek.software.unparsed_version`
 
 
 #### Observed Software
@@ -13871,16 +14037,16 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `network.name`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
-    * `zeek.software.name`
-    * `zeek.software.software_type`
-    * `zeek.software.unparsed_version`
+* `network.name`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
+* `zeek.software.name`
+* `zeek.software.software_type`
+* `zeek.software.unparsed_version`
 
 
 #### Uninventoried Observed Hosts
@@ -13889,13 +14055,13 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `destination.device.uninventoried`
-    * `destination.ip`
-    * `destination.segment.name`
-    * `related.site`
-    * `source.device.uninventoried`
-    * `source.ip`
-    * `source.segment.name`
+* `destination.device.uninventoried`
+* `destination.ip`
+* `destination.segment.name`
+* `related.site`
+* `source.device.uninventoried`
+* `source.ip`
+* `source.segment.name`
 
 
 #### Uninventoried Observed Services
@@ -13904,19 +14070,19 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `destination.port`
-    * `network.name`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
-    * `zeek.known_services.iana_description`
-    * `zeek.known_services.iana_name`
+* `destination.port`
+* `network.name`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
+* `zeek.known_services.iana_description`
+* `zeek.known_services.iana_name`
 
 
 #### Zeek Known Services - Logs
@@ -13925,19 +14091,19 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `destination.port`
-    * `network.name`
-    * `network.protocol`
-    * `network.transport`
-    * `network.type`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
-    * `zeek.known_services.iana_description`
-    * `zeek.known_services.iana_name`
+* `destination.port`
+* `network.name`
+* `network.protocol`
+* `network.transport`
+* `network.type`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
+* `zeek.known_services.iana_description`
+* `zeek.known_services.iana_name`
 
 
 #### Zeek Known Software - Logs
@@ -13946,16 +14112,16 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `network.name`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
-    * `zeek.software.name`
-    * `zeek.software.software_type`
-    * `zeek.software.unparsed_version`
+* `network.name`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
+* `zeek.software.name`
+* `zeek.software.software_type`
+* `zeek.software.unparsed_version`
 
 
 #### Zeek Known Hosts - Logs
@@ -13964,18 +14130,20 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 **Fields / Aggregations:**
 
-    * `network.name`
-    * `related.device_name`
-    * `related.device_type`
-    * `related.ip`
-    * `related.manufacturer`
-    * `related.role`
-    * `related.site`
+* `network.name`
+* `related.device_name`
+* `related.device_type`
+* `related.ip`
+* `related.manufacturer`
+* `related.role`
+* `related.site`
 
 
 ---
 
 ## Zeek Notices
+
+* ID: [f1f09567-fc7f-450b-a341-19d2f2bb468b](#/dashboard/f1f09567-fc7f-450b-a341-19d2f2bb468b)
 
 The Zeek Notices dashboard displays all notice-level events raised by Zeek's detection framework, which flags potentially significant network behaviors. Notices can represent a wide range of conditions—from scanning activity and SSL anomalies to policy violations and protocol errors. This dashboard helps analysts review what Zeek has flagged, understand the distribution of notice types, and correlate notices with specific hosts.
 
@@ -13987,13 +14155,13 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - Source IP Addresses
@@ -14002,13 +14170,13 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - Destination IP Addresses
@@ -14017,13 +14185,13 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - Notice Type
@@ -14032,13 +14200,13 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - File MIME Type
@@ -14047,14 +14215,14 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.file_mime_type`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.file_mime_type`
+* `zeek.notice.msg`
 
 
 #### Notices - File Description
@@ -14063,14 +14231,14 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.file_desc`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.file_desc`
+* `zeek.notice.msg`
 
 
 #### Notice - Destination Port
@@ -14079,14 +14247,14 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notice - Message Details
@@ -14095,13 +14263,13 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - Log Count
@@ -14110,13 +14278,13 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - Logs
@@ -14125,13 +14293,13 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - Notice Types by Source and Destination
@@ -14140,13 +14308,13 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - Destination Country
@@ -14155,14 +14323,14 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.geo.country_name`
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.geo.country_name`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 #### Notices - Source Country
@@ -14171,19 +14339,21 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `event.id`
-    * `rule.category`
-    * `rule.name`
-    * `source.geo.country_name`
-    * `source.ip`
-    * `timestamp`
-    * `zeek.notice.msg`
+* `destination.ip`
+* `event.id`
+* `rule.category`
+* `rule.name`
+* `source.geo.country_name`
+* `source.ip`
+* timestamp
+* `zeek.notice.msg`
 
 
 ---
 
 ## Zeek Weird
+
+* ID: [1fff49f6-0199-4a0f-820b-721aff9ff1f1](#/dashboard/1fff49f6-0199-4a0f-820b-721aff9ff1f1)
 
 The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that Zeek's 'weird' log records—events that don't fit normal protocol expectations. These entries often indicate malformed packets, protocol misuse, or active reconnaissance, making them valuable early-warning indicators. Analysts can review this dashboard to surface low-level anomalies that may not trigger a full alert but still merit investigation.
 
@@ -14195,13 +14365,13 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `rule.name`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `rule.name`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Weird - Source
@@ -14210,13 +14380,13 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `rule.name`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `rule.name`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Weird - Destination
@@ -14225,13 +14395,13 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `rule.name`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `rule.name`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Weird - Log Count
@@ -14240,13 +14410,13 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `rule.name`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `rule.name`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Weird - Name
@@ -14255,13 +14425,13 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `rule.name`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `rule.name`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 #### Weird - Logs
@@ -14270,13 +14440,13 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 **Fields / Aggregations:**
 
-    * `destination.ip`
-    * `destination.port`
-    * `event.id`
-    * `rule.name`
-    * `source.ip`
-    * `source.port`
-    * `timestamp`
+* `destination.ip`
+* `destination.port`
+* `event.id`
+* `rule.name`
+* `source.ip`
+* `source.port`
+* timestamp
 
 
 ---

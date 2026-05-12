@@ -90,6 +90,7 @@ Malcolm can also easily be deployed locally on an ordinary consumer workstation 
         + [Screenshots](dashboards.md#DiscoverGallery)
     - [Visualizations and dashboards](dashboards.md#DashboardsVisualizations)
         + [Prebuilt visualizations and dashboards](dashboards.md#PrebuiltVisualizations)
+            * [Malcolm Dashboard Reference](dashboards-reference.md)
             * [Screenshots](dashboards.md#PrebuiltVisualizationsGallery)
         + [Building your own visualizations and dashboards](dashboards.md#BuildDashboard)
             * [Screenshots](dashboards.md#NewVisualizationsGallery)
