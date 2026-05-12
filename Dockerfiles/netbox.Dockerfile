@@ -99,9 +99,7 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
     cd "$(dirname "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}")" && \
         curl -sSL "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_URL}" | tar xzf - -C ./"$(basename "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}")" --strip-components 1 && \
     cd "${NETBOX_DEVICETYPE_LIBRARY_IMPORT_PATH}" && \
-      VIRTUAL_ENV="${NETBOX_PATH}/venv" \
-        PATH="${NETBOX_PATH}/venv/bin:${PATH}" \
-        "${NETBOX_PATH}/venv/bin/uv" sync --active --inexact --no-dev && \
+      VIRTUAL_ENV= "${NETBOX_PATH}/venv/bin/python" -m uv sync --no-dev && \
       sed -i "s/self.pull_repo()/pass/g" ./core/repo.py && \
       mkdir -p ./repo && \
       curl -sSL "${NETBOX_DEVICETYPE_LIBRARY_URL}" | tar xzf - -C ./repo --strip-components 1 && \

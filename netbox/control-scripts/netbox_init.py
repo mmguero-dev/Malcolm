@@ -855,10 +855,10 @@ def process_device_type_library_import(args, netbox_venv_py):
                 os_env = os.environ.copy()
                 os_env['NETBOX_URL'] = args.netbox_url
                 os_env['NETBOX_TOKEN'] = args.netbox_token
-                os_env['VIRTUAL_ENV'] = os.path.join(args.netbox_dir, 'venv')
+                os_env.pop('VIRTUAL_ENV', None)
                 os_env['REPO_URL'] = 'local'
                 os_env['REPO_PATH'] = './repo'
-                cmd = [netbox_venv_py, '-m', 'uv', 'run', '--active', '--no-sync', 'nb-dt-import.py']
+                cmd = [netbox_venv_py, '-m', 'uv', 'run', '--no-sync', 'nb-dt-import.py']
                 err, results = malcolm_utils.run_process(
                     cmd,
                     logger=logging,
