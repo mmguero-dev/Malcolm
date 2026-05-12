@@ -197,7 +197,7 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 *ANSI C12.22 visualizations*
 
-The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication protocol traffic, used in advanced metering infrastructure (AMI) and utility environments. It surfaces service types, device identifiers, table data access, and communication pairs between meters and head-end systems. Analysts monitoring utility networks can use this dashboard to detect unauthorized meter access, data manipulation, and rogue devices communicating on the AMI network.
+The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki/ANSI_C12.22) smart meter communication protocol traffic, used in advanced metering infrastructure (AMI) and utility environments. It surfaces service types, device identifiers, table data access, and communication pairs between meters and head-end systems. Analysts monitoring utility networks can use this dashboard to detect unauthorized meter access, data manipulation, and rogue devices communicating on the AMI network.
 
 ### Visualizations
 
@@ -474,7 +474,7 @@ The ANSI C12.22 dashboard covers the ANSI C12.22 smart meter communication proto
 
 * ID: [677ee170-809e-11ed-8d5b-07069f823b6f](#/dashboard/677ee170-809e-11ed-8d5b-07069f823b6f)
 
-The Asset Interaction Analysis dashboard maps the communication relationships between hosts on the network, providing a behavioral picture of which assets talk to which. It uses connection and protocol data to surface interaction patterns, unusual peer relationships, and potentially unauthorized lateral movement. Security teams use this dashboard to understand normal communication baselines and flag deviations that may indicate compromise or misconfiguration.
+The Asset Interaction Analysis dashboard maps the communication relationships between hosts on the network enriched with the context provided by the [NetBox asset inventory](asset-interaction-analysis.md), providing a behavioral picture of which assets talk to which. It uses connection and protocol data to surface interaction patterns, cross-segment traffic, unusual peer relationships, and potentially unauthorized lateral movement. Security teams use this dashboard to understand normal communication baselines and flag deviations that may indicate compromise or misconfiguration.
 
 ### Visualizations
 
@@ -704,7 +704,7 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 *Dashboard for the BACnet (Building Automation and Control Networks) Protocol*
 
-The BACnet dashboard covers Building Automation and Control network protocol traffic as logged by Zeek, targeting building management systems. It tracks service types, instance numbers, vendor IDs, object identifiers, and device communication patterns. Analysts and building automation security teams can use this dashboard to detect unauthorized access to HVAC, lighting, and physical access control systems.
+The BACnet dashboard covers [Building Automation and Control network (BACnet)](https://en.wikipedia.org/wiki/BACnet) protocol traffic, targeting building management systems. It tracks service types, instance numbers, vendor IDs, object identifiers, and device communication patterns. Analysts and building automation security teams can use this dashboard to detect unauthorized access to HVAC, lighting, and physical access control systems.
 
 ### Visualizations
 
@@ -960,7 +960,7 @@ The BACnet dashboard covers Building Automation and Control network protocol tra
 
 * ID: [ca5799a0-56b5-11eb-b749-576de068f8ad](#/dashboard/ca5799a0-56b5-11eb-b749-576de068f8ad)
 
-The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic used in ABB and Bristol Babcock control systems, common in oil and gas and chemical process environments. It logs function codes, device addresses, and communication pairs observed by Zeek. Security teams can use this dashboard to detect unauthorized commands to BSAP-enabled field devices and monitor for unexpected communication sources.
+The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https://en.wikipedia.org/wiki/Bristol_Standard_Asynchronous_Protocol) traffic used in ABB and Bristol Babcock control systems, common in oil and gas and chemical process environments. It logs function codes, device addresses, and communication pairs observed on the network. Security teams can use this dashboard to detect unauthorized commands to BSAP-enabled field devices and monitor for unexpected communication sources.
 
 ### Visualizations
 
@@ -1158,7 +1158,7 @@ The BSAP dashboard covers Bristol Standard Asynchronous Protocol (BSAP) traffic 
 
 * ID: [abdd7550-2c7c-40dc-947e-f6d186a158c4](#/dashboard/abdd7550-2c7c-40dc-947e-f6d186a158c4)
 
-The Connections dashboard covers all network-layer connection records captured by Zeek and Suricata, including TCP, UDP, and ICMP flows. It surfaces data on conversation volumes, data transfer sizes, connection durations, geographic origins and destinations, and top talkers by byte count. Users can identify chatty hosts, large data transfers, long-lived connections, and cross-border traffic that may warrant further investigation.
+The Connections dashboard covers all network-layer connection records observed on the network, including TCP, UDP, and ICMP flows. It surfaces data on conversation volumes, data transfer sizes, connection durations, geographic origins and destinations, and top talkers by byte count. Users can identify chatty hosts, large data transfers, long-lived connections, and cross-border traffic that may warrant further investigation.
 
 ### Visualizations
 
@@ -1633,13 +1633,13 @@ The Connections dashboard covers all network-layer connection records captured b
 
 * ID: [55e332d0-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/55e332d0-3f99-11e9-a58e-8bdedb0915e8)
 
-This geographic dashboard maps total bytes sent by originators to each destination region, using a world map view based on GeoIP data. It allows analysts to quickly visualize the geographic distribution of outbound data flows and identify unusual volumes of traffic directed to specific countries or regions. This view is useful for detecting data exfiltration to unexpected geographic locations.
+This country-level map shades destination countries by the volume of bytes sent to them by originators, on a green-to-red scale where green indicates lower volumes and red indicates higher volumes. It gives a geographic overview of where data is being directed at a national level. Useful for quickly spotting countries receiving disproportionately large volumes of traffic.
 
 ### Visualizations
 
 #### Connections - Destination - Originator Bytes (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading destination countries by bytes sent by originators, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -1662,13 +1662,13 @@ This geographic dashboard maps total bytes sent by originators to each destinati
 
 * ID: [d4fd6afd-15cb-42bf-8a25-03dd8e59b327](#/dashboard/d4fd6afd-15cb-42bf-8a25-03dd8e59b327)
 
-This dashboard shows inbound byte volumes received by destinations, providing a ranked view of which hosts or subnets are receiving the most data from network responders. It helps identify hosts receiving unusually large data volumes, which may indicate data staging, bulk downloads, or C2 communication. Analysts can use this to prioritize investigation of high-volume data recipients.
+This coordinate map plots destination locations as dots sized by the volume of bytes sent back by responders, pinned to city-level precision. It highlights specific geographic locations where large volumes of response data are originating. Useful for detecting concentrated sources of response traffic at a granular level.
 
 ### Visualizations
 
 #### Connections - Destination - Responder Bytes
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A city-level coordinate map plotting destination locations as dots sized by bytes sent by responders. Enables identification of specific geographic hotspots at a granular level.
 
 **Fields / Aggregations:**
 
@@ -1691,13 +1691,13 @@ This dashboard shows inbound byte volumes received by destinations, providing a 
 
 * ID: [77fc9960-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/77fc9960-3f99-11e9-a58e-8bdedb0915e8)
 
-This geographic map dashboard visualizes responder byte volumes by destination region, providing a geographic breakdown of inbound data flows. It highlights which countries or regions are the source of the most data being delivered to monitored destinations. Useful for identifying geographic sources of large inbound data transfers that may be associated with threat actor infrastructure.
+This country-level map shades destination countries by the volume of bytes sent back by responders, on a green-to-red scale where green indicates lower volumes and red indicates higher volumes. It gives a geographic overview of which countries are generating the most response traffic back to monitored hosts. Useful for identifying national-level sources of high-volume response data.
 
 ### Visualizations
 
 #### Connections - Destination - Responder Bytes (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading destination countries by bytes sent by responders, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -1720,13 +1720,13 @@ This geographic map dashboard visualizes responder byte volumes by destination r
 
 * ID: [60d78fbd-471c-4f59-a9e3-189b33a13644](#/dashboard/60d78fbd-471c-4f59-a9e3-189b33a13644)
 
-This dashboard ranks destination hosts by total bytes in both directions, providing a clear view of the highest-traffic destinations. It is useful for identifying internal hosts involved in large data transfers and detecting data exfiltration or bulk communication to unexpected destinations. Analysts can correlate high-traffic destinations with known services to flag anomalous activity.
+This coordinate map plots destination locations as dots sized by total bytes in both directions, pinned to city-level precision. It highlights specific geographic locations involved in the heaviest overall data exchange. Useful for detecting geographic hotspots of combined traffic volume at a granular level.
 
 ### Visualizations
 
 #### Connections - Destination - Sum of Total Bytes
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A city-level coordinate map plotting destination locations as dots sized by total bytes in both directions. Enables identification of specific geographic hotspots at a granular level.
 
 **Fields / Aggregations:**
 
@@ -1748,13 +1748,13 @@ This dashboard ranks destination hosts by total bytes in both directions, provid
 
 * ID: [a16110b0-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/a16110b0-3f99-11e9-a58e-8bdedb0915e8)
 
-This geographic map dashboard shows total byte volumes by destination region, combining both inbound and outbound bytes into a single view. It provides a quick geographic summary of where the most network traffic is directed. Analysts use it to identify geographic concentrations of network activity and flag traffic to high-risk regions.
+This country-level map shades destination countries by total bytes exchanged in both directions, on a green-to-red scale where green indicates lower volumes and red indicates higher volumes. It provides a high-level geographic summary of which countries are associated with the most overall network traffic. Useful for identifying countries with disproportionately high combined data volumes.
 
 ### Visualizations
 
 #### Connections - Destination - Sum of Total Bytes (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading destination countries by total bytes in both directions, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -1776,13 +1776,13 @@ This geographic map dashboard shows total byte volumes by destination region, co
 
 * ID: [0aed0e23-c8ac-4f2b-9f68-d04b6e7666b0](#/dashboard/0aed0e23-c8ac-4f2b-9f68-d04b6e7666b0)
 
-This dashboard surfaces the longest-lived connections to each destination, helping identify persistent beaconing, slow data exfiltration, and long-running C2 sessions. Long connection durations to unusual destinations are a common indicator of command-and-control communication. Analysts can use this view to triage connections that have been active for unusually extended periods.
+This coordinate map plots destination locations as dots sized by connection duration, pinned to city-level precision. It highlights specific geographic locations associated with the longest-lived connections. Useful for detecting persistent communication channels to unexpected destinations at a granular level.
 
 ### Visualizations
 
 #### Connections - Destination - Top Connection Duration
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A city-level coordinate map plotting destination locations as dots sized by connection duration. Enables identification of specific geographic hotspots at a granular level.
 
 **Fields / Aggregations:**
 
@@ -1805,13 +1805,13 @@ This dashboard surfaces the longest-lived connections to each destination, helpi
 
 * ID: [b9f247c0-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/b9f247c0-3f99-11e9-a58e-8bdedb0915e8)
 
-This geographic map dashboard maps the longest connection durations by destination region, providing a geographic view of persistent connections. It helps identify sustained communication with hosts in specific countries or regions, which can indicate beaconing or long-lived C2 channels. Analysts can quickly see which geographic areas are associated with the most persistent connections.
+This country-level map shades destination countries by longest connection duration, on a green-to-red scale where green indicates shorter durations and red indicates longer ones. It provides a geographic overview of which nations are associated with the most long-lived outbound connections. Useful for identifying countries linked to persistent communication that may indicate C2 or ongoing exfiltration.
 
 ### Visualizations
 
 #### Connections - Destination - Top Connection Duration (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading destination countries by connection duration, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -1834,13 +1834,13 @@ This geographic map dashboard maps the longest connection durations by destinati
 
 * ID: [b50c8d17-6ed3-4de6-aed4-5181032810b2](#/dashboard/b50c8d17-6ed3-4de6-aed4-5181032810b2)
 
-This dashboard ranks source hosts by the total bytes they have sent as connection originators, highlighting the most active data senders on the network. Unusually high originator byte counts from a single source may indicate bulk data exfiltration or a compromised host involved in large-scale data transfer. Analysts can use this view to identify outlier sources and investigate their communication patterns.
+This coordinate map plots source locations as dots sized by the volume of bytes sent as an originator, pinned to city-level precision. It highlights specific geographic locations generating the most outbound data. Useful for detecting high-volume originating sources at a granular geographic level.
 
 ### Visualizations
 
 #### Connections - Source - Originator Bytes
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A city-level coordinate map plotting source locations as dots sized by bytes sent by originators. Enables identification of specific geographic hotspots at a granular level.
 
 **Fields / Aggregations:**
 
@@ -1863,13 +1863,13 @@ This dashboard ranks source hosts by the total bytes they have sent as connectio
 
 * ID: [d41fe630-3f98-11e9-a58e-8bdedb0915e8](#/dashboard/d41fe630-3f98-11e9-a58e-8bdedb0915e8)
 
-This geographic map dashboard visualizes originator byte volumes by source region, showing which geographic areas are generating the most outbound traffic. It is useful for identifying regions associated with high-volume data originators and detecting unexpected geographic sources of large data transfers. Security teams can cross-reference with threat intelligence to flag originator activity from high-risk regions.
+This country-level map shades source countries by the volume of bytes sent as originators, on a green-to-red scale where green indicates lower volumes and red indicates higher volumes. It provides a geographic overview of which nations are generating the most outbound traffic. Useful for correlating high-volume originator activity with known threat actor regions or unexpected source countries.
 
 ### Visualizations
 
 #### Connections - Source - Originator Bytes (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading source countries by bytes sent by originators, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -1892,13 +1892,13 @@ This geographic map dashboard visualizes originator byte volumes by source regio
 
 * ID: [ed8a6640-3f98-11e9-a58e-8bdedb0915e8](#/dashboard/ed8a6640-3f98-11e9-a58e-8bdedb0915e8)
 
-This geographic map visualizes responder byte volumes by source region, showing which countries or areas are associated with the highest inbound data receipt. It provides a geographic view of which regions' hosts are receiving the most response data. Useful for identifying geographic clusters of high data-receipt activity that may warrant deeper investigation.
+This country-level map shades source countries by the volume of bytes received from responders, on a green-to-red scale where green indicates lower volumes and red indicates higher volumes. It provides a geographic overview of which source nations are receiving the most response data. Useful for identifying countries whose hosts are pulling large volumes of data from remote responders.
 
 ### Visualizations
 
 #### Connections - Source - Responder Bytes (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading source countries by bytes sent by responders, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -1921,13 +1921,13 @@ This geographic map visualizes responder byte volumes by source region, showing 
 
 * ID: [f394057d-1b16-4174-b994-7045f423a416](#/dashboard/f394057d-1b16-4174-b994-7045f423a416)
 
-This dashboard ranks source hosts by their total network byte volume across all connections, giving a combined view of both sent and received data. Top sources by total bytes represent the most network-active hosts and may warrant investigation if they are not known high-volume systems. Analysts use this as a quick indicator of which hosts have the highest overall network presence.
+This coordinate map plots source locations as dots sized by total bytes in both directions, pinned to city-level precision. It highlights specific geographic locations with the highest combined traffic volumes. Useful for surfacing geographic hotspots of overall activity at a granular level.
 
 ### Visualizations
 
 #### Connections - Source - Sum of Total Bytes
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A city-level coordinate map plotting source locations as dots sized by total bytes in both directions. Enables identification of specific geographic hotspots at a granular level.
 
 **Fields / Aggregations:**
 
@@ -1949,13 +1949,13 @@ This dashboard ranks source hosts by their total network byte volume across all 
 
 * ID: [1ce42250-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/1ce42250-3f99-11e9-a58e-8bdedb0915e8)
 
-This geographic map dashboard shows total byte volumes by source region, combining sent and received bytes for a comprehensive geographic activity view. It provides an at-a-glance summary of which regions are the most network-active. Useful for detecting geographic concentrations of high-volume traffic that may indicate targeted activity.
+This country-level map shades source countries by total bytes exchanged in both directions, on a green-to-red scale where green indicates lower volumes and red indicates higher volumes. It provides a high-level geographic summary of which nations are the most network-active overall. Useful for identifying countries with disproportionately high combined traffic volumes.
 
 ### Visualizations
 
 #### Connections - Source - Sum of Total Bytes (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading source countries by total bytes in both directions, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -1977,13 +1977,13 @@ This geographic map dashboard shows total byte volumes by source region, combini
 
 * ID: [e09a4b86-29b5-4256-bb3b-802ac9f90404](#/dashboard/e09a4b86-29b5-4256-bb3b-802ac9f90404)
 
-This dashboard surfaces the longest-lived connections originating from each source host, helping identify persistent communication channels and potential beaconing. Long-lived connections from a single source to an external host are a common indicator of command-and-control or data exfiltration over persistent sessions. Analysts can use this to prioritize investigation of sources maintaining unusually long connections.
+This coordinate map plots source locations as dots sized by connection duration, pinned to city-level precision. It highlights specific geographic locations where the most persistent outbound connections originate. Useful for detecting long-running sessions from unexpected locations that may indicate beaconing or C2 activity.
 
 ### Visualizations
 
 #### Connections - Source - Top Connection Duration
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A city-level coordinate map plotting source locations as dots sized by connection duration. Enables identification of specific geographic hotspots at a granular level.
 
 **Fields / Aggregations:**
 
@@ -2006,13 +2006,13 @@ This dashboard surfaces the longest-lived connections originating from each sour
 
 * ID: [39abfe30-3f99-11e9-a58e-8bdedb0915e8](#/dashboard/39abfe30-3f99-11e9-a58e-8bdedb0915e8)
 
-This geographic map dashboard maps the longest connection durations by source region, showing which geographic areas are associated with the most persistent originating connections. It complements the source duration table view with a geographic context, helping analysts identify regions involved in long-lived communication. Useful for detecting persistent cross-border connections that may indicate ongoing C2 or data exfiltration activity.
+This country-level map shades source countries by longest connection duration, on a green-to-red scale where green indicates shorter durations and red indicates longer ones. It provides a geographic overview of which nations are associated with the most persistent originating connections. Useful for identifying countries linked to long-lived communication patterns that may indicate ongoing adversary activity.
 
 ### Visualizations
 
 #### Connections - Source - Top Connection Duration (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading source countries by connection duration, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -2035,7 +2035,7 @@ This geographic map dashboard maps the longest connection durations by source re
 
 * ID: [432af556-c5c0-4cc3-8166-b274b4e3a406](#/dashboard/432af556-c5c0-4cc3-8166-b274b4e3a406)
 
-The DCE/RPC dashboard provides visibility into Distributed Computing Environment / Remote Procedure Call traffic as logged by Zeek, which underlies many Windows protocols including DCOM and WMI. It surfaces endpoint UUIDs, operations, named pipes, and the hosts involved in RPC exchanges. Security teams can use this dashboard to detect lateral movement via WMI or DCOM, identify unusual RPC service calls, and spot DCE/RPC-based reconnaissance.
+The DCE/RPC dashboard provides visibility into [Distributed Computing Environment / Remote Procedure Call (DCE/RPC)](https://en.wikipedia.org/wiki/DCE/RPC) traffic, which underlies many Windows protocols including DCOM and WMI. It surfaces endpoint UUIDs, operations, named pipes, and the hosts involved in RPC exchanges. Security teams can use this dashboard to detect lateral movement via WMI or DCOM, identify unusual RPC service calls, and spot DCE/RPC-based reconnaissance.
 
 ### Visualizations
 
@@ -2224,7 +2224,7 @@ The DCE/RPC dashboard provides visibility into Distributed Computing Environment
 
 * ID: [2d98bb8e-214c-4374-837b-20e1bcd63a5e](#/dashboard/2d98bb8e-214c-4374-837b-20e1bcd63a5e)
 
-The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured by Zeek, including IP address assignments, hostname registrations, and lease activity. It provides a real-time picture of which devices are joining the network and what addresses they are receiving. Analysts can use it for asset discovery, detecting rogue DHCP servers, and correlating IP addresses with hostnames at specific points in time.
+The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://en.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol) activity observed on the network, including IP address assignments, hostname registrations, and lease activity. It provides a real-time picture of which devices are joining the network and what addresses they are receiving. Analysts can use it for asset discovery, detecting rogue DHCP servers, and correlating IP addresses with hostnames at specific points in time.
 
 ### Visualizations
 
@@ -2448,7 +2448,7 @@ The DHCP dashboard tracks Dynamic Host Configuration Protocol activity captured 
 
 *Dashboard for the DNP3 Protocol*
 
-The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS protocol used in electric utility and water treatment environments. It surfaces function codes, object headers, master and outstation addresses, and request/response patterns observed by Zeek. This dashboard helps security and operations teams detect command injection, unauthorized polling, and anomalous DNP3 traffic that may indicate unauthorized access to field devices.
+The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wikipedia.org/wiki/DNP3) traffic, a common ICS protocol used in electric utility and water treatment environments. It surfaces function codes, object headers, master and outstation addresses, and request/response patterns observed on the network. This dashboard helps security and operations teams detect command injection, unauthorized polling, and anomalous DNP3 traffic that may indicate unauthorized access to field devices.
 
 ### Visualizations
 
@@ -2670,7 +2670,7 @@ The DNP3 dashboard covers Distributed Network Protocol 3 traffic, a common ICS p
 
 * ID: [2cf94cd0-ecab-40a5-95a7-8419f3a39cd9](#/dashboard/2cf94cd0-ecab-40a5-95a7-8419f3a39cd9)
 
-The DNS dashboard provides a comprehensive view of DNS activity observed on the network as captured by Zeek. It covers query volumes over time, top queried domains, response codes, query types, and the hosts generating DNS traffic. Analysts use it to detect DNS-based threats such as data exfiltration via DNS tunneling, domain generation algorithm (DGA) activity, and unusually high query rates.
+The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](https://en.wikipedia.org/wiki/Domain_Name_System) activity observed on the network. It covers query volumes over time, top queried domains, response codes, query types, and the hosts generating DNS traffic. Analysts use it to detect DNS-based threats such as data exfiltration via DNS tunneling, domain generation algorithm (DGA) activity, and unusually high query rates.
 
 ### Visualizations
 
@@ -2870,7 +2870,7 @@ The DNS dashboard provides a comprehensive view of DNS activity observed on the 
 
 * ID: [4a073440-b286-11eb-a4d4-09fa12a6ebd4](#/dashboard/4a073440-b286-11eb-a4d4-09fa12a6ebd4)
 
-The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet traffic, used in high-speed motion control and automation systems. It captures command types, slave addresses, working counters, and communication patterns between master and slave devices. This dashboard is useful for detecting anomalous EtherCAT traffic that could indicate device tampering or unauthorized access to automation equipment.
+The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.org/wiki/EtherCAT) industrial Ethernet traffic, used in high-speed motion control and automation systems. It captures command types, slave addresses, working counters, and communication patterns between master and slave devices. This dashboard is useful for detecting anomalous EtherCAT traffic that could indicate device tampering or unauthorized access to automation equipment.
 
 ### Visualizations
 
@@ -2998,7 +2998,7 @@ The EtherCAT dashboard provides visibility into EtherCAT industrial Ethernet tra
 
 *Dashboard for Ethernet/IP and CIP Protocols*
 
-The EtherNet/IP dashboard covers Ethernet/IP and Common Industrial Protocol (CIP) traffic as logged by Zeek, which is widely used in manufacturing and process control environments. It surfaces CIP service codes, class and instance identifiers, device identity data, and communication pairs. Security teams can use this to monitor for unauthorized PLC access, unusual CIP commands, and unexpected EtherNet/IP device discovery activity.
+The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/EtherNet/IP) and [Common Industrial Protocol (CIP)](https://en.wikipedia.org/wiki/Common_Industrial_Protocol) traffic, which is widely used in manufacturing and process control environments. It surfaces CIP service codes, class and instance identifiers, device identity data, and communication pairs. Security teams can use this to monitor for unauthorized PLC access, unusual CIP commands, and unexpected EtherNet/IP device discovery activity.
 
 ### Visualizations
 
@@ -3771,7 +3771,7 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 * ID: [078b9aa5-9bd4-4f02-ae5e-cf80fa6f887b](#/dashboard/078b9aa5-9bd4-4f02-ae5e-cf80fa6f887b)
 
-The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, including commands, arguments, reply codes, and transfer participants. It provides insight into file staging, unauthorized file transfers, and FTP authentication patterns. This is a useful dashboard for investigating data exfiltration over FTP and identifying misconfigured FTP servers accessible to unauthorized clients.
+The FTP dashboard covers all [File Transfer Protocol (FTP)](https://en.wikipedia.org/wiki/File_Transfer_Protocol) activity observed on the network, including commands, arguments, reply codes, and transfer participants. It provides insight into file staging, unauthorized file transfers, and FTP authentication patterns. This is a useful dashboard for investigating data exfiltration over FTP and identifying misconfigured FTP servers accessible to unauthorized clients.
 
 ### Visualizations
 
@@ -3916,7 +3916,7 @@ The FTP dashboard covers all File Transfer Protocol activity captured by Zeek, i
 
 *Dashboard for the GE SRTP Protocol*
 
-The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), used to communicate with GE PLCs and automation devices. It captures service request types, memory area access, sequence numbers, and communication pairs. Security teams can use this to detect unauthorized reads or writes to GE PLC memory areas, which could indicate ICS-targeted attacks or insider threats.
+The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](https://en.wikipedia.org/wiki/Service_Request_Transport_Protocol), used to communicate with GE PLCs and automation devices. It captures service request types, memory area access, sequence numbers, and communication pairs. Security teams can use this to detect unauthorized reads or writes to GE PLC memory areas, which could indicate ICS-targeted attacks or insider threats.
 
 ### Visualizations
 
@@ -4329,7 +4329,7 @@ The GE SRTP dashboard covers the GE Service Request Transport Protocol (SRTP), u
 
 *Dashboard for the GENISYS Protocol*
 
-The GENISYS dashboard covers network traffic for the GENISYS industrial protocol as logged by Zeek. It tracks source and destination communication pairs, station addresses, operation directions, and event results. This dashboard gives operators and security teams visibility into GENISYS device communication and helps detect anomalous commands or unexpected participants in protocol exchanges.
+The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.com/doc/6363274/genisys-2000---ansaldo-sts---product-support#93) industrial protocol. It tracks source and destination communication pairs, station addresses, operation directions, and event results. This dashboard gives operators and security teams visibility into GENISYS device communication and helps detect anomalous commands or unexpected participants in protocol exchanges.
 
 ### Visualizations
 
@@ -4494,7 +4494,7 @@ The GENISYS dashboard covers network traffic for the GENISYS industrial protocol
 
 * ID: [3a9e3440-75e2-11ef-8138-03748f839a49](#/dashboard/3a9e3440-75e2-11ef-8138-03748f839a49)
 
-The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over IP traffic, used to communicate with smart field instruments in process control environments. It logs command codes, device addresses, response codes, and communication participants. Security teams monitoring process control networks can use this to detect unauthorized read or write commands to smart sensors and field devices.
+The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](https://en.wikipedia.org/wiki/Highway_Addressable_Remote_Transducer_Protocol) over IP traffic, used to communicate with smart field instruments in process control environments. It logs command codes, device addresses, response codes, and communication participants. Security teams monitoring process control networks can use this to detect unauthorized read or write commands to smart sensors and field devices.
 
 ### Visualizations
 
@@ -4912,7 +4912,7 @@ The HART-IP dashboard covers Highway Addressable Remote Transducer (HART) over I
 
 * ID: [37041ee1-79c0-4684-a436-3173b0e89876](#/dashboard/37041ee1-79c0-4684-a436-3173b0e89876)
 
-The HTTP dashboard covers all web traffic observed by Zeek, including request methods, URIs, response codes, user agents, and host headers. It provides insight into web browsing behavior, application traffic, file downloads, and server responses across the monitored network. This is a key dashboard for investigating web-based attacks, unauthorized downloads, and unusual HTTP patterns that may indicate compromise.
+The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) web traffic observed on the network, including request methods, URIs, response codes, user agents, and host headers. It provides insight into web browsing behavior, application traffic, file downloads, and server responses across the monitored network. This is a key dashboard for investigating web-based attacks, unauthorized downloads, and unusual HTTP patterns that may indicate compromise.
 
 ### Visualizations
 
@@ -5571,7 +5571,7 @@ The IP Connections Tree dashboard presents network connection data in a hierarch
 
 * ID: [76f2f912-80da-44cd-ab66-6a73c8344cc3](#/dashboard/76f2f912-80da-44cd-ab66-6a73c8344cc3)
 
-The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek, tracking channels, nicknames, commands, and communication hosts. IRC is frequently used as a command-and-control channel by botnets and malware, making this dashboard a useful tool for detecting C2 communication and bot activity. Analysts can identify unexpected IRC traffic in environments where it is not a legitimate business tool.
+The IRC dashboard covers [Internet Relay Chat (IRC)](https://en.wikipedia.org/wiki/Internet_Relay_Chat) protocol traffic, tracking channels, nicknames, commands, and communication hosts. IRC is frequently used as a command-and-control channel by botnets and malware, making this dashboard a useful tool for detecting C2 communication and bot activity. Analysts can identify unexpected IRC traffic in environments where it is not a legitimate business tool.
 
 ### Visualizations
 
@@ -5711,7 +5711,7 @@ The IRC dashboard covers Internet Relay Chat protocol traffic as logged by Zeek,
 
 * ID: [82da3101-2a9c-4ae2-bb61-d447a3fbe673](#/dashboard/82da3101-2a9c-4ae2-bb61-d447a3fbe673)
 
-The Kerberos dashboard surfaces authentication traffic from Kerberos as logged by Zeek, covering ticket requests, error codes, service names, and participating hosts. It is useful for detecting Kerberoasting, AS-REP roasting, ticket forgery, and other Active Directory authentication abuse patterns. Analysts can use the error code breakdown to identify failed authentication spikes and unusual service ticket requests.
+The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerberos_(protocol)) authentication traffic, covering ticket requests, error codes, service names, and participating hosts. It is useful for detecting Kerberoasting, AS-REP roasting, ticket forgery, and other Active Directory authentication abuse patterns. Analysts can use the error code breakdown to identify failed authentication spikes and unusual service ticket requests.
 
 ### Visualizations
 
@@ -5934,7 +5934,7 @@ The Kerberos dashboard surfaces authentication traffic from Kerberos as logged b
 
 * ID: [05e3e000-f118-11e9-acda-83a8e29e1a24](#/dashboard/05e3e000-f118-11e9-acda-83a8e29e1a24)
 
-The LDAP dashboard tracks Lightweight Directory Access Protocol queries and responses as observed by Zeek, covering bind operations, search queries, object targets, and results. It is particularly useful for identifying Active Directory enumeration, unauthorized directory queries, and LDAP injection attempts. Analysts can review top querying hosts and common search targets to baseline legitimate directory usage against anomalous activity.
+The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https://en.wikipedia.org/wiki/Lightweight_Directory_Access_Protocol) queries and responses, covering bind operations, search queries, object targets, and results. It is particularly useful for identifying Active Directory enumeration, unauthorized directory queries, and LDAP injection attempts. Analysts can review top querying hosts and common search targets to baseline legitimate directory usage against anomalous activity.
 
 ### Visualizations
 
@@ -6133,7 +6133,7 @@ The LDAP dashboard tracks Lightweight Directory Access Protocol queries and resp
 
 *Dashboard for the Modbus Protocol*
 
-The Modbus dashboard provides visibility into Modbus industrial protocol traffic as logged by Zeek, covering function codes, register addresses, unit identifiers, and host communication pairs. Modbus is widely used in SCADA and ICS environments for controlling field devices, making this dashboard critical for OT security monitoring. Analysts can detect unauthorized commands, unusual function codes, and communication with unexpected Modbus devices.
+The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/wiki/Modbus) industrial protocol traffic, covering function codes, register addresses, unit identifiers, and host communication pairs. Modbus is widely used in SCADA and ICS environments for controlling field devices, making this dashboard critical for OT security monitoring. Analysts can detect unauthorized commands, unusual function codes, and communication with unexpected Modbus devices.
 
 ### Visualizations
 
@@ -6468,7 +6468,7 @@ The Modbus dashboard provides visibility into Modbus industrial protocol traffic
 
 * ID: [87a32f90-ef58-11e9-974e-9d600036d105](#/dashboard/87a32f90-ef58-11e9-974e-9d600036d105)
 
-The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, widely used in IoT devices and lightweight machine-to-machine communication. It tracks topic names, QoS levels, client IDs, and broker/client communication patterns observed by Zeek. This dashboard is useful for asset discovery in IoT environments, detecting unauthorized MQTT brokers, and identifying sensitive topics being published or subscribed to by unexpected clients.
+The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.org/wiki/MQTT) protocol traffic, widely used in IoT devices and lightweight machine-to-machine communication. It tracks topic names, QoS levels, client IDs, and broker/client communication patterns observed on the network. This dashboard is useful for asset discovery in IoT environments, detecting unauthorized MQTT brokers, and identifying sensitive topics being published or subscribed to by unexpected clients.
 
 ### Visualizations
 
@@ -6631,7 +6631,7 @@ The MQTT dashboard covers Message Queuing Telemetry Transport protocol traffic, 
 
 * ID: [50ced171-1b10-4c3f-8b67-2db9635661a6](#/dashboard/50ced171-1b10-4c3f-8b67-2db9635661a6)
 
-The MySQL dashboard provides visibility into MySQL database protocol traffic as captured by Zeek, including command types, user credentials (where visible), affected rows, and connection metadata. It helps detect unauthorized database access, SQL operations from unexpected hosts, and unusual query patterns. Security teams can use this to enforce database access policies and identify potential data exfiltration over MySQL connections.
+The MySQL dashboard provides visibility into [MySQL](https://en.wikipedia.org/wiki/MySQL) database protocol traffic, including command types, user credentials (where visible), affected rows, and connection metadata. It helps detect unauthorized database access, SQL operations from unexpected hosts, and unusual query patterns. Security teams can use this to enforce database access policies and identify potential data exfiltration over MySQL connections.
 
 ### Visualizations
 
@@ -6718,7 +6718,7 @@ The MySQL dashboard provides visibility into MySQL database protocol traffic as 
 
 * ID: [543118a9-02d7-43fe-b669-b8652177fc37](#/dashboard/543118a9-02d7-43fe-b669-b8652177fc37)
 
-The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Zeek, including NTLM challenge-response exchanges, domain information, and authentication outcomes. It provides insight into legacy authentication usage and helps detect NTLM relay attacks, credential brute-forcing, and pass-the-hash activity. Security teams can use this dashboard to identify systems still relying on NTLM where Kerberos should be used.
+The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/NT_LAN_Manager) authentication traffic, including NTLM challenge-response exchanges, domain information, and authentication outcomes. It provides insight into legacy authentication usage and helps detect NTLM relay attacks, credential brute-forcing, and pass-the-hash activity. Security teams can use this dashboard to identify systems still relying on NTLM where Kerberos should be used.
 
 ### Visualizations
 
@@ -6929,7 +6929,7 @@ The NTLM dashboard covers NT LAN Manager authentication traffic as captured by Z
 
 * ID: [af5df620-eeb6-11e9-bdef-65a192b7f586](#/dashboard/af5df620-eeb6-11e9-bdef-65a192b7f586)
 
-The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, providing insight into time synchronization activity across the environment. It tracks NTP stratum levels, reference IDs, version numbers, and communication pairs. Analysts can detect NTP amplification abuse, rogue time sources, and unusual NTP query volumes that could indicate reconnaissance or DDoS preparation.
+The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/wiki/Network_Time_Protocol) traffic, providing insight into time synchronization activity across the environment. It tracks NTP stratum levels, reference IDs, version numbers, and communication pairs. Analysts can detect NTP amplification abuse, rogue time sources, and unusual NTP query volumes that could indicate reconnaissance or DDoS preparation.
 
 ### Visualizations
 
@@ -7094,7 +7094,7 @@ The NTP dashboard covers Network Time Protocol traffic as logged by Zeek, provid
 
 * ID: [c899f8b0-d36b-11ef-b619-17836b3bbf47](#/dashboard/c899f8b0-d36b-11ef-b619-17836b3bbf47)
 
-The Omron FINS dashboard provides visibility into the Factory Interface Network Service (FINS) protocol used by Omron PLCs and automation equipment. It tracks command codes, memory area designations, unit addresses, and source/destination host pairs. This dashboard is useful for detecting unauthorized command execution against Omron controllers, including memory reads, writes, and PLC status queries.
+The Omron FINS dashboard provides visibility into the [Factory Interface Network Service (FINS)](https://en.wikipedia.org/wiki/Factory_Interface_Network_Service) protocol used by Omron PLCs and automation equipment. It tracks command codes, memory area designations, unit addresses, and source/destination host pairs. This dashboard is useful for detecting unauthorized command execution against Omron controllers, including memory reads, writes, and PLC status queries.
 
 ### Visualizations
 
@@ -7303,7 +7303,7 @@ The Omron FINS dashboard provides visibility into the Factory Interface Network 
 
 * ID: [dd87edd0-796a-11ec-9ce6-b395c1ff58f4](#/dashboard/dd87edd0-796a-11ec-9ce6-b395c1ff58f4)
 
-The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traffic, the modern standard for industrial data exchange between PLCs, SCADA systems, and enterprise applications. It captures service types, node IDs, security policy, and communication pairs observed by Zeek. Analysts can use this to detect unauthorized OPC UA connections, unusual browsing or write operations, and unexpected cross-zone OPC UA traffic.
+The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://en.wikipedia.org/wiki/OPC_Unified_Architecture) binary protocol traffic, the modern standard for industrial data exchange between PLCs, SCADA systems, and enterprise applications. It captures service types, node IDs, security policy, and communication pairs observed on the network. Analysts can use this to detect unauthorized OPC UA connections, unusual browsing or write operations, and unexpected cross-zone OPC UA traffic.
 
 ### Visualizations
 
@@ -7498,7 +7498,7 @@ The OPC UA Binary dashboard covers OPC Unified Architecture binary protocol traf
 
 * ID: [1cc01ff0-5205-11ec-a62c-7bc80e88f3f0](#/dashboard/1cc01ff0-5205-11ec-a62c-7bc80e88f3f0)
 
-The OSPF dashboard covers Open Shortest Path First routing protocol traffic as observed by Zeek. It tracks message types (Hello, DBD, LSR, LSU, LSAck), router IDs, area IDs, and neighbor relationships. Security teams can use this to detect unauthorized OSPF neighbors attempting to inject false routing information, which could redirect traffic or enable man-in-the-middle attacks.
+The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia.org/wiki/Open_Shortest_Path_First) routing protocol traffic. It tracks message types (Hello, DBD, LSR, LSU, LSAck), router IDs, area IDs, and neighbor relationships. Security teams can use this to detect unauthorized OSPF neighbors attempting to inject false routing information, which could redirect traffic or enable man-in-the-middle attacks.
 
 ### Visualizations
 
@@ -7846,7 +7846,7 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 * ID: [0a490422-0ce9-44bf-9a2d-19329ddde8c3](#/dashboard/0a490422-0ce9-44bf-9a2d-19329ddde8c3)
 
-The PE (Portable Executable) dashboard provides visibility into Windows PE file analysis data from Zeek, covering OS targets, machine types, subsystems, section names, and capability signatures. It helps analysts understand what executable files have been observed in network traffic and identify suspicious characteristics such as unusual sections or capability flags. This dashboard is particularly useful during malware investigations to quickly characterize executables transferring across the network.
+The PE (Portable Executable) dashboard provides visibility into Windows PE file analysis data observed in network traffic, covering OS targets, machine types, subsystems, section names, and capability signatures. It helps analysts understand what executable files have been observed in network traffic and identify suspicious characteristics such as unusual sections or capability flags. This dashboard is particularly useful during malware investigations to quickly characterize executables transferring across the network.
 
 ### Visualizations
 
@@ -7970,7 +7970,7 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 * ID: [f2c0da10-d2c5-11ef-8864-d58a560dc292](#/dashboard/f2c0da10-d2c5-11ef-8864-d58a560dc292)
 
-The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured by Zeek, including connection metadata, command types, and host pairs. It provides visibility into who is accessing PostgreSQL instances and what types of operations they are performing. Analysts can detect unauthorized database access, unexpected client connections, and unusual query volumes that may indicate automated data extraction.
+The PostgreSQL dashboard covers [PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) database protocol traffic, including connection metadata, command types, and host pairs. It provides visibility into who is accessing PostgreSQL instances and what types of operations they are performing. Analysts can detect unauthorized database access, unexpected client connections, and unusual query volumes that may indicate automated data extraction.
 
 ### Visualizations
 
@@ -8160,7 +8160,7 @@ The PostgreSQL dashboard covers PostgreSQL database protocol traffic as captured
 
 * ID: [a7514350-eba6-11e9-a384-0fcf32210194](#/dashboard/a7514350-eba6-11e9-a384-0fcf32210194)
 
-The PROFINET dashboard covers PROFINET industrial communication protocol traffic, commonly used in manufacturing automation with Siemens and other ICS vendors. It tracks DCP (Discovery and Configuration Protocol), IO (real-time I/O), and DCE/RPC sub-protocol activity between PLCs, HMIs, and I/O devices. Security teams use it to detect unauthorized device discovery, configuration changes, and unusual PROFINET communication patterns.
+The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET) industrial communication protocol traffic, commonly used in manufacturing automation with Siemens and other ICS vendors. It tracks DCP (Discovery and Configuration Protocol), IO (real-time I/O), and DCE/RPC sub-protocol activity between PLCs, HMIs, and I/O devices. Security teams use it to detect unauthorized device discovery, configuration changes, and unusual PROFINET communication patterns.
 
 ### Visualizations
 
@@ -8315,7 +8315,7 @@ The PROFINET dashboard covers PROFINET industrial communication protocol traffic
 
 * ID: [11ddd980-e388-11e9-b568-cf17de8e860c](#/dashboard/11ddd980-e388-11e9-b568-cf17de8e860c)
 
-The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based transport used by modern HTTPS and HTTP/3 connections. It covers connection metadata, server names, versions, and host communication pairs as observed by Zeek. This dashboard is useful for tracking QUIC-based web traffic, identifying applications using QUIC, and detecting attempts to bypass inspection by tunneling traffic over QUIC.
+The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki/QUIC#Google_QUIC_(gQUIC)) protocol traffic, a UDP-based transport used by modern HTTPS and HTTP/3 connections. It covers connection metadata, server names, versions, and host communication pairs. This dashboard is useful for tracking QUIC-based web traffic, identifying applications using QUIC, and detecting attempts to bypass inspection by tunneling traffic over QUIC.
 
 ### Visualizations
 
@@ -8462,7 +8462,7 @@ The QUIC dashboard provides visibility into QUIC protocol traffic, a UDP-based t
 
 * ID: [ae79b7d1-4281-4095-b2f6-fa7eafda9970](#/dashboard/ae79b7d1-4281-4095-b2f6-fa7eafda9970)
 
-The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol traffic as logged by Zeek, tracking authentication requests, results, username attributes, and NAS identifiers. RADIUS is used for centralized network access authentication, and this dashboard helps detect brute-force attempts, authentication bypass, and rogue RADIUS clients. Analysts can correlate failed authentication spikes with specific NAS devices and usernames.
+The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)](https://en.wikipedia.org/wiki/RADIUS) protocol traffic, tracking authentication requests, results, username attributes, and NAS identifiers. RADIUS is used for centralized network access authentication, and this dashboard helps detect brute-force attempts, authentication bypass, and rogue RADIUS clients. Analysts can correlate failed authentication spikes with specific NAS devices and usernames.
 
 ### Visualizations
 
@@ -8626,7 +8626,7 @@ The RADIUS dashboard covers Remote Authentication Dial-In User Service protocol 
 
 * ID: [7f41913f-cba8-43f5-82a8-241b7ead03e0](#/dashboard/7f41913f-cba8-43f5-82a8-241b7ead03e0)
 
-The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, including connection metadata, authentication outcomes, security protocols, and host certificates. It provides visibility into remote desktop usage and helps detect unauthorized remote access, brute-force attempts, and RDP-based lateral movement. This is a high-value dashboard during incident response when adversaries frequently leverage RDP for interactive access.
+The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.org/wiki/Remote_Desktop_Protocol) sessions, including connection metadata, authentication outcomes, security protocols, and host certificates. It provides visibility into remote desktop usage and helps detect unauthorized remote access, brute-force attempts, and RDP-based lateral movement. This is a high-value dashboard during incident response when adversaries frequently leverage RDP for interactive access.
 
 ### Visualizations
 
@@ -8834,7 +8834,7 @@ The RDP dashboard covers Remote Desktop Protocol sessions as logged by Zeek, inc
 
 * ID: [ef0f9be0-7d3d-11f0-9ca7-8bfd0076f5c9](#/dashboard/ef0f9be0-7d3d-11f0-9ca7-8bfd0076f5c9)
 
-The Redis dashboard covers Redis in-memory data store protocol traffic as logged by Zeek, including command types, return values, and communication pairs. Redis is commonly exposed unintentionally without authentication, making it a frequent target for unauthorized access and data manipulation. Analysts can use this dashboard to detect unexpected Redis clients, dangerous commands (FLUSHDB, CONFIG), and unauthorized access to cached data.
+The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memory data store protocol traffic, including command types, return values, and communication pairs. Redis is commonly exposed unintentionally without authentication, making it a frequent target for unauthorized access and data manipulation. Analysts can use this dashboard to detect unexpected Redis clients, dangerous commands (FLUSHDB, CONFIG), and unauthorized access to cached data.
 
 ### Visualizations
 
@@ -8999,7 +8999,7 @@ The Redis dashboard covers Redis in-memory data store protocol traffic as logged
 
 * ID: [f77bf097-18a8-465c-b634-eb2acc7a4f26](#/dashboard/f77bf097-18a8-465c-b634-eb2acc7a4f26)
 
-The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as captured by Zeek, including desktop sharing connections, authentication types, and host pairs. It helps identify remote desktop activity outside of expected channels and detect unauthorized VNC access to internal systems. Analysts can use it to baseline legitimate VNC usage and flag unexpected desktop-sharing sessions.
+The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wiki/RFB_protocol) protocol sessions (used by VNC), including desktop sharing connections, authentication types, and host pairs. It helps identify remote desktop activity outside of expected channels and detect unauthorized VNC access to internal systems. Analysts can use it to baseline legitimate VNC usage and flag unexpected desktop-sharing sessions.
 
 ### Visualizations
 
@@ -9217,7 +9217,7 @@ The RFB dashboard covers Remote Framebuffer protocol sessions (used by VNC) as c
 
 * ID: [cbf2e4d0-29e8-11f0-862c-2dfee4f08125](#/dashboard/cbf2e4d0-29e8-11f0-862c-2dfee4f08125)
 
-The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to communicate with remote operations controllers commonly found in oil and gas environments. It logs parameter group and logic numbers, operation types, and communication participants. Security teams can use this dashboard to detect unauthorized reads or writes to ROC devices and monitor for unexpected communication patterns in pipeline control systems.
+The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/documents/automation/roc-plus-protocol-specification-manual-en-6851618.pdf) protocol traffic used to communicate with remote operations controllers commonly found in oil and gas environments. It logs parameter group and logic numbers, operation types, and communication participants. Security teams can use this dashboard to detect unauthorized reads or writes to ROC devices and monitor for unexpected communication patterns in pipeline control systems.
 
 ### Visualizations
 
@@ -9440,7 +9440,7 @@ The ROC Plus dashboard covers the Emerson ROC Plus protocol traffic used to comm
 
 * ID: [e76d05c0-eb9f-11e9-a384-0fcf32210194](#/dashboard/e76d05c0-eb9f-11e9-a384-0fcf32210194)
 
-The S7comm dashboard provides visibility into Siemens S7 protocol communication used to program and control Siemens PLCs, a frequent target in ICS attacks. It surfaces function codes, block types, CPU data, and communication pairs between engineering stations and PLCs. This is a critical dashboard for detecting unauthorized PLC programming, reading of sensitive memory areas, and reconnaissance against Siemens control systems.
+The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](https://wiki.wireshark.org/S7comm) communication used to program and control Siemens PLCs, a frequent target in ICS attacks. It surfaces function codes, block types, CPU data, and communication pairs between engineering stations and PLCs. This is a critical dashboard for detecting unauthorized PLC programming, reading of sensitive memory areas, and reconnaissance against Siemens control systems.
 
 ### Visualizations
 
@@ -9800,7 +9800,7 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 #### Connections by Destination Country (region map)
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading destination countries by traffic volume, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -9987,7 +9987,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Originating Country
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading host countries by traffic volume, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -10007,7 +10007,7 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 #### Severity - Responding Country
 
-**Purpose:** A geographic map overlaying connection data onto a world view. Enables quick visual identification of traffic to or from unexpected geographic regions.
+**Purpose:** A country-level map shading host countries by traffic volume, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
 **Fields / Aggregations:**
 
@@ -10197,7 +10197,7 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 * ID: [0b2354ae-0fe9-4fd9-b156-1c3870e5c7aa](#/dashboard/0b2354ae-0fe9-4fd9-b156-1c3870e5c7aa)
 
-The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, including call setup, methods, response codes, user agents, and communication pairs. SIP is used for VoIP and unified communications and can be targeted for toll fraud, call hijacking, and reconnaissance of telephony infrastructure. Analysts can detect unusual SIP activity, rogue clients, high volumes of failed authentication, and unauthorized INVITE or REGISTER messages.
+The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedia.org/wiki/Session_Initiation_Protocol) traffic, including call setup, methods, response codes, user agents, and communication pairs. SIP is used for VoIP and unified communications and can be targeted for toll fraud, call hijacking, and reconnaissance of telephony infrastructure. Analysts can detect unusual SIP activity, rogue clients, high volumes of failed authentication, and unauthorized INVITE or REGISTER messages.
 
 ### Visualizations
 
@@ -10420,7 +10420,7 @@ The SIP dashboard covers Session Initiation Protocol traffic as logged by Zeek, 
 
 * ID: [42e831b9-41a9-4f35-8b7d-e1566d368773](#/dashboard/42e831b9-41a9-4f35-8b7d-e1566d368773)
 
-The SMB dashboard provides visibility into Server Message Block protocol traffic as logged by Zeek, covering file sharing, named pipe operations, and authentication activity. It surfaces the commands used, files accessed, share names, and hosts involved in SMB communication. This is a critical dashboard for detecting lateral movement, credential relay attacks, and ransomware staging behavior that frequently leverages SMB.
+The SMB dashboard provides visibility into [Server Message Block (SMB)](https://en.wikipedia.org/wiki/Server_Message_Block) protocol traffic, covering file sharing, named pipe operations, and authentication activity. It surfaces the commands used, files accessed, share names, and hosts involved in SMB communication. This is a critical dashboard for detecting lateral movement, credential relay attacks, and ransomware staging behavior that frequently leverages SMB.
 
 ### Visualizations
 
@@ -10625,7 +10625,7 @@ The SMB dashboard provides visibility into Server Message Block protocol traffic
 
 * ID: [bb827f8e-639e-468c-93c8-9f5bc132eb8f](#/dashboard/bb827f8e-639e-468c-93c8-9f5bc132eb8f)
 
-The SMTP dashboard covers email traffic observed on the network as captured by Zeek's SMTP log. It tracks message senders, recipients, mail servers, attachment details, and transmission metadata. Analysts use it to investigate phishing activity, unauthorized mail relay, and unusual email flow patterns that could indicate account compromise or malware communication.
+The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol) email traffic observed on the network. It tracks message senders, recipients, mail servers, attachment details, and transmission metadata. Analysts use it to investigate phishing activity, unauthorized mail relay, and unusual email flow patterns that could indicate account compromise or malware communication.
 
 ### Visualizations
 
@@ -10848,7 +10848,7 @@ The SMTP dashboard covers email traffic observed on the network as captured by Z
 
 * ID: [4e5f106e-c60a-4226-8f64-d534abb912ab](#/dashboard/4e5f106e-c60a-4226-8f64-d534abb912ab)
 
-The SNMP dashboard covers Simple Network Management Protocol traffic as captured by Zeek, including get/set operations, community strings (if visible), and managed device identifiers. It provides insight into network device monitoring activity and helps detect unauthorized SNMP polling, community string brute-forcing, and SNMP-based information gathering. Analysts can identify which hosts are querying network infrastructure devices and flag unexpected management traffic.
+The SNMP dashboard covers [Simple Network Management Protocol (SNMP)](https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol) traffic, including get/set operations, community strings (if visible), and managed device identifiers. It provides insight into network device monitoring activity and helps detect unauthorized SNMP polling, community string brute-forcing, and SNMP-based information gathering. Analysts can identify which hosts are querying network infrastructure devices and flag unexpected management traffic.
 
 ### Visualizations
 
@@ -11068,7 +11068,7 @@ The Software dashboard tracks software versions and products observed in network
 
 * ID: [caef3ade-d289-4d05-a511-149f3e97f238](#/dashboard/caef3ade-d289-4d05-a511-149f3e97f238)
 
-The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering connection counts, authentication outcomes, client and server versions, and geographic origins. It provides visibility into remote access activity and helps detect brute-force attempts, unauthorized access, and unusual geographic sources of SSH connections. Analysts can correlate version data to identify outdated SSH implementations that may be vulnerable.
+The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secure_Shell) sessions, covering connection counts, authentication outcomes, client and server versions, and geographic origins. It provides visibility into remote access activity and helps detect brute-force attempts, unauthorized access, and unusual geographic sources of SSH connections. Analysts can correlate version data to identify outdated SSH implementations that may be vulnerable.
 
 ### Visualizations
 
@@ -11306,7 +11306,7 @@ The SSH dashboard tracks Secure Shell (SSH) sessions as logged by Zeek, covering
 
 * ID: [7f77b58a-df3e-4cc2-b782-fd7f8bad8ffb](#/dashboard/7f77b58a-df3e-4cc2-b782-fd7f8bad8ffb)
 
-The SSL/TLS dashboard presents certificate and connection data from encrypted traffic as captured by Zeek's SSL log. It surfaces certificate subjects, issuers, validation errors, cipher suites, and TLS versions in use across the environment. Analysts can use it to identify self-signed or expired certificates, weak cipher usage, and potentially malicious use of encryption to hide command-and-control traffic.
+The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard presents certificate and connection data from encrypted traffic observed on the network. It surfaces certificate subjects, issuers, validation errors, cipher suites, and TLS versions in use across the environment. Analysts can use it to identify self-signed or expired certificates, weak cipher usage, and potentially malicious use of encryption to hide command-and-control traffic.
 
 ### Visualizations
 
@@ -11590,7 +11590,7 @@ The SSL/TLS dashboard presents certificate and connection data from encrypted tr
 
 * ID: [fa477130-2b8a-11ec-a9f2-3911c8571bfd](#/dashboard/fa477130-2b8a-11ec-a9f2-3911c8571bfd)
 
-The STUN dashboard covers Session Traversal Utilities for NAT (STUN) traffic as observed by Zeek, which is used by applications like WebRTC to establish peer-to-peer connections through firewalls. It tracks binding requests, responses, software identifiers, and communication pairs. Analysts can use this dashboard to identify applications using STUN-based NAT traversal and flag unexpected STUN traffic that may be used for covert communication channels.
+The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://en.wikipedia.org/wiki/STUN) traffic, which is used by applications like WebRTC to establish peer-to-peer connections through firewalls. It tracks binding requests, responses, software identifiers, and communication pairs. Analysts can use this dashboard to identify applications using STUN-based NAT traversal and flag unexpected STUN traffic that may be used for covert communication channels.
 
 ### Visualizations
 
@@ -11989,7 +11989,7 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 *Dashboard for the DNP3 Protocol*
 
-The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic used in electric grid monitoring and wide-area measurement systems (WAMS). It tracks frame types (data, header, configuration, command), PMU identifiers, data rates, and communication participants. Grid operators and security teams can use this to detect unauthorized access to phasor measurement units and anomalous configuration or command frames.
+The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/C37.118) synchrophasor protocol traffic used in electric grid monitoring and wide-area measurement systems (WAMS). It tracks frame types (data, header, configuration, command), PMU identifiers, data rates, and communication participants. Grid operators and security teams can use this to detect unauthorized access to phasor measurement units and anomalous configuration or command frames.
 
 ### Visualizations
 
@@ -12293,7 +12293,7 @@ The Synchrophasor dashboard covers IEEE C37.118 synchrophasor protocol traffic u
 
 *Syslog messages observed in network traffic*
 
-The Syslog dashboard presents syslog messages observed in network traffic as captured by Zeek, covering severity levels, facility codes, originating hosts, and message content summaries. It helps analysts understand what systems are forwarding log data, whether logging pipelines are functioning correctly, and whether any unusual error or critical syslog events are being generated. This dashboard is also useful for detecting log flooding, rogue syslog sources, and syslog-based data exfiltration.
+The Syslog dashboard presents [syslog](https://en.wikipedia.org/wiki/Syslog) messages observed in network traffic, covering severity levels, facility codes, originating hosts, and message content summaries. It helps analysts understand what systems are forwarding log data, whether logging pipelines are functioning correctly, and whether any unusual error or critical syslog events are being generated. This dashboard is also useful for detecting log flooding, rogue syslog sources, and syslog-based data exfiltration.
 
 ### Visualizations
 
@@ -12448,7 +12448,7 @@ The Syslog dashboard presents syslog messages observed in network traffic as cap
 
 * ID: [bed185a0-ef82-11e9-b38a-2db3ee640e88](#/dashboard/bed185a0-ef82-11e9-b38a-2db3ee640e88)
 
-The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol traffic as logged by Zeek, including login metadata, query activity, and response codes. It provides visibility into database connections and helps detect unauthorized SQL Server access and unusual database activity. Analysts can identify which clients are connecting to SQL Server instances and detect patterns consistent with SQL injection or data exfiltration.
+The Tabular Data Stream (TDS) dashboard covers [Microsoft SQL Server's Tabular Data Stream (TDS)](https://en.wikipedia.org/wiki/Tabular_Data_Stream) protocol traffic, including login metadata, query activity, and response codes. It provides visibility into database connections and helps detect unauthorized SQL Server access and unusual database activity. Analysts can identify which clients are connecting to SQL Server instances and detect patterns consistent with SQL injection or data exfiltration.
 
 ### Visualizations
 
@@ -12547,7 +12547,7 @@ The Tabular Data Stream (TDS) dashboard covers Microsoft SQL Server protocol tra
 
 * ID: [32587740-ef88-11e9-b38a-2db3ee640e88](#/dashboard/32587740-ef88-11e9-b38a-2db3ee640e88)
 
-The Tabular Data Stream - RPC dashboard focuses on remote procedure call operations within Microsoft SQL Server TDS traffic, including stored procedure execution and batch operations. It surfaces the RPC procedure names, parameters, and originating hosts, providing detailed insight into programmatic database interactions. Security teams can use this to detect unauthorized stored procedure execution and unusual RPC-based SQL Server communication.
+The Tabular Data Stream - RPC dashboard focuses on remote procedure call operations within [Microsoft SQL Server's TDS](https://en.wikipedia.org/wiki/Tabular_Data_Stream) protocol traffic, including stored procedure execution and batch operations. It surfaces the RPC procedure names, parameters, and originating hosts, providing detailed insight into programmatic database interactions. Security teams can use this to detect unauthorized stored procedure execution and unusual RPC-based SQL Server communication.
 
 ### Visualizations
 
@@ -12647,7 +12647,7 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 * ID: [fa141950-ef89-11e9-b38a-2db3ee640e88](#/dashboard/fa141950-ef89-11e9-b38a-2db3ee640e88)
 
-The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity within Microsoft SQL Server TDS traffic, capturing query text snippets, affected rows, and communication metadata. It provides a window into the types of SQL queries being executed against SQL Server instances. Analysts can use this to detect data harvesting queries, schema enumeration, and unauthorized or unusual SQL activity from unexpected clients.
+The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity within [Microsoft SQL Server's TDS](https://en.wikipedia.org/wiki/Tabular_Data_Stream) protocol traffic, capturing query text snippets, affected rows, and communication metadata. It provides a window into the types of SQL queries being executed against SQL Server instances. Analysts can use this to detect data harvesting queries, schema enumeration, and unauthorized or unusual SQL activity from unexpected clients.
 
 ### Visualizations
 
@@ -12762,7 +12762,7 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 * ID: [c2549e10-7f2e-11ea-9f8a-1fe1327e2cd2](#/dashboard/c2549e10-7f2e-11ea-9f8a-1fe1327e2cd2)
 
-The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access protocols as captured by Zeek, providing visibility into unencrypted interactive sessions. These protocols transmit credentials and session data in cleartext, making them high-risk when observed on modern networks. Analysts can use this dashboard to identify legacy systems still using insecure remote access protocols and investigate any such sessions as potential security incidents.
+The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access protocols — [Telnet](https://en.wikipedia.org/wiki/Telnet), [rlogin, and rsh](https://en.wikipedia.org/wiki/Berkeley_r-commands) — providing visibility into unencrypted interactive sessions. These protocols transmit credentials and session data in cleartext, making them high-risk when observed on modern networks. Analysts can use this dashboard to identify legacy systems still using insecure remote access protocols and investigate any such sessions as potential security incidents.
 
 ### Visualizations
 
@@ -12892,7 +12892,7 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 * ID: [bf5efbb0-60f1-11eb-9d60-dbf0411cfc48](#/dashboard/bf5efbb0-60f1-11eb-9d60-dbf0411cfc48)
 
-The TFTP dashboard covers Trivial File Transfer Protocol traffic as captured by Zeek, including file names, transfer directions, block counts, and host pairs. TFTP is commonly used for network device firmware updates and PXE boot, but also frequently abused for unauthorized file transfers due to its lack of authentication. Analysts can detect unexpected TFTP activity, unauthorized firmware or configuration file transfers, and TFTP servers that should not be accessible.
+The TFTP dashboard covers [Trivial File Transfer Protocol (TFTP)](https://en.wikipedia.org/wiki/Trivial_File_Transfer_Protocol) traffic, including file names, transfer directions, block counts, and host pairs. TFTP is commonly used for network device firmware updates and PXE boot, but also frequently abused for unauthorized file transfers due to its lack of authentication. Analysts can detect unexpected TFTP activity, unauthorized firmware or configuration file transfers, and TFTP servers that should not be accessible.
 
 ### Visualizations
 
@@ -13338,7 +13338,7 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 * ID: [11be6381-beef-40a7-bdce-88c5398392fc](#/dashboard/11be6381-beef-40a7-bdce-88c5398392fc)
 
-The Tunnels dashboard provides visibility into network tunneling activity as detected by Zeek, covering protocols like GRE, IP-in-IP, and application-layer tunnels. It surfaces tunnel types, encapsulated protocols, and the hosts involved in tunneling activity. Analysts can use this to detect covert communication channels, VPN bypass attempts, and unauthorized encapsulation that may be used to hide malicious traffic.
+The Tunnels dashboard provides visibility into network [tunneling](https://en.wikipedia.org/wiki/Tunneling_protocol) activity, covering protocols like GRE, IP-in-IP, and application-layer tunnels. It surfaces tunnel types, encapsulated protocols, and the hosts involved in tunneling activity. Analysts can use this to detect covert communication channels, VPN bypass attempts, and unauthorized encapsulation that may be used to hide malicious traffic.
 
 ### Visualizations
 
@@ -13477,7 +13477,7 @@ The Tunnels dashboard provides visibility into network tunneling activity as det
 
 * ID: [b8cf5890-87ed-11ef-ae18-dbcd34795edb](#/dashboard/b8cf5890-87ed-11ef-ae18-dbcd34795edb)
 
-The WebSocket dashboard covers WebSocket upgrade sessions and message traffic as logged by Zeek, tracking the web hosts, URIs, and connection patterns involved in persistent WebSocket connections. WebSocket connections are used by modern web applications for real-time communication and can also be abused for covert C2 channels. Analysts can use this dashboard to identify unexpected WebSocket usage and flag connections to suspicious or unauthorized endpoints.
+The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSocket) upgrade sessions and message traffic, tracking the web hosts, URIs, and connection patterns involved in persistent WebSocket connections. WebSocket connections are used by modern web applications for real-time communication and can also be abused for covert C2 channels. Analysts can use this dashboard to identify unexpected WebSocket usage and flag connections to suspicious or unauthorized endpoints.
 
 ### Visualizations
 
