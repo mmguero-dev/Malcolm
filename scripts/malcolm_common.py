@@ -1705,6 +1705,7 @@ LOG_IGNORE_REGEX = re.compile(
   | Error\s+during\s+file\s+comparison:.*no\s+such\s+file
   | Error\s+while\s+removing\s+state\s+from\s+statestore:\s+resource\s+.*\s+not\s+found
   | eshealth
+  | Test\s+run\s+complete.+failed:\s+0,\s+errored:\s+0
   | esindices/list
   | executing\s+attempt_(transition|set_replica_count)\s+for
   | failed\s+to\s+get\s+tcp6?\s+stats\s+from\s+/proc
