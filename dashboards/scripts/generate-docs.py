@@ -4,8 +4,8 @@ import json
 import os
 import re
 
-DASHBOARD_DIR = "/home/claude/dashboards"
-OUTPUT_PATH = "/mnt/user-data/outputs/dashboard-documentation.md"
+DASHBOARD_DIR = "/home/tlacuache/tmp/dashboards"
+OUTPUT_PATH = "/home/tlacuache/tmp/dashboard-documentation.md"
 
 # Skip these viz types entirely
 SKIP_VIZ_TYPES = {"markdown", "input_control_vis"}
@@ -559,6 +559,7 @@ COMMON_FIELDS = {
     "tags",
     "related.ip",
     "network.is_orig",
+    "zeek.uid",
 }
 
 
@@ -571,7 +572,7 @@ DASHBOARD_SECTION_BY_ID = {
     # General Network Logs
     "0ad3d7c2-3441-485e-9dfe-dbb22e84e576": SECTION_GENERAL,
     "95479950-41f2-11ea-88fa-7151df485405": SECTION_GENERAL,
-    "4a4bde20-4760-11ea-949c-bbb5a9feecbf": SECTION_GENERAL,
+    "4a4bde20-4760-11ea-949c-bbb5a9feecbf": SECTION_ICS,
     "d2dd0180-06b1-11ec-8c6b-353266ade330": SECTION_GENERAL,
     "abdd7550-2c7c-40dc-947e-f6d186a158c4": SECTION_GENERAL,
     "89714140-a2d5-11f0-b5ae-e139a66d2205": SECTION_GENERAL,
