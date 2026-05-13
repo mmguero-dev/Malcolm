@@ -4,8 +4,8 @@ import json
 import os
 import re
 
-DASHBOARD_DIR = "/home/claude/dashboards"
-OUTPUT_PATH = "/mnt/user-data/outputs/dashboard-documentation.md"
+DASHBOARD_DIR = "/home/tlacuache/tmp/dashboards"
+OUTPUT_PATH = "/home/tlacuache/tmp/dashboard-documentation.md"
 
 # Skip these viz types entirely
 SKIP_VIZ_TYPES = {"markdown", "input_control_vis"}
@@ -536,6 +536,107 @@ def generate_dashboard_summary(db_title, db_description):
     )
 
 
+# Fields that appear across nearly all dashboards — listed once globally, excluded from per-dashboard lists
+COMMON_FIELDS = {
+    "timestamp",
+    "source.ip",
+    "destination.ip",
+    "event.id",
+    "destination.port",
+    "source.port",
+    "network.protocol",
+    "network.transport",
+    "event.action",
+    "event.result",
+    "event.dataset",
+    "event.provider",
+}
+
+
+# Section groupings by dashboard ID
+SECTION_GENERAL = "General Network Logs"
+SECTION_COMMON = "Common Protocols"
+SECTION_ICS = "ICS/IoT Protocols"
+
+DASHBOARD_SECTION_BY_ID = {
+    # General Network Logs
+    "0ad3d7c2-3441-485e-9dfe-dbb22e84e576": SECTION_GENERAL,
+    "95479950-41f2-11ea-88fa-7151df485405": SECTION_GENERAL,
+    "4a4bde20-4760-11ea-949c-bbb5a9feecbf": SECTION_GENERAL,
+    "d2dd0180-06b1-11ec-8c6b-353266ade330": SECTION_GENERAL,
+    "abdd7550-2c7c-40dc-947e-f6d186a158c4": SECTION_GENERAL,
+    "89714140-a2d5-11f0-b5ae-e139a66d2205": SECTION_GENERAL,
+    "a33e0a50-afcd-11ea-993f-b7d8522a8bed": SECTION_GENERAL,
+    "36ed695f-edcc-47c1-b0ec-50d20c93ce0f": SECTION_GENERAL,
+    "9ee51f94-3316-4fc5-bd89-93a52af69714": SECTION_GENERAL,
+    "248cae60-eff9-11f0-b83f-8f35d6995138": SECTION_GENERAL,
+    "4ff567d0-48a6-11f1-9604-d962b9b51f3a": SECTION_GENERAL,
+    "0a490422-0ce9-44bf-9a2d-19329ddde8c3": SECTION_GENERAL,
+    "87d990cc-9e0b-41e5-b8fe-b10ae1da0c85": SECTION_GENERAL,
+    "89d1cc50-974c-11ed-bb6b-3fb06c879b11": SECTION_GENERAL,
+    "f1f09567-fc7f-450b-a341-19d2f2bb468b": SECTION_GENERAL,
+    "1fff49f6-0199-4a0f-820b-721aff9ff1f1": SECTION_GENERAL,
+    "665d1610-523d-11e9-a30e-e3576242f3ed": SECTION_GENERAL,
+    "5694ca60-cbdf-11ec-a50a-5fedd672f5c5": SECTION_GENERAL,
+    "677ee170-809e-11ed-8d5b-07069f823b6f": SECTION_GENERAL,
+    "d16105d0-2b75-11f0-92dc-5f54cacd4f4e": SECTION_GENERAL,
+    # Common Protocols
+    "432af556-c5c0-4cc3-8166-b274b4e3a406": SECTION_COMMON,
+    "2d98bb8e-214c-4374-837b-20e1bcd63a5e": SECTION_COMMON,
+    "2cf94cd0-ecab-40a5-95a7-8419f3a39cd9": SECTION_COMMON,
+    "078b9aa5-9bd4-4f02-ae5e-cf80fa6f887b": SECTION_COMMON,
+    "bf5efbb0-60f1-11eb-9d60-dbf0411cfc48": SECTION_COMMON,
+    "37041ee1-79c0-4684-a436-3173b0e89876": SECTION_COMMON,
+    "b8cf5890-87ed-11ef-ae18-dbcd34795edb": SECTION_COMMON,
+    "76f2f912-80da-44cd-ab66-6a73c8344cc3": SECTION_COMMON,
+    "82da3101-2a9c-4ae2-bb61-d447a3fbe673": SECTION_COMMON,
+    "05e3e000-f118-11e9-acda-83a8e29e1a24": SECTION_COMMON,
+    "87a32f90-ef58-11e9-974e-9d600036d105": SECTION_COMMON,
+    "50ced171-1b10-4c3f-8b67-2db9635661a6": SECTION_COMMON,
+    "543118a9-02d7-43fe-b669-b8652177fc37": SECTION_COMMON,
+    "af5df620-eeb6-11e9-bdef-65a192b7f586": SECTION_COMMON,
+    "1cc01ff0-5205-11ec-a62c-7bc80e88f3f0": SECTION_COMMON,
+    "f2c0da10-d2c5-11ef-8864-d58a560dc292": SECTION_COMMON,
+    "11ddd980-e388-11e9-b568-cf17de8e860c": SECTION_COMMON,
+    "ae79b7d1-4281-4095-b2f6-fa7eafda9970": SECTION_COMMON,
+    "ef0f9be0-7d3d-11f0-9ca7-8bfd0076f5c9": SECTION_COMMON,
+    "7f41913f-cba8-43f5-82a8-241b7ead03e0": SECTION_COMMON,
+    "f77bf097-18a8-465c-b634-eb2acc7a4f26": SECTION_COMMON,
+    "0b2354ae-0fe9-4fd9-b156-1c3870e5c7aa": SECTION_COMMON,
+    "42e831b9-41a9-4f35-8b7d-e1566d368773": SECTION_COMMON,
+    "bb827f8e-639e-468c-93c8-9f5bc132eb8f": SECTION_COMMON,
+    "4e5f106e-c60a-4226-8f64-d534abb912ab": SECTION_COMMON,
+    "caef3ade-d289-4d05-a511-149f3e97f238": SECTION_COMMON,
+    "7f77b58a-df3e-4cc2-b782-fd7f8bad8ffb": SECTION_COMMON,
+    "024062a6-48d6-498f-a91a-3bf2da3a3cd3": SECTION_COMMON,
+    "fa477130-2b8a-11ec-a9f2-3911c8571bfd": SECTION_COMMON,
+    "92985909-dc29-4533-9e80-d3182a0ecf1d": SECTION_COMMON,
+    "bed185a0-ef82-11e9-b38a-2db3ee640e88": SECTION_COMMON,
+    "32587740-ef88-11e9-b38a-2db3ee640e88": SECTION_COMMON,
+    "fa141950-ef89-11e9-b38a-2db3ee640e88": SECTION_COMMON,
+    "c2549e10-7f2e-11ea-9f8a-1fe1327e2cd2": SECTION_COMMON,
+    "11be6381-beef-40a7-bdce-88c5398392fc": SECTION_COMMON,
+    # ICS/IoT Protocols
+    "2bec1490-eb94-11e9-a384-0fcf32210194": SECTION_ICS,
+    "ca5799a0-56b5-11eb-b749-576de068f8ad": SECTION_ICS,
+    "db51fc00-673b-11f0-8230-37b935257dd0": SECTION_ICS,
+    "870a5862-6c26-4a08-99fd-0c06cda85ba3": SECTION_ICS,
+    "4a073440-b286-11eb-a4d4-09fa12a6ebd4": SECTION_ICS,
+    "29a1b290-eb98-11e9-a384-0fcf32210194": SECTION_ICS,
+    "03207c00-d07e-11ec-b4a7-d1b4003706b7": SECTION_ICS,
+    "e233a570-45d9-11ef-96a6-432365601033": SECTION_ICS,
+    "3a9e3440-75e2-11ef-8138-03748f839a49": SECTION_ICS,
+    "152f29dc-51a2-4f53-93e9-6e92765567b8": SECTION_ICS,
+    "c899f8b0-d36b-11ef-b619-17836b3bbf47": SECTION_ICS,
+    "dd87edd0-796a-11ec-9ce6-b395c1ff58f4": SECTION_ICS,
+    "a7514350-eba6-11e9-a384-0fcf32210194": SECTION_ICS,
+    "cbf2e4d0-29e8-11f0-862c-2dfee4f08125": SECTION_ICS,
+    "e76d05c0-eb9f-11e9-a384-0fcf32210194": SECTION_ICS,
+    "2cc56240-e460-11ed-a9d5-9f591c284cb4": SECTION_ICS,
+    "12e3a130-d83b-11eb-a0b0-f328ce09b0b7": SECTION_ICS,
+}
+
+
 def process_all():
     dashboards = []
     for fn in sorted(os.listdir(DASHBOARD_DIR)):
@@ -547,6 +648,13 @@ def process_all():
     # Sort alphabetically by title
     dashboards.sort(key=lambda d: d.get("title", "").lower())
 
+    # Group by section; unknown IDs fall back to General
+    def get_section(db):
+        return DASHBOARD_SECTION_BY_ID.get(db.get("id", ""), SECTION_GENERAL)
+
+    sections = [SECTION_GENERAL, SECTION_COMMON, SECTION_ICS]
+    by_section = {s: [d for d in dashboards if get_section(d) == s] for s in sections}
+
     lines = []
     lines.append("# Malcolm Dashboard Reference\n")
     lines.append(
@@ -556,72 +664,76 @@ def process_all():
     )
     lines.append("---\n")
 
-    # Table of contents
-    lines.append("## Table of Contents\n")
-    for db in dashboards:
-        title = db.get("title", "Untitled")
-        anchor = re.sub(r"[^a-z0-9\- ]", "", title.lower()).strip().replace(" ", "-")
-        anchor = re.sub(r"-+", "-", anchor)
-        lines.append(f"* [{title}](#{anchor})")
+    # Common fields section
+    lines.append("## Common Fields\n")
+    lines.append(
+        "The following fields are used across nearly all dashboards and are not repeated "
+        "in individual dashboard field lists below.\n"
+    )
+    lines.append(format_fields(sorted(COMMON_FIELDS)))
     lines.append("\n---\n")
 
-    for db in dashboards:
-        title = db.get("title", "Untitled")
-        description = db.get("description", "").strip()
-        panels = db.get("panels", [])
-
-        # Anchor id
-        anchor = re.sub(r"[^a-z0-9\- ]", "", title.lower()).strip().replace(" ", "-")
-        anchor = re.sub(r"-+", "-", anchor)
-
-        db_id = db.get("id", "")
-        lines.append(f"## {title}\n")
-        if db_id:
-            lines.append(f"* ID: [{db_id}](#/dashboard/{db_id})\n")
-        if description:
-            lines.append(f"*{description}*\n")
-        lines.append(generate_dashboard_summary(title, description))
+    # Table of contents — grouped by section
+    lines.append("## Table of Contents\n")
+    for section in sections:
+        lines.append(f"### {section}\n")
+        for db in by_section[section]:
+            title = db.get("title", "Untitled")
+            anchor = re.sub(r"[^a-z0-9\- ]", "", title.lower()).strip().replace(" ", "-")
+            anchor = re.sub(r"-+", "-", anchor)
+            lines.append(f"* [{title}](#{anchor})")
         lines.append("")
+    lines.append("\n---\n")
 
-        # Filter out markdown and input_control_vis panels
-        vis_panels = [
-            p
-            for p in panels
-            if p.get("visualizationType") not in SKIP_VIZ_TYPES
-            and p.get("objectType") != "visualization"
-            or p.get("visualizationType") not in SKIP_VIZ_TYPES
-        ]
+    # Render dashboards grouped by section
+    for section in sections:
+        lines.append(f"## {section}\n")
+        lines.append("---\n")
+        for db in by_section[section]:
+            title = db.get("title", "Untitled")
+            description = db.get("description", "").strip()
+            panels = db.get("panels", [])
 
-        # Second pass: actually apply the filter properly
-        vis_panels = []
-        for p in panels:
-            ot = p.get("objectType", "visualization")
-            vt = p.get("visualizationType", "")
-            if ot == "search":
-                vis_panels.append(p)
-            elif ot == "visualization" and vt not in SKIP_VIZ_TYPES:
-                vis_panels.append(p)
-
-        if not vis_panels:
-            lines.append("*No visualizations available for this dashboard.*\n")
-        else:
-            # Visualizations — titles only, sorted
-            lines.append("### Visualizations\n")
-            panel_titles = sorted(
-                PANEL_TITLE_OVERRIDES.get(p.get("title", "Untitled"), p.get("title", "Untitled")) for p in vis_panels
-            )
-            for p_title in panel_titles:
-                lines.append(f"* {p_title}")
+            db_id = db.get("id", "")
+            lines.append(f"### {title}\n")
+            if db_id:
+                lines.append(f"* ID: [{db_id}](#/dashboard/{db_id})\n")
+            if description:
+                lines.append(f"*{description}*\n")
+            lines.append(generate_dashboard_summary(title, description))
             lines.append("")
 
-            # Fields — combined and deduplicated across all panels
-            all_fields = sorted(set(f for panel in vis_panels for f in get_fields(panel)))
-            if all_fields:
-                lines.append("\n### Fields\n")
-                lines.append(format_fields(all_fields))
+            # Filter panels
+            vis_panels = []
+            for p in panels:
+                ot = p.get("objectType", "visualization")
+                vt = p.get("visualizationType", "")
+                if ot == "search":
+                    vis_panels.append(p)
+                elif ot == "visualization" and vt not in SKIP_VIZ_TYPES:
+                    vis_panels.append(p)
+
+            if not vis_panels:
+                lines.append("*No visualizations available for this dashboard.*\n")
+            else:
+                # Visualizations — titles only, sorted
+                lines.append("#### Visualizations\n")
+                panel_titles = sorted(
+                    PANEL_TITLE_OVERRIDES.get(p.get("title", "Untitled"), p.get("title", "Untitled"))
+                    for p in vis_panels
+                )
+                for p_title in panel_titles:
+                    lines.append(f"* {p_title}")
                 lines.append("")
 
-        lines.append("\n---\n")
+                # Fields — combined, deduplicated, common fields excluded
+                all_fields = sorted(set(f for panel in vis_panels for f in get_fields(panel) if f not in COMMON_FIELDS))
+                if all_fields:
+                    lines.append("\n#### Fields\n")
+                    lines.append(format_fields(all_fields))
+                    lines.append("")
+
+            lines.append("\n---\n")
 
     return "\n".join(lines)
 
