@@ -1687,6 +1687,7 @@ LOG_IGNORE_REGEX = re.compile(
   | \bGET.+\b302\s+30\b
   | \d+\s+changes\s+in\s+\d+\s+seconds\.\s+Saving
   | _cat/indices
+  | API_TOKEN_PEPPERS\s+is\s+not\s+defined
   | Background\s+saving\s+started
   | Background\s+saving\s+terminated\s+with\s+success
   | branding.*config\s+is\s+not\s+found\s+or\s+invalid
