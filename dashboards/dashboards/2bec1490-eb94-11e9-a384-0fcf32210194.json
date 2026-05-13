@@ -652,7 +652,7 @@
           "event.action",
           "event.result",
           "zeek.bacnet.invoke_id",
-          "zeek.uid"
+          "event.id"
         ],
         "description": "",
         "hits": 0,

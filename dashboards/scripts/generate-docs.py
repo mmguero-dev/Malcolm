@@ -4,8 +4,8 @@ import json
 import os
 import re
 
-DASHBOARD_DIR = "/home/tlacuache/tmp/dashboards"
-OUTPUT_PATH = "/home/tlacuache/tmp/dashboard-documentation.md"
+DASHBOARD_DIR = "/home/claude/dashboards"
+OUTPUT_PATH = "/mnt/user-data/outputs/dashboard-documentation.md"
 
 # Skip these viz types entirely
 SKIP_VIZ_TYPES = {"markdown", "input_control_vis"}
@@ -550,6 +550,15 @@ COMMON_FIELDS = {
     "event.result",
     "event.dataset",
     "event.provider",
+    "event.module",
+    "network.direction",
+    "network.type",
+    "host.name",
+    "event.ingested",
+    "event.original",
+    "tags",
+    "related.ip",
+    "network.is_orig",
 }
 
 
