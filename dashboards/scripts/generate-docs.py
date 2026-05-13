@@ -4,53 +4,11 @@ import json
 import os
 import re
 
-DASHBOARD_DIR = "/home/tlacuache/tmp/dashboards"
-OUTPUT_PATH = "/home/tlacuache/tmp/dashboard-documentation.md"
+DASHBOARD_DIR = "/home/claude/dashboards"
+OUTPUT_PATH = "/mnt/user-data/outputs/dashboard-documentation.md"
 
 # Skip these viz types entirely
 SKIP_VIZ_TYPES = {"markdown", "input_control_vis"}
-
-# Human-friendly viz type descriptions for Purpose context
-VIZ_PURPOSE_HINTS = {
-    "line": "time-series trend line showing",
-    "histogram": "time-based histogram showing",
-    "pie": "pie chart breaking down",
-    "table": "ranked table listing",
-    "horizontal_bar": "horizontal bar chart ranking",
-    "metric": "summary count of",
-    "tagcloud": "tag cloud showing frequency of",
-    "tile_map": "geographic map plotting",
-    "region_map": "geographic region map of",
-    "vega": "custom visualization of",
-    "search": "scrollable log table for inspecting",
-}
-
-# Per-field human labels for use in Purpose sentences (not Fields section)
-FIELD_LABELS = {
-    "source.ip": "source IP address",
-    "destination.ip": "destination IP address",
-    "source.port": "source port",
-    "destination.port": "destination port",
-    "network.protocol": "network protocol",
-    "network.transport": "transport protocol",
-    "network.bytes": "total bytes transferred",
-    "event.action": "event action",
-    "event.result": "event result/outcome",
-    "event.id": "event ID",
-    "event.dataset": "log type",
-    "rule.name": "rule name",
-    "rule.category": "rule category",
-    "rule.id": "rule ID",
-    "tags": "event tags",
-    "source.geo.country_name": "source country",
-    "destination.geo.country_name": "destination country",
-    "threat.indicator.type": "threat indicator type",
-    "threat.indicator.name": "indicator name",
-    "threat.tactic.name": "MITRE ATT&CK tactic",
-    "threat.technique.name": "MITRE ATT&CK technique",
-    "vulnerability.category": "vulnerability category",
-    "file.mime_type": "MIME type",
-}
 
 # Dashboard-level summaries: title → (summary). For known dashboards write targeted text.
 # Otherwise we auto-generate.
@@ -483,48 +441,6 @@ DASHBOARD_SUMMARIES = {
 }
 
 
-def get_query_str(panel):
-    """Extract a meaningful query string from a panel's querySources."""
-    qs = panel.get("querySources", {})
-    for key in ("savedSearch", "search", "visualization"):
-        src = qs.get(key, {})
-        if not src:
-            continue
-        q = src.get("query", {})
-        # Handle nested query formats
-        if isinstance(q, dict):
-            inner = q.get("query", q)
-            if isinstance(inner, dict):
-                qs_str = inner.get("query_string", {})
-                if isinstance(qs_str, dict):
-                    return qs_str.get("query", "")
-                return str(inner)
-            return str(inner)
-    return ""
-
-
-def get_fields(panel):
-    """Return deduplicated, sorted fields with placeholder replaced and _source excluded."""
-    raw = panel.get("fields", [])
-    result = []
-    for f in raw:
-        if f == "_source":
-            continue
-        if f == "MALCOLM_NETWORK_INDEX_TIME_FIELD_REPLACER":
-            result.append("timestamp")
-        else:
-            result.append(f)
-    return sorted(set(result))
-
-
-def viz_type_label(panel):
-    ot = panel.get("objectType", "visualization")
-    vt = panel.get("visualizationType", "")
-    if ot == "search":
-        return "search"
-    return vt or "visualization"
-
-
 def format_fields(fields):
     if not fields:
         return ""
@@ -537,172 +453,24 @@ def format_fields(fields):
     return "\n".join(lines)
 
 
-def generate_purpose(panel):
-    title = panel.get("title", "")
-    vt = viz_type_label(panel)
-    hint = VIZ_PURPOSE_HINTS.get(vt, "visualization showing")
-
-    # Build purpose from title + viz type hint
-    t_lower = title.lower()
-
-    # Time-based
-    if any(x in t_lower for x in ("over time", "log count over time", "trend", "history")):
-        return (
-            f"A {hint} log volume over time, making it easy to spot traffic spikes, "
-            f"drops, or unusual patterns for this data type."
-        )
-
-    # Metric / count
-    if vt == "metric" or "log count" in t_lower:
-        if "unique" in t_lower:
-            return f"Displays the total number of unique observed values, giving a quick inventory count for this category."
-        return f"Displays the total number of log events in scope, giving an instant count of activity volume."
-
-    # Log table
-    if vt == "search" or "logs" in t_lower:
-        return (
-            f"A detailed, scrollable event log table allowing analysts to inspect individual records. "
-            f"Supports drilling into specific events, filtering, and exporting for further investigation."
-        )
-
-    # Geographic maps — differentiate tile_map (city-level dots) vs region_map (country-level shading)
-    if vt in ("tile_map", "region_map"):
-        t_lower = title.lower()
-        # Infer metric from title
-        if "originator bytes" in t_lower:
-            metric = "bytes sent by originators"
-        elif "responder bytes" in t_lower:
-            metric = "bytes sent by responders"
-        elif "sum of total bytes" in t_lower:
-            metric = "total bytes in both directions"
-        elif "connection duration" in t_lower:
-            metric = "connection duration"
+def get_fields(panel):
+    """Return deduplicated, sorted fields with placeholder replaced and _source excluded."""
+    raw = panel.get("fields", [])
+    result = []
+    for f in raw:
+        if f in ("_source", "field", "signal", "scheme"):
+            continue
+        if f in ("MALCOLM_NETWORK_INDEX_TIME_FIELD_REPLACER", "MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER"):
+            result.append("timestamp")
         else:
-            metric = "traffic volume"
-        # Infer direction
-        if "destination" in t_lower:
-            direction = "destination"
-        elif "source" in t_lower:
-            direction = "source"
-        else:
-            direction = "host"
-
-        if vt == "region_map":
-            return (
-                f"A country-level map shading {direction} countries by {metric}, "
-                f"on a green-to-red scale where green indicates lower values and red indicates higher values. "
-                f"Provides a geographic overview of where activity is concentrated at a national level."
-            )
-        else:  # tile_map
-            return (
-                f"A city-level coordinate map plotting {direction} locations as dots sized by {metric}. "
-                f"Enables identification of specific geographic hotspots at a granular level."
-            )
-
-    # Tag cloud
-    if vt == "tagcloud":
-        return (
-            f"A tag cloud showing the relative frequency of values by size. "
-            f"Dominant tags appear larger, making it easy to identify the most common values at a glance."
-        )
-
-    # Table
-    if vt == "table":
-        if " - " in title:
-            protocol, attribute = title.split(" - ", 1)
-            return (
-                f"A ranked frequency table of {attribute} values for {protocol}. "
-                f"Useful for identifying top values and spotting outliers."
-            )
-        else:
-            return (
-                f"A ranked frequency table of values in this category. "
-                f"Useful for identifying top values and spotting outliers."
-            )
-
-    # Pie
-    if vt == "pie":
-        if " - " in title:
-            protocol, attribute = title.split(" - ", 1)
-            return (
-                f"A pie chart showing the proportional distribution of {attribute} for {protocol}. "
-                f"Highlights which categories dominate and surfaces minority categories that may be unusual."
-            )
-        else:
-            return (
-                f"A pie chart showing the proportional distribution of values in this category. "
-                f"Highlights which categories dominate and surfaces minority categories that may be unusual."
-            )
-
-    # Horizontal bar
-    if vt == "horizontal_bar":
-        if " - " in title:
-            protocol, attribute = title.split(" - ", 1)
-            return (
-                f"A horizontal bar chart ranking {attribute} for {protocol} by frequency. "
-                f"Provides a clear visual comparison of relative occurrence across categories."
-            )
-        else:
-            return (
-                f"A horizontal bar chart ranking values in this category by frequency. "
-                f"Provides a clear visual comparison of relative occurrence across categories."
-            )
-
-    # Histogram
-    if vt == "histogram":
-        return (
-            f"A histogram charting event distribution over time, "
-            f"useful for identifying activity bursts or quiet periods."
-        )
-
-    # Line
-    if vt == "line":
-        return (
-            f"A time-series line chart tracking event volume trends over the selected time window. "
-            f"Useful for spotting anomalous spikes, drops, or recurring patterns."
-        )
-
-    # Vega / custom
-    if vt == "vega":
-        return (
-            f"A custom Vega visualization providing a specialized view of the underlying data. "
-            f"Refer to the panel title for the specific metric or relationship being displayed."
-        )
-
-    # Fallback
-    return f"Visualizes {title.lower()} data for analysis and monitoring."
+            result.append(f)
+    return sorted(set(result))
 
 
 # Correct typos or casing errors in panel titles as they come from the JSON data
 PANEL_TITLE_OVERRIDES = {
     "FIles - Destination IP Address": "Files - Destination IP Address",
     "FIles - Source IP Address": "Files - Source IP Address",
-}
-
-# Override the auto-generated purpose text for specific panel titles
-PANEL_PURPOSE_OVERRIDES = {
-    "File Scanning - MIME Type": (
-        "A ranked frequency table providing a categorical breakdown of the MIME types of files scanned. "
-        "Useful for identifying top values and spotting outliers."
-    ),
-    "File Tree - Logs": (
-        "A detailed, scrollable event log table allowing analysts to inspect individual records associated "
-        "with scanned files. Supports drilling into specific events, filtering, and exporting for further investigation."
-    ),
-    "File Tree": (
-        "A custom Vega visualization providing a specialized view of the underlying data, presenting a "
-        "hierarchical breakdown of files observed in network traffic, particularly with regards to "
-        "[archived files](file-scanning.md#ScanningArchivedFiles) such as ZIP files or tarballs, "
-        "allowing parent/child relationships between nested files to be explored."
-    ),
-    "Files - Paths": (
-        "A ranked frequency table providing a categorical breakdown of filenames and paths. "
-        "Useful for identifying top values and spotting outliers."
-    ),
-    "Extracted File Downloads": (
-        "A detailed, scrollable event log table allowing analysts to inspect individual file logs and which "
-        "includes a hyperlink providing download access to the files themselves, depending on file preservation settings."
-    ),
 }
 
 # Dashboards that are specifically Zeek-focused — keep Zeek attribution in their summaries
@@ -837,33 +605,23 @@ def process_all():
         if not vis_panels:
             lines.append("*No visualizations available for this dashboard.*\n")
         else:
+            # Visualizations — titles only, sorted
             lines.append("### Visualizations\n")
-            for panel in vis_panels:
-                p_title = panel.get("title", "Untitled")
-                # Apply title overrides (fixes typos/casing from source data)
-                p_title = PANEL_TITLE_OVERRIDES.get(p_title, p_title)
-                p_desc = panel.get("description", "").strip()
-                fields = get_fields(panel)
+            panel_titles = sorted(
+                PANEL_TITLE_OVERRIDES.get(p.get("title", "Untitled"), p.get("title", "Untitled")) for p in vis_panels
+            )
+            for p_title in panel_titles:
+                lines.append(f"* {p_title}")
+            lines.append("")
 
-                lines.append(f"#### {p_title}\n")
-                if p_desc:
-                    lines.append(f"*{p_desc}*\n")
-
-                # Use purpose override if defined, otherwise auto-generate
-                if p_title in PANEL_PURPOSE_OVERRIDES:
-                    purpose = PANEL_PURPOSE_OVERRIDES[p_title]
-                else:
-                    purpose = generate_purpose(panel)
-                lines.append(f"**Purpose:** {purpose}\n")
-
-                if fields:
-                    lines.append("**Fields / Aggregations:**\n")
-                    lines.append(format_fields(fields))
-                    lines.append("")
-
+            # Fields — combined and deduplicated across all panels
+            all_fields = sorted(set(f for panel in vis_panels for f in get_fields(panel)))
+            if all_fields:
+                lines.append("\n### Fields\n")
+                lines.append(format_fields(all_fields))
                 lines.append("")
 
-        lines.append("---\n")
+        lines.append("\n---\n")
 
     return "\n".join(lines)
 
