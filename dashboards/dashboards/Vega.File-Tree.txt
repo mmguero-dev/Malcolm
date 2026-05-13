@@ -674,14 +674,14 @@
                   "%dashboard_context-filter_clause%",
                   {
                     "range": {
-                      "@timestamp": {
+                      "firstPacket": {
                         "%timefilter%": true
                       }
                     }
                   },
                   {
                     "exists": {
-                      "field": "zeek.ts"
+                      "field": "firstPacket"
                     }
                   },
               ]
@@ -709,7 +709,7 @@
                         "includes": [
                           "source",
                           "destination",
-                          "zeek.ts",
+                          "firstPacket",
                           "file",
                           "rule",
                           "filescan.tree.depth",
@@ -732,7 +732,7 @@
         // surfaced aggregated objs, src and dst device, protocols, segment names, conn states in the metadata (prettification)
         {
           "type": "project",
-          "fields": ["key.node", "key.parent", "key.root", "key.file_name", "key.root_file_name", "metadata.hits.hits[0]._source.source", "metadata.hits.hits[0]._source.destination", "metadata.hits.hits[0]._source.zeek.ts", "metadata.hits.hits[0]._source.file", "metadata.hits.hits[0]._source.rule", "metadata.hits.hits[0]._source.filescan.tree.depth", "metadata.hits.hits[0]._source.related"],
+          "fields": ["key.node", "key.parent", "key.root", "key.file_name", "key.root_file_name", "metadata.hits.hits[0]._source.source", "metadata.hits.hits[0]._source.destination", "metadata.hits.hits[0]._source.firstPacket", "metadata.hits.hits[0]._source.file", "metadata.hits.hits[0]._source.rule", "metadata.hits.hits[0]._source.filescan.tree.depth", "metadata.hits.hits[0]._source.related"],
           "as": ["node", "parent", "root", "file_name", "root_file_name", "source", "destination", "timestamp", "file", "rule", "file_depth", "related"]
         },
         {

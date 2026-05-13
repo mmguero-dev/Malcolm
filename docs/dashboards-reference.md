@@ -102,80 +102,16 @@ The Actions and Results dashboard provides a cross-protocol view of operation ty
 
 ### Visualizations
 
-#### Total Log Count Over Time by Application Protocol
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
+* Actions
+* All Logs
+* Results
+* Top Actions by Service
+* Top Results by Service
+* Total Log Count Over Time by Application Protocol
+* Total Number of Logs
 
 
-#### Total Number of Logs
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `event.provider`
-
-
-#### Top Actions by Service
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `event.action`
-* `network.protocol`
-* timestamp
-
-
-#### Top Results by Service
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `event.result`
-* `network.protocol`
-* timestamp
-
-
-#### Actions
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.action`
-* `network.protocol`
-
-
-#### Results
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.result`
-* `network.protocol`
-
-
-#### All Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -201,271 +137,48 @@ The ANSI C12.22 dashboard covers the [ANSI C12.22](https://en.wikipedia.org/wiki
 
 ### Visualizations
 
-#### C12.22 - Log Count
-
-*Count of C1222 logs by log type*
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
+* C12.22 - AP Titles
+* C12.22 - Actions
+* C12.22 - Destination IPs
+* C12.22 - EPSEM Services
+* C12.22 - Log Count
+* C12.22 - Logs
+* C12.22 - Logs Over Time
+* C12.22 - Results
+* C12.22 - Service Error Logs
+* C12.22 - Source IPs
+* C12.22 - Transport Protocol
+* C12.22 - User Information Logs
+* C12.22 - Users
+* C12.22 - Users and Passwords
+* C12.22 and Related - Logs
 
 
-#### C12.22 - Logs Over Time
-
-*C12.22 logs sorted by time and type*
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22  - Transport Protocol
-
-**Purpose:** A pie chart showing the proportional distribution of Transport Protocol for C12.22 . Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - Source IPs
-
-*The source IP addresses of C12.22 traffic*
-
-**Purpose:** A ranked frequency table of Source IPs values for C12.22. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - Destination IPs
-
-*The destination addresses for C12.22 traffic*
-
-**Purpose:** A ranked frequency table of Destination IPs values for C12.22. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - Users
-
-**Purpose:** A horizontal bar chart ranking Users for C12.22 by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - EPSEM Services
-
-*C12.22 EPSEM services by count*
-
-**Purpose:** A ranked frequency table of EPSEM Services values for C12.22. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.epsem_service`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - AP Titles
-
-*AP Titles as shown in the C12.22 network traffic*
-
-**Purpose:** A ranked frequency table of AP Titles values for C12.22. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - Actions
-
-*The C12.22 actions seen in network traffic.*
-
-**Purpose:** A ranked frequency table of Actions values for C12.22. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.action`
-* `event.event.action`
+* `event.dataset`
 * `event.id`
 * `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - Results
-
-*ANSI C122.22 results seen in network traffic*
-
-**Purpose:** A ranked frequency table of Results values for C12.22. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - Users and Passwords
-
-*ANSI C12.22 passwords seen in network traffic*
-
-**Purpose:** A ranked frequency table of Users and Passwords values for C12.22. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
+* `network.transport`
 * `related.password`
 * `related.user`
 * `source.ip`
 * timestamp
 * `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
-
-
-#### C12.22 - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
 * `zeek.c1222.called_ap_invocation_id`
 * `zeek.c1222.called_ap_title`
 * `zeek.c1222.calling_ap_invocation_id`
 * `zeek.c1222.calling_ap_title`
 * `zeek.c1222.calling_auth_value`
 * `zeek.c1222.elements`
-* `zeek.c1222.is_encrypted_epsem`
-
-
-#### C12.22 - Service Error Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-
-
-#### C12.22 - User Information Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
 * `zeek.c1222.epsem_service`
+* `zeek.c1222.is_encrypted_epsem`
+* `zeek.c1222.req_resp`
 * `zeek.c1222_user_information.encrypted_epsem`
 * `zeek.c1222_user_information.epsem_control`
 * `zeek.c1222_user_information.mac`
-
-
-#### C12.22 and Related - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.c1222.ap_title`
-* `zeek.c1222.req_resp`
 
 
 ---
@@ -478,222 +191,58 @@ The Asset Interaction Analysis dashboard maps the communication relationships be
 
 ### Visualizations
 
-#### Traffic by Network Segment
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.segment.name`
-* `network.bytes`
-* `network.direction`
-* `network.packets`
-* `related.site`
-* `source.segment.name`
-* timestamp
-
-
-#### Network Site
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `related.site`
+* Cross Segment Traffic
+* Destination Device Log Counts
+* Destination Device Role
+* Destination Device Type
+* Event Severity by Network Segment
+* Network Site
+* Notice, Alert and Signature by Network Segment
+* Protocol by Network Segment
+* Source Device Log Counts
+* Source Device Role
+* Source Device Type
+* Traffic by Network Segment
+* Uninventoried Internal Assets - Logs
+* Uninventoried Internal Destination IPs
+* Uninventoried Internal Source IPs
+* Uninventoried Observed Services - Logs
 
 
-#### Cross Segment Traffic
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `destination.segment.name`
-* `source.segment.name`
-* timestamp
-
-
-#### Protocol by Network Segment
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `network.name`
-* `network.protocol`
-* `network.transport`
-* `network.type`
-* `related.site`
-
-
-#### Event Severity by Network Segment
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.risk_score`
-* `event.severity_tags`
-* `network.name`
-* `related.site`
-
-
-#### Source Device Type
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `source.device.device_type`
-* `source.device.manufacturer`
-* `source.device.role`
-
-
-#### Notice, Alert and Signature by Network Segment
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* `event.provider`
-* `network.name`
-* `related.site`
-* `rule.category`
-
-
-#### Destination Device Type
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.device.device_type`
-* `destination.device.manufacturer`
-* `destination.device.role`
-
-
-#### Source Device Role
-
-**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `source.device.role`
-
-
-#### Destination Device Role
-
-**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.device.role`
-
-
-#### Source Device Log Counts
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `source.device.device_type`
-* `source.device.manufacturer`
-* `source.device.name`
-* `source.device.role`
-
-
-#### Destination Device Log Counts
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.device.device_type`
 * `destination.device.manufacturer`
 * `destination.device.name`
 * `destination.device.role`
-
-
-#### Uninventoried Internal Source IPs
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
 * `destination.ip`
 * `destination.oui`
-* `destination.segment.name`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `network.protocol`
-* `network.transport`
-* `related.site`
-* `source.ip`
-* `source.oui`
-* `source.segment.name`
-* `source.segment.site`
-
-
-#### Uninventoried Internal Destination IPs
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.oui`
+* `destination.port`
 * `destination.segment.name`
 * `destination.segment.site`
 * `event.dataset`
 * `event.id`
 * `event.provider`
-* `network.protocol`
-* `network.transport`
-* `related.site`
-* `source.ip`
-* `source.oui`
-* `source.segment.name`
-
-
-#### Uninventoried Internal Assets - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.oui`
-* `destination.segment.name`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `network.protocol`
-* `network.transport`
-* `related.site`
-* `source.ip`
-* `source.oui`
-* `source.segment.name`
-
-
-#### Uninventoried Observed Services - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `destination.segment.name`
-* `event.dataset`
-* `event.id`
-* `event.provider`
+* `event.risk_score`
+* `event.severity_tags`
+* `network.bytes`
+* `network.direction`
+* `network.name`
+* `network.packets`
 * `network.protocol`
 * `network.transport`
 * `network.type`
 * `related.site`
+* `rule.category`
+* `source.device.device_type`
+* `source.device.manufacturer`
+* `source.device.name`
+* `source.device.role`
 * `source.ip`
+* `source.oui`
+* `source.segment.name`
+* `source.segment.site`
+* timestamp
 
 
 ---
@@ -708,249 +257,48 @@ The BACnet dashboard covers [Building Automation and Control network (BACnet)](h
 
 ### Visualizations
 
-#### BACnet - Log Count
+* ATT&CK for ICS Notices - BACnet
+* ATT&CK for ICS Tactic - BACnet
+* BACnet  - Read and Write Property
+* BACnet - Actions and Results
+* BACnet - BVLC Functions
+* BACnet - Destination IP
+* BACnet - Device Discovery
+* BACnet - Device Vendors
+* BACnet - Discovery Logs
+* BACnet - Log Count
+* BACnet - Logs
+* BACnet - Logs Over Time
+* BACnet - Property Logs
+* BACnet - Protocol Data Units (PDUs)
+* BACnet - Source IP
+* BACnet - Trends
+* BACnet Device Control - Logs
 
-*Count of BACnet logs including BACnet Discovery and Property logs*
 
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
+### Fields
 
-**Fields / Aggregations:**
-
+* `destination.ip`
+* `event.action`
 * `event.dataset`
-
-
-#### BACnet - Logs Over Time
-
-*BACnet Logs over Time*
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* timestamp
-
-
-#### BACnet - Device Vendors
-
-*BACnet Device Vendors from i-am messages*
-
-**Purpose:** A pie chart showing the proportional distribution of Device Vendors for BACnet. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.bacnet.instance_number`
-* `zeek.bacnet.pdu_service`
-* `zeek.bacnet_discovery.object_type`
-* `zeek.bacnet_discovery.vendor`
-
-
-#### BACnet - BVLC Functions
-
-*BACnet Virtual Link Control Functions (Link-Layer Control)*
-
-**Purpose:** A ranked frequency table of BVLC Functions values for BACnet. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.bacnet.bvlc_function`
-* `zeek.bacnet.invoke_id`
-* `zeek.bacnet.pdu_service`
-* `zeek.bacnet.pdu_type`
-
-
-#### ATT&CK for ICS Tactic - BACnet
-
-**Purpose:** A horizontal bar chart ranking BACnet for ATT&CK for ICS Tactic by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
 * `event.id`
+* `event.result`
 * `network.protocol`
 * `source.ip`
 * `threat.tactic.name`
 * `threat.technique.name`
 * timestamp
-* `zeek.notice.msg`
-
-
-#### BACnet - Actions and Results
-
-**Purpose:** A ranked frequency table of Actions and Results values for BACnet. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.action`
-* `event.result`
-
-
-#### BACnet - Protocol Data Units (PDUs)
-
-*BACnet Application Layer Protocol Data Unit types and services*
-
-**Purpose:** A ranked frequency table of Protocol Data Units (PDUs) values for BACnet. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
 * `zeek.bacnet.bvlc_function`
+* `zeek.bacnet.instance_number`
 * `zeek.bacnet.invoke_id`
 * `zeek.bacnet.pdu_service`
 * `zeek.bacnet.pdu_type`
-
-
-#### ATT&CK for ICS Notices - BACnet
-
-**Purpose:** A ranked frequency table of BACnet values for ATT&CK for ICS Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* `threat.tactic.name`
-* `threat.technique.name`
-* timestamp
+* `zeek.bacnet_discovery.object_type`
+* `zeek.bacnet_discovery.vendor`
+* `zeek.bacnet_property.object_type`
+* `zeek.bacnet_property.property`
+* `zeek.bacnet_property.value`
 * `zeek.notice.msg`
-
-
-#### BACnet - Source IP
-
-*Source IP Addresses from bacnet.log*
-
-**Purpose:** A ranked frequency table of Source IP values for BACnet. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `source.ip`
-
-
-#### BACnet - Destination IP
-
-*Destination IP Addresses from bacnet.log*
-
-**Purpose:** A ranked frequency table of Destination IP values for BACnet. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-
-
-#### BACnet - Device Discovery
-
-*Results from BACnet i-am and i-have commands*
-
-**Purpose:** A ranked frequency table of Device Discovery values for BACnet. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.bacnet.instance_number`
-* `zeek.bacnet.pdu_service`
-* `zeek.bacnet_discovery.object_type`
-* `zeek.bacnet_discovery.vendor`
-
-
-#### BACnet - Trends
-
-**Purpose:** A custom visualization of log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-* `event.dataset`
-* `scheme`
-* `zeek.bacnet_property.property`
-* `zeek.bacnet_property.value`
-
-
-#### BACnet  - Read and Write Property
-
-*Results from BACnet Read-Property and Write-Property Commands*
-
-**Purpose:** A ranked frequency table of Read and Write Property  values for BACnet . Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.bacnet.instance_number`
-* `zeek.bacnet.pdu_service`
-* `zeek.bacnet_property.object_type`
-* `zeek.bacnet_property.property`
-* `zeek.bacnet_property.value`
-
-
-#### BACnet - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.bacnet.bvlc_function`
-* `zeek.bacnet.invoke_id`
-* `zeek.bacnet.pdu_service`
-* `zeek.bacnet.pdu_type`
-
-
-#### BACnet - Property Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.bacnet.instance_number`
-* `zeek.bacnet.pdu_service`
-* `zeek.bacnet_property.object_type`
-* `zeek.bacnet_property.property`
-* `zeek.bacnet_property.value`
-
-
-#### BACnet - Discovery Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.bacnet.instance_number`
-* `zeek.bacnet.pdu_service`
-* `zeek.bacnet_discovery.object_type`
-* `zeek.bacnet_discovery.vendor`
-
-
-#### BACnet Device Control - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.result`
-* `source.ip`
-* `zeek.bacnet.invoke_id`
 * `zeek.uid`
 
 
@@ -964,84 +312,19 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 
 ### Visualizations
 
-#### BSAP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
+* BSAP - Destination IP
+* BSAP - Log Count
+* BSAP - Logs Over Time
+* BSAP - Source IP
+* BSAP - Transport
+* BSAP IP - Function
+* BSAP IP - Logs
+* BSAP Serial - Function
+* BSAP Serial - Logs
+* BSAP Serial - RDB Function
 
 
-#### BSAP - Logs Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
-
-
-#### BSAP - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for BSAP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### BSAP IP - Function
-
-**Purpose:** A ranked frequency table of Function values for BSAP IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.bsap_ip_rdb.app_func_code`
-* `zeek.bsap_ip_rdb.func_code`
-* `zeek.bsap_ip_rdb.node_status`
-* `zeek.bsap_ip_rdb.variable_count`
-* `zeek.bsap_ip_rdb.variables`
-
-
-#### BSAP - Transport
-
-**Purpose:** A pie chart showing the proportional distribution of Transport for BSAP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -1053,78 +336,13 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 * `network.protocol`
 * `network.transport`
 * `source.ip`
-* timestamp
-
-
-#### BSAP Serial - RDB Function
-
-**Purpose:** A ranked frequency table of RDB Function values for BSAP Serial. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.bsap_serial_header.dfun`
-* `zeek.bsap_serial_header.nsb`
-* `zeek.bsap_serial_header.sfun`
-* `zeek.bsap_serial_header.type_name`
-* `zeek.bsap_serial_rdb.func_code`
-* `zeek.bsap_serial_rdb.variable_count`
-* `zeek.bsap_serial_rdb.variables`
-
-
-#### BSAP Serial - Function
-
-**Purpose:** A ranked frequency table of Function values for BSAP Serial. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.bsap_serial_header.dfun`
-* `zeek.bsap_serial_header.nsb`
-* `zeek.bsap_serial_header.sfun`
-* `zeek.bsap_serial_header.type_name`
-* `zeek.bsap_serial_rdb.func_code`
-* `zeek.bsap_serial_rdb.variable_count`
-* `zeek.bsap_serial_rdb.variables`
-
-
-#### BSAP IP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.id`
-* `source.ip`
+* `source.port`
 * timestamp
 * `zeek.bsap_ip_rdb.app_func_code`
 * `zeek.bsap_ip_rdb.func_code`
 * `zeek.bsap_ip_rdb.node_status`
 * `zeek.bsap_ip_rdb.variable_count`
 * `zeek.bsap_ip_rdb.variables`
-
-
-#### BSAP Serial - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
 * `zeek.bsap_serial_header.dfun`
 * `zeek.bsap_serial_header.nsb`
 * `zeek.bsap_serial_header.sfun`
@@ -1132,24 +350,6 @@ The BSAP dashboard covers [Bristol Standard Asynchronous Protocol (BSAP)](https:
 * `zeek.bsap_serial_rdb.func_code`
 * `zeek.bsap_serial_rdb.variable_count`
 * `zeek.bsap_serial_rdb.variables`
-
-
-#### BSAP - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for BSAP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
 
 
 ---
@@ -1162,345 +362,36 @@ The Connections dashboard covers all network-layer connection records observed o
 
 ### Visualizations
 
-#### Connections - Log Count Over Time
+* Connections - Connection State
+* Connections - Destination IP Address
+* Connections - Destination MAC Address
+* Connections - Destination MAC OUI
+* Connections - Destination Port
+* Connections - Log Count
+* Connections - Log Count Over Time
+* Connections - Logs
+* Connections - Missed Bytes
+* Connections - Protocol
+* Connections - Responder Bytes
+* Connections - Service By Destination Country
+* Connections - Source Country
+* Connections - Source IP Address
+* Connections - Source MAC Address
+* Connections - Source MAC OUI
+* Connections - Top 10 - Total Bytes By Connection
+* Connections - Top 10 - Total Bytes By Destination IP
+* Connections - Top 10 - Total Bytes By Destination MAC OUI
+* Connections - Top 10 - Total Bytes By Destination Port
+* Connections - Top 10 - Total Bytes By Source IP
+* Connections - Top 10 - Total Bytes By Source MAC OUI
+* Connections - Total Bytes Per Source/Destination IP Pair
+* Long Connections - Log Count
+* Network Layer
 
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
 
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Service By Destination Country
-
-**Purpose:** A pie chart showing the proportional distribution of Service By Destination Country for Connections. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_name`
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Source Country
-
-**Purpose:** A ranked frequency table of Source Country values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.geo.country_code2`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Responder Bytes
-
-**Purpose:** A ranked frequency table of Responder Bytes values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `server.bytes`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Missed Bytes
-
-**Purpose:** A ranked frequency table of Missed Bytes values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.conn.missed_bytes`
-
-
-#### Connections - Connection State
-
-**Purpose:** A ranked frequency table of Connection State values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.conn.conn_state_description`
-
-
-#### Connections - Top 10 - Total Bytes By Connection
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Top 10 - Total Bytes By Destination IP
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Top 10 - Total Bytes By Destination Port
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Top 10 - Total Bytes By Source IP
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Total Bytes Per Source/Destination IP Pair
-
-**Purpose:** A ranked frequency table of Total Bytes Per Source/Destination IP Pair values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Source MAC OUI
-
-**Purpose:** A ranked frequency table of Source MAC OUI values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.oui`
-* `source.port`
-* timestamp
-
-
-#### Connections - Destination MAC OUI
-
-**Purpose:** A ranked frequency table of Destination MAC OUI values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.oui`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Source MAC Address
-
-**Purpose:** A ranked frequency table of Source MAC Address values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.mac`
-* `source.oui`
-* `source.port`
-* timestamp
-
-
-#### Connections - Destination MAC Address
-
-**Purpose:** A ranked frequency table of Destination MAC Address values for Connections. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
 * `destination.ip`
 * `destination.mac`
 * `destination.oui`
@@ -1510,121 +401,17 @@ The Connections dashboard covers all network-layer connection records observed o
 * `network.community_id`
 * `network.protocol`
 * `network.transport`
+* `network.type`
+* `server.bytes`
+* `source.geo.country_code2`
 * `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Top 10 - Total Bytes By Source MAC OUI
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
+* `source.mac`
 * `source.oui`
 * `source.port`
 * timestamp
-
-
-#### Connections - Top 10 - Total Bytes By Destination MAC OUI
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.oui`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Protocol
-
-**Purpose:** A pie chart showing the proportional distribution of Protocol for Connections. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Long Connections - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
+* `zeek.conn.conn_state_description`
 * `zeek.conn.long`
-
-
-#### Network Layer
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `network.type`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Connections - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.community_id`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
+* `zeek.conn.missed_bytes`
 
 
 ---
@@ -1637,11 +424,10 @@ This country-level map shades destination countries by the volume of bytes sent 
 
 ### Visualizations
 
-#### Connections - Destination - Originator Bytes (region map)
+* Connections - Destination - Originator Bytes (region map)
 
-**Purpose:** A country-level map shading destination countries by bytes sent by originators, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `client.bytes`
 * `destination.geo.country_iso_code`
@@ -1666,11 +452,10 @@ This coordinate map plots destination locations as dots sized by the volume of b
 
 ### Visualizations
 
-#### Connections - Destination - Responder Bytes
+* Connections - Destination - Responder Bytes
 
-**Purpose:** A city-level coordinate map plotting destination locations as dots sized by bytes sent by responders. Enables identification of specific geographic hotspots at a granular level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.location`
 * `destination.ip`
@@ -1695,11 +480,10 @@ This country-level map shades destination countries by the volume of bytes sent 
 
 ### Visualizations
 
-#### Connections - Destination - Responder Bytes (region map)
+* Connections - Destination - Responder Bytes (region map)
 
-**Purpose:** A country-level map shading destination countries by bytes sent by responders, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_iso_code`
 * `destination.ip`
@@ -1724,11 +508,10 @@ This coordinate map plots destination locations as dots sized by total bytes in 
 
 ### Visualizations
 
-#### Connections - Destination - Sum of Total Bytes
+* Connections - Destination - Sum of Total Bytes
 
-**Purpose:** A city-level coordinate map plotting destination locations as dots sized by total bytes in both directions. Enables identification of specific geographic hotspots at a granular level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.location`
 * `destination.ip`
@@ -1752,11 +535,10 @@ This country-level map shades destination countries by total bytes exchanged in 
 
 ### Visualizations
 
-#### Connections - Destination - Sum of Total Bytes (region map)
+* Connections - Destination - Sum of Total Bytes (region map)
 
-**Purpose:** A country-level map shading destination countries by total bytes in both directions, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_iso_code`
 * `destination.ip`
@@ -1780,11 +562,10 @@ This coordinate map plots destination locations as dots sized by connection dura
 
 ### Visualizations
 
-#### Connections - Destination - Top Connection Duration
+* Connections - Destination - Top Connection Duration
 
-**Purpose:** A city-level coordinate map plotting destination locations as dots sized by connection duration. Enables identification of specific geographic hotspots at a granular level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.location`
 * `destination.ip`
@@ -1809,11 +590,10 @@ This country-level map shades destination countries by longest connection durati
 
 ### Visualizations
 
-#### Connections - Destination - Top Connection Duration (region map)
+* Connections - Destination - Top Connection Duration (region map)
 
-**Purpose:** A country-level map shading destination countries by connection duration, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_iso_code`
 * `destination.ip`
@@ -1838,11 +618,10 @@ This coordinate map plots source locations as dots sized by the volume of bytes 
 
 ### Visualizations
 
-#### Connections - Source - Originator Bytes
+* Connections - Source - Originator Bytes
 
-**Purpose:** A city-level coordinate map plotting source locations as dots sized by bytes sent by originators. Enables identification of specific geographic hotspots at a granular level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `client.bytes`
 * `destination.ip`
@@ -1867,11 +646,10 @@ This country-level map shades source countries by the volume of bytes sent as or
 
 ### Visualizations
 
-#### Connections - Source - Originator Bytes (region map)
+* Connections - Source - Originator Bytes (region map)
 
-**Purpose:** A country-level map shading source countries by bytes sent by originators, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `client.bytes`
 * `destination.ip`
@@ -1896,11 +674,10 @@ This country-level map shades source countries by the volume of bytes received f
 
 ### Visualizations
 
-#### Connections - Source - Responder Bytes (region map)
+* Connections - Source - Responder Bytes (region map)
 
-**Purpose:** A country-level map shading source countries by bytes sent by responders, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -1925,11 +702,10 @@ This coordinate map plots source locations as dots sized by total bytes in both 
 
 ### Visualizations
 
-#### Connections - Source - Sum of Total Bytes
+* Connections - Source - Sum of Total Bytes
 
-**Purpose:** A city-level coordinate map plotting source locations as dots sized by total bytes in both directions. Enables identification of specific geographic hotspots at a granular level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -1953,11 +729,10 @@ This country-level map shades source countries by total bytes exchanged in both 
 
 ### Visualizations
 
-#### Connections - Source - Sum of Total Bytes (region map)
+* Connections - Source - Sum of Total Bytes (region map)
 
-**Purpose:** A country-level map shading source countries by total bytes in both directions, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -1981,11 +756,10 @@ This coordinate map plots source locations as dots sized by connection duration,
 
 ### Visualizations
 
-#### Connections - Source - Top Connection Duration
+* Connections - Source - Top Connection Duration
 
-**Purpose:** A city-level coordinate map plotting source locations as dots sized by connection duration. Enables identification of specific geographic hotspots at a granular level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -2010,11 +784,10 @@ This country-level map shades source countries by longest connection duration, o
 
 ### Visualizations
 
-#### Connections - Source - Top Connection Duration (region map)
+* Connections - Source - Top Connection Duration (region map)
 
-**Purpose:** A country-level map shading source countries by connection duration, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -2039,75 +812,20 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 
 ### Visualizations
 
-#### DCE/RPC - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.operation`
+* DCE/RPC - Destination IP Address
+* DCE/RPC - Destination Port
+* DCE/RPC - Endpoint
+* DCE/RPC - Log Count
+* DCE/RPC - Log Count Over Time
+* DCE/RPC - Logs
+* DCE/RPC - Named Pipe
+* DCE/RPC - Operation
+* DCE/RPC - Round Trip Time
+* DCE/RPC - Source IP Address
+* DCE/RPC - Summary
 
 
-#### DCE/RPC - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for DCE/RPC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.operation`
-
-
-#### DCE/RPC - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for DCE/RPC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.operation`
-
-
-#### DCE/RPC - Endpoint
-
-**Purpose:** A ranked frequency table of Endpoint values for DCE/RPC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.operation`
-
-
-#### DCE/RPC - Named Pipe
-
-**Purpose:** A ranked frequency table of Named Pipe values for DCE/RPC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -2117,105 +835,8 @@ The DCE/RPC dashboard provides visibility into [Distributed Computing Environmen
 * timestamp
 * `zeek.dce_rpc.endpoint`
 * `zeek.dce_rpc.named_pipe`
-* `zeek.dce_rpc.operation`
-
-
-#### DCE/RPC - Operation
-
-**Purpose:** A ranked frequency table of Operation values for DCE/RPC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.operation`
-
-
-#### DCE/RPC - Round Trip Time
-
-**Purpose:** A ranked frequency table of Round Trip Time values for DCE/RPC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
 * `zeek.dce_rpc.operation`
 * `zeek.dce_rpc.rtt`
-
-
-#### DCE/RPC - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.operation`
-
-
-#### DCE/RPC - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for DCE/RPC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.operation`
-
-
-#### DCE/RPC - Summary
-
-**Purpose:** A ranked frequency table of Summary values for DCE/RPC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.named_pipe`
-* `zeek.dce_rpc.operation`
-
-
-#### DCE/RPC - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.dce_rpc.endpoint`
-* `zeek.dce_rpc.operation`
 
 
 ---
@@ -2228,182 +849,22 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 
 ### Visualizations
 
-#### DHCP - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
+* DHCP - Client Software
+* DHCP - Destination IP Address
+* DHCP - Destination Port
+* DHCP - IP to MAC Assignment
+* DHCP - JA4D Fingerprint
+* DHCP - Log Count
+* DHCP - Log Count Over Time
+* DHCP - Logs
+* DHCP - Server Software
+* DHCP - Source IP Address
 
 
-#### DHCP - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for DHCP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
-
-
-#### DHCP - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for DHCP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
-
-
-#### DHCP - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for DHCP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
-
-
-#### DHCP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
-
-
-#### DHCP - IP to MAC Assignment
-
-**Purpose:** A ranked frequency table of IP to MAC Assignment values for DHCP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
-
-
-#### DHCP - Client Software
-
-**Purpose:** A ranked frequency table of Client Software values for DHCP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
-
-
-#### DHCP - Server Software
-
-**Purpose:** A ranked frequency table of Server Software values for DHCP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
-
-
-#### DHCP - JA4D Fingerprint
-
-**Purpose:** A ranked frequency table of JA4D Fingerprint values for DHCP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
 * `dhcp.ja4d`
 * `event.dataset`
 * `event.id`
@@ -2419,27 +880,6 @@ The DHCP dashboard tracks [Dynamic Host Configuration Protocol (DHCP)](https://e
 * `zeek.dhcp.vendor_class_id`
 
 
-#### DHCP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dhcp.ja4d`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* `source.mac`
-* timestamp
-* `zeek.dhcp.assigned_ip`
-* `zeek.dhcp.client_software`
-* `zeek.dhcp.domain`
-* `zeek.dhcp.host_name`
-* `zeek.dhcp.msg_types`
-* `zeek.dhcp.server_software`
-
-
 ---
 
 ## DNP3
@@ -2452,149 +892,32 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 
 ### Visualizations
 
-#### DNP3 - Source IP
-
-*Source IP Addresses from dnp3.log*
-
-**Purpose:** A ranked frequency table of Source IP values for DNP3. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dnp3.fc_reply`
-* `zeek.dnp3.iin_flags`
+* DNP3 - Control Logs
+* DNP3 - Control Overview
+* DNP3 - Destination IP
+* DNP3 - Function Reply
+* DNP3 - Function Request
+* DNP3 - Internal Indicators Overview
+* DNP3 - Log Count
+* DNP3 - Logs
+* DNP3 - Logs Over Time
+* DNP3 - Objects Logs
+* DNP3 - Objects Overview
+* DNP3 - Source IP
+* DNP3 - Trends
 
 
-#### DNP3 - Destination IP
-
-*Destination IP Addresses from dnp3.log*
-
-**Purpose:** A ranked frequency table of Destination IP values for DNP3. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dnp3.fc_reply`
-* `zeek.dnp3.iin_flags`
-
-
-#### DNP3 - Function Request
-
-*DNP3 function in request packet from dnp3.log*
-
-**Purpose:** A ranked frequency table of Function Request values for DNP3. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dnp3.fc_reply`
-* `zeek.dnp3.iin_flags`
-
-
-#### DNP3 - Function Reply
-
-*DNP3 function in reply packet from dnp3.log*
-
-**Purpose:** A ranked frequency table of Function Reply values for DNP3. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dnp3.fc_reply`
-* `zeek.dnp3.iin_flags`
-
-
-#### DNP3 - Log Count
-
-*Count of DNP3 logs including DNP3 Control and Objects logs*
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
 * `event.dataset`
-
-
-#### DNP3 - Logs Over Time
-
-*DNP3 logs over time*
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* timestamp
-
-
-#### DNP3 - Internal Indicators Overview
-
-*DNP3 Internal Indicators from dnp3.iin in dnp3.log*
-
-**Purpose:** A pie chart showing the proportional distribution of Internal Indicators Overview for DNP3. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
 * `event.id`
 * `source.ip`
 * timestamp
 * `zeek.dnp3.fc_reply`
 * `zeek.dnp3.iin_flags`
-
-
-#### DNP3 - Objects Overview
-
-*Overview of DNP3 objects from READ-RESPONSE messages in dnp3_objects.log*
-
-**Purpose:** A ranked frequency table of Objects Overview values for DNP3. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `source.ip`
-* timestamp
-* `zeek.dnp3_objects.object_count`
-* `zeek.dnp3_objects.object_type`
-* `zeek.dnp3_objects.range_high`
-* `zeek.dnp3_objects.range_low`
-
-
-#### DNP3 - Control Overview
-
-*Overview of DNP3 control functions from dnp3_control.log*
-
-**Purpose:** A ranked frequency table of Control Overview values for DNP3. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `source.ip`
-* timestamp
 * `zeek.dnp3_control.block_type`
 * `zeek.dnp3_control.clear_bit`
 * `zeek.dnp3_control.function_code`
@@ -2602,62 +925,6 @@ The DNP3 dashboard covers [Distributed Network Protocol 3 (DNP3)](https://en.wik
 * `zeek.dnp3_control.operation_type`
 * `zeek.dnp3_control.status_code`
 * `zeek.dnp3_control.trip_control_code`
-
-
-#### DNP3 - Trends
-
-**Purpose:** A custom visualization of log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-* `event.action`
-* `scheme`
-* `zeek.dnp3_control.function_code`
-
-
-#### DNP3 - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dnp3.fc_reply`
-* `zeek.dnp3.iin_flags`
-
-
-#### DNP3 - Control Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.dnp3_control.clear_bit`
-* `zeek.dnp3_control.function_code`
-* `zeek.dnp3_control.operation_type`
-* `zeek.dnp3_control.status_code`
-* `zeek.dnp3_control.trip_control_code`
-
-
-#### DNP3 - Objects Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `source.ip`
-* timestamp
 * `zeek.dnp3_objects.object_count`
 * `zeek.dnp3_objects.object_type`
 * `zeek.dnp3_objects.range_high`
@@ -2674,194 +941,37 @@ The DNS dashboard provides a comprehensive view of [Domain Name System (DNS)](ht
 
 ### Visualizations
 
-#### DNS - Server
-
-**Purpose:** A ranked frequency table of Server values for DNS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-
-
-#### DNS - Client
-
-**Purpose:** A ranked frequency table of Client values for DNS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
+* DNS - Answers
+* DNS - Client
+* DNS - Destination Port
+* DNS - Log Count
+* DNS - Log Count Over Time
+* DNS - Logs
+* DNS - Protocol
+* DNS - Query Class
+* DNS - Query Type
+* DNS - Query/Answer
+* DNS - Response Code (Name)
+* DNS - Server
+* DNS Queries by Randomness
 
 
-#### DNS - Query Class
-
-**Purpose:** A pie chart showing the proportional distribution of Query Class for DNS. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.qclass_name`
-* `zeek.dns.query`
-
-
-#### DNS - Query/Answer
-
-**Purpose:** A ranked frequency table of Query/Answer values for DNS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-
-
-#### DNS - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-
-
-#### DNS - Destination Port
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-
-
-#### DNS - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-
-
-#### DNS - Answers
-
-**Purpose:** A ranked frequency table of Answers values for DNS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-
-
-#### DNS - Response Code (Name)
-
-**Purpose:** A ranked frequency table of Response Code (Name) values for DNS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-* `zeek.dns.rcode_name`
-
-
-#### DNS - Query Type
-
-**Purpose:** A ranked frequency table of Query Type values for DNS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.qtype_name`
-* `zeek.dns.query`
-
-
-#### DNS - Protocol
-
-**Purpose:** A pie chart showing the proportional distribution of Protocol for DNS. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
+* `dns.host`
+* `event.freq_score_v1`
+* `event.freq_score_v2`
 * `event.id`
 * `network.transport`
 * `source.ip`
 * timestamp
 * `zeek.dns.answers`
+* `zeek.dns.qclass_name`
+* `zeek.dns.qtype_name`
 * `zeek.dns.query`
-
-
-#### DNS Queries by Randomness
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `dns.host`
-* `event.freq_score_v1`
-* `event.freq_score_v2`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-
-
-#### DNS - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
+* `zeek.dns.rcode_name`
 
 
 ---
@@ -2874,25 +984,17 @@ The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.
 
 ### Visualizations
 
-#### EtherCAT - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.mac`
-* `destination.oui`
-* `event.action`
-* `event.dataset`
-* `source.mac`
-* `source.oui`
+* EtherCAT - Commands
+* EtherCAT - Destination
+* EtherCAT - Log Count
+* EtherCAT - Log Count Over Time
+* EtherCAT - Register Types and Commands
+* EtherCAT - Source
+* EtherCAT Registers - Logs
+* Logs - EtherCAT
 
 
-#### EtherCAT - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.mac`
 * `destination.oui`
@@ -2901,93 +1003,9 @@ The EtherCAT dashboard provides visibility into [EtherCAT](https://en.wikipedia.
 * `source.mac`
 * `source.oui`
 * timestamp
-
-
-#### EtherCAT - Source
-
-**Purpose:** A ranked frequency table of Source values for EtherCAT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.mac`
-* `destination.oui`
-* `event.action`
-* `event.dataset`
-* `source.mac`
-* `source.oui`
-
-
-#### EtherCAT - Destination
-
-**Purpose:** A ranked frequency table of Destination values for EtherCAT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.mac`
-* `destination.oui`
-* `event.action`
-* `event.dataset`
-* `source.mac`
-* `source.oui`
-
-
-#### EtherCAT - Commands
-
-**Purpose:** A ranked frequency table of Commands values for EtherCAT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.mac`
-* `destination.oui`
-* `event.action`
-* `event.dataset`
-* `source.mac`
-* `source.oui`
-
-
-#### EtherCAT - Register Types and Commands
-
-**Purpose:** A ranked frequency table of Register Types and Commands values for EtherCAT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.mac`
-* `destination.oui`
-* `event.action`
-* `event.dataset`
-* `source.mac`
-* `source.oui`
-* `zeek.ecat_registers.register_type`
-
-
-#### EtherCAT Registers - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.mac`
-* `destination.oui`
-* `event.action`
-* `source.mac`
-* `source.oui`
 * `zeek.ecat_registers.register_addr`
 * `zeek.ecat_registers.register_type`
 * `zeek.ecat_registers.server_addr`
-
-
-#### Logs - EtherCAT
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.mac`
-* `destination.oui`
-* `event.action`
-* `event.dataset`
-* `source.mac`
-* `source.oui`
 
 
 ---
@@ -3002,126 +1020,33 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 
 ### Visualizations
 
-#### EtherNet/IP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-
-
-#### EtherNet/IP - Logs Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* timestamp
+* ATT&CK for ICS Notices - EtherNet/IP and CIP
+* ATT&CK for ICS Tactic - EtherNet/IP and CIP
+* CIP - Device Identity
+* CIP - IO Logs
+* CIP - Identity Logs
+* CIP - Logs
+* CIP - Services
+* EtherNet/IP -  Detailed Information
+* EtherNet/IP - Destination IP
+* EtherNet/IP - Log Count
+* EtherNet/IP - Logs Over Time
+* EtherNet/IP - Source IP
+* Ethernet/IP - Commands
+* Ethernet/IP - Logs
 
 
-#### Ethernet/IP - Commands
-
-**Purpose:** A horizontal bar chart ranking Commands for Ethernet/IP by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.action`
+* `event.dataset`
 * `event.id`
 * `event.result`
-* `source.ip`
-* timestamp
-* `zeek.cip.packet_correlation_id`
-* `zeek.enip.options`
-* `zeek.enip.sender_context`
-* `zeek.enip.session_handle`
-
-
-#### EtherNet/IP - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for EtherNet/IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `source.ip`
-
-
-#### ATT&CK for ICS Tactic - EtherNet/IP and CIP
-
-**Purpose:** A horizontal bar chart ranking EtherNet/IP and CIP for ATT&CK for ICS Tactic by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
 * `network.protocol`
 * `source.ip`
 * `threat.tactic.name`
 * `threat.technique.name`
-* timestamp
-* `zeek.cip.packet_correlation_id`
-* `zeek.notice.msg`
-
-
-#### ATT&CK for ICS Notices - EtherNet/IP and CIP
-
-**Purpose:** A ranked frequency table of EtherNet/IP and CIP values for ATT&CK for ICS Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* `threat.tactic.name`
-* `threat.technique.name`
-* timestamp
-* `zeek.cip.packet_correlation_id`
-* `zeek.notice.msg`
-
-
-#### EtherNet/IP - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for EtherNet/IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-
-
-#### CIP - Device Identity
-
-*CIP Identity Results*
-
-**Purpose:** A ranked frequency table of Device Identity values for CIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.cip.packet_correlation_id`
-* `zeek.cip_identity.device_type_name`
-* `zeek.cip_identity.product_name`
-* `zeek.cip_identity.revision`
-* `zeek.cip_identity.serial_number`
-* `zeek.cip_identity.vendor_name`
-
-
-#### CIP - Services
-
-*CIP Services and Status*
-
-**Purpose:** A ranked frequency table of Services values for CIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.result`
-* `source.ip`
 * timestamp
 * `zeek.cip.cip_sequence_count`
 * `zeek.cip.class_id`
@@ -3129,97 +1054,19 @@ The EtherNet/IP dashboard covers [EtherNet/IP](https://en.wikipedia.org/wiki/Eth
 * `zeek.cip.direction`
 * `zeek.cip.instance_id`
 * `zeek.cip.packet_correlation_id`
-
-
-#### EtherNet/IP -  Detailed Information
-
-*Includes: Session Identifier, Sender Context, EtherNet/IP Command, Data Length, and Status*
-
-**Purpose:** A ranked frequency table of  Detailed Information values for EtherNet/IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.cip.packet_correlation_id`
+* `zeek.cip_identity.device_type_name`
+* `zeek.cip_identity.product_name`
+* `zeek.cip_identity.revision`
+* `zeek.cip_identity.serial_number`
+* `zeek.cip_identity.vendor_name`
+* `zeek.cip_io.connection_id`
+* `zeek.cip_io.data_length`
+* `zeek.cip_io.sequence_number`
 * `zeek.enip.length`
 * `zeek.enip.options`
 * `zeek.enip.sender_context`
 * `zeek.enip.session_handle`
-
-
-#### CIP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.cip.cip_sequence_count`
-* `zeek.cip.class_id`
-* `zeek.cip.class_name`
-* `zeek.cip.direction`
-* `zeek.cip.instance_id`
-* `zeek.cip.packet_correlation_id`
-
-
-#### CIP - Identity Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `source.ip`
-* timestamp
-* `zeek.cip.packet_correlation_id`
-* `zeek.cip_identity.device_type_name`
-* `zeek.cip_identity.product_name`
-* `zeek.cip_identity.revision`
-* `zeek.cip_identity.serial_number`
-* `zeek.cip_identity.vendor_name`
-
-
-#### Ethernet/IP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.cip.packet_correlation_id`
-* `zeek.enip.options`
-* `zeek.enip.sender_context`
-* `zeek.enip.session_handle`
-
-
-#### CIP - IO Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.cip.packet_correlation_id`
-* `zeek.cip_io.connection_id`
-* `zeek.cip_io.data_length`
-* `zeek.cip_io.sequence_number`
+* `zeek.notice.msg`
 
 
 ---
@@ -3232,124 +1079,26 @@ The File Scanning dashboard consolidates results from Malcolm's [automatic file 
 
 ### Visualizations
 
-#### File Scanning - Hit Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
+* File Scanning - All Scanners
+* File Scanning - Destination IP
+* File Scanning - File Source
+* File Scanning - Hit Count
+* File Scanning - Hits Over Time
+* File Scanning - Logs
+* File Scanning - MIME Type
+* File Scanning - Scanners With Hits
+* File Scanning - Severity
+* File Scanning - Source IP
+* File Scanning - Tactic and Technique
+* File Scanning - Triggered Rules
+* Files Scanned by Nesting Depth
 
 
-#### File Scanning - Hits Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - File Source
-
-**Purpose:** A horizontal bar chart ranking File Source for File Scanning by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - Scanners With Hits
-
-**Purpose:** A pie chart showing the proportional distribution of Scanners With Hits for File Scanning. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - Triggered Rules
-
-**Purpose:** A ranked frequency table of Triggered Rules values for File Scanning. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - Severity
-
-**Purpose:** A ranked frequency table of Severity values for File Scanning. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
+* `event.module`
 * `event.risk_score`
 * `event.severity_tags`
 * `file.entropy`
@@ -3362,163 +1111,8 @@ The File Scanning dashboard consolidates results from Malcolm's [automatic file 
 * `rule.name`
 * `rule.ruleset`
 * `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - MIME Type
-
-**Purpose:** A ranked frequency table providing a categorical breakdown of the MIME types of files scanned. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - Tactic and Technique
-
-**Purpose:** A ranked frequency table of Tactic and Technique values for File Scanning. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
 * `threat.tactic.name`
 * `threat.technique.name`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - All Scanners
-
-**Purpose:** A ranked frequency table of All Scanners values for File Scanning. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `event.module`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### Files Scanned by Nesting Depth
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for File Scanning. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for File Scanning. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Scanning - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
 * timestamp
 * `zeek.files.extracted_uri`
 
@@ -3533,11 +1127,13 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 
 ### Visualizations
 
-#### File Scanning - MIME Type
+* File Scanning - MIME Type
+* File Tree
+* File Tree - Logs
+* Files Scanned by Nesting Depth
 
-**Purpose:** A ranked frequency table providing a categorical breakdown of the MIME types of files scanned. Useful for identifying top values and spotting outliers.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.id`
@@ -3548,70 +1144,16 @@ The File Tree dashboard presents a hierarchical breakdown of files observed in n
 * `file.source`
 * `filescan.hits`
 * `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Tree - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records associated with scanned files. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.name`
-* `file.source`
-* `filescan.tree.depth`
-* `rule.name`
-* `rule.ruleset`
-* `source.ip`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### File Tree
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data, presenting a hierarchical breakdown of files observed in network traffic, particularly with regards to [archived files](file-scanning.md#ScanningArchivedFiles) such as ZIP files or tarballs, allowing parent/child relationships between nested files to be explored.
-
-**Fields / Aggregations:**
-
-* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-* `field`
-* `file.name`
 * `filescan.tree.node`
 * `filescan.tree.parent`
 * `filescan.tree.root`
-* `scheme`
-* `signal`
-* `zeek.files.filename`
-* `zeek.ts`
-
-
-#### Files Scanned by Nesting Depth
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.entropy`
-* `file.mime_type`
-* `file.name`
-* `file.size`
-* `file.source`
-* `filescan.hits`
-* `filescan.tree.depth`
 * `rule.name`
 * `rule.ruleset`
 * `source.ip`
 * timestamp
 * `zeek.files.extracted_uri`
+* `zeek.files.filename`
+* `zeek.ts`
 
 
 ---
@@ -3624,145 +1166,33 @@ The Files dashboard provides an overview of all files observed traversing the ne
 
 ### Visualizations
 
-#### Files - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.path`
-* `file.source`
-* `source.ip`
-* timestamp
+* Extracted File Downloads
+* Files - Destination IP Address
+* Files - Files By Size (Bytes)
+* Files - Log Count
+* Files - Log Count Over Time
+* Files - Logs
+* Files - MIME Type
+* Files - Paths
+* Files - Source
+* Files - Source IP Address
 
 
-#### Files - Files By Size (Bytes)
-
-**Purpose:** A ranked frequency table of Files By Size (Bytes) values for Files. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.path`
-* `file.source`
-* `source.ip`
-* timestamp
-* `zeek.files.seen_bytes`
-
-
-#### Files - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for FIles. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.path`
-* `file.source`
-* `source.ip`
-* timestamp
-
-
-#### Files - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for FIles. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.path`
-* `file.source`
-* `source.ip`
-* timestamp
-
-
-#### Files - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.path`
-* `file.source`
-* `source.ip`
-* timestamp
-
-
-#### Files - Source
-
-**Purpose:** A horizontal bar chart ranking Source for Files by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.path`
-* `file.source`
-* `source.ip`
-* timestamp
-
-
-#### Files - MIME Type
-
-**Purpose:** A ranked frequency table of MIME Type values for Files. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `file.mime_type`
-
-
-#### Files - Paths
-
-**Purpose:** A ranked frequency table providing a categorical breakdown of filenames and paths. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
 * `event.dataset`
-* `file.path`
-* `network.protocol`
-
-
-#### Extracted File Downloads
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual file logs and which includes a hyperlink providing download access to the files themselves, depending on file preservation settings.
-
-**Fields / Aggregations:**
-
 * `event.id`
 * `file.mime_type`
 * `file.name`
+* `file.path`
 * `file.size`
 * `file.source`
-* timestamp
-* `zeek.files.extracted_uri`
-
-
-#### Files - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.path`
-* `file.source`
+* `network.protocol`
 * `source.ip`
 * timestamp
+* `zeek.files.extracted_uri`
+* `zeek.files.seen_bytes`
 
 
 ---
@@ -3775,136 +1205,30 @@ The FTP dashboard covers all [File Transfer Protocol (FTP)](https://en.wikipedia
 
 ### Visualizations
 
-#### FTP - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ftp.command`
-* `zeek.ftp.reply_msg`
+* FTP - Argument
+* FTP - Commands and Replies
+* FTP - Destination
+* FTP - Log Count
+* FTP - Log Count Over Time
+* FTP - Logs
+* FTP - Reply
+* FTP - Source
+* FTP - Username
 
 
-#### FTP - Argument
-
-**Purpose:** A ranked frequency table of Argument values for FTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
+* `destination.port`
+* `event.action`
 * `event.id`
+* `event.result`
+* `related.user`
 * `source.ip`
 * timestamp
 * `zeek.ftp.arg`
 * `zeek.ftp.command`
-* `zeek.ftp.reply_msg`
-
-
-#### FTP - Commands and Replies
-
-**Purpose:** A ranked frequency table of Commands and Replies values for FTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ftp.command`
 * `zeek.ftp.reply_code`
-* `zeek.ftp.reply_msg`
-
-
-#### FTP - Reply
-
-**Purpose:** A pie chart showing the proportional distribution of Reply for FTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ftp.command`
-* `zeek.ftp.reply_msg`
-
-
-#### FTP - Source
-
-**Purpose:** A ranked frequency table of Source values for FTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ftp.command`
-* `zeek.ftp.reply_msg`
-
-
-#### FTP - Destination
-
-**Purpose:** A ranked frequency table of Destination values for FTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ftp.command`
-* `zeek.ftp.reply_msg`
-
-
-#### FTP - Username
-
-**Purpose:** A ranked frequency table of Username values for FTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.ftp.command`
-* `zeek.ftp.reply_msg`
-
-
-#### FTP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ftp.command`
-* `zeek.ftp.reply_msg`
-
-
-#### FTP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ftp.command`
 * `zeek.ftp.reply_msg`
 
 
@@ -3920,269 +1244,26 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 
 ### Visualizations
 
-#### GE SRTP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
+* GE SRTP - Actions and Results
+* GE SRTP - Constant Sweep Mode
+* GE SRTP - Destination IP
+* GE SRTP - I/O Fault Entry Present
+* GE SRTP - I/O Fault Table Changed
+* GE SRTP - Log Count
+* GE SRTP - Logs
+* GE SRTP - Logs Over Time
+* GE SRTP - OEM Protection
+* GE SRTP - Oversweep Flag
+* GE SRTP - PLC Fault Entry Present
+* GE SRTP - PLC Fault Table Changed
+* GE SRTP - PLC State
+* GE SRTP - Panel Enable Switch
+* GE SRTP - Panel Run Switch
+* GE SRTP - Programmer Attachment
+* GE SRTP - Source IP
 
 
-#### GE SRTP - Logs Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for GE SRTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for GE SRTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Actions and Results
-
-**Purpose:** A ranked frequency table of Actions and Results values for GE SRTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Panel Run Switch
-
-**Purpose:** A pie chart showing the proportional distribution of Panel Run Switch for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.front_panel_run_switch`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Panel Enable Switch
-
-**Purpose:** A pie chart showing the proportional distribution of Panel Enable Switch for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.front_panel_enable_switch`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - PLC Fault Entry Present
-
-**Purpose:** A pie chart showing the proportional distribution of PLC Fault Entry Present for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_fault_entry_present`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - I/O Fault Entry Present
-
-**Purpose:** A pie chart showing the proportional distribution of I/O Fault Entry Present for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.io_fault_entry_present`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Programmer Attachment
-
-**Purpose:** A pie chart showing the proportional distribution of Programmer Attachment for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.programmer_attachment`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - PLC State
-
-**Purpose:** A ranked frequency table of PLC State values for GE SRTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Constant Sweep Mode
-
-**Purpose:** A pie chart showing the proportional distribution of Constant Sweep Mode for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.action`
@@ -4192,128 +1273,18 @@ The GE SRTP dashboard covers the [GE Service Request Transport Protocol (SRTP)](
 * timestamp
 * `zeek.ge_srtp.constant_sweep_mode`
 * `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Oversweep Flag
-
-**Purpose:** A pie chart showing the proportional distribution of Oversweep Flag for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.oversweep_flag`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - PLC Fault Table Changed
-
-**Purpose:** A pie chart showing the proportional distribution of PLC Fault Table Changed for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_fault_entry_last_read`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - I/O Fault Table Changed
-
-**Purpose:** A pie chart showing the proportional distribution of I/O Fault Table Changed for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.front_panel_enable_switch`
+* `zeek.ge_srtp.front_panel_run_switch`
 * `zeek.ge_srtp.io_fault_entry_last_read`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - OEM Protection
-
-**Purpose:** A pie chart showing the proportional distribution of OEM Protection for GE SRTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
+* `zeek.ge_srtp.io_fault_entry_present`
 * `zeek.ge_srtp.memory_offset`
 * `zeek.ge_srtp.oem_protected`
+* `zeek.ge_srtp.oversweep_flag`
 * `zeek.ge_srtp.packet_number`
+* `zeek.ge_srtp.plc_fault_entry_last_read`
+* `zeek.ge_srtp.plc_fault_entry_present`
 * `zeek.ge_srtp.plc_state`
-* `zeek.ge_srtp.segment_selector`
-* `zeek.ge_srtp.sequence_number_1`
-* `zeek.ge_srtp.sequence_number_2`
-* `zeek.ge_srtp.srtp_type`
-* `zeek.ge_srtp.total_packet_number`
-
-
-#### GE SRTP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ge_srtp.data_length`
-* `zeek.ge_srtp.memory_offset`
-* `zeek.ge_srtp.packet_number`
-* `zeek.ge_srtp.plc_state`
+* `zeek.ge_srtp.programmer_attachment`
 * `zeek.ge_srtp.segment_selector`
 * `zeek.ge_srtp.sequence_number_1`
 * `zeek.ge_srtp.sequence_number_2`
@@ -4333,28 +1304,18 @@ The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.
 
 ### Visualizations
 
-#### GENISYS - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* `zeek.genisys.payload`
-* `zeek.genisys.server`
+* GENISYS - Action
+* GENISYS - Destination
+* GENISYS - Log Count
+* GENISYS - Log Count Over Time
+* GENISYS - Logs
+* GENISYS - Message Direction
+* GENISYS - Result
+* GENISYS - Source
+* GENISYS - Station Address
 
 
-#### GENISYS - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -4364,126 +1325,7 @@ The GENISYS dashboard covers network traffic for the [GENISYS](https://manualzz.
 * `source.ip`
 * `source.port`
 * timestamp
-* `zeek.genisys.payload`
-* `zeek.genisys.server`
-
-
-#### GENISYS - Station Address
-
-**Purpose:** A ranked frequency table of Station Address values for GENISYS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* `zeek.genisys.payload`
-* `zeek.genisys.server`
-
-
-#### GENISYS - Source
-
-**Purpose:** A ranked frequency table of Source values for GENISYS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* `zeek.genisys.payload`
-* `zeek.genisys.server`
-
-
-#### GENISYS - Action
-
-**Purpose:** A horizontal bar chart ranking Action for GENISYS by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* `zeek.genisys.payload`
-* `zeek.genisys.server`
-
-
-#### GENISYS - Message Direction
-
-**Purpose:** A pie chart showing the proportional distribution of Message Direction for GENISYS. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
 * `zeek.genisys.direction`
-* `zeek.genisys.payload`
-* `zeek.genisys.server`
-
-
-#### GENISYS - Destination
-
-**Purpose:** A ranked frequency table of Destination values for GENISYS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* `zeek.genisys.payload`
-* `zeek.genisys.server`
-
-
-#### GENISYS - Result
-
-**Purpose:** A horizontal bar chart ranking Result for GENISYS by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* `zeek.genisys.payload`
-* `zeek.genisys.server`
-
-
-#### GENISYS - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
 * `zeek.genisys.payload`
 * `zeek.genisys.server`
 
@@ -4498,412 +1340,63 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 
 ### Visualizations
 
-#### HART-IP - Logs Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-
-
-#### HART-IP - Logs Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
+* Audit Log Insecure Syslog Connection
+* Configuration Changed (Direct PDU)
+* Configuration Changed (Token Passing PDU)
+* Critical Power Failure
+* Device Malfunction (Direct PDU)
+* Device Malfunction (Token Passing PDU)
+* Device Variable Alert
+* Failure
+* Function Check
+* HART-IP - Actions and Results
+* HART-IP - Destination IP
+* HART-IP - Logs
+* HART-IP - Logs Count
+* HART-IP - Logs Over Time
+* HART-IP - PDU Command
+* HART-IP - Source IP
+* HART-IP - Universal Commands Device Profile and Type
+* HART-IP - Universal Commands Message and Response
+* Header Version
+* Insecure Session
+* Maintenance Required
+* Out of Specification
+* Protocol Major Revision
+* Session Summary: Writes Occurred
 
 
-#### HART-IP - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for HART-IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.action`
 * `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-
-
-#### HART-IP - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for HART-IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-
-
-#### HART-IP - Actions and Results
-
-**Purpose:** A ranked frequency table of Actions and Results values for HART-IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-
-
-#### HART-IP - Universal Commands Device Profile and Type
-
-**Purpose:** A ranked frequency table of Universal Commands Device Profile and Type values for HART-IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip_universal_commands.read_unique_identifier_response_device_profile`
-* `zeek.hart_ip_universal_commands.read_unique_identifier_response_expanded_device_type`
-
-
-#### HART-IP - Universal Commands Message and Response
-
-**Purpose:** A ranked frequency table of Universal Commands Message and Response values for HART-IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip_universal_commands.read_message_response_message`
-* `zeek.hart_ip_universal_commands.write_message_message_string`
-
-
-#### HART-IP - PDU Command
-
-**Purpose:** A ranked frequency table of PDU Command values for HART-IP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Header Version
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Protocol Major Revision
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip_universal_commands.read_unique_identifier_response_hart_protocol_major_revision`
-
-
-#### Insecure Session
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip_session_record.session_log_record_session_status_summary_insecure_session`
-
-
-#### Audit Log Insecure Syslog Connection
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.read_audit_log_server_status_insecure_syslog_connection`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Session Summary: Writes Occurred
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip_session_record.session_log_record_session_status_summary_writes_occured`
-
-
-#### Device Malfunction (Token Passing PDU)
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-* `zeek.hart_ip.token_passing_pdu_contents_response_device_status_device_malfunction`
-
-
-#### Device Malfunction (Direct PDU)
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.direct_pdu_device_status_device_malfunction`
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Configuration Changed (Token Passing PDU)
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-* `zeek.hart_ip.token_passing_pdu_contents_response_device_status_configuration_changed`
-
-
-#### Configuration Changed (Direct PDU)
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
 * `event.id`
 * `event.result`
 * `source.ip`
 * timestamp
 * `zeek.hart_ip.direct_pdu_device_status_configuration_changed`
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Maintenance Required
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.direct_pdu_extended_status_maintenance_required`
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Function Check
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.direct_pdu_extended_status_function_check`
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Failure
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.direct_pdu_extended_status_failure`
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Device Variable Alert
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.hart_ip.direct_pdu_extended_status_device_variable_alert`
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Critical Power Failure
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
+* `zeek.hart_ip.direct_pdu_device_status_device_malfunction`
 * `zeek.hart_ip.direct_pdu_extended_status_critical_power_failure`
-* `zeek.hart_ip.header_sequence_number`
-* `zeek.hart_ip.header_version`
-* `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### Out of Specification
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
+* `zeek.hart_ip.direct_pdu_extended_status_device_variable_alert`
+* `zeek.hart_ip.direct_pdu_extended_status_failure`
+* `zeek.hart_ip.direct_pdu_extended_status_function_check`
+* `zeek.hart_ip.direct_pdu_extended_status_maintenance_required`
 * `zeek.hart_ip.direct_pdu_extended_status_out_of_specification`
 * `zeek.hart_ip.header_sequence_number`
 * `zeek.hart_ip.header_version`
+* `zeek.hart_ip.read_audit_log_server_status_insecure_syslog_connection`
 * `zeek.hart_ip.token_passing_pdu_command_number`
-
-
-#### HART-IP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
+* `zeek.hart_ip.token_passing_pdu_contents_response_device_status_configuration_changed`
+* `zeek.hart_ip.token_passing_pdu_contents_response_device_status_device_malfunction`
+* `zeek.hart_ip_session_record.session_log_record_session_status_summary_insecure_session`
+* `zeek.hart_ip_session_record.session_log_record_session_status_summary_writes_occured`
+* `zeek.hart_ip_universal_commands.read_message_response_message`
+* `zeek.hart_ip_universal_commands.read_unique_identifier_response_device_profile`
+* `zeek.hart_ip_universal_commands.read_unique_identifier_response_expanded_device_type`
+* `zeek.hart_ip_universal_commands.read_unique_identifier_response_hart_protocol_major_revision`
+* `zeek.hart_ip_universal_commands.write_message_message_string`
 
 
 ---
@@ -4916,272 +1409,45 @@ The HTTP dashboard covers all [HTTP](https://en.wikipedia.org/wiki/Hypertext_Tra
 
 ### Visualizations
 
-#### HTTP - Status Over Time
+* HTTP  - Status and Method
+* HTTP - Destination Country
+* HTTP - Destination IP Address
+* HTTP - Destination Port
+* HTTP - File Type
+* HTTP - Log Count
+* HTTP - Logs
+* HTTP - Method and Status
+* HTTP - Referrer
+* HTTP - Sites
+* HTTP - Sites Hosting EXEs
+* HTTP - Source IP Address
+* HTTP - Status Over Time
+* HTTP - URIs
+* HTTP - Unique Usernames and Passwords
+* HTTP - User Agent
+* HTTP - Version
 
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
 
-**Fields / Aggregations:**
+### Fields
 
+* `destination.geo.country_name`
 * `destination.ip`
 * `destination.port`
+* `event.action`
 * `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Sites
-
-**Purpose:** A ranked frequency table of Sites values for HTTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Sites Hosting EXEs
-
-**Purpose:** A ranked frequency table of Sites Hosting EXEs values for HTTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `zeek.http.host`
-
-
-#### HTTP - URIs
-
-**Purpose:** A ranked frequency table of URIs values for HTTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-* `zeek.http.uri`
-
-
-#### HTTP - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for HTTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for HTTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - User Agent
-
-**Purpose:** A ranked frequency table of User Agent values for HTTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
+* `event.result`
+* `file.mime_type`
+* `network.protocol_version`
+* `related.password`
+* `related.user`
 * `source.ip`
 * timestamp
 * `user_agent.original`
 * `zeek.http.host`
 * `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Referrer
-
-**Purpose:** A ranked frequency table of Referrer values for HTTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
 * `zeek.http.referrer`
 * `zeek.http.status_msg`
-
-
-#### HTTP - Destination Port
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Destination Country
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.geo.country_name`
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP  - Status and Method
-
-**Purpose:** A ranked frequency table of Status and Method values for HTTP . Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Unique Usernames and Passwords
-
-**Purpose:** Displays the total number of unique observed values, giving a quick inventory count for this category.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.password`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Version
-
-**Purpose:** A pie chart showing the proportional distribution of Version for HTTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - File Type
-
-**Purpose:** A tag cloud showing the relative frequency of values by size. Dominant tags appear larger, making it easy to identify the most common values at a glance.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `file.mime_type`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.http.host`
-* `zeek.http.method`
-* `zeek.http.status_msg`
-
-
-#### HTTP - Method and Status
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `event.action`
-* `event.result`
-* timestamp
+* `zeek.http.uri`
 
 
 ---
@@ -5194,60 +1460,16 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 
 ### Visualizations
 
-#### Best Guess - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `protocol`
-* `source.ip`
-* `source.port`
-* `zeek.bestguess.category`
-* `zeek.bestguess.name`
+* Best Guess - Category
+* Best Guess - Log Count
+* Best Guess - Log Count Over Time
+* Best Guess - Logs
+* Best Guess - Summary
+* Best Guess Protocol - Destination
+* Best Guess Protocol - Source
 
 
-#### Best Guess - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `protocol`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.bestguess.category`
-* `zeek.bestguess.name`
-
-
-#### Best Guess Protocol - Destination
-
-**Purpose:** A ranked frequency table of Destination values for Best Guess Protocol. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `protocol`
-* `source.ip`
-* `source.port`
-* `zeek.bestguess.category`
-* `zeek.bestguess.name`
-
-
-#### Best Guess - Summary
-
-**Purpose:** A ranked frequency table of Summary values for Best Guess. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -5256,54 +1478,7 @@ The ICS Best Guess dashboard surfaces connections that exhibit characteristics c
 * `protocol`
 * `source.ip`
 * `source.port`
-* `zeek.bestguess.category`
-* `zeek.bestguess.name`
-
-
-#### Best Guess Protocol - Source
-
-**Purpose:** A ranked frequency table of Source values for Best Guess Protocol. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `protocol`
-* `source.ip`
-* `source.port`
-* `zeek.bestguess.category`
-* `zeek.bestguess.name`
-
-
-#### Best Guess - Category
-
-**Purpose:** A horizontal bar chart ranking Category for Best Guess by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `protocol`
-* `source.ip`
-* `source.port`
-* `zeek.bestguess.category`
-* `zeek.bestguess.name`
-
-
-#### Best Guess - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `protocol`
-* `source.ip`
-* `source.port`
+* timestamp
 * `zeek.bestguess.category`
 * `zeek.bestguess.name`
 
@@ -5318,184 +1493,35 @@ The ICS/IoT Security Overview dashboard aggregates security-relevant data specif
 
 ### Visualizations
 
-#### ICS/IoT Log Counts
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* timestamp
+* ACID on ATT&CK for ICS
+* ATT&CK for ICS Tactic
+* ICS Tactics and Techniques
+* ICS/IoT Actions and Results
+* ICS/IoT Destination IP
+* ICS/IoT External Traffic
+* ICS/IoT Log Counts
+* ICS/IoT Logs
+* ICS/IoT Source IP
+* ICS/IoT Traffic Over Time
+* Network Layer
 
 
-#### ICS/IoT Traffic Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### ICS/IoT External Traffic
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_name`
 * `destination.ip`
 * `destination.port`
 * `event.action`
-* `event.result`
-* `network.protocol`
-* `source.geo.country_name`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Network Layer
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
 * `event.id`
+* `event.result`
 * `network.bytes`
 * `network.protocol`
 * `network.transport`
 * `network.type`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### ICS/IoT Actions and Results
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### ATT&CK for ICS Tactic
-
-**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* `threat.tactic.name`
-* timestamp
-
-
-#### ICS/IoT Source IP
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### ICS Tactics and Techniques
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `network.protocol`
 * `rule.category`
+* `source.geo.country_name`
 * `source.ip`
 * `source.port`
-* `threat.tactic.name`
-* `threat.technique.name`
-* timestamp
-
-
-#### ICS/IoT Destination IP
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### ICS/IoT Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### ACID on ATT&CK for ICS
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `network.protocol`
-* `source.ip`
 * `threat.tactic.name`
 * `threat.technique.name`
 * timestamp
@@ -5514,45 +1540,12 @@ The IP Connections Tree dashboard presents network connection data in a hierarch
 
 ### Visualizations
 
-#### Connections Tree From Destination
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-* `destination.ip`
-* `event.id`
-* `field`
-* `scheme`
-* `signal`
-* `source.ip`
-* timestamp
-* `zeek.conn.conn_state`
+* Connections - Logs
+* Connections Tree From Destination
+* Connections Tree From Source
 
 
-#### Connections Tree From Source
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-* `destination.ip`
-* `event.id`
-* `field`
-* `scheme`
-* `signal`
-* `source.ip`
-* timestamp
-* `zeek.conn.conn_state`
-
-
-#### Connections - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -5563,6 +1556,7 @@ The IP Connections Tree dashboard presents network connection data in a hierarch
 * `source.ip`
 * `source.port`
 * timestamp
+* `zeek.conn.conn_state`
 
 
 ---
@@ -5575,126 +1569,20 @@ The IRC dashboard covers [Internet Relay Chat (IRC)](https://en.wikipedia.org/wi
 
 ### Visualizations
 
-#### IRC - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.irc.command`
-* `zeek.irc.nick`
-* `zeek.irc.value`
+* IRC - Command
+* IRC - Destination Country
+* IRC - Destination IP Address
+* IRC - Destination Port
+* IRC - Log Count
+* IRC - Log Count Over Time
+* IRC - Logs
+* IRC - Source IP Address
 
 
-#### IRC - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for IRC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.irc.command`
-* `zeek.irc.nick`
-* `zeek.irc.value`
-
-
-#### IRC - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for IRC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.irc.command`
-* `zeek.irc.nick`
-* `zeek.irc.value`
-
-
-#### IRC - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for IRC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.irc.command`
-* `zeek.irc.nick`
-* `zeek.irc.value`
-
-
-#### IRC - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.irc.command`
-* `zeek.irc.nick`
-* `zeek.irc.value`
-
-
-#### IRC - Destination Country
-
-**Purpose:** A ranked frequency table of Destination Country values for IRC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.city_name`
 * `destination.geo.country_name`
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.irc.command`
-* `zeek.irc.nick`
-* `zeek.irc.value`
-
-
-#### IRC - Command
-
-**Purpose:** A ranked frequency table of Command values for IRC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.irc.command`
-* `zeek.irc.nick`
-* `zeek.irc.value`
-
-
-#### IRC - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
 * `destination.ip`
 * `destination.port`
 * `event.id`
@@ -5715,77 +1603,22 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 
 ### Visualizations
 
-#### Kerberos - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Client
-
-**Purpose:** A ranked frequency table of Client values for Kerberos. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.cname`
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
+* Kerberos - Cipher
+* Kerberos - Client
+* Kerberos - Destination IP Address
+* Kerberos - Destination Ports
+* Kerberos - Log Count
+* Kerberos - Log Count Over Time
+* Kerberos - Logs
+* Kerberos - Renewable Ticket Requested
+* Kerberos - Request Types
+* Kerberos - Server
+* Kerberos - Service
+* Kerberos - Source IP Address
+* Kerberos - Success Status
 
 
-#### Kerberos - Success Status
-
-**Purpose:** A pie chart showing the proportional distribution of Success Status for Kerberos. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Server
-
-**Purpose:** A ranked frequency table of Server values for Kerberos. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.sname`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Cipher
-
-**Purpose:** A pie chart showing the proportional distribution of Cipher for Kerberos. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -5793,138 +1626,11 @@ The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerbero
 * `source.ip`
 * timestamp
 * `zeek.kerberos.cipher`
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for Kerberos. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for Kerberos. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Service
-
-**Purpose:** A ranked frequency table of Service values for Kerberos. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.sname`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Request Types
-
-**Purpose:** A pie chart showing the proportional distribution of Request Types for Kerberos. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Renewable Ticket Requested
-
-**Purpose:** A pie chart showing the proportional distribution of Renewable Ticket Requested for Kerberos. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
+* `zeek.kerberos.cname`
 * `zeek.kerberos.error_msg`
 * `zeek.kerberos.renewable`
 * `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Destination Ports
-
-**Purpose:** A horizontal bar chart ranking Destination Ports for Kerberos by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
-* `zeek.kerberos.success`
-
-
-#### Kerberos - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.kerberos.error_msg`
-* `zeek.kerberos.request_type`
+* `zeek.kerberos.sname`
 * `zeek.kerberos.success`
 
 
@@ -5938,87 +1644,19 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 
 ### Visualizations
 
-#### LDAP - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ldap.argument`
-* `zeek.ldap.message_id`
-* `zeek.ldap.object`
-* `zeek.ldap.version`
+* LDAP - Bind
+* LDAP - Destination IP
+* LDAP - Log Count
+* LDAP - Log Count Over Time
+* LDAP - Logs
+* LDAP - Operation
+* LDAP - Result Code
+* LDAP - Search Scope
+* LDAP - Source IP
+* LDAP Search - Logs
 
 
-#### LDAP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ldap.argument`
-* `zeek.ldap.message_id`
-* `zeek.ldap.object`
-* `zeek.ldap.version`
-
-
-#### LDAP - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for LDAP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ldap.argument`
-* `zeek.ldap.message_id`
-* `zeek.ldap.object`
-* `zeek.ldap.version`
-
-
-#### LDAP - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for LDAP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.ldap.argument`
-* `zeek.ldap.message_id`
-* `zeek.ldap.object`
-* `zeek.ldap.version`
-
-
-#### LDAP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -6028,21 +1666,6 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 * `event.provider`
 * `event.result`
 * `network.protocol`
-* `source.ip`
-* timestamp
-
-
-#### LDAP - Bind
-
-**Purpose:** A ranked frequency table of Bind values for LDAP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
 * `network.protocol_version`
 * `source.ip`
 * timestamp
@@ -6050,79 +1673,11 @@ The LDAP dashboard tracks [Lightweight Directory Access Protocol (LDAP)](https:/
 * `zeek.ldap.message_id`
 * `zeek.ldap.object`
 * `zeek.ldap.version`
-
-
-#### LDAP - Search Scope
-
-**Purpose:** A horizontal bar chart ranking Search Scope for LDAP by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
 * `zeek.ldap_search.base_object`
 * `zeek.ldap_search.filter`
 * `zeek.ldap_search.message_id`
 * `zeek.ldap_search.result_count`
 * `zeek.ldap_search.scope`
-
-
-#### LDAP - Result Code
-
-**Purpose:** A ranked frequency table of Result Code values for LDAP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
-
-
-#### LDAP - Operation
-
-**Purpose:** A ranked frequency table of Operation values for LDAP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
-
-
-#### LDAP Search - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `zeek.ldap_search.base_object`
-* `zeek.ldap_search.filter`
-* `zeek.ldap_search.message_id`
-* `zeek.ldap_search.result_count`
 
 
 ---
@@ -6137,120 +1692,27 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 
 ### Visualizations
 
-#### Modbus - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.modbus.network_direction`
-* `zeek.modbus.trans_id`
-* `zeek.modbus.unit_id`
-
-
-#### Modbus - Source IP
-
-*Source IP Addresses from modbus.log*
-
-**Purpose:** A ranked frequency table of Source IP values for Modbus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.modbus.network_direction`
-* `zeek.modbus.trans_id`
-* `zeek.modbus.unit_id`
+* Modbus - Destination IP
+* Modbus - Detailed
+* Modbus - Device Identification Objects
+* Modbus - Functions and Exceptions
+* Modbus - Log Count
+* Modbus - Logs
+* Modbus - Logs Over Time
+* Modbus - Mask Write
+* Modbus - Observed Client/Server Ratio
+* Modbus - Observed Clients and Servers
+* Modbus - Read Device Identification
+* Modbus - Read Write Multiple
+* Modbus - Reads
+* Modbus - Request and Response
+* Modbus - Source IP
+* Modbus - Transport
+* Modbus - Trends
+* Modbus - Writes
 
 
-#### Modbus - Destination IP
-
-*Destination IP Addresses from modbus.log*
-
-**Purpose:** A ranked frequency table of Destination IP values for Modbus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.modbus.network_direction`
-* `zeek.modbus.trans_id`
-* `zeek.modbus.unit_id`
-
-
-#### Modbus - Observed Clients and Servers
-
-*Modbus observed client and server devices*
-
-**Purpose:** A ranked frequency table of Observed Clients and Servers values for Modbus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `network.direction`
-* `source.ip`
-* timestamp
-* `zeek.known_modbus.device_type`
-
-
-#### Modbus - Observed Client/Server Ratio
-
-*Modbus Observed Clients and Servers Chart*
-
-**Purpose:** A pie chart showing the proportional distribution of Observed Client/Server Ratio for Modbus. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `network.direction`
-* `source.ip`
-* timestamp
-* `zeek.known_modbus.device_type`
-
-
-#### Modbus - Log Count
-
-*Count of Modbus logs including Modbus Detailed and Modbus Register Change*
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-
-
-#### Modbus - Logs Over Time
-
-*Modbus Logs over Time*
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* timestamp
-
-
-#### Modbus - Functions and Exceptions
-
-**Purpose:** A ranked frequency table of Functions and Exceptions values for Modbus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -6258,139 +1720,16 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 * `event.dataset`
 * `event.id`
 * `event.result`
-* `source.ip`
-* `zeek.modbus.network_direction`
-* `zeek.modbus.unit_id`
-
-
-#### Modbus - Request and Response
-
-**Purpose:** A horizontal bar chart ranking Request and Response for Modbus by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.modbus.network_direction`
-* `zeek.modbus.trans_id`
-* `zeek.modbus.unit_id`
-
-
-#### Modbus - Reads
-
-**Purpose:** A ranked frequency table of Reads values for Modbus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.modbus.trans_id`
-* `zeek.modbus.unit_id`
-* `zeek.modbus_detailed.address`
-* `zeek.modbus_detailed.link_id`
-* `zeek.modbus_detailed.matched`
-* `zeek.modbus_detailed.quantity`
-* `zeek.modbus_detailed.request_values`
-* `zeek.modbus_detailed.response_values`
-
-
-#### Modbus - Writes
-
-**Purpose:** A ranked frequency table of Writes values for Modbus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.modbus.trans_id`
-* `zeek.modbus.unit_id`
-* `zeek.modbus_detailed.address`
-* `zeek.modbus_detailed.link_id`
-* `zeek.modbus_detailed.matched`
-* `zeek.modbus_detailed.quantity`
-* `zeek.modbus_detailed.request_values`
-* `zeek.modbus_detailed.response_values`
-
-
-#### Modbus - Transport
-
-**Purpose:** A pie chart showing the proportional distribution of Transport for Modbus. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
 * `network.bytes`
+* `network.direction`
 * `network.protocol`
 * `network.transport`
 * `network.type`
 * `source.ip`
 * `source.port`
 * timestamp
-
-
-#### Modbus - Device Identification Objects
-
-**Purpose:** A ranked frequency table of Device Identification Objects values for Modbus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
+* `zeek.known_modbus.device_type`
 * `zeek.modbus.network_direction`
-* `zeek.modbus.trans_id`
-* `zeek.modbus.unit_id`
-* `zeek.modbus_detailed.link_id`
-* `zeek.modbus_read_device_identification.conformity_level`
-* `zeek.modbus_read_device_identification.device_id_code`
-* `zeek.modbus_read_device_identification.object_id`
-* `zeek.modbus_read_device_identification.object_value`
-
-
-#### Modbus - Trends
-
-**Purpose:** A custom visualization of log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-* `event.id`
-* `scheme`
-* timestamp
-* `zeek.modbus_detailed.matched`
-* `zeek.modbus_detailed.request_values`
-
-
-#### Modbus - Detailed
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
 * `zeek.modbus.trans_id`
 * `zeek.modbus.unit_id`
 * `zeek.modbus_detailed.address`
@@ -6399,67 +1738,16 @@ The Modbus dashboard provides visibility into [Modbus](https://en.wikipedia.org/
 * `zeek.modbus_detailed.quantity`
 * `zeek.modbus_detailed.request_values`
 * `zeek.modbus_detailed.response_values`
-
-
-#### Modbus - Mask Write
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.modbus.network_direction`
-* `zeek.modbus.unit_id`
-* `zeek.modbus_detailed.address`
-* `zeek.modbus_detailed.link_id`
 * `zeek.modbus_mask_write_register.and_mask`
 * `zeek.modbus_mask_write_register.or_mask`
-
-
-#### Modbus - Read Write Multiple
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.modbus.network_direction`
-* `zeek.modbus.unit_id`
-* `zeek.modbus_detailed.link_id`
-* `zeek.modbus_read_write_multiple_registers.read_registers`
-* `zeek.modbus_read_write_multiple_registers.read_start_address`
-* `zeek.modbus_read_write_multiple_registers.write_registers`
-* `zeek.modbus_read_write_multiple_registers.write_start_address`
-
-
-#### Modbus - Read Device Identification
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* timestamp
-* `zeek.modbus.network_direction`
-* `zeek.modbus.trans_id`
-* `zeek.modbus.unit_id`
-* `zeek.modbus_detailed.link_id`
 * `zeek.modbus_read_device_identification.conformity_level`
 * `zeek.modbus_read_device_identification.device_id_code`
 * `zeek.modbus_read_device_identification.object_id`
 * `zeek.modbus_read_device_identification.object_value`
+* `zeek.modbus_read_write_multiple_registers.read_registers`
+* `zeek.modbus_read_write_multiple_registers.read_start_address`
+* `zeek.modbus_read_write_multiple_registers.write_registers`
+* `zeek.modbus_read_write_multiple_registers.write_start_address`
 
 
 ---
@@ -6472,70 +1760,23 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 
 ### Visualizations
 
-#### MQTT - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
+* MQTT - All Logs
+* MQTT - Client ID
+* MQTT - Destination IP
+* MQTT - Log Count
+* MQTT - Log Count Over Time
+* MQTT - Protocol
+* MQTT - Publish
+* MQTT - Publish Payload
+* MQTT - Source IP
+* MQTT - Subscription
 
 
-#### MQTT - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-
-
-#### MQTT - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for MQTT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-
-
-#### MQTT - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for MQTT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-
-
-#### MQTT - Protocol
-
-**Purpose:** A pie chart showing the proportional distribution of Protocol for MQTT. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
 * `event.id`
 * `source.ip`
 * timestamp
@@ -6543,86 +1784,14 @@ The MQTT dashboard covers [MQ Telemetry Transport (MQTT)](https://en.wikipedia.o
 * `zeek.mqtt_connect.connect_status`
 * `zeek.mqtt_connect.proto_name`
 * `zeek.mqtt_connect.proto_version`
-
-
-#### MQTT - Client ID
-
-**Purpose:** A ranked frequency table of Client ID values for MQTT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.mqtt_connect.client_id`
-* `zeek.mqtt_connect.connect_status`
-* `zeek.mqtt_connect.proto_name`
-
-
-#### MQTT - Subscription
-
-**Purpose:** A ranked frequency table of Subscription values for MQTT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.mqtt_subscribe.ack`
-* `zeek.mqtt_subscribe.action`
-* `zeek.mqtt_subscribe.topics`
-
-
-#### MQTT - Publish
-
-**Purpose:** A ranked frequency table of Publish values for MQTT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.mqtt_publish.from_client`
-* `zeek.mqtt_publish.status`
-* `zeek.mqtt_publish.topic`
-
-
-#### MQTT - Publish Payload
-
-**Purpose:** A ranked frequency table of Publish Payload values for MQTT. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
 * `zeek.mqtt_publish.from_client`
 * `zeek.mqtt_publish.payload`
 * `zeek.mqtt_publish.payload_len`
 * `zeek.mqtt_publish.status`
 * `zeek.mqtt_publish.topic`
-
-
-#### MQTT - All Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
+* `zeek.mqtt_subscribe.ack`
+* `zeek.mqtt_subscribe.action`
+* `zeek.mqtt_subscribe.topics`
 
 
 ---
@@ -6635,56 +1804,14 @@ The MySQL dashboard provides visibility into [MySQL](https://en.wikipedia.org/wi
 
 ### Visualizations
 
-#### MySQL - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.mysql.cmd`
-* `zeek.mysql.success`
+* MySQL - Commands
+* MySQL - Log Count
+* MySQL - Log Count Over Time
+* MySQL - Logs
+* MySQL - Success
 
 
-#### MySQL - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.mysql.cmd`
-* `zeek.mysql.success`
-
-
-#### MySQL - Success
-
-**Purpose:** A pie chart showing the proportional distribution of Success for MySQL. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.mysql.cmd`
-* `zeek.mysql.success`
-
-
-#### MySQL - Commands
-
-**Purpose:** A ranked frequency table of Commands values for MySQL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -6694,21 +1821,6 @@ The MySQL dashboard provides visibility into [MySQL](https://en.wikipedia.org/wi
 * `zeek.mysql.arg`
 * `zeek.mysql.cmd`
 * `zeek.mysql.response`
-* `zeek.mysql.success`
-
-
-#### MySQL - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.mysql.cmd`
 * `zeek.mysql.success`
 
 
@@ -6722,179 +1834,25 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 
 ### Visualizations
 
-#### NTLM - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
+* NTLM - Destination IP Address
+* NTLM - Destination Port
+* NTLM - Domain Name
+* NTLM - Hostname
+* NTLM - Hostname to Username
+* NTLM - Log Count
+* NTLM - Log Count Over Time
+* NTLM - Logs
+* NTLM - Source IP Address
+* NTLM - Success
+* NTLM - Username
 
 
-#### NTLM - Hostname
-
-**Purpose:** A ranked frequency table of Hostname values for NTLM. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
-
-
-#### NTLM - Domain Name
-
-**Purpose:** A ranked frequency table of Domain Name values for NTLM. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
-
-
-#### NTLM - Username
-
-**Purpose:** A ranked frequency table of Username values for NTLM. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.id`
 * `related.user`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
-
-
-#### NTLM - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for NTLM. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
-
-
-#### NTLM - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for NTLM. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
-
-
-#### NTLM - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for NTLM. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
-
-
-#### NTLM - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
-
-
-#### NTLM - Hostname to Username
-
-**Purpose:** A ranked frequency table of Hostname to Username values for NTLM. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
-
-
-#### NTLM - Success
-
-**Purpose:** A pie chart showing the proportional distribution of Success for NTLM. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
 * `source.ip`
 * timestamp
 * `zeek.ntlm.domain`
@@ -6903,24 +1861,6 @@ The NTLM dashboard covers [NT LAN Manager (NTLM)](https://en.wikipedia.org/wiki/
 * `zeek.ntlm.server_nb_computer`
 * `zeek.ntlm.server_tree`
 * `zeek.ntlm.success`
-
-
-#### NTLM - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntlm.domain`
-* `zeek.ntlm.host`
-* `zeek.ntlm.server_dns_computer`
-* `zeek.ntlm.server_nb_computer`
-* `zeek.ntlm.server_tree`
 
 
 ---
@@ -6933,148 +1873,18 @@ The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/
 
 ### Visualizations
 
-#### NTP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntp.mode_str`
-* `zeek.ntp.org_time`
-* `zeek.ntp.stratum`
-* `zeek.ntp.version`
-* `zeek.ntp.xmt_time`
+* NTP - Destination IP
+* NTP - Log Count
+* NTP - Log Count Over Time
+* NTP - Logs
+* NTP - Mode
+* NTP - Polling Interval
+* NTP - Source IP
+* NTP - Stratum
+* NTP - Version
 
 
-#### NTP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntp.mode_str`
-* `zeek.ntp.org_time`
-* `zeek.ntp.stratum`
-* `zeek.ntp.version`
-* `zeek.ntp.xmt_time`
-
-
-#### NTP - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntp.mode_str`
-* `zeek.ntp.org_time`
-* `zeek.ntp.stratum`
-* `zeek.ntp.version`
-* `zeek.ntp.xmt_time`
-
-
-#### NTP - Stratum
-
-**Purpose:** A horizontal bar chart ranking Stratum for NTP by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntp.mode_str`
-* `zeek.ntp.org_time`
-* `zeek.ntp.stratum`
-* `zeek.ntp.version`
-* `zeek.ntp.xmt_time`
-
-
-#### NTP - Version
-
-**Purpose:** A pie chart showing the proportional distribution of Version for NTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntp.mode_str`
-* `zeek.ntp.org_time`
-* `zeek.ntp.stratum`
-* `zeek.ntp.version`
-* `zeek.ntp.xmt_time`
-
-
-#### NTP - Mode
-
-**Purpose:** A pie chart showing the proportional distribution of Mode for NTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntp.mode_str`
-* `zeek.ntp.org_time`
-* `zeek.ntp.stratum`
-* `zeek.ntp.version`
-* `zeek.ntp.xmt_time`
-
-
-#### NTP - Polling Interval
-
-**Purpose:** A horizontal bar chart ranking Polling Interval for NTP by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntp.mode_str`
-* `zeek.ntp.org_time`
-* `zeek.ntp.poll`
-* `zeek.ntp.stratum`
-* `zeek.ntp.version`
-* `zeek.ntp.xmt_time`
-
-
-#### NTP - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for NTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ntp.mode_str`
-* `zeek.ntp.org_time`
-* `zeek.ntp.stratum`
-* `zeek.ntp.version`
-* `zeek.ntp.xmt_time`
-
-
-#### NTP - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for NTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -7083,6 +1893,7 @@ The NTP dashboard covers [Network Time Protocol (NTP)](https://en.wikipedia.org/
 * timestamp
 * `zeek.ntp.mode_str`
 * `zeek.ntp.org_time`
+* `zeek.ntp.poll`
 * `zeek.ntp.stratum`
 * `zeek.ntp.version`
 * `zeek.ntp.xmt_time`
@@ -7098,118 +1909,23 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 
 ### Visualizations
 
-#### Omron FINS - Log Counts
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.link_id`
+* Omron FINS - Action and Result
+* Omron FINS - Address, Node, and Unit
+* Omron FINS - All Logs
+* Omron FINS - Controller Model and Version
+* Omron FINS - Data Type
+* Omron FINS - Destination IP
+* Omron FINS - Files/Volumes
+* Omron FINS - Log Counts
+* Omron FINS - Logs Over Time
+* Omron FINS - Source IP
+* Omron FINS - Transport Protocol
 
 
-#### Omron FINS - Logs Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.link_id`
-
-
-#### Omron FINS - Action and Result
-
-**Purpose:** A ranked frequency table of Action and Result values for Omron FINS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.link_id`
-
-
-#### Omron FINS - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for Omron FINS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.link_id`
-
-
-#### Omron FINS - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for Omron FINS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.link_id`
-
-
-#### Omron FINS - Controller Model and Version
-
-**Purpose:** A ranked frequency table of Controller Model and Version values for Omron FINS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.link_id`
-* `zeek.omron_fins_detail.controller_model`
-* `zeek.omron_fins_detail.controller_version`
-
-
-#### Omron FINS - Files/Volumes
-
-**Purpose:** A ranked frequency table of Files/Volumes values for Omron FINS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
 * `event.action`
 * `event.dataset`
 * `event.id`
@@ -7218,83 +1934,17 @@ The Omron FINS dashboard provides visibility into the [Factory Interface Network
 * `network.transport`
 * `source.ip`
 * timestamp
-* `zeek.omron_fins.link_id`
-
-
-#### Omron FINS - Transport Protocol
-
-**Purpose:** A pie chart showing the proportional distribution of Transport Protocol for Omron FINS. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.link_id`
-
-
-#### Omron FINS - Data Type
-
-**Purpose:** A pie chart showing the proportional distribution of Data Type for Omron FINS. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.icf_data_type`
-* `zeek.omron_fins.link_id`
-
-
-#### Omron FINS - Address, Node, and Unit
-
-**Purpose:** A ranked frequency table of Address, Node, and Unit values for Omron FINS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
 * `zeek.omron_fins.destination_network_address`
 * `zeek.omron_fins.destination_node_number`
 * `zeek.omron_fins.destination_unit_address`
+* `zeek.omron_fins.icf_data_type`
 * `zeek.omron_fins.link_id`
 * `zeek.omron_fins.service_id`
 * `zeek.omron_fins.source_network_address`
 * `zeek.omron_fins.source_node_number`
 * `zeek.omron_fins.source_unit_address`
-
-
-#### Omron FINS - All Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.omron_fins.link_id`
+* `zeek.omron_fins_detail.controller_model`
+* `zeek.omron_fins_detail.controller_version`
 
 
 ---
@@ -7307,147 +1957,22 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 
 ### Visualizations
 
-#### OPCUA Binary - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `url.original`
-
-
-#### OPCUA Binary - Traffic Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* timestamp
+* OPCUA Binary - Actions
+* OPCUA Binary - Destination
+* OPCUA Binary - Log Count
+* OPCUA Binary - Logs
+* OPCUA Binary - Password Count
+* OPCUA Binary - Protocol Version
+* OPCUA Binary - Results
+* OPCUA Binary - Software
+* OPCUA Binary - Source
+* OPCUA Binary - Traffic Over Time
+* OPCUA Binary - URLs and URIs
+* OPCUA Binary - User
+* OPCUA Binary and Related - Logs
 
 
-#### OPCUA Binary - Actions
-
-**Purpose:** A ranked frequency table of Actions values for OPCUA Binary. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.action`
-
-
-#### OPCUA Binary - Results
-
-**Purpose:** A ranked frequency table of Results values for OPCUA Binary. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.result`
-
-
-#### OPCUA Binary - URLs and URIs
-
-**Purpose:** A ranked frequency table of URLs and URIs values for OPCUA Binary. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `url.original`
-
-
-#### OPCUA Binary - User
-
-**Purpose:** A horizontal bar chart ranking User for OPCUA Binary by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* `url.original`
-
-
-#### OPCUA Binary - Source
-
-**Purpose:** A ranked frequency table of Source values for OPCUA Binary. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `zeek.opcua_binary.opcua_link_id`
-
-
-#### OPCUA Binary - Destination
-
-**Purpose:** A ranked frequency table of Destination values for OPCUA Binary. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `zeek.opcua_binary.opcua_link_id`
-
-
-#### OPCUA Binary - Password Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `related.password`
-* `source.ip`
-* `url.original`
-
-
-#### OPCUA Binary - Software
-
-**Purpose:** A horizontal bar chart ranking Software for OPCUA Binary by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `url.original`
-* `zeek.software.name`
-
-
-#### OPCUA Binary - Protocol Version
-
-**Purpose:** A pie chart showing the proportional distribution of Protocol Version for OPCUA Binary. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -7456,40 +1981,13 @@ The OPC UA Binary dashboard covers [OPC Unified Architecture (OPC UA)](https://e
 * `event.id`
 * `event.result`
 * `network.protocol_version`
+* `related.password`
+* `related.user`
 * `source.ip`
+* timestamp
 * `url.original`
-
-
-#### OPCUA Binary - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
 * `zeek.opcua_binary.opcua_link_id`
-
-
-#### OPCUA Binary and Related - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `url.original`
+* `zeek.software.name`
 
 
 ---
@@ -7502,198 +2000,26 @@ The OSPF dashboard covers [Open Shortest Path First (OSPF)](https://en.wikipedia
 
 ### Visualizations
 
-#### OSPF - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
+* OSPF - All IP Addresses
+* OSPF - Area and Router
+* OSPF - Destination IP
+* OSPF - Link State Advertisement
+* OSPF - Link Type
+* OSPF - Log Count
+* OSPF - Log Count Over Time
+* OSPF - Logs
+* OSPF - Packet Type
+* OSPF - Source IP
 
 
-#### OSPF - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
-
-
-#### OSPF - Packet Type
-
-**Purpose:** A pie chart showing the proportional distribution of Packet Type for OSPF. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
-
-
-#### OSPF - Link State Advertisement
-
-**Purpose:** A ranked frequency table of Link State Advertisement values for OSPF. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
-
-
-#### OSPF - Link Type
-
-**Purpose:** A ranked frequency table of Link Type values for OSPF. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
-
-
-#### OSPF - Area and Router
-
-**Purpose:** A ranked frequency table of Area and Router values for OSPF. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
-
-
-#### OSPF - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for OSPF. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
-
-
-#### OSPF - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for OSPF. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
-
-
-#### OSPF - All IP Addresses
-
-**Purpose:** A ranked frequency table of All IP Addresses values for OSPF. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.action`
 * `network.protocol_version`
 * `related.ip`
 * `source.ip`
-* `zeek.ospf.area_id`
-* `zeek.ospf.backup_router`
-* `zeek.ospf.desig_router`
-* `zeek.ospf.interface_id`
-* `zeek.ospf.link_type`
-* `zeek.ospf.lsa_type`
-* `zeek.ospf.neighbors`
-* `zeek.ospf.router_id`
-
-
-#### OSPF - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `network.protocol_version`
-* `source.ip`
+* timestamp
 * `zeek.ospf.area_id`
 * `zeek.ospf.backup_router`
 * `zeek.ospf.desig_router`
@@ -7714,130 +2040,38 @@ The Overview dashboard provides a high-level summary of all network traffic and 
 
 ### Visualizations
 
-#### Total Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
+* Actions and Results
+* All Logs
+* Application Protocol
+* Connections - Service By Destination Country
+* DNS - Queries
+* Log Source
+* Log Type
+* Total Log Count Over Time
+* Total Number of Logs
 
 
-#### Connections - Service By Destination Country
-
-**Purpose:** A pie chart showing the proportional distribution of Service By Destination Country for Connections. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_name`
 * `destination.ip`
 * `destination.port`
+* `event.action`
+* `event.dataset`
 * `event.id`
+* `event.ingested`
+* `event.provider`
+* `event.result`
+* `host.name`
 * `network.bytes`
 * `network.protocol`
+* `network.protocol_version`
 * `network.transport`
 * `source.ip`
 * `source.port`
 * timestamp
-
-
-#### Log Type
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
-
-
-#### Total Number of Logs
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `event.provider`
-
-
-#### DNS - Queries
-
-**Purpose:** A ranked frequency table of Queries values for DNS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `source.ip`
-* timestamp
 * `zeek.dns.answers`
 * `zeek.dns.query`
-
-
-#### Log Source
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.ingested`
-* `host.name`
-
-
-#### Application Protocol
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `network.protocol`
-* `network.protocol_version`
-
-
-#### Actions and Results
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.action`
-* `event.result`
-* `network.protocol`
-
-
-#### All Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* timestamp
 
 
 ---
@@ -7850,117 +2084,25 @@ The PE (Portable Executable) dashboard provides visibility into Windows PE file 
 
 ### Visualizations
 
-#### PE - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `event.id`
-* timestamp
-* `zeek.pe.machine`
-* `zeek.pe.os`
-* `zeek.pe.subsystem`
+* Capa Signatures
+* Executable Capabilities
+* PE - Log Count
+* PE - Log Count Over Time
+* PE - Logs
+* PE - Machine
+* PE - OS
+* PE - Section Name
+* PE - Subsystem
 
 
-#### PE - OS
-
-**Purpose:** A pie chart showing the proportional distribution of OS for PE. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `event.id`
-* timestamp
-* `zeek.pe.machine`
-* `zeek.pe.os`
-* `zeek.pe.subsystem`
-
-
-#### PE - Subsystem
-
-**Purpose:** A pie chart showing the proportional distribution of Subsystem for PE. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `event.id`
-* timestamp
-* `zeek.pe.machine`
-* `zeek.pe.os`
-* `zeek.pe.subsystem`
-
-
-#### PE - Section Name
-
-**Purpose:** A ranked frequency table of Section Name values for PE. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.id`
+* `rule.name`
 * timestamp
 * `zeek.pe.machine`
 * `zeek.pe.os`
 * `zeek.pe.section_names`
-* `zeek.pe.subsystem`
-
-
-#### PE - Machine
-
-**Purpose:** A ranked frequency table of Machine values for PE. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.id`
-* timestamp
-* `zeek.pe.machine`
-* `zeek.pe.os`
-* `zeek.pe.subsystem`
-
-
-#### PE - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `event.id`
-* timestamp
-* `zeek.pe.machine`
-* `zeek.pe.os`
-* `zeek.pe.subsystem`
-
-
-#### Capa Signatures
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.id`
-* `rule.name`
-* timestamp
-
-
-#### Executable Capabilities
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `event.id`
-* `rule.name`
-* timestamp
-
-
-#### PE - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `event.id`
-* timestamp
-* `zeek.pe.machine`
-* `zeek.pe.os`
 * `zeek.pe.subsystem`
 
 
@@ -7974,171 +2116,18 @@ The PostgreSQL dashboard covers [PostgreSQL](https://en.wikipedia.org/wiki/Postg
 
 ### Visualizations
 
-#### PostgreSQL - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.postgresql.application_name`
-* `zeek.postgresql.backend_arg`
-* `zeek.postgresql.database`
-* `zeek.postgresql.frontend_arg`
-* `zeek.postgresql.rows`
+* PostgreSQL - Action and Results
+* PostgreSQL - Application
+* PostgreSQL - Database
+* PostgreSQL - Destination IP
+* PostgreSQL - Log Count
+* PostgreSQL - Log Count Over Time
+* PostgreSQL - Logs
+* PostgreSQL - Source IP
+* PostgreSQL - User
 
 
-#### PostgreSQL - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.postgresql.application_name`
-* `zeek.postgresql.backend_arg`
-* `zeek.postgresql.database`
-* `zeek.postgresql.frontend_arg`
-* `zeek.postgresql.rows`
-
-
-#### PostgreSQL - Database
-
-**Purpose:** A horizontal bar chart ranking Database for PostgreSQL by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.postgresql.application_name`
-* `zeek.postgresql.backend_arg`
-* `zeek.postgresql.database`
-* `zeek.postgresql.frontend_arg`
-* `zeek.postgresql.rows`
-
-
-#### PostgreSQL - Action and Results
-
-**Purpose:** A ranked frequency table of Action and Results values for PostgreSQL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.postgresql.application_name`
-* `zeek.postgresql.backend_arg`
-* `zeek.postgresql.database`
-* `zeek.postgresql.frontend_arg`
-* `zeek.postgresql.rows`
-
-
-#### PostgreSQL - Application
-
-**Purpose:** A ranked frequency table of Application values for PostgreSQL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.postgresql.application_name`
-* `zeek.postgresql.backend_arg`
-* `zeek.postgresql.database`
-* `zeek.postgresql.frontend_arg`
-* `zeek.postgresql.rows`
-
-
-#### PostgreSQL - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for PostgreSQL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.postgresql.application_name`
-* `zeek.postgresql.backend_arg`
-* `zeek.postgresql.database`
-* `zeek.postgresql.frontend_arg`
-* `zeek.postgresql.rows`
-
-
-#### PostgreSQL - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for PostgreSQL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.postgresql.application_name`
-* `zeek.postgresql.backend_arg`
-* `zeek.postgresql.database`
-* `zeek.postgresql.frontend_arg`
-* `zeek.postgresql.rows`
-
-
-#### PostgreSQL - User
-
-**Purpose:** A ranked frequency table of User values for PostgreSQL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.id`
-* `event.result`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.postgresql.application_name`
-* `zeek.postgresql.backend_arg`
-* `zeek.postgresql.database`
-* `zeek.postgresql.frontend_arg`
-* `zeek.postgresql.rows`
-
-
-#### PostgreSQL - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.action`
@@ -8164,30 +2153,18 @@ The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET)
 
 ### Visualizations
 
-#### PROFINET - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-
-
-#### PROFINET - Logs Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* timestamp
+* PROFINET - Destination IP
+* PROFINET - Log Count
+* PROFINET - Logs Over Time
+* PROFINET - Operation
+* PROFINET - Operation Details
+* PROFINET - Source IP
+* PROFINET I/O CM - Logs
+* PROFINET I/O CM - Operation
+* PROFINET and Related - Logs
 
 
-#### PROFINET - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for PROFINET. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -8195,56 +2172,6 @@ The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET)
 * `event.dataset`
 * `event.id`
 * `network.protocol_version`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.profinet.index`
-
-
-#### PROFINET - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for PROFINET. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.profinet.index`
-
-
-#### PROFINET - Operation
-
-**Purpose:** A ranked frequency table of Operation values for PROFINET. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.profinet.block_version`
-* `zeek.profinet.index`
-* `zeek.profinet.operation_type`
-
-
-#### PROFINET - Operation Details
-
-**Purpose:** A ranked frequency table of Operation Details values for PROFINET. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
 * `source.ip`
 * `source.port`
 * timestamp
@@ -8253,59 +2180,8 @@ The PROFINET dashboard covers [PROFINET](https://en.wikipedia.org/wiki/PROFINET)
 * `zeek.profinet.operation_type`
 * `zeek.profinet.slot_number`
 * `zeek.profinet.subslot_number`
-
-
-#### PROFINET I/O CM - Operation
-
-**Purpose:** A horizontal bar chart ranking Operation for PROFINET I/O CM by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* `source.port`
-* timestamp
 * `zeek.profinet_io_cm.operation`
 * `zeek.profinet_io_cm.packet_type`
-* `zeek.profinet_io_cm.sequence_num`
-
-
-#### PROFINET and Related - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.profinet.index`
-
-
-#### PROFINET I/O CM - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* `source.port`
-* timestamp
 * `zeek.profinet_io_cm.sequence_num`
 
 
@@ -8319,116 +2195,18 @@ The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki
 
 ### Visualizations
 
-#### QUIC - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `quic.host`
-* `quic.version`
-* `source.ip`
-* timestamp
-* `user_agent.original`
+* QUIC - CYU Fingerprint
+* QUIC - Destination IP Address
+* QUIC - Log Count
+* QUIC - Log Count Over Time
+* QUIC - Logs
+* QUIC - Server Name
+* QUIC - Source IP Address
+* QUIC - User Agent
+* QUIC - Version
 
 
-#### QUIC - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `quic.host`
-* `quic.version`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-
-
-#### QUIC - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `quic.host`
-* `quic.version`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-
-
-#### QUIC - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for QUIC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `quic.host`
-* `quic.version`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-
-
-#### QUIC - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for QUIC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `quic.host`
-* `quic.version`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-
-
-#### QUIC - User Agent
-
-**Purpose:** A ranked frequency table of User Agent values for QUIC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `quic.host`
-* `quic.version`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-
-
-#### QUIC - Server Name
-
-**Purpose:** A ranked frequency table of Server Name values for QUIC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `quic.host`
-* `quic.version`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-
-
-#### QUIC - CYU Fingerprint
-
-**Purpose:** A ranked frequency table of CYU Fingerprint values for QUIC. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.id`
@@ -8441,21 +2219,6 @@ The QUIC dashboard provides visibility into [QUIC](https://en.wikipedia.org/wiki
 * `zeek.gquic.cyutags`
 
 
-#### QUIC - Version
-
-**Purpose:** A pie chart showing the proportional distribution of Version for QUIC. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `quic.host`
-* `quic.version`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-
-
 ---
 
 ## RADIUS
@@ -8466,79 +2229,18 @@ The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)
 
 ### Visualizations
 
-#### RADIUS - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.radius.framed_addr`
-* `zeek.radius.mac`
-* `zeek.radius.result`
+* RADIUS - Authentication Result
+* RADIUS - Connection Information
+* RADIUS - Destination IP Address
+* RADIUS - Log Count
+* RADIUS - Log Count Over Time
+* RADIUS - Logs
+* RADIUS - MAC
+* RADIUS - Source IP Address
+* RADIUS - Username
 
 
-#### RADIUS - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for RADIUS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.radius.framed_addr`
-* `zeek.radius.mac`
-* `zeek.radius.result`
-
-
-#### RADIUS - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for RADIUS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.radius.framed_addr`
-* `zeek.radius.mac`
-* `zeek.radius.result`
-
-
-#### RADIUS - MAC
-
-**Purpose:** A ranked frequency table of MAC values for RADIUS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.radius.framed_addr`
-* `zeek.radius.mac`
-* `zeek.radius.result`
-
-
-#### RADIUS - Connection Information
-
-**Purpose:** A ranked frequency table of Connection Information values for RADIUS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -8547,74 +2249,6 @@ The RADIUS dashboard covers [Remote Authentication Dial-In User Service (RADIUS)
 * `source.ip`
 * timestamp
 * `zeek.radius.connect_info`
-* `zeek.radius.framed_addr`
-* `zeek.radius.mac`
-* `zeek.radius.result`
-
-
-#### RADIUS - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.radius.framed_addr`
-* `zeek.radius.mac`
-* `zeek.radius.result`
-
-
-#### RADIUS - Username
-
-**Purpose:** A ranked frequency table of Username values for RADIUS. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.radius.framed_addr`
-* `zeek.radius.mac`
-* `zeek.radius.result`
-
-
-#### RADIUS - Authentication Result
-
-**Purpose:** A pie chart showing the proportional distribution of Authentication Result for RADIUS. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
-* `zeek.radius.framed_addr`
-* `zeek.radius.mac`
-* `zeek.radius.result`
-
-
-#### RADIUS - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.user`
-* `source.ip`
-* timestamp
 * `zeek.radius.framed_addr`
 * `zeek.radius.mac`
 * `zeek.radius.result`
@@ -8630,65 +2264,20 @@ The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.or
 
 ### Visualizations
 
-#### RDP - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
+* RDP - Client Version
+* RDP - Connections Tree
+* RDP - Cookie
+* RDP - Destination IP Address
+* RDP - Encryption
+* RDP - Keyboard Layout
+* RDP - Log Count
+* RDP - Log Count Over Time
+* RDP - Logs
+* RDP - Result
+* RDP - Source IP Address
 
 
-#### RDP - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for RDP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
-
-
-#### RDP - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for RDP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
-
-
-#### RDP - Cookie
-
-**Purpose:** A ranked frequency table of Cookie values for RDP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -8697,131 +2286,7 @@ The RDP dashboard covers [Remote Desktop Protocol (RDP)](https://en.wikipedia.or
 * timestamp
 * `zeek.rdp.client_build`
 * `zeek.rdp.cookie`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
-
-
-#### RDP - Result
-
-**Purpose:** A pie chart showing the proportional distribution of Result for RDP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
-
-
-#### RDP - Keyboard Layout
-
-**Purpose:** A pie chart showing the proportional distribution of Keyboard Layout for RDP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
-
-
-#### RDP - Client Version
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
-
-
-#### RDP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
-
-
-#### RDP - Encryption
-
-**Purpose:** A pie chart showing the proportional distribution of Encryption for RDP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
 * `zeek.rdp.encryption_level`
-* `zeek.rdp.encryption_method`
-* `zeek.rdp.keyboard_layout`
-* `zeek.rdp.result`
-* `zeek.rdp.security_protocol`
-
-
-#### RDP - Connections Tree
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-* `destination.ip`
-* `event.id`
-* `field`
-* `scheme`
-* `signal`
-* `source.ip`
-* timestamp
-
-
-#### RDP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rdp.client_build`
 * `zeek.rdp.encryption_method`
 * `zeek.rdp.keyboard_layout`
 * `zeek.rdp.result`
@@ -8838,131 +2303,18 @@ The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memor
 
 ### Visualizations
 
-#### Redis - Logs Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.redis.cmd_key`
+* Redis - Action and Result
+* Redis - Destination
+* Redis - Key
+* Redis - Key and Value
+* Redis - Log Count
+* Redis - Logs
+* Redis - Logs Over Time
+* Redis - Source
+* Redis - Success
 
 
-#### Redis - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.redis.cmd_key`
-
-
-#### Redis - Success
-
-**Purpose:** A pie chart showing the proportional distribution of Success for Redis. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.redis.cmd_key`
-* `zeek.redis.success`
-
-
-#### Redis - Source
-
-**Purpose:** A ranked frequency table of Source values for Redis. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.redis.cmd_key`
-
-
-#### Redis - Destination
-
-**Purpose:** A ranked frequency table of Destination values for Redis. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.redis.cmd_key`
-
-
-#### Redis - Action and Result
-
-**Purpose:** A ranked frequency table of Action and Result values for Redis. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.redis.cmd_key`
-
-
-#### Redis - Key
-
-**Purpose:** A ranked frequency table of Key values for Redis. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.redis.cmd_key`
-
-
-#### Redis - Key and Value
-
-**Purpose:** A ranked frequency table of Key and Value values for Redis. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -8974,23 +2326,7 @@ The Redis dashboard covers [Redis](https://en.wikipedia.org/wiki/Redis) in-memor
 * timestamp
 * `zeek.redis.cmd_key`
 * `zeek.redis.cmd_value`
-
-
-#### Redis - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.redis.cmd_key`
+* `zeek.redis.success`
 
 
 ---
@@ -9003,149 +2339,21 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 
 ### Visualizations
 
-#### RFB - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
+* RFB - Authentication Method
+* RFB - Authentication Status
+* RFB - Client Version
+* RFB - Desktop Name
+* RFB - Destination IP Address
+* RFB - Destination Port
+* RFB - Exclusive Session
+* RFB - Log Count
+* RFB - Log Count Over Time
+* RFB - Logs
+* RFB - Server Version
+* RFB - Source IP Address
 
 
-#### RFB - Authentication Status
-
-**Purpose:** A pie chart showing the proportional distribution of Authentication Status for RFB. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Exclusive Session
-
-**Purpose:** A pie chart showing the proportional distribution of Exclusive Session for RFB. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Desktop Name
-
-**Purpose:** A ranked frequency table of Desktop Name values for RFB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for RFB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for RFB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for RFB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Server Version
-
-**Purpose:** A ranked frequency table of Server Version values for RFB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.server_major_version`
-* `zeek.rfb.server_minor_version`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Client Version
-
-**Purpose:** A ranked frequency table of Client Version values for RFB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -9157,57 +2365,8 @@ The RFB dashboard covers [Remote Framebuffer (RFB)](https://en.wikipedia.org/wik
 * `zeek.rfb.client_major_version`
 * `zeek.rfb.client_minor_version`
 * `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Authentication Method
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
-* `zeek.rfb.share_flag`
-
-
-#### RFB - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.rfb.auth`
-* `zeek.rfb.authentication_method`
-* `zeek.rfb.desktop_name`
+* `zeek.rfb.server_major_version`
+* `zeek.rfb.server_minor_version`
 * `zeek.rfb.share_flag`
 
 
@@ -9221,145 +2380,20 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 
 ### Visualizations
 
-#### ROC Plus - Log Types
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
+* ROC Plus - Action
+* ROC Plus - All Logs
+* ROC Plus - Destination IP
+* ROC Plus - File Transfer Directory
+* ROC Plus - File Transfer Filename
+* ROC Plus - Log Types
+* ROC Plus - Packet Size
+* ROC Plus - Result
+* ROC Plus - Source IP
+* ROC Plus - Traffic Over Time
+* ROC Plus - Transport Protocol
 
 
-#### ROC Plus - Traffic Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - Action
-
-**Purpose:** A ranked frequency table of Action values for ROC Plus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - Result
-
-**Purpose:** A ranked frequency table of Result values for ROC Plus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - Packet Size
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - Transport Protocol
-
-**Purpose:** A pie chart showing the proportional distribution of Transport Protocol for ROC Plus. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for ROC Plus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for ROC Plus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -9367,68 +2401,12 @@ The ROC Plus dashboard covers the Emerson [ROC Plus](https://www.emerson.com/doc
 * `event.dataset`
 * `event.id`
 * `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - File Transfer Directory
-
-**Purpose:** A ranked frequency table of File Transfer Directory values for ROC Plus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
 * `file.directory`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - File Transfer Filename
-
-**Purpose:** A ranked frequency table of File Transfer Filename values for ROC Plus. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
 * `file.name`
 * `network.bytes`
 * `network.transport`
 * `source.ip`
-* timestamp
-* `zeek.roc_plus.link_id`
-* `zeek.roc_plus.packet_type`
-
-
-#### ROC Plus - All Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `network.bytes`
-* `network.transport`
-* `source.ip`
+* `source.port`
 * timestamp
 * `zeek.roc_plus.link_id`
 * `zeek.roc_plus.packet_type`
@@ -9444,218 +2422,46 @@ The S7comm dashboard provides visibility into [Siemens S7 protocol (S7comm)](htt
 
 ### Visualizations
 
-#### S7comm - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* `zeek.s7comm.pdu_reference`
-* `zeek.uid`
+* ATT&CK for ICS Notices - S7comm
+* ATT&CK for ICS Tactic - S7comm
+* S7comm - Log Count
+* S7comm - Logs Over Time
+* S7comm - Upload/Download File Names
+* S7comm Destination IP
+* S7comm Devices
+* S7comm Operations
+* S7comm Plus Version
+* S7comm Read-SZL
+* S7comm Source IP
+* S7comm and Related - Logs
 
 
-#### S7comm - Logs Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.action`
 * `event.dataset`
+* `event.id`
 * `event.result`
+* `file.path`
 * `network.protocol`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.s7comm.pdu_reference`
-* `zeek.uid`
-
-
-#### S7comm Operations
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* `zeek.s7comm.pdu_reference`
-* `zeek.uid`
-
-
-#### S7comm Source IP
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* `zeek.s7comm.pdu_reference`
-* `zeek.uid`
-
-
-#### S7comm Destination IP
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* `zeek.s7comm.pdu_reference`
-* `zeek.uid`
-
-
-#### S7comm Plus Version
-
-**Purpose:** A pie chart showing the proportional distribution of values in this category. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
 * `network.protocol_version`
 * `source.ip`
 * `source.port`
-* `zeek.uid`
-
-
-#### S7comm Devices
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
+* `threat.tactic.name`
+* `threat.technique.name`
+* timestamp
+* `zeek.notice.msg`
 * `zeek.s7comm.pdu_reference`
 * `zeek.s7comm_known_devices.automation_system_name`
 * `zeek.s7comm_known_devices.module_name`
 * `zeek.s7comm_known_devices.module_serial`
 * `zeek.s7comm_known_devices.plant_name`
-* `zeek.uid`
-
-
-#### S7comm Read-SZL
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `source.ip`
-* `source.port`
-* `zeek.s7comm.pdu_reference`
 * `zeek.s7comm_read_szl.method`
 * `zeek.s7comm_read_szl.szl_index`
-* `zeek.uid`
-
-
-#### ATT&CK for ICS Tactic - S7comm
-
-**Purpose:** A horizontal bar chart ranking S7comm for ATT&CK for ICS Tactic by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* `threat.tactic.name`
-* `threat.technique.name`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### ATT&CK for ICS Notices - S7comm
-
-**Purpose:** A ranked frequency table of S7comm values for ATT&CK for ICS Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* `threat.tactic.name`
-* `threat.technique.name`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### S7comm - Upload/Download File Names
-
-**Purpose:** A ranked frequency table of Upload/Download File Names values for S7comm. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.result`
-* `file.path`
-* `source.ip`
-* `source.port`
 * `zeek.s7comm_upload_download.block_type`
 * `zeek.s7comm_upload_download.destination_filesystem`
-* `zeek.uid`
-
-
-#### S7comm and Related - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.result`
-* `network.protocol`
-* `source.ip`
-* `source.port`
-* `zeek.s7comm.pdu_reference`
 * `zeek.uid`
 
 
@@ -9669,169 +2475,49 @@ The Security Overview dashboard offers a consolidated view of security-relevant 
 
 ### Visualizations
 
-#### Normalized Event Category
-
-**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `network.transport`
-* `rule.category`
-
-
-#### Notice, Alert and Signature - Summary
-
-**Purpose:** A ranked frequency table of Summary values for Notice, Alert and Signature. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.id`
-* `event.module`
-* `event.provider`
-* `event.severity_tags`
-* `network.protocol`
-* `rule.category`
-* `rule.name`
-* `source.ip`
+* Clear-text Transmission of Passwords
+* Connections by Destination Country (region map)
+* DNS Queries by Randomness
+* File Transfers
+* Inbound Access By Protocol Over Time
+* Inbound External Traffic by Country
+* Normalized Event Category
+* Notice, Alert and Signature - Summary
+* Notice, Alert, and Signature - Logs
+* Outbound Internal Traffic by Country
+* Outdated/Insecure Application Protocols
+* Vulnerabilities
 
 
-#### Outdated/Insecure Application Protocols
+### Fields
 
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `network.protocol`
-* `network.protocol_version`
-
-
-#### Vulnerabilities
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.id`
-* `event.module`
-* `event.provider`
-* `event.severity_tags`
-* `network.protocol`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `vulnerability.id`
-
-
-#### Clear-text Transmission of Passwords
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `network.protocol`
-* `related.user`
-
-
-#### Inbound Access By Protocol Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
+* `destination.geo.country_code2`
+* `destination.geo.country_name`
 * `destination.ip`
 * `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Outbound Internal Traffic by Country
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.geo.country_name`
-
-
-#### Inbound External Traffic by Country
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `source.geo.country_name`
-
-
-#### File Transfers
-
-**Purpose:** A tag cloud showing the relative frequency of values by size. Dominant tags appear larger, making it easy to identify the most common values at a glance.
-
-**Fields / Aggregations:**
-
-* `file.mime_type`
-
-
-#### DNS Queries by Randomness
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
 * `dns.host`
+* `event.dataset`
 * `event.freq_score_v1`
 * `event.freq_score_v2`
 * `event.id`
-* `source.ip`
-* timestamp
-* `zeek.dns.answers`
-* `zeek.dns.query`
-
-
-#### Connections by Destination Country (region map)
-
-**Purpose:** A country-level map shading destination countries by traffic volume, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
-
-**Fields / Aggregations:**
-
-* `destination.geo.country_code2`
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.bytes`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Notice, Alert, and Signature - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.dataset`
-* `event.id`
 * `event.module`
 * `event.provider`
 * `event.severity_tags`
+* `file.mime_type`
+* `network.bytes`
 * `network.protocol`
+* `network.protocol_version`
+* `network.transport`
+* `related.user`
 * `rule.category`
 * `rule.name`
+* `source.geo.country_name`
 * `source.ip`
+* `source.port`
+* timestamp
+* `vulnerability.id`
+* `zeek.dns.answers`
+* `zeek.dns.query`
 
 
 ---
@@ -9844,257 +2530,50 @@ The Severity dashboard organizes all detected events and alerts by their assigne
 
 ### Visualizations
 
-#### Severity Tags
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `event.risk_score`
-* `event.severity`
-* `event.severity_tags`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
+* Actions and Results
+* File Types by Transport
+* Severity - Application Protocol
+* Severity - Destination IP
+* Severity - Destination OUI
+* Severity - Notices
+* Severity - Originating Country
+* Severity - Responding Country
+* Severity - Socket Family
+* Severity - Source IP
+* Severity - Source OUI
+* Severity Score Occurrences
+* Severity Tags
+* Severity-Scored Logs
 
 
-#### Severity Score Occurrences
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.provider`
-* `event.result`
-* `event.severity`
-* `network.protocol`
-* `source.ip`
-* timestamp
-
-
-#### Severity - Notices
-
-**Purpose:** A ranked frequency table of Notices values for Severity. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `event.risk_score`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-* `zeek.notice.note`
-
-
-#### Severity - Application Protocol
-
-**Purpose:** A ranked frequency table of Application Protocol values for Severity. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.risk_score`
-* `network.protocol`
-
-
-#### Severity - Socket Family
-
-**Purpose:** A pie chart showing the proportional distribution of Socket Family for Severity. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `event.severity`
-* `event.severity_tags`
-* `network.protocol`
-* `network.transport`
-* `network.type`
-* `source.ip`
-
-
-#### File Types by Transport
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `file.mime_type`
-* `file.path`
-* `file.source`
-* `source.ip`
-* timestamp
-
-
-#### Severity - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for Severity. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `event.risk_score`
-* `event.severity`
-* `event.severity_tags`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-
-
-#### Severity - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for Severity. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `event.risk_score`
-* `event.severity`
-* `event.severity_tags`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-
-
-#### Severity - Originating Country
-
-**Purpose:** A country-level map shading host countries by traffic volume, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `event.severity`
-* `event.severity_tags`
-* `network.protocol`
-* `network.transport`
-* `source.geo.country_iso_code`
-* `source.ip`
-
-
-#### Severity - Responding Country
-
-**Purpose:** A country-level map shading host countries by traffic volume, on a green-to-red scale where green indicates lower values and red indicates higher values. Provides a geographic overview of where activity is concentrated at a national level.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_iso_code`
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `event.severity`
-* `event.severity_tags`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
-
-
-#### Severity - Destination OUI
-
-**Purpose:** A ranked frequency table of Destination OUI values for Severity. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
 * `destination.ip`
 * `destination.oui`
 * `destination.port`
 * `event.action`
 * `event.dataset`
 * `event.id`
+* `event.provider`
 * `event.result`
 * `event.risk_score`
 * `event.severity`
 * `event.severity_tags`
+* `file.mime_type`
+* `file.path`
+* `file.source`
 * `network.protocol`
 * `network.transport`
-* `source.ip`
-
-
-#### Severity - Source OUI
-
-**Purpose:** A ranked frequency table of Source OUI values for Severity. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `event.risk_score`
-* `event.severity`
-* `event.severity_tags`
-* `network.protocol`
-* `network.transport`
+* `network.type`
+* `rule.category`
+* `rule.name`
+* `source.geo.country_iso_code`
 * `source.ip`
 * `source.oui`
-
-
-#### Actions and Results
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.action`
-* `event.result`
-* `network.protocol`
-
-
-#### Severity-Scored Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `event.result`
-* `event.severity`
-* `event.severity_tags`
-* `network.protocol`
-* `network.transport`
-* `source.ip`
+* timestamp
+* `zeek.notice.msg`
+* `zeek.notice.note`
 
 
 ---
@@ -10107,80 +2586,15 @@ The Signatures dashboard focuses on rule-based detections, showing which signatu
 
 ### Visualizations
 
-#### Signatures - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* timestamp
-
-
-#### Signatures - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `event.original`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
+* Signatures - Destination IP
+* Signatures - Log Count
+* Signatures - Log Count Over Time
+* Signatures - Logs
+* Signatures - Name
+* Signatures - Source IP
 
 
-#### Signatures - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `event.original`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-
-
-#### Signatures - Name
-
-**Purpose:** A ranked frequency table of Name values for Signatures. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `event.original`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-
-
-#### Signatures - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for Signatures. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `event.original`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-
-
-#### Signatures - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for Signatures. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.id`
@@ -10201,59 +2615,22 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 
 ### Visualizations
 
-#### SIP - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-
-
-#### SIP - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for SIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
+* SIP - Content Type
+* SIP - Destination Country
+* SIP - Destination IP Address
+* SIP - Destination Port
+* SIP - Log Count
+* SIP - Log Count Over Time
+* SIP - Logs
+* SIP - Method
+* SIP - Request Path
+* SIP - Source IP Address
+* SIP - Status
+* SIP - URI
+* SIP - User Agent
 
 
-#### SIP - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for SIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-
-
-#### SIP - Destination Country
-
-**Purpose:** A pie chart showing the proportional distribution of Destination Country for SIP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_name`
 * `destination.ip`
@@ -10262,156 +2639,12 @@ The SIP dashboard covers [Session Initiation Protocol (SIP)](https://en.wikipedi
 * `event.id`
 * `source.ip`
 * timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-
-
-#### SIP - Request Path
-
-**Purpose:** A ranked frequency table of Request Path values for SIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.request_path`
-* `zeek.sip.status_msg`
-
-
-#### SIP - URI
-
-**Purpose:** A ranked frequency table of URI values for SIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-* `zeek.sip.uri`
-
-
-#### SIP - User Agent
-
-**Purpose:** A ranked frequency table of User Agent values for SIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
 * `user_agent.original`
 * `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-
-
-#### SIP - Content Type
-
-**Purpose:** A pie chart showing the proportional distribution of Content Type for SIP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-
-
-#### SIP - Method
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-
-
-#### SIP - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for SIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-
-
-#### SIP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
-
-
-#### SIP - Status
-
-**Purpose:** A ranked frequency table of Status values for SIP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
+* `zeek.sip.request_path`
 * `zeek.sip.status_code`
 * `zeek.sip.status_msg`
-
-
-#### SIP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.sip.content_type`
-* `zeek.sip.status_msg`
+* `zeek.sip.uri`
 
 
 ---
@@ -10424,27 +2657,21 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 
 ### Visualizations
 
-#### SMB - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
+* SMB - Destination IP Address
+* SMB - Destination Port
+* SMB - FIle Path
+* SMB - File Name
+* SMB - File/Path Summary
+* SMB - Log Count
+* SMB - Log Count Over Time
+* SMB - Logs
+* SMB - Relevant Notices
+* SMB - Source IP Address
+* SMB - Version
+* SMB Action
 
 
-#### SMB - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for SMB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -10452,171 +2679,13 @@ The SMB dashboard provides visibility into [Server Message Block (SMB)](https://
 * `event.dataset`
 * `event.id`
 * `network.protocol_version`
-* `source.ip`
-* timestamp
-
-
-#### SMB - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for SMB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-
-
-#### SMB - Version
-
-**Purpose:** A pie chart showing the proportional distribution of Version for SMB. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-
-
-#### SMB - FIle Path
-
-**Purpose:** A ranked frequency table of FIle Path values for SMB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-* `zeek.smb_files.path`
-
-
-#### SMB - File Name
-
-**Purpose:** A ranked frequency table of File Name values for SMB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-* `zeek.smb_files.name`
-
-
-#### SMB - File/Path Summary
-
-**Purpose:** A ranked frequency table of File/Path Summary values for SMB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-* `zeek.smb_files.name`
-* `zeek.smb_files.path`
-
-
-#### SMB - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-
-
-#### SMB - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for SMB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-
-
-#### SMB - Relevant Notices
-
-**Purpose:** A ranked frequency table of Relevant Notices values for SMB. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
 * `rule.category`
 * `rule.name`
 * `source.ip`
 * timestamp
 * `zeek.notice.msg`
-
-
-#### SMB Action
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-
-
-#### SMB - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
+* `zeek.smb_files.name`
+* `zeek.smb_files.path`
 
 
 ---
@@ -10629,44 +2698,22 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 
 ### Visualizations
 
-#### SMTP - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - Subject
-
-**Purpose:** A ranked frequency table of Subject values for SMTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.subject`
-* `zeek.smtp.x_originating_ip`
+* SMTP  - Destination Country
+* SMTP - "From" Address
+* SMTP - "To" Address
+* SMTP - Destination IP Address
+* SMTP - Destination Port
+* SMTP - Log Count
+* SMTP - Log Count Over Time
+* SMTP - Logs
+* SMTP - Source IP Address
+* SMTP - Subject
+* SMTP - TLS
+* SMTP - User Agent
+* SMTP - Webmail
 
 
-#### SMTP  - Destination Country
-
-**Purpose:** A pie chart showing the proportional distribution of Destination Country for SMTP . Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_name`
 * `destination.ip`
@@ -10675,170 +2722,11 @@ The SMTP dashboard covers [SMTP](https://en.wikipedia.org/wiki/Simple_Mail_Trans
 * `source.ip`
 * timestamp
 * `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - "From" Address
-
-**Purpose:** A ranked frequency table of "From" Address values for SMTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - "To" Address
-
-**Purpose:** A ranked frequency table of "To" Address values for SMTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.rcptto`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - TLS
-
-**Purpose:** A pie chart showing the proportional distribution of TLS for SMTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.tls`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for SMTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for SMTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - User Agent
-
-**Purpose:** A ranked frequency table of User Agent values for SMTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for SMTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - Webmail
-
-**Purpose:** A pie chart showing the proportional distribution of Webmail for SMTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
 * `zeek.smtp.is_webmail`
 * `zeek.smtp.mailfrom`
-* `zeek.smtp.x_originating_ip`
-
-
-#### SMTP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `user_agent.original`
-* `zeek.smtp.mailfrom`
+* `zeek.smtp.rcptto`
+* `zeek.smtp.subject`
+* `zeek.smtp.tls`
 * `zeek.smtp.x_originating_ip`
 
 
@@ -10852,146 +2740,29 @@ The SNMP dashboard covers [Simple Network Management Protocol (SNMP)](https://en
 
 ### Visualizations
 
-#### SNMP - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.snmp.community`
-* `zeek.snmp.version`
+* SNMP - Community String
+* SNMP - Destination IP Address
+* SNMP - Log Count
+* SNMP - Log Count Over Time
+* SNMP - Logs
+* SNMP - PDU Type
+* SNMP - Session Duration
+* SNMP - Source IP Address
+* SNMP - Version and PDU Type
 
 
-#### SNMP - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for SNMP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.action`
 * `event.id`
-* `source.ip`
-* timestamp
-* `zeek.snmp.community`
-* `zeek.snmp.version`
-
-
-#### SNMP - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for SNMP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.snmp.community`
-* `zeek.snmp.version`
-
-
-#### SNMP - Session Duration
-
-**Purpose:** A ranked frequency table of Session Duration values for SNMP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
+* `network.protocol_version`
 * `source.ip`
 * timestamp
 * `zeek.snmp.community`
 * `zeek.snmp.duration`
 * `zeek.snmp.version`
-
-
-#### SNMP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-* `zeek.snmp.community`
-* `zeek.snmp.version`
-
-
-#### SNMP - Community String
-
-**Purpose:** A ranked frequency table of Community String values for SNMP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.snmp.community`
-* `zeek.snmp.version`
-
-
-#### SNMP - PDU Type
-
-**Purpose:** A horizontal bar chart ranking PDU Type for SNMP by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.protocol_version`
-* `source.ip`
-* timestamp
-* `zeek.snmp.community`
-* `zeek.snmp.version`
-
-
-#### SNMP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.snmp.community`
-* `zeek.snmp.version`
-
-
-#### SNMP - Version and PDU Type
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `event.action`
-* `network.protocol_version`
-* timestamp
 
 
 ---
@@ -11004,39 +2775,13 @@ The Software dashboard tracks software versions and products observed in network
 
 ### Visualizations
 
-#### Software - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `source.ip`
-* timestamp
-* `url.full`
-* `zeek.software.name`
-* `zeek.software.software_type`
-* `zeek.software.unparsed_version`
+* Software - Log Count
+* Software - Log Count Over Time
+* Software - Logs
+* Software - Summary
 
 
-#### Software - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `source.ip`
-* timestamp
-* `url.full`
-* `zeek.software.name`
-* `zeek.software.software_type`
-* `zeek.software.unparsed_version`
-
-
-#### Software - Summary
-
-**Purpose:** A pie chart showing the proportional distribution of Summary for Software. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `source.ip`
 * timestamp
@@ -11046,20 +2791,6 @@ The Software dashboard tracks software versions and products observed in network
 * `zeek.software.unparsed_version`
 * `zeek.software.version_major`
 * `zeek.software.version_minor`
-
-
-#### Software - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `source.ip`
-* timestamp
-* `url.full`
-* `zeek.software.name`
-* `zeek.software.software_type`
-* `zeek.software.unparsed_version`
 
 
 ---
@@ -11072,62 +2803,22 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 
 ### Visualizations
 
-#### SSH - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
+* SSH - Client Algorithms
+* SSH - Client/Server
+* SSH - Connections Tree
+* SSH - Destination IP Address
+* SSH - HASSH Client Hash
+* SSH - HASSH Server Hash
+* SSH - Log Count
+* SSH - Log Count Over Time
+* SSH - Logs
+* SSH - Server Algorithms
+* SSH - Source IP Address
+* SSH - Version
+* SSH -Server
 
 
-#### SSH - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for SSH. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
-
-
-#### SSH - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for SSH. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
-
-
-#### SSH - Client/Server
-
-**Purpose:** A ranked frequency table of Client/Server values for SSH. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -11137,167 +2828,14 @@ The SSH dashboard tracks [Secure Shell (SSH)](https://en.wikipedia.org/wiki/Secu
 * `zeek.ssh.auth_success`
 * `zeek.ssh.cipher_alg`
 * `zeek.ssh.client`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.server`
-* `zeek.ssh.sshka`
-
-
-#### SSH - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
-
-
-#### SSH -Server
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.server`
-* `zeek.ssh.sshka`
-
-
-#### SSH - Version
-
-**Purpose:** A pie chart showing the proportional distribution of Version for SSH. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
-* `zeek.ssh.version`
-
-
-#### SSH - Client Algorithms
-
-**Purpose:** A ranked frequency table of Client Algorithms values for SSH. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
+* `zeek.ssh.hassh`
 * `zeek.ssh.hasshAlgorithms`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
-
-
-#### SSH - Server Algorithms
-
-**Purpose:** A ranked frequency table of Server Algorithms values for SSH. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
+* `zeek.ssh.hasshServer`
 * `zeek.ssh.hasshServerAlgorithms`
 * `zeek.ssh.mac_alg`
+* `zeek.ssh.server`
 * `zeek.ssh.sshka`
-
-
-#### SSH - HASSH Client Hash
-
-**Purpose:** A ranked frequency table of HASSH Client Hash values for SSH. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.hassh`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
-
-
-#### SSH - HASSH Server Hash
-
-**Purpose:** A ranked frequency table of HASSH Server Hash values for SSH. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.hasshServer`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
-
-
-#### SSH - Connections Tree
-
-**Purpose:** A custom Vega visualization providing a specialized view of the underlying data. Refer to the panel title for the specific metric or relationship being displayed.
-
-**Fields / Aggregations:**
-
-* `MALCOLM_OTHER_INDEX_TIME_FIELD_REPLACER`
-* `destination.ip`
-* `event.id`
-* `field`
-* `scheme`
-* `signal`
-* `source.ip`
-* timestamp
-
-
-#### SSH - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssh.auth_success`
-* `zeek.ssh.cipher_alg`
-* `zeek.ssh.mac_alg`
-* `zeek.ssh.sshka`
+* `zeek.ssh.version`
 
 
 ---
@@ -11310,278 +2848,45 @@ The [SSL/TLS](https://en.wikipedia.org/wiki/Transport_Layer_Security) dashboard 
 
 ### Visualizations
 
-#### SSL - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Version
-
-**Purpose:** A pie chart showing the proportional distribution of Version for SSL. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.ssl_version`
-* `zeek.ssl.validation_status`
+* SSL - Certificate Fingerprint
+* SSL - Connection Established
+* SSL - Destination Address
+* SSL - Destination Country
+* SSL - Destination Port
+* SSL - Elliptic Curve
+* SSL - Log Count
+* SSL - Log Count Over Time
+* SSL - Logs
+* SSL - Next Protocol
+* SSL - Relevant Notices
+* SSL - Server
+* SSL - Source IP Address
+* SSL - Validation Status
+* SSL - Version
 
 
-#### SSL - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Destination Address
-
-**Purpose:** A ranked frequency table of Destination Address values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Server
-
-**Purpose:** A ranked frequency table of Server values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.freq_score_v1`
-* `event.freq_score_v2`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Destination Country
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_name`
 * `destination.ip`
 * `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Validation Status
-
-**Purpose:** A ranked frequency table of Validation Status values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Relevant Notices
-
-**Purpose:** A ranked frequency table of Relevant Notices values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
+* `event.freq_score_v1`
+* `event.freq_score_v2`
 * `event.id`
 * `rule.category`
 * `rule.name`
 * `source.ip`
 * timestamp
 * `zeek.notice.msg`
-
-
-#### SSL - Connection Established
-
-**Purpose:** A pie chart showing the proportional distribution of Connection Established for SSL. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Certificate Fingerprint
-
-**Purpose:** A ranked frequency table of Certificate Fingerprint values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-* `zeek.x509.fingerprint`
-
-
-#### SSL - Elliptic Curve
-
-**Purpose:** A horizontal bar chart ranking Elliptic Curve for SSL by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
 * `zeek.ssl.curve`
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
-
-
-#### SSL - Next Protocol
-
-**Purpose:** A ranked frequency table of Next Protocol values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
 * `zeek.ssl.established`
 * `zeek.ssl.next_protocol`
 * `zeek.ssl.server_name`
 * `zeek.ssl.sni_matches_cert`
 * `zeek.ssl.ssl_history`
+* `zeek.ssl.ssl_version`
 * `zeek.ssl.validation_status`
-
-
-#### SSL - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.ssl.established`
-* `zeek.ssl.server_name`
-* `zeek.ssl.sni_matches_cert`
-* `zeek.ssl.ssl_history`
-* `zeek.ssl.validation_status`
+* `zeek.x509.fingerprint`
 
 
 ---
@@ -11594,11 +2899,21 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 
 ### Visualizations
 
-#### STUN - Log Count
+* STUN - Action and Result
+* STUN - Attribute Type
+* STUN - Class
+* STUN - Destination IP
+* STUN - LAN
+* STUN - Log Count
+* STUN - Log Count Over Time
+* STUN - Logs
+* STUN - Method and Class
+* STUN - Source IP
+* STUN - WAN
+* STUN NAT - Logs
 
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -11607,195 +2922,13 @@ The STUN dashboard covers [Session Traversal Utilities for NAT (STUN)](https://e
 * `event.id`
 * `event.provider`
 * `event.result`
+* `network.is_orig`
 * `network.protocol`
 * `source.ip`
-* timestamp
-
-
-#### STUN - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
 * `source.port`
 * timestamp
 * `zeek.stun.attr_type`
 * `zeek.stun.class`
-
-
-#### STUN - Attribute Type
-
-**Purpose:** A horizontal bar chart ranking Attribute Type for STUN by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun.attr_type`
-* `zeek.stun.class`
-
-
-#### STUN - Method and Class
-
-**Purpose:** A ranked frequency table of Method and Class values for STUN. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun.attr_type`
-* `zeek.stun.class`
-
-
-#### STUN - Class
-
-**Purpose:** A pie chart showing the proportional distribution of Class for STUN. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun.attr_type`
-* `zeek.stun.class`
-
-
-#### STUN - Action and Result
-
-**Purpose:** A ranked frequency table of Action and Result values for STUN. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun.attr_type`
-* `zeek.stun.class`
-
-
-#### STUN - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for STUN. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun.attr_type`
-* `zeek.stun.class`
-
-
-#### STUN - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for STUN. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun.attr_type`
-* `zeek.stun.class`
-
-
-#### STUN - LAN
-
-**Purpose:** A ranked frequency table of LAN values for STUN. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun_nat.lan_addr`
-* `zeek.stun_nat.wan_addr`
-* `zeek.stun_nat.wan_port`
-
-
-#### STUN - WAN
-
-**Purpose:** A ranked frequency table of WAN values for STUN. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun_nat.lan_addr`
-* `zeek.stun_nat.wan_addr`
-* `zeek.stun_nat.wan_port`
-
-
-#### STUN - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
-* `zeek.stun.attr_type`
-* `zeek.stun.class`
-
-
-#### STUN NAT - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.is_orig`
-* `source.ip`
-* `source.port`
 * `zeek.stun_nat.lan_addr`
 * `zeek.stun_nat.wan_addr`
 * `zeek.stun_nat.wan_port`
@@ -11811,173 +2944,32 @@ The Suricata Alerts dashboard surfaces all alerts generated by the Suricata netw
 
 ### Visualizations
 
-#### Alerts - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
-* `vulnerability.category`
+* Alert Category
+* Alerts - Destination
+* Alerts - Destination Country
+* Alerts - Log Count
+* Alerts - Log Count Over Time
+* Alerts - Name
+* Alerts - Source
+* Alerts - Source Country
+* Alerts - Tags
+* Alerts - Target
+* Suricata Alerts - Logs
 
 
-#### Alerts - Log Count Over Time
+### Fields
 
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `vulnerability.category`
-
-
-#### Alerts - Tags
-
-**Purpose:** A tag cloud showing the relative frequency of values by size. Dominant tags appear larger, making it easy to identify the most common values at a glance.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
-* `tags`
-* `vulnerability.category`
-
-
-#### Alert Category
-
-**Purpose:** A horizontal bar chart ranking values in this category by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
-* `vulnerability.category`
-
-
-#### Alerts - Target
-
-**Purpose:** A ranked frequency table of Target values for Alerts. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
-* `vulnerability.category`
-
-
-#### Alerts - Name
-
-**Purpose:** A ranked frequency table of Name values for Alerts. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
-* `vulnerability.category`
-
-
-#### Alerts - Source
-
-**Purpose:** A ranked frequency table of Source values for Alerts. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
-* `vulnerability.category`
-
-
-#### Alerts - Destination
-
-**Purpose:** A ranked frequency table of Destination values for Alerts. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
+* `destination.geo.country_name`
 * `destination.ip`
 * `destination.port`
 * `event.id`
 * `rule.category`
 * `rule.id`
 * `rule.name`
-* `source.ip`
-* `vulnerability.category`
-
-
-#### Alerts - Destination Country
-
-**Purpose:** A ranked frequency table of Destination Country values for Alerts. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.geo.country_name`
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
-* `vulnerability.category`
-
-
-#### Alerts - Source Country
-
-**Purpose:** A ranked frequency table of Source Country values for Alerts. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
 * `source.geo.country_name`
 * `source.ip`
-* `vulnerability.category`
-
-
-#### Suricata Alerts - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.id`
-* `rule.name`
-* `source.ip`
+* `tags`
+* timestamp
 * `vulnerability.category`
 
 
@@ -11993,295 +2985,48 @@ The Synchrophasor dashboard covers [IEEE C37.118](https://en.wikipedia.org/wiki/
 
 ### Visualizations
 
-#### Synchrophasor - Log Count
+* Synchrophasor - Action
+* Synchrophasor - Analog Channels
+* Synchrophasor - Data Modified
+* Synchrophasor - Destination
+* Synchrophasor - Digital Channels
+* Synchrophasor - Frame Types
+* Synchrophasor - Frequency Deviation From Nominal Over Time
+* Synchrophasor - Log Count
+* Synchrophasor - Log Count Over Time
+* Synchrophasor - Logs
+* Synchrophasor - Phasors
+* Synchrophasor - Rate of Change of Frequency Over Time
+* Synchrophasor - Source
+* Synchrophasor - Stations
+* Synchrophasor - Transport
+* Synchrophasor and Related - Logs
 
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
 
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.action`
 * `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
-* `zeek.uid`
-
-
-#### Synchrophasor - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
 * `network.protocol_version`
 * `network.transport`
 * `source.ip`
 * timestamp
+* `totDataBytes`
 * `zeek.synchrophasor.data_frame_count`
 * `zeek.synchrophasor.data_rate`
 * `zeek.synchrophasor.data_stream_id`
 * `zeek.synchrophasor.frame_size_tot`
+* `zeek.synchrophasor.frame_type`
 * `zeek.synchrophasor.history`
-* `zeek.uid`
-
-
-#### Synchrophasor - Source
-
-**Purpose:** A ranked frequency table of Source values for Synchrophasor. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `network.protocol_version`
-* `network.transport`
-* `source.ip`
-* `zeek.synchrophasor.data_frame_count`
-* `zeek.synchrophasor.data_rate`
-* `zeek.synchrophasor.data_stream_id`
-* `zeek.synchrophasor.frame_size_tot`
-* `zeek.synchrophasor.history`
-* `zeek.uid`
-
-
-#### Synchrophasor - Destination
-
-**Purpose:** A ranked frequency table of Destination values for Synchrophasor. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `network.protocol_version`
-* `network.transport`
-* `source.ip`
-* `zeek.synchrophasor.data_frame_count`
-* `zeek.synchrophasor.data_rate`
-* `zeek.synchrophasor.data_stream_id`
-* `zeek.synchrophasor.frame_size_tot`
-* `zeek.synchrophasor.history`
-* `zeek.uid`
-
-
-#### Synchrophasor - Action
-
-**Purpose:** A horizontal bar chart ranking Action for Synchrophasor by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
-* `zeek.uid`
-
-
-#### Synchrophasor - Frame Types
-
-**Purpose:** A horizontal bar chart ranking Frame Types for Synchrophasor by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
-* `zeek.uid`
-
-
-#### Synchrophasor - Transport
-
-**Purpose:** A pie chart showing the proportional distribution of Transport for Synchrophasor. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `network.protocol_version`
-* `network.transport`
-* `source.ip`
-* `zeek.synchrophasor.data_frame_count`
-* `zeek.synchrophasor.data_rate`
-* `zeek.synchrophasor.data_stream_id`
-* `zeek.synchrophasor.frame_size_tot`
-* `zeek.synchrophasor.history`
-* `zeek.uid`
-
-
-#### Synchrophasor - Stations
-
-**Purpose:** A ranked frequency table of Stations values for Synchrophasor. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
-* `zeek.synchrophasor_cfg_detail.station_name`
-* `zeek.uid`
-
-
-#### Synchrophasor - Phasors
-
-**Purpose:** A ranked frequency table of Phasors values for Synchrophasor. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
-* `zeek.synchrophasor_cfg_detail.phnam`
-* `zeek.uid`
-
-
-#### Synchrophasor - Analog Channels
-
-**Purpose:** A ranked frequency table of Analog Channels values for Synchrophasor. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
 * `zeek.synchrophasor_cfg_detail.annam`
-* `zeek.uid`
-
-
-#### Synchrophasor - Digital Channels
-
-**Purpose:** A ranked frequency table of Digital Channels values for Synchrophasor. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
 * `zeek.synchrophasor_cfg_detail.dgnam`
-* `zeek.uid`
-
-
-#### Synchrophasor - Data Modified
-
-**Purpose:** A pie chart showing the proportional distribution of Data Modified for Synchrophasor. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
+* `zeek.synchrophasor_cfg_detail.phnam`
+* `zeek.synchrophasor_cfg_detail.station_name`
 * `zeek.synchrophasor_data_detail.data_modified`
-* `zeek.uid`
-
-
-#### Synchrophasor - Rate of Change of Frequency Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
-* `zeek.synchrophasor_data_detail.rocof`
-* `zeek.uid`
-
-
-#### Synchrophasor - Frequency Deviation From Nominal Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* timestamp
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
 * `zeek.synchrophasor_data_detail.freq_dev_mhz`
-* `zeek.uid`
-
-
-#### Synchrophasor and Related - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.dataset`
-* `network.transport`
-* `source.ip`
-* `totDataBytes`
-* `zeek.synchrophasor.frame_type`
-* `zeek.uid`
-
-
-#### Synchrophasor - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `network.protocol_version`
-* `network.transport`
-* `source.ip`
-* `zeek.synchrophasor.data_frame_count`
-* `zeek.synchrophasor.data_rate`
-* `zeek.synchrophasor.data_stream_id`
-* `zeek.synchrophasor.frame_size_tot`
-* `zeek.synchrophasor.history`
+* `zeek.synchrophasor_data_detail.rocof`
 * `zeek.uid`
 
 
@@ -12297,144 +3042,23 @@ The Syslog dashboard presents [syslog](https://en.wikipedia.org/wiki/Syslog) mes
 
 ### Visualizations
 
-#### Syslog - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.syslog.facility`
-* `zeek.syslog.message`
-* `zeek.syslog.severity`
+* Syslog (Zeek) - Logs
+* Syslog - Destination IP Address
+* Syslog - Destination Port
+* Syslog - Facility
+* Syslog - Log Count
+* Syslog - Log Count Over Time
+* Syslog - Protocol
+* Syslog - Severity
+* Syslog - Source IP Address
 
 
-#### Syslog - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for Syslog. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.syslog.facility`
-* `zeek.syslog.message`
-* `zeek.syslog.severity`
-
-
-#### Syslog - Destination IP Address
-
-**Purpose:** A ranked frequency table of Destination IP Address values for Syslog. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.syslog.facility`
-* `zeek.syslog.message`
-* `zeek.syslog.severity`
-
-
-#### Syslog - Destination Port
-
-**Purpose:** A ranked frequency table of Destination Port values for Syslog. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.syslog.facility`
-* `zeek.syslog.message`
-* `zeek.syslog.severity`
-
-
-#### Syslog - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.syslog.facility`
-* `zeek.syslog.message`
-* `zeek.syslog.severity`
-
-
-#### Syslog - Severity
-
-**Purpose:** A pie chart showing the proportional distribution of Severity for Syslog. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.syslog.facility`
-* `zeek.syslog.message`
-* `zeek.syslog.severity`
-
-
-#### Syslog - Facility
-
-**Purpose:** A horizontal bar chart ranking Facility for Syslog by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.syslog.facility`
-* `zeek.syslog.message`
-* `zeek.syslog.severity`
-
-
-#### Syslog - Protocol
-
-**Purpose:** A pie chart showing the proportional distribution of Protocol for Syslog. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.id`
 * `network.transport`
-* `source.ip`
-* timestamp
-* `zeek.syslog.facility`
-* `zeek.syslog.message`
-* `zeek.syslog.severity`
-
-
-#### Syslog (Zeek) - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
 * `source.ip`
 * timestamp
 * `zeek.syslog.facility`
@@ -12452,85 +3076,15 @@ The Tabular Data Stream (TDS) dashboard covers [Microsoft SQL Server's Tabular D
 
 ### Visualizations
 
-#### Tabular Data Stream - All Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds.command`
+* Tabular Data Stream - All Logs
+* Tabular Data Stream - Command
+* Tabular Data Stream - Destination IP
+* Tabular Data Stream - Log Count
+* Tabular Data Stream - Log Count Over Time
+* Tabular Data Stream - Source IP
 
 
-#### Tabular Data Stream - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds.command`
-
-
-#### Tabular Data Stream - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds.command`
-
-
-#### Tabular Data Stream - Command
-
-**Purpose:** A pie chart showing the proportional distribution of Command for Tabular Data Stream. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds.command`
-
-
-#### Tabular Data Stream - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.dataset`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds.command`
-
-
-#### Tabular Data Stream - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -12551,86 +3105,15 @@ The Tabular Data Stream - RPC dashboard focuses on remote procedure call operati
 
 ### Visualizations
 
-#### Tabular Data Stream - RPC Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_rpc.parameter`
-* `zeek.tds_rpc.procedure_name`
+* Tabular Data Stream - RPC Destination IP
+* Tabular Data Stream - RPC Log Count
+* Tabular Data Stream - RPC Log Count Over Time
+* Tabular Data Stream - RPC Logs
+* Tabular Data Stream - RPC Procedure
+* Tabular Data Stream - RPC Source IP
 
 
-#### Tabular Data Stream - RPC Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_rpc.parameter`
-* `zeek.tds_rpc.procedure_name`
-
-
-#### Tabular Data Stream - RPC Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_rpc.parameter`
-* `zeek.tds_rpc.procedure_name`
-
-
-#### Tabular Data Stream - RPC Procedure
-
-**Purpose:** A ranked frequency table of RPC Procedure values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_rpc.parameter`
-* `zeek.tds_rpc.procedure_name`
-
-
-#### Tabular Data Stream - RPC Source IP
-
-**Purpose:** A ranked frequency table of RPC Source IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_rpc.parameter`
-* `zeek.tds_rpc.procedure_name`
-
-
-#### Tabular Data Stream - RPC Destination IP
-
-**Purpose:** A ranked frequency table of RPC Destination IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -12651,101 +3134,16 @@ The Tabular Data Stream - SQL dashboard focuses on the SQL statement activity wi
 
 ### Visualizations
 
-#### Tabular Data Stream - SQL Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_sql_batch.header_type`
-* `zeek.tds_sql_batch.query`
+* Tabular Data Stream - SQL Destination IP
+* Tabular Data Stream - SQL Header Type
+* Tabular Data Stream - SQL Log Count
+* Tabular Data Stream - SQL Log Count Over Time
+* Tabular Data Stream - SQL Logs
+* Tabular Data Stream - SQL Query
+* Tabular Data Stream - SQL Source IP
 
 
-#### Tabular Data Stream - SQL Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_sql_batch.header_type`
-* `zeek.tds_sql_batch.query`
-
-
-#### Tabular Data Stream - SQL Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_sql_batch.header_type`
-* `zeek.tds_sql_batch.query`
-
-
-#### Tabular Data Stream - SQL Header Type
-
-**Purpose:** A pie chart showing the proportional distribution of SQL Header Type for Tabular Data Stream. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_sql_batch.header_type`
-* `zeek.tds_sql_batch.query`
-
-
-#### Tabular Data Stream - SQL Source IP
-
-**Purpose:** A ranked frequency table of SQL Source IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_sql_batch.header_type`
-* `zeek.tds_sql_batch.query`
-
-
-#### Tabular Data Stream - SQL Destination IP
-
-**Purpose:** A ranked frequency table of SQL Destination IP values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* timestamp
-* `zeek.tds_sql_batch.header_type`
-* `zeek.tds_sql_batch.query`
-
-
-#### Tabular Data Stream - SQL Query
-
-**Purpose:** A ranked frequency table of SQL Query values for Tabular Data Stream. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -12766,119 +3164,22 @@ The Telnet, rlogin, and rsh dashboard covers legacy plaintext remote access prot
 
 ### Visualizations
 
-#### Telnet, rlogin and rsh - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* timestamp
-* `user`
-* `zeek.login.client_user`
-* `zeek.login.success`
+* Telnet, rlogin and rsh - Destination
+* Telnet, rlogin and rsh - Log Count
+* Telnet, rlogin and rsh - Log Count Over Time
+* Telnet, rlogin and rsh - Login Attempts with Cleartext Passwords
+* Telnet, rlogin and rsh - Login Success
+* Telnet, rlogin and rsh - Logs
+* Telnet, rsh and rlogin - Source
 
 
-#### Telnet, rlogin and rsh - Login Success
-
-**Purpose:** A pie chart showing the proportional distribution of Login Success for Telnet, rlogin and rsh. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* timestamp
-* `user`
-* `zeek.login.client_user`
-* `zeek.login.success`
-
-
-#### Telnet, rlogin and rsh - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* timestamp
-* `user`
-* `zeek.login.client_user`
-* `zeek.login.success`
-
-
-#### Telnet, rlogin and rsh - Login Attempts with Cleartext Passwords
-
-**Purpose:** A ranked frequency table of Login Attempts with Cleartext Passwords values for Telnet, rlogin and rsh. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.id`
 * `network.protocol`
 * `related.user`
-* `source.ip`
-* timestamp
-* `user`
-* `zeek.login.client_user`
-* `zeek.login.success`
-
-
-#### Telnet, rsh and rlogin - Source
-
-**Purpose:** A ranked frequency table of Source values for Telnet, rsh and rlogin. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* timestamp
-* `user`
-* `zeek.login.client_user`
-* `zeek.login.success`
-
-
-#### Telnet, rlogin and rsh - Destination
-
-**Purpose:** A ranked frequency table of Destination values for Telnet, rlogin and rsh. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.protocol`
-* `source.ip`
-* timestamp
-* `user`
-* `zeek.login.client_user`
-* `zeek.login.success`
-
-
-#### Telnet, rlogin and rsh - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `network.protocol`
 * `source.ip`
 * timestamp
 * `user`
@@ -12896,137 +3197,17 @@ The TFTP dashboard covers [Trivial File Transfer Protocol (TFTP)](https://en.wik
 
 ### Visualizations
 
-#### TFTP - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `file.path`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tftp.mode`
+* TFTP - Destination IP
+* TFTP - Filename
+* TFTP - Log Count
+* TFTP - Log Count Over Time
+* TFTP - Logs
+* TFTP - Operation Results
+* TFTP - Source IP
+* TFTP - Transfer Mode
 
 
-#### TFTP - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `file.path`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tftp.mode`
-
-
-#### TFTP - Filename
-
-**Purpose:** A ranked frequency table of Filename values for TFTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `file.path`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tftp.mode`
-
-
-#### TFTP - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for TFTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `file.path`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tftp.mode`
-
-
-#### TFTP - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for TFTP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `file.path`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tftp.mode`
-
-
-#### TFTP - Transfer Mode
-
-**Purpose:** A pie chart showing the proportional distribution of Transfer Mode for TFTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `file.path`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tftp.mode`
-
-
-#### TFTP - Operation Results
-
-**Purpose:** A pie chart showing the proportional distribution of Operation Results for TFTP. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.action`
-* `event.id`
-* `event.result`
-* `file.path`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tftp.mode`
-
-
-#### TFTP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -13050,278 +3231,30 @@ The Threat Intelligence dashboard presents matches between observed network traf
 
 ### Visualizations
 
-#### Intel - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
+* Intel - Destination IP
+* Intel - Indicator
+* Intel - Indicator Category
+* Intel - Indicator Description
+* Intel - Indicator Source
+* Intel - Indicator Type
+* Intel - Log Count
+* Intel - Log Count Over Time
+* Intel - Logs
+* Intel - MIME Type
+* Intel - Observed In
+* Intel - Source IP
+* Intel - Tags
+* Intel - Unique Indicators
 
 
-#### Intel - Observed In
-
-**Purpose:** A pie chart showing the proportional distribution of Observed In for Intel. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Indicator Source
-
-**Purpose:** A ranked frequency table of Indicator Source values for Intel. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for Intel. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for Intel. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Indicator
-
-**Purpose:** A ranked frequency table of Indicator values for Intel. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - MIME Type
-
-**Purpose:** A ranked frequency table of MIME Type values for Intel. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
 * `event.id`
 * `file.mime_type`
 * `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Indicator Type
-
-**Purpose:** A ranked frequency table of Indicator Type values for Intel. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Indicator Description
-
-**Purpose:** A ranked frequency table of Indicator Description values for Intel. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Indicator Category
-
-**Purpose:** A horizontal bar chart ranking Indicator Category for Intel by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Tags
-
-**Purpose:** A tag cloud showing the relative frequency of values by size. Dominant tags appear larger, making it easy to identify the most common values at a glance.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
 * `tags`
-* `threat.indicator.description`
-* `threat.indicator.name`
-* `threat.indicator.provider`
-* `threat.indicator.reference`
-* `threat.indicator.type`
-* timestamp
-* `zeek.intel.category`
-* `zeek.intel.seen_where`
-
-
-#### Intel - Unique Indicators
-
-**Purpose:** Displays the total number of unique observed values, giving a quick inventory count for this category.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
 * `threat.indicator.description`
 * `threat.indicator.name`
 * `threat.indicator.provider`
@@ -13342,125 +3275,19 @@ The Tunnels dashboard provides visibility into network [tunneling](https://en.wi
 
 ### Visualizations
 
-#### Tunnels - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tunnel.action`
-* `zeek.tunnel.tunnel_type`
+* Tunnels - Action
+* Tunnels - Country
+* Tunnels - Destination Address
+* Tunnels - Log Count
+* Tunnels - Log Count Over Time
+* Tunnels - Logs
+* Tunnels - Source IP Address
+* Tunnels - Type
 
 
-#### Tunnels - Type
-
-**Purpose:** A pie chart showing the proportional distribution of Type for Tunnels. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tunnel.action`
-* `zeek.tunnel.tunnel_type`
-
-
-#### Tunnels - Destination Address
-
-**Purpose:** A ranked frequency table of Destination Address values for Tunnels. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tunnel.action`
-* `zeek.tunnel.tunnel_type`
-
-
-#### Tunnels - Source IP Address
-
-**Purpose:** A ranked frequency table of Source IP Address values for Tunnels. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tunnel.action`
-* `zeek.tunnel.tunnel_type`
-
-
-#### Tunnels - Country
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_name`
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tunnel.action`
-* `zeek.tunnel.tunnel_type`
-
-
-#### Tunnels - Action
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tunnel.action`
-* `zeek.tunnel.tunnel_type`
-
-
-#### Tunnels - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `source.ip`
-* `source.port`
-* timestamp
-* `zeek.tunnel.action`
-* `zeek.tunnel.tunnel_type`
-
-
-#### Tunnels - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
 * `destination.ip`
 * `destination.port`
 * `event.id`
@@ -13481,151 +3308,19 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 
 ### Visualizations
 
-#### WebSocket - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
+* WebSocket - Client Extensions
+* WebSocket - Destination IP
+* WebSocket - Log Count
+* WebSocket - Logs
+* WebSocket - Logs Over Time
+* WebSocket - Protocols
+* WebSocket - Server Extensions
+* WebSocket - Source IP
+* WebSocket - URI
+* WebSocket - User Agent Name
 
 
-#### WebSocket - Logs Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
-
-
-#### WebSocket - Source IP
-
-**Purpose:** A ranked frequency table of Source IP values for WebSocket. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
-
-
-#### WebSocket - Destination IP
-
-**Purpose:** A ranked frequency table of Destination IP values for WebSocket. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
-
-
-#### WebSocket - Client Extensions
-
-**Purpose:** A ranked frequency table of Client Extensions values for WebSocket. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
-
-
-#### WebSocket - Server Extensions
-
-**Purpose:** A ranked frequency table of Server Extensions values for WebSocket. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
-
-
-#### WebSocket - Protocols
-
-**Purpose:** A ranked frequency table of Protocols values for WebSocket. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
-
-
-#### WebSocket - User Agent Name
-
-**Purpose:** A horizontal bar chart ranking User Agent Name for WebSocket by frequency. Provides a clear visual comparison of relative occurrence across categories.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`
@@ -13635,46 +3330,6 @@ The WebSocket dashboard covers [WebSocket](https://en.wikipedia.org/wiki/WebSock
 * timestamp
 * `url.original`
 * `user_agent.name`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
-
-
-#### WebSocket - URI
-
-**Purpose:** A ranked frequency table of URI values for WebSocket. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
-* `user_agent.original`
-* `zeek.websocket.client_extensions`
-* `zeek.websocket.client_protocols`
-* `zeek.websocket.server_extensions`
-* `zeek.websocket.subprotocol`
-
-
-#### WebSocket - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `related.hosts`
-* `source.ip`
-* timestamp
-* `url.original`
 * `user_agent.original`
 * `zeek.websocket.client_extensions`
 * `zeek.websocket.client_protocols`
@@ -13692,120 +3347,23 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 
 ### Visualizations
 
-#### X.509 - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### X.509 - Certificate Signing Algorithm
-
-**Purpose:** A pie chart showing the proportional distribution of Certificate Signing Algorithm for X.509. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
+* OCSP - Certificate Revocation
+* OCSP - Logs
+* SSL - Relevant Notices
+* X.509 - Certificate Fingerprint
+* X.509 - Certificate Issuer
+* X.509 - Certificate Key Algorithm
+* X.509 - Certificate Key Length
+* X.509 - Certificate Signing Algorithm
+* X.509 - Certificate Subject
+* X.509 - Is Client Certificate
+* X.509 - Is Host Certificate
+* X.509 - Log Count
+* X.509 - Log Count Over Time
+* X.509 - Logs
 
 
-#### X.509 - Certificate Subject
-
-**Purpose:** A ranked frequency table of Certificate Subject values for X.509. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_subject_full`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### X.509 - Certificate Issuer
-
-**Purpose:** A ranked frequency table of Certificate Issuer values for X.509. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_issuer_full`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### X.509 - Certificate Key Length
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_key_length`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### X.509 - Certificate Key Algorithm
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_key_alg`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### X.509 - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### SSL - Relevant Notices
-
-**Purpose:** A ranked frequency table of Relevant Notices values for SSL. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `event.id`
@@ -13814,97 +3372,23 @@ The X.509 dashboard focuses on certificate metadata extracted from TLS/SSL sessi
 * `source.ip`
 * timestamp
 * `zeek.notice.msg`
-
-
-#### OCSP - Certificate Revocation
-
-**Purpose:** A ranked frequency table of Certificate Revocation values for OCSP. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.id`
 * `zeek.ocsp.certStatus`
 * `zeek.ocsp.nextUpdate`
 * `zeek.ocsp.revokereason`
 * `zeek.ocsp.revoketime`
 * `zeek.ocsp.serialNumber`
 * `zeek.ocsp.thisUpdate`
-
-
-#### X.509 - Is Host Certificate
-
-**Purpose:** A pie chart showing the proportional distribution of Is Host Certificate for X.509. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* timestamp
 * `zeek.x509.certificate_issuer.CN`
+* `zeek.x509.certificate_issuer_full`
+* `zeek.x509.certificate_key_alg`
+* `zeek.x509.certificate_key_length`
 * `zeek.x509.certificate_sig_alg`
 * `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### X.509 - Is Client Certificate
-
-**Purpose:** A pie chart showing the proportional distribution of Is Client Certificate for X.509. Highlights which categories dominate and surfaces minority categories that may be unusual.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### X.509 - Certificate Fingerprint
-
-**Purpose:** A ranked frequency table of Certificate Fingerprint values for X.509. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
+* `zeek.x509.certificate_subject_full`
 * `zeek.x509.certificate_version`
 * `zeek.x509.client_cert`
 * `zeek.x509.fingerprint`
 * `zeek.x509.host_cert`
-
-
-#### X.509 - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* timestamp
-* `zeek.x509.certificate_issuer.CN`
-* `zeek.x509.certificate_sig_alg`
-* `zeek.x509.certificate_subject.CN`
-* `zeek.x509.certificate_version`
-* `zeek.x509.client_cert`
-* `zeek.x509.host_cert`
-
-
-#### OCSP - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `event.id`
-* `zeek.ocsp.certStatus`
-* `zeek.ocsp.nextUpdate`
-* `zeek.ocsp.revokereason`
-* `zeek.ocsp.revoketime`
-* `zeek.ocsp.serialNumber`
-* `zeek.ocsp.thisUpdate`
 
 
 ---
@@ -13917,92 +3401,31 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 
 ### Visualizations
 
-#### Unique Known IP Addresses
+* IANA Service Name and Transport Protocol Port Number Registry
+* Log Source
+* Observed Device Types
+* Observed Devices
+* Observed Protocols Cloud
+* Observed Software
+* Observed Software Categories
+* Uninventoried Observed Hosts
+* Uninventoried Observed Services
+* Unique Known IP Addresses
+* Zeek Known Hosts - Logs
+* Zeek Known Services - Logs
+* Zeek Known Software - Logs
 
-**Purpose:** Displays the total number of unique observed values, giving a quick inventory count for this category.
 
-**Fields / Aggregations:**
+### Fields
 
+* `destination.device.uninventoried`
+* `destination.ip`
+* `destination.port`
+* `destination.segment.name`
 * `event.dataset`
-* `network.direction`
-* `network.name`
-* `network.protocol`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
-
-
-#### Log Source
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
 * `event.ingested`
 * `host.name`
-
-
-#### Observed Protocols Cloud
-
-**Purpose:** A tag cloud showing the relative frequency of values by size. Dominant tags appear larger, making it easy to identify the most common values at a glance.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* `network.name`
-* `network.protocol`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
-
-
-#### Observed Device Types
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* `network.name`
-* `network.protocol`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
-
-
-#### Observed Devices
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `event.dataset`
-* `network.name`
-* `network.protocol`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
-
-
-#### IANA Service Name and Transport Protocol Port Number Registry
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.port`
+* `network.direction`
 * `network.name`
 * `network.protocol`
 * `network.transport`
@@ -14012,131 +3435,17 @@ The Zeek Known Summary dashboard aggregates data from Zeek's 'known' logs, which
 * `related.ip`
 * `related.manufacturer`
 * `related.role`
-* `related.site`
-* `zeek.known_services.iana_description`
-* `zeek.known_services.iana_name`
-
-
-#### Observed Software Categories
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `source.ip`
-* timestamp
-* `url.full`
-* `zeek.software.name`
-* `zeek.software.software_type`
-* `zeek.software.unparsed_version`
-
-
-#### Observed Software
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `network.name`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
-* `zeek.software.name`
-* `zeek.software.software_type`
-* `zeek.software.unparsed_version`
-
-
-#### Uninventoried Observed Hosts
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.device.uninventoried`
-* `destination.ip`
-* `destination.segment.name`
 * `related.site`
 * `source.device.uninventoried`
 * `source.ip`
 * `source.segment.name`
-
-
-#### Uninventoried Observed Services
-
-**Purpose:** A ranked frequency table of values in this category. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.port`
-* `network.name`
-* `network.protocol`
-* `network.transport`
-* `network.type`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
+* timestamp
+* `url.full`
 * `zeek.known_services.iana_description`
 * `zeek.known_services.iana_name`
-
-
-#### Zeek Known Services - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.port`
-* `network.name`
-* `network.protocol`
-* `network.transport`
-* `network.type`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
-* `zeek.known_services.iana_description`
-* `zeek.known_services.iana_name`
-
-
-#### Zeek Known Software - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `network.name`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
 * `zeek.software.name`
 * `zeek.software.software_type`
 * `zeek.software.unparsed_version`
-
-
-#### Zeek Known Hosts - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `network.name`
-* `related.device_name`
-* `related.device_type`
-* `related.ip`
-* `related.manufacturer`
-* `related.role`
-* `related.site`
 
 
 ---
@@ -14149,203 +3458,34 @@ The Zeek Notices dashboard displays all notice-level events raised by Zeek's det
 
 ### Visualizations
 
-#### Notices - Log Count Over Time
-
-**Purpose:** A time-series trend line showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notices - Source IP Addresses
-
-**Purpose:** A ranked frequency table of Source IP Addresses values for Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
+* Notice - Destination Port
+* Notice - Message Details
+* Notices - Destination Country
+* Notices - Destination IP Addresses
+* Notices - File Description
+* Notices - File MIME Type
+* Notices - Log Count
+* Notices - Log Count Over Time
+* Notices - Logs
+* Notices - Notice Type
+* Notices - Notice Types by Source and Destination
+* Notices - Source Country
+* Notices - Source IP Addresses
 
 
-#### Notices - Destination IP Addresses
-
-**Purpose:** A ranked frequency table of Destination IP Addresses values for Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notices - Notice Type
-
-**Purpose:** A ranked frequency table of Notice Type values for Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notices - File MIME Type
-
-**Purpose:** A ranked frequency table of File MIME Type values for Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.file_mime_type`
-* `zeek.notice.msg`
-
-
-#### Notices - File Description
-
-**Purpose:** A ranked frequency table of File Description values for Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.file_desc`
-* `zeek.notice.msg`
-
-
-#### Notice - Destination Port
-
-**Purpose:** A histogram charting event distribution over time, useful for identifying activity bursts or quiet periods.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notice - Message Details
-
-**Purpose:** A ranked frequency table of Message Details values for Notice. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notices - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notices - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notices - Notice Types by Source and Destination
-
-**Purpose:** A ranked frequency table of Notice Types by Source and Destination values for Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notices - Destination Country
-
-**Purpose:** A ranked frequency table of Destination Country values for Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.geo.country_name`
 * `destination.ip`
-* `event.id`
-* `rule.category`
-* `rule.name`
-* `source.ip`
-* timestamp
-* `zeek.notice.msg`
-
-
-#### Notices - Source Country
-
-**Purpose:** A ranked frequency table of Source Country values for Notices. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
+* `destination.port`
 * `event.id`
 * `rule.category`
 * `rule.name`
 * `source.geo.country_name`
 * `source.ip`
 * timestamp
+* `zeek.notice.file_desc`
+* `zeek.notice.file_mime_type`
 * `zeek.notice.msg`
 
 
@@ -14359,86 +3499,15 @@ The Zeek Weird dashboard captures unusual or unexpected protocol behaviors that 
 
 ### Visualizations
 
-#### Weird - Log Count Over Time
-
-**Purpose:** A time-based histogram showing log volume over time, making it easy to spot traffic spikes, drops, or unusual patterns for this data type.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `rule.name`
-* `source.ip`
-* `source.port`
-* timestamp
+* Weird - Destination
+* Weird - Log Count
+* Weird - Log Count Over Time
+* Weird - Logs
+* Weird - Name
+* Weird - Source
 
 
-#### Weird - Source
-
-**Purpose:** A ranked frequency table of Source values for Weird. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `rule.name`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Weird - Destination
-
-**Purpose:** A ranked frequency table of Destination values for Weird. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `rule.name`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Weird - Log Count
-
-**Purpose:** Displays the total number of log events in scope, giving an instant count of activity volume.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `rule.name`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Weird - Name
-
-**Purpose:** A ranked frequency table of Name values for Weird. Useful for identifying top values and spotting outliers.
-
-**Fields / Aggregations:**
-
-* `destination.ip`
-* `destination.port`
-* `event.id`
-* `rule.name`
-* `source.ip`
-* `source.port`
-* timestamp
-
-
-#### Weird - Logs
-
-**Purpose:** A detailed, scrollable event log table allowing analysts to inspect individual records. Supports drilling into specific events, filtering, and exporting for further investigation.
-
-**Fields / Aggregations:**
+### Fields
 
 * `destination.ip`
 * `destination.port`

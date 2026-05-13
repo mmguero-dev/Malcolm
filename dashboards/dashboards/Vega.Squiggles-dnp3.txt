@@ -320,7 +320,7 @@
                 "%dashboard_context-filter_clause%",
                 {
                   "range": {
-                    "@timestamp": {
+                    "firstPacket": {
                           "%timefilter%": true
                       }
                     }
