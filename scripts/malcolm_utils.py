@@ -36,6 +36,11 @@ from threading import Lock
 from typing import Optional
 
 try:
+    import rapidjson
+except ImportError:
+    rapidjson = None
+
+try:
     from collections.abc import Iterable
 except ImportError:
     from collections import Iterable
@@ -947,8 +952,11 @@ def get_hostname_without_domain():
 # attempt to decode a string as JSON, returning the object if it decodes and None otherwise
 def LoadStrIfJson(jsonStr, default=None):
     try:
-        return json.loads(jsonStr)
-    except ValueError:
+        if rapidjson is not None:
+            return rapidjson.loads(jsonStr, parse_mode=rapidjson.PM_TRAILING_COMMAS)
+        else:
+            return json.loads(jsonStr)
+    except Exception:
         return default
 
 

@@ -1583,6 +1583,20 @@ def redis_keyspace_info():
     return jsonify(result)
 
 
+def deep_merge(base, overlay, conflicts=None):
+    if conflicts is None:
+        conflicts = {}
+    for key, value in overlay.items():
+        if key in base:
+            if isinstance(base[key], dict) and isinstance(value, dict):
+                deep_merge(base[key], value, conflicts.setdefault(key, {}))
+            else:
+                conflicts[key] = value
+        else:
+            base[key] = value
+    return conflicts
+
+
 @app.route(
     f"{('/' + app.config['MALCOLM_API_PREFIX']) if app.config['MALCOLM_API_PREFIX'] else ''}/ping", methods=['GET']
 )
@@ -1717,7 +1731,17 @@ def event():
         if (not alertBody) and '_raw' in data:
             alertBody = data.get('_raw')
         if alertBody:
-            alert['event']['original'] = alertBody
+            try:
+                if alertBodyParsed := (
+                    alertBody if isinstance(alertBody, dict) else malcolm_utils.LoadStrIfJson(alertBody)
+                ):
+                    conflicts = deep_merge(alert, alertBodyParsed)
+                    if conflicts:
+                        alert['conflicts'] = conflicts
+                else:
+                    alert['event']['original'] = alertBody
+            except Exception:
+                alert['event']['original'] = alertBody
 
         if triggerName := malcolm_utils.deep_get(
             data,
