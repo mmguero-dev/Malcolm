@@ -2,6 +2,7 @@
 
 * [Alerting](#Alerting)
     - [Email Sender Accounts](#AlertingEmail)
+    - [Event Logging Loopback API](api-event-logging.md)
 
 Malcolm uses the Alerting plugins for [OpenSearch](https://github.com/opensearch-project/alerting) and [OpenSearch Dashboards](https://github.com/opensearch-project/alerting-dashboards-plugin).
 
