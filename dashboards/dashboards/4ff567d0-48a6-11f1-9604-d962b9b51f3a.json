@@ -8,7 +8,7 @@
           "searchSourceJSON": "{\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[]}"
         },
         "optionsJSON": "{\"hidePanelTitles\":false,\"useMargins\":true}",
-        "panelsJSON": "[{\"embeddableConfig\":{},\"gridData\":{\"h\":25,\"i\":\"f00f0c0a-3f5b-4598-9c47-a964ed986b79\",\"w\":7,\"x\":0,\"y\":0},\"panelIndex\":\"f00f0c0a-3f5b-4598-9c47-a964ed986b79\",\"version\":\"3.6.0\",\"panelRefName\":\"panel_0\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":19,\"i\":\"4ebe6c2c-adad-4724-b1dd-86f7d15fc864\",\"w\":10,\"x\":7,\"y\":0},\"panelIndex\":\"4ebe6c2c-adad-4724-b1dd-86f7d15fc864\",\"version\":\"3.6.0\",\"panelRefName\":\"panel_1\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":19,\"i\":\"d6bcbfda-f92e-48ed-979f-4b9b5cd06294\",\"w\":31,\"x\":17,\"y\":0},\"panelIndex\":\"d6bcbfda-f92e-48ed-979f-4b9b5cd06294\",\"version\":\"3.6.0\",\"panelRefName\":\"panel_2\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":25,\"i\":\"3f2dee32-6216-4875-8ac1-8589d92e99a1\",\"w\":41,\"x\":7,\"y\":19},\"panelIndex\":\"3f2dee32-6216-4875-8ac1-8589d92e99a1\",\"version\":\"3.6.0\",\"panelRefName\":\"panel_3\"},{\"embeddableConfig\":{},\"gridData\":{\"h\":15,\"i\":\"b409bc3a-9c33-4d92-8473-9632328c85d7\",\"w\":7,\"x\":0,\"y\":25},\"panelIndex\":\"b409bc3a-9c33-4d92-8473-9632328c85d7\",\"version\":\"3.6.0\",\"panelRefName\":\"panel_4\"}]",
+        "panelsJSON": "[{\"version\":\"3.6.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":7,\"h\":25,\"i\":\"f00f0c0a-3f5b-4598-9c47-a964ed986b79\"},\"panelIndex\":\"f00f0c0a-3f5b-4598-9c47-a964ed986b79\",\"embeddableConfig\":{},\"panelRefName\":\"panel_0\"},{\"version\":\"3.6.0\",\"gridData\":{\"x\":7,\"y\":0,\"w\":10,\"h\":19,\"i\":\"4ebe6c2c-adad-4724-b1dd-86f7d15fc864\"},\"panelIndex\":\"4ebe6c2c-adad-4724-b1dd-86f7d15fc864\",\"embeddableConfig\":{},\"panelRefName\":\"panel_1\"},{\"version\":\"3.6.0\",\"gridData\":{\"x\":17,\"y\":0,\"w\":31,\"h\":19,\"i\":\"d6bcbfda-f92e-48ed-979f-4b9b5cd06294\"},\"panelIndex\":\"d6bcbfda-f92e-48ed-979f-4b9b5cd06294\",\"embeddableConfig\":{},\"panelRefName\":\"panel_2\"},{\"version\":\"3.6.0\",\"gridData\":{\"x\":7,\"y\":19,\"w\":41,\"h\":25,\"i\":\"3f2dee32-6216-4875-8ac1-8589d92e99a1\"},\"panelIndex\":\"3f2dee32-6216-4875-8ac1-8589d92e99a1\",\"embeddableConfig\":{},\"panelRefName\":\"panel_3\"},{\"version\":\"3.6.0\",\"gridData\":{\"x\":0,\"y\":25,\"w\":7,\"h\":19,\"i\":\"b409bc3a-9c33-4d92-8473-9632328c85d7\"},\"panelIndex\":\"b409bc3a-9c33-4d92-8473-9632328c85d7\",\"embeddableConfig\":{},\"panelRefName\":\"panel_4\"}]",
         "timeRestore": false,
         "title": "File Tree",
         "version": 1
@@ -48,8 +48,8 @@
         }
       ],
       "type": "dashboard",
-      "updated_at": "2026-05-18T14:55:17.840Z",
-      "version": "WzEzMTUsMV0="
+      "updated_at": "2026-05-18T14:57:29.544Z",
+      "version": "WzEzMTYsMV0="
     },
     {
       "attributes": {
