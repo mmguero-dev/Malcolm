@@ -12,7 +12,7 @@
   ##  Pay attention to Vega additions after V5
   // ## todo stop on broadcasts
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "background": "#0a121a",
+  "background": "#0a121a",      // Malcolm dark background
   // Make room for binds under the graph
   "autosize": {
     "type": "fit-x",
@@ -393,12 +393,16 @@
     },
     // Find the node ID for the file name in the table
     {
-      "name": "getNodeID_filename",
+      "name": "getNodeID_filename",   // finds the node ID based off the file name
       "update": "userInput === pluck(data('table'), 'file_name')[indexof(pluck(data('table'), 'file_name'), userInput)] ? pluck(data('table'), 'node')[indexof(pluck(data('table'), 'file_name'), userInput)] : null"
     },
     {
-      "name": "nodeID",
-      "update": "!isValid(getNodeID_filename) ? pluck(data('table'), 'node')[indexof(pluck(data('table'), 'node'), userInput)] : getNodeID_filename"
+      "name": "getNodeID_filename2",    // finds the node ID based off the root file name if no file.name matches the userInput
+      "update": "!isValid(getNodeID_filename) ? pluck(data('table'), 'root')[indexof(pluck(data('table'), 'root_file_name'), userInput)] : getNodeID_filename"
+    },
+    {
+      "name": "nodeID",   // finds the node ID if the node ID was entered instead of a file name
+      "update": "!isValid(getNodeID_filename2) ? pluck(data('table'), 'node')[indexof(pluck(data('table'), 'node'), userInput)] : getNodeID_filename2"
     },
     {
       "name": "getRootID",
@@ -662,7 +666,7 @@
                 "must": [
                   {
                     "match":{
-                      "event.dataset": "strelka",
+                      "event.dataset": "strelka",     // must include filescan.tree fields to create tree
                     }
                   }
                   "%dashboard_context-must_clause%"
@@ -895,12 +899,12 @@
         },
         {
           "type":"formula",
-          "expr": "isValid(datum.enrichment) && datum.enrich_len > 0 ? pluck(datum.enrichment, 'file')[0] : null",    // TODO: bring back enrichments for root node
+          "expr": "isValid(datum.enrichment) && datum.enrich_len > 0 ? pluck(datum.enrichment, 'file')[0] : null",
           "as": "file"
         },
         {
           "type":"formula",
-          "expr": "isValid(datum.file) && datum.enrich_len > 0 ? toString(datum.file.mime_type) : datum.file_mime_type",    // TODO: bring back enrichments for root node
+          "expr": "isValid(datum.file) && datum.enrich_len > 0 ? toString(datum.file.mime_type) : datum.file_mime_type",
           "as": "file_mime_type"
         },
         {
@@ -1278,7 +1282,7 @@
           },
           {
           "type": "text",     // file title for enrichment
-          "from": {"data": "links"},
+          "from": {"data": "visibleTree"},
             "encode": {
               "enter": {
                 // "align": {"value": "left"},
@@ -1290,9 +1294,9 @@
                 "x": {"value": -395},
                 "y": {"value": 20},
                 "text": {"signal": "fileNameEnrich"},
-                "font": {"value": "Arial"},
-                "fontStyle": {"value": "bold"},
-                "fontSize": {"value": 16},
+                "font": {"value": "Monospace"},
+                "fontWeight": {"value": 50},
+                "fontSize": {"value": 17},
                 "opacity": {"signal": "isArray(fileNameEnrich) ? 1 : 0" } // checks if enrichmentSrc is an array - if Array then text is an IP value and won't be [object Object] when opacity == 1
               },
             }
@@ -1328,7 +1332,7 @@
               "update": {
                 "x": {"value": -395},
                 "y": {"value": 60},
-                "text": {"signal": "isArray(tooltip_rules) ? tooltip_rules : ['Hover over node for node enrichment.', 'Hover over link for link enrichment.'] "}, // checks if node enrichments is populated, if not display user instructions
+                "text": {"signal": "isArray(tooltip_rules) ? tooltip_rules : ['Search for a file name or node ID.', 'Hover over node for node enrichment.'] "}, // checks if node enrichments is populated, if not display user instructions
                 "font": {"value": "Arial"},
                 "fontSize": {"value": 15},
                 "opacity": 1,
@@ -1412,8 +1416,16 @@
                 // Make collapsed nodes darker
                 "fill": [
                   {
-                    "test": "indata('collapsyNodes', 'identifier', datum.identifier)", // || device_data.ip == datum.dst",
+                    "test": "datum.enrichment[0].node === nodeID && ( indata('collapsyNodes', 'identifier', datum.identifier) || device_data.node === datum.enrichment[0].node )",
+                    "value": "#0f6e63"
+                  },
+                  {
+                    "test": "indata('collapsyNodes', 'identifier', datum.identifier) || device_data.node === datum.enrichment[0].node",
                     "signal": "rgb(rgb(scale('color', datum.depth)).r * 0.7, rgb(scale('color', datum.depth)).g * 0.7, rgb(scale('color', datum.depth)).b * 0.7)"
+                  },
+                  {
+                    "test": "datum.enrichment[0].node === nodeID",
+                    "value": "#159d8d"
                   },
                   {
                     "scale": "color",
@@ -1447,7 +1459,7 @@
                   "value": "middle"
                 },
               },
-              "update": {         // TODO: make searched file node label the special green - doesn't work because the rest of the node labels need to be a certain color against white/black bkgd
+              "update": {
                 "x": {"signal": "scale('xscale', datum.x)" }, // x value is scaled to account for mouse behavior
                 "y": {"signal": "scale('yscale', datum.y)"}, // y value is scaled to account for mouse behavior
                 // Collapsed or parents have labels on left
@@ -1475,7 +1487,7 @@
                     "value": "#159d8d"
                   },
                   {
-                    "value": "white"      // Figure out solution for else value that shows black text color for white background
+                    "value": "white"    // dark background is always set
                   }
                 ],
                 "opacity": 1
