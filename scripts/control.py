@@ -1429,7 +1429,7 @@ def start():
             )
 
         # if the OpenSearch keystore doesn't exist exist, create empty ones
-        if (args.composeProfile == PROFILE_MALCOLM) and (
+        if ((orchMode is not OrchestrationFramework.DOCKER_COMPOSE) or (args.composeProfile == PROFILE_MALCOLM)) and (
             not os.path.isfile(os.path.join(GetMalcolmPath(), os.path.join('opensearch', 'opensearch.keystore')))
         ):
             keystore_op('opensearch', True, 'create')
