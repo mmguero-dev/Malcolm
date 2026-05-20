@@ -23,6 +23,14 @@ su_api_key = _read_secret('superuser_api_key', environ.get('SUPERUSER_API_KEY'))
 
 if User.objects.filter(username=su_name).exists():
     print(f'User with name "{su_name}" already exists.')
+    if not settings.API_TOKEN_PEPPERS and su_api_token:
+        u = User.objects.get(username=su_name)
+        if not Token.objects.filter(user=u).exclude(key=None).exists():
+            Token.objects.filter(user=u).delete()
+            t = Token.objects.create(user=u, token=su_api_token, version=TokenVersionChoices.V1)
+            print(f'💡 Recreated missing/broken token for existing superuser.')
+        else:
+            print(f'💡 Token already exists, skipping.')
     sys.exit(0)
 
 if not su_password:

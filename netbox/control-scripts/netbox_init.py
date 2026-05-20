@@ -373,7 +373,7 @@ def execute_restore_commands(args, database_file):
         '-p',
         str(args.postgres_port),
         '-U',
-        {args.postgres_user},
+        args.postgres_user,
         '-c',
         'TRUNCATE users_user CASCADE',
     ]
@@ -444,7 +444,9 @@ def perform_migrations(netbox_venv_py, manage_script):
         ]
         with open('/usr/local/bin/netbox_superuser_create.py', 'r') as f:
             err, results = malcolm_utils.run_process(cmd, logger=logging, stdin=f.read())
-        if (err != 0) or (not results):
+        if (err == 0) and results:
+            logging.info(f'success setting up superuser: {results}')
+        else:
             logging.error(f'{err} setting up superuser: {results}')
             success = False
 
@@ -605,6 +607,8 @@ def ensure_default_permissions(args, nb, groups):
                 'users.token',
                 'users.user',
                 'users.userconfig',
+                'users.owner',
+                'users.ownergroup',
             ],
         }
         default_group_permissions[f'{group_name}_user_config_permission'] = {
