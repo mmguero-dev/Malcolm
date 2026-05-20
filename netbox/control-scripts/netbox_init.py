@@ -646,7 +646,7 @@ def ensure_default_permissions(args, nb, groups):
 
     try:
         # get all content types (for creating new permissions)
-        all_object_type_names = [f'{x.app_label}.{x.model}' for x in nb.extras.object_types.all()]
+        all_object_type_names = [f'{x.app_label}.{x.model}' for x in nb.core.object_types.all()]
 
         perms_pre_existing = {x.name: x for x in nb.users.permissions.all()}
         logging.debug(f"permissions (before): { {k:v.id for k, v in perms_pre_existing.items()} }")
@@ -883,6 +883,10 @@ def process_device_type_library_import(args, netbox_venv_py):
 def process_custom_netbox_scripts(args, netbox_venv_py, manage_script):
     # ######  Custom Scripts #######################################################################################
     results = []
+
+    if not args.scripts_dir:
+        return results
+
     scripts_path = Path(args.scripts_dir).expanduser().resolve()
 
     if not scripts_path.is_dir():
@@ -1019,9 +1023,7 @@ def main():
         fix_missing_prefix_descriptions(nb)
 
     process_custom_netbox_scripts(args, netbox_venv_py, manage_script)
-
     process_netbox_initializers(args, netbox_venv_py, manage_script)
-
     if not preload_database_success and (not args.preload_backup_file):
         process_device_type_library_import(args, netbox_venv_py)
 
