@@ -1549,6 +1549,7 @@ def netbox_lookup(
     _autopopulate_manuf = nil
     _prefixes = nil
     _devices = nil
+    _interface_created = false
 
     # handle :ip_device first, because if we're doing autopopulate we're also going to use
     # some of the logic from :ip_prefix
@@ -1692,7 +1693,8 @@ def netbox_lookup(
               then
                 _device_written = true
                 _autopopulate_device = _vm_create_response
-                # we've created the device as a VM, create_device_interface will be called below to create its interface
+                # we've created the device as a VM; create its interface+IP now (before lookup_devices)
+                # so that lookup_devices can find the new VM by IP and return a rich result
 
                 # now delete the old device entry
                 _old_device_delete_response = _nb.delete("dcim/devices/#{_previous_device_id}/")
@@ -1706,6 +1708,14 @@ def netbox_lookup(
                     reason: _old_device_delete_response.reason_phrase,
                     body: _old_device_delete_response.body })
                 end
+
+                # create interface+IP for the new VM now so lookup_devices can find it below
+                _autopopulate_device = create_device_interface(ip_key,
+                                                               _autopopulate_device,
+                                                               _autopopulate_manuf,
+                                                               _autopopulate_mac,
+                                                               _nb)
+                _interface_created = true
               elsif @debug
                 puts('netbox_lookup (%{name}): _vm_create_response: %{result}' % { name: _vm_data[:name], result: JSON.generate(_vm_create_response) })
               end
@@ -1758,8 +1768,8 @@ def netbox_lookup(
       _lookup_result = _prefixes unless (@lookup_type != :ip_prefix)
     end # @lookup_type == :ip_prefix
 
-    if !_autopopulate_device.nil? && _autopopulate_device.fetch(:id, nil)&.nonzero?
-      # device has been created, we need to create an interface for it
+    if !_autopopulate_device.nil? && _autopopulate_device.fetch(:id, nil)&.nonzero? && !_interface_created
+      # device has been created (fresh autopopulate, not a device->VM conversion), we need to create an interface for it
       _autopopulate_device = create_device_interface(ip_key,
                                                      _autopopulate_device,
                                                      _autopopulate_manuf,
