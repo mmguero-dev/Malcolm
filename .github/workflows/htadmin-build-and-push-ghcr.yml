@@ -18,6 +18,11 @@ on:
 jobs:
   docker:
     uses: ./.github/workflows/docker-build-push-scan.yml
+    permissions:
+      actions: write
+      packages: write
+      contents: read
+      security-events: write
     with:
       service: htadmin
       dockerfile: ./Dockerfiles/htadmin.Dockerfile
