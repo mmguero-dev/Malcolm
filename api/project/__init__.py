@@ -1802,6 +1802,12 @@ def event():
     return jsonify(result=idxResponse)
 
 
+@app.errorhandler(PermissionError)
+def permission_error(e):
+    """Return HTTP 403 for authorization failures."""
+    return jsonify(error="Not authorized to perform this action"), 403
+
+
 @app.errorhandler(Exception)
 def basic_error(e):
     """General exception handler for the app
@@ -1812,10 +1818,10 @@ def basic_error(e):
     Returns
     -------
     error
-        The type of exception and its string representation (e.g., "KeyError: 'protocols'")
+        Generic error message; exception details are logged server-side only.
     """
     errorStr = f"{type(e).__name__}: {str(e)}"
-    if debugApi and (not isinstance(e, PermissionError)):
+    if debugApi:
         print(errorStr)
         print(traceback.format_exc())
-    return jsonify(error=errorStr)
+    return jsonify(error="Internal server error"), 500
