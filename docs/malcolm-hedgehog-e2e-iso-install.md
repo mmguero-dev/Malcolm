@@ -103,7 +103,7 @@ At the end of the installation process, users will be prompted with a few self-e
 
 * **Format non-OS drive(s) for artifact storage?** *(Note that if the [**Encrypted Quick Install**](#ISOInstallMalcolm) installation option was chosen, any non-OS drives formatted for artifact storage will also be configured with full-disk encryption)*
 * **Disable IPv6?**
-* **Automatically login to the GUI session?**
+* **Automatically log in to the GUI session?**
 * **Should the GUI session be locked due to inactivity?**
 * **Display the [Standard Mandatory DoD Notice and Consent Banner](https://www.stigviewer.com/stig/application_security_and_development/2018-12-24/finding/V-69349)?** *(only applies when installed on U.S. government information systems)*
 * **Allow SSH password authentication?** *(Caution: password authentication is less secure than public/private key pairs)*
@@ -309,7 +309,7 @@ For some settings, additional sub-items will become available when that setting 
 │   ├── 45. File Extraction Mode (current: none)
 │   └── 46. Use Threat Feeds for Zeek Intelligence (current: Yes)
 …
-nter item number or action: 45
+Enter item number or action: 45
 File Extraction Mode (current: none)
 1: none
 2: known
@@ -407,7 +407,7 @@ Proceed with Malcolm installation using the above configuration? (y / N): y
     - **OpenSearch Memory** and **Logstash Memory**
         + Two of Malcolm's main components, OpenSearch and Logstash, require a substantial amount of memory. The configuration script will suggest defaults for these values based on the amount of physical memory the system has. The minimum recommended amount of system memory for Malcolm is 24 GB. Users should not use a value under 10 GB for OpenSearch and 2500 MB for Logstash.
     - **Logstash Workers**
-        + This setting is used to tune the performance and resource utilization of the the `logstash` container: it represents the number of worker threads for each parsing/enrichment pipeline used by Logstash for log processing. The default is calculated based on the number of logical CPUs the system has. See [Tuning and Profiling Logstash Performance](https://www.elastic.co/guide/en/logstash/current/tuning-logstash.html), [`logstash.yml`](https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html) and [Multiple Pipelines](https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html).
+        + This setting is used to tune the performance and resource utilization of the `logstash` container: it represents the number of worker threads for each parsing/enrichment pipeline used by Logstash for log processing. The default is calculated based on the number of logical CPUs the system has. See [Tuning and Profiling Logstash Performance](https://www.elastic.co/guide/en/logstash/current/tuning-logstash.html), [`logstash.yml`](https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html) and [Multiple Pipelines](https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html).
 * **Require HTTPS Connections**
     - Malcolm uses [TLS](authsetup.md#TLSCerts) encryption for its web browser-accessible user interfaces. Setting **Y** for this option is almost always preferred. The only situation where **N** would be appropriate would be when running Malcolm behind a third-party reverse proxy (e.g., [Traefik](https://doc.traefik.io/traefik/) or [Caddy](https://caddyserver.com/docs/quick-starts/reverse-proxy)) to handle the issuance of the certificates automatically and to broker the connections between clients and Malcolm. Reverse proxies such as these often implement the [ACME](https://datatracker.ietf.org/doc/html/rfc8555) protocol for domain name authentication and can be used to request certificates from certificate authorities such as [Let's Encrypt](https://letsencrypt.org/how-it-works/). In this configuration, the reverse proxy will be encrypting the connections instead of Malcolm. Users should ensure they understand these implications and ensure that external connections cannot reach ports over which Malcolm will be communicating without encryption, including verifying the local firewall configuration, when setting this to **N**.
 * **IPv4 for nginx Resolver Directive** and **IPv6 for nginx Resolver Directive**
@@ -417,7 +417,7 @@ Proceed with Malcolm installation using the above configuration? (y / N): y
 * **Use Default Storage Location**
     - Malcolm generates a number of large file sets during normal operation: PCAP files, Zeek or Suricata logs, OpenSearch indices, etc. By default all of these are stored in subdirectories in the Malcolm installation directory. This option and its sub-items allows users to specify alternative storage location(s) (for example, a separate dedicated drive or RAID volume) for these artifacts.
 * **Clean Up Artifacts**
-    - Choose **Y** to expose the the following sub-items used to [manage the data storage](malcolm-config.md#DiskUsage) used by Malcolm.
+    - Choose **Y** to expose the following sub-items used to [manage the data storage](malcolm-config.md#DiskUsage) used by Malcolm.
     - **Delete Old Indices** and **Index Prune Threshold**
         - Most of the configuration around OpenSearch [Index State Management](https://opensearch.org/docs/latest/im-plugin/ism/index/) and [Snapshot Management](https://opensearch.org/docs/latest/opensearch/snapshots/sm-dashboards/) can be done in OpenSearch Dashboards. In addition to (or instead of) the OpenSearch index state management operations, Malcolm can also be configured to delete the oldest network session metadata indices when the database exceeds a certain size to prevent filling up all available storage with OpenSearch indices.
     - **Delete Old PCAP** and **Delete PCAP Threshold**
@@ -556,7 +556,7 @@ Proceed with Malcolm installation using the above configuration? (y / N): y
     - **Gather Traffic Capture Statistics**
         + If Malcolm is doing its own [live traffic analysis](live-analysis.md#LocalPCAP) and users enable this setting, Malcolm will gather capture statistics for [Zeek](https://docs.zeek.org/en/master/scripts/policy/misc/stats.zeek.html#type-Stats::Info) and [Suricata](https://docs.suricata.io/en/latest/configuration/suricata-yaml.html#stats) to populate the **Packet Capture Statistics** dashboard.
     - **Optimize Interface Settings for Capture**
-        + If Malcolm is doing its own [live traffic analysis](live-analysis.md#LocalPCAP) and this option is enabled, Malcolm will [use `ethtool`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/shared/bin/nic-capture-setup.sh) to disable NIC hardware offloading features and adjust ring buffer sizes for capture interface(s) to improve performance; this should be enabled if the interface(s) are being used for capture **only**, otherwise select **N**. If unsure, users should probably answer **N**.
+        + If Malcolm is doing its own [live traffic analysis](live-analysis.md#LocalPCAP) and this option is enabled, Malcolm will [use `ethtool`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/shared/bin/nic-capture-setup.sh) to disable NIC hardware offloading features and adjust ring buffer sizes for capture interface(s) to improve performance; this should be enabled if the interface(s) are being used for capture **only**; otherwise, select **N**. If unsure, users should probably answer **N**.
 
 ### <a name="MalcolmAuthSetup"></a> Setting up Authentication
 
@@ -620,7 +620,7 @@ The sections above for [**Configuring Malcolm**](#MalcolmConfig) and the [**Malc
     * **Primary Document Store**
         * The [document store type](opensearch-instances.md#OpenSearchInstance) (either `opensearch-remote` or `elasticsearch-remote`) of the Malcolm aggregator
     * **Remote Malcolm Hostname or IP**
-        * Specifying the IP address or hostname of the Malcolm aggregator here will automatically populate the following items (or, they can be set or overriden individually):
+        * Specifying the IP address or hostname of the Malcolm aggregator here will automatically populate the following items (or, they can be set or overridden individually):
             * **Primary OpenSearch/Elasticsearch URL**
                 * The URL of the remote OpenSearch/Elasticsearch instance to be used as the data store (e.g., `https://malcolm.example.org:9200` or `https://service.whatever.org/elasticsearch/`)
             * **Logstash Host**
@@ -670,7 +670,7 @@ The sections above for [**Configuring Malcolm**](#MalcolmConfig) and the [**Malc
 …
 ```
 
-The `auth_setup` script on Hedgehog Linux has a **Receive client certifictes from Malcolm** option corresponding to Malcolm's **Transfer self-signed client certificates to a remote log forwarder** option described [above](#MalcolmAuthSetup). In order for a Hedgehog Linux to securely communicate with Malcolm, it needs the client certificates generated when users answered **Y** to **(Re)generate self-signed certificates for a remote log forwarder** during that setup. Malcolm can facilitate the secure transfer of these to a sensor running Hedgehog.
+The `auth_setup` script on Hedgehog Linux has a **Receive client certificates from Malcolm** option corresponding to Malcolm's **Transfer self-signed client certificates to a remote log forwarder** option described [above](#MalcolmAuthSetup). In order for a Hedgehog Linux to securely communicate with Malcolm, it needs the client certificates generated when users answered **Y** to **(Re)generate self-signed certificates for a remote log forwarder** during that setup. Malcolm can facilitate the secure transfer of these to a sensor running Hedgehog.
 
 Select **Receive client certificates from Malcolm**, then press **OK** when prompted "Run auth_setup on Malcolm and select 'Transfer self-signed client certificates...'".
 
@@ -686,11 +686,11 @@ Note Malcolm's IP address (`192.168.122.5` in the screenshot above) and the sing
 
 ![SSL Certificate Transfer, Hedgehog Side - 03](./images/screenshots/ssl-cert-transfer-05.png)
 
-After a few seconds a progress bar will update and show the files have been 100% transfered. They are automatically saved into the `~/Malcolm/filebeat/certs` directory on the sensor.
+After a few seconds a progress bar will update and show the files have been 100% transferred. They are automatically saved into the `~/Malcolm/filebeat/certs` directory on the sensor.
 
 ![SSL Certificate Transfer, Hedgehog Side - 03](./images/screenshots/ssl-cert-transfer-07.png)
 
-Once the has been completed, users can click the "play" icon (▷) in the panel at the top of the [desktop](#MalcolmDesktop) to start Malcolm under the [Hedgehog run profile](live-analysis.md#Profiles).
+Once completed, users can click the "play" icon (▷) in the panel at the top of the [desktop](#MalcolmDesktop) to start Malcolm under the [Hedgehog run profile](live-analysis.md#Profiles).
 
 ### <a name="HedgehogMalcolmPorts"></a> TCP Ports Required for Malcolm ↔ Hedgehog Communication
 

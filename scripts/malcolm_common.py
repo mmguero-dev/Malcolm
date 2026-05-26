@@ -1830,7 +1830,7 @@ def ProcessLogLine(line, debug=False):
                 timeStr = f"{messageTimeMatch[0]} "
 
             if ('job.schedule' in outputJson) and ('job.position' in outputJson) and ('job.command' in outputJson):
-                # this is a status line line from supercronic, let's format and clean it up so it fits in better with the rest of the logs
+                # this is a status line from supercronic, let's format and clean it up so it fits in better with the rest of the logs
 
                 # remove some clutter for the display
                 for noisyKey in ['level', 'channel', 'iteration', 'job.position', 'job.schedule']:
@@ -1855,7 +1855,7 @@ def ProcessLogLine(line, debug=False):
                     )
 
             elif 'dashboards' in serviceStr:
-                # this is an line line from dashboards, let's clean it up a bit: remove some clutter for the display
+                # this is a line from dashboards, let's clean it up a bit: remove some clutter for the display
                 for noisyKey in ['type', 'tags', 'pid', 'method', 'prevState', 'prevMsg']:
                     outputJson.pop(noisyKey, None)
 
@@ -1863,7 +1863,7 @@ def ProcessLogLine(line, debug=False):
                 return f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{json.dumps(outputJson)}"
 
             elif 'filebeat' in serviceStr:
-                # this is an line line from filebeat, let's clean it up a bit: remove some clutter for the display
+                # this is a line from filebeat, let's clean it up a bit: remove some clutter for the display
                 for noisyKey in [
                     'ecs.version',
                     'harvester_id',

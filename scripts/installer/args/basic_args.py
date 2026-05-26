@@ -15,7 +15,7 @@ def add_basic_args(parser):
     Add basic ungrouped arguments to the basicArgGroup
 
     Args:
-        basicArgGroup: ArgumentbasicArgGroup to add arguments to
+        basicArgGroup: Argument basicArgGroup to add arguments to
     """
     basicArgGroup = parser.add_argument_group("Installer Options")
 

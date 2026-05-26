@@ -636,7 +636,7 @@ def main():
         '--node',
         required=False,
         dest='nodeName',
-        help="PCAP source node name (may be overriden by publisher)",
+        help="PCAP source node name (may be overridden by publisher)",
         metavar='<STR>',
         type=str,
         default=os.getenv('PCAP_NODE_NAME', 'malcolm'),

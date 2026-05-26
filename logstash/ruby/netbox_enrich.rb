@@ -13,7 +13,7 @@ require 'uri'
 require 'stringex_lite'
 
 ##############################################################################################
-# Despite the warning against globla variables, we are using them here in order to make sure that
+# Despite the warning against global variables, we are using them here in order to make sure that
 #   we don't have duplicate caches for things cross different clones of the filter,
 #   which is what happens if you just use @instance_variables. However, we should
 #   be safe because 1) we are using Concurrent::Map to maintain these per-type caches, and
@@ -259,7 +259,7 @@ def register(
   @add_tag = nil if @add_tag.respond_to?(:empty?) && @add_tag.empty?
 
   # verbose - either specified directly or read from ENV via verbose_env
-  #   false - store the "name" (fallback to "display") and "id" value(s) as @target.name and @target.id
+  #   false - store the "name" (fall back to "display") and "id" value(s) as @target.name and @target.id
   #             e.g., (@target is destination.segment) destination.segment.name => ["foobar"]
   #                                                    destination.segment.id => [123]
   #   true - store a hash of arrays *under* @target
@@ -543,7 +543,7 @@ def autopopulate_allowed?(ip_input, site_id, config_site_hash)
 
   return false unless ip.private?
 
-  # Determine applicable config: site-specific first, fallback to '*', else allow
+  # Determine applicable config: site-specific first, fall back to '*', else allow
   config = config_site_hash[site_id]
   if config.nil? && (site_id.is_a?(Integer) || site_id.to_s.match?(/\A[+-]?\d+\z/)) && (site_id.to_i > 0)
     # the site is being looked up by ID, not name, but there's no matching site ID in the config_site_hash,
@@ -1604,7 +1604,7 @@ def netbox_lookup(
         # update with new information on an existing device (i.e., from a previous call to netbox_lookup)
         _patched_device_data = Hash.new
 
-        # get existing tags to update them to remove "unkown-..." values if needed
+        # get existing tags to update them to remove "unknown-..." values if needed
         _tags = previous_result.fetch(:tags, nil)&.flatten&.map{ |hash| { slug: hash[:slug] } }&.uniq
 
         # API endpoints are different for VM vs real device

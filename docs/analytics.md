@@ -51,7 +51,7 @@ An example use case is if an Engineering Workstation of interest is identified, 
 | Example Image                                 | Description |
 |-----------------------------------------------|-------------|
 | ![Tree Settings Key](./images/screenshots/analytics-tree-settings-key.png)    | <ul><li>Set the root IP address</li><li>Change the Tree height/depth up to 15 levels</li><li>Time Filter On only allows sequential connections to be displayed</li><li>Node Color provides several color options in order to take pretty screenshots</li></ul> |
-| ![Avergage Bytes Transferred key](./images/screenshots/analytics-tree-avg-bytes.png)       | The Average Bytes transferred between nodes/devices are represented by a dotted link for communications transferring 0 bytes, and a solid line for communications transferring one or more bytes. The heavier the line, the greater the average number of bytes transferred between nodes/devices across all their communications. The line thicknesses are normalized; if a node is collapsed, all the other line thicknesses will be adjusted. |
+| ![Average Bytes Transferred key](./images/screenshots/analytics-tree-avg-bytes.png)       | The Average Bytes transferred between nodes/devices are represented by a dotted link for communications transferring 0 bytes, and a solid line for communications transferring one or more bytes. The heavier the line, the greater the average number of bytes transferred between nodes/devices across all their communications. The line thicknesses are normalized; if a node is collapsed, all the other line thicknesses will be adjusted. |
 | ![Node hover key](./images/screenshots/analytics-tree-node-hover.png)      | Hovering over a Node provides additional enrichment. Some of this enrichment is provided by Netbox, and will not display unless Netbox enrichment is turned on and populated.<br><ul><li>IP address of the node/device</li><li>Detected MAC address of the node/device (if available)</li><li>Detected OUI of the node/device (if available)</li><li>Netbox-enriched name of the node/device</li><li>Netbox-enriched role of the node/device</li></ul> |
 | ![Link hover key](./images/screenshots/analytics-tree-link-hover.png)      | Hovering over a Link line provides additional enrichment. Some of this enrichment is provided by Netbox, and will not display unless Netbox enrichment is turned on and populated.<br><ul><li>Time of the first observed connection between the two nodes</li><li>Netbox-enriched name of the source segment of the communication</li><li>Netbox-enriched name of the destination segment of the communication</li><li>Average bytes transferred during communications between the nodes/devices</li></ul> |
 | ![Individual conns hover key](./images/screenshots/analytics-tree-conns-details-2.png) | When hovering over a link, additional details will appear in the top right corner, detailing the following for each individual communication between the src-dst IP pair:<br><ul><li>The Connection State</li><li>The number of bytes transferred</li><li>The protocol(s) observed during the communication</li></ul> |
@@ -91,7 +91,7 @@ If an IP address does not exist in the data being examined, a message will appea
 
 This message can also appear due to object number limitations. Vega and Opensearch limit loading ten thousand object into the Vega table. If the IP address for certain exists elsewhere and cannot be found in Trees, consider limiting the time range further or utilize Malcolm's filters and reload the analytic.
 
-If the IP addess was initially loaded into the Vega table but not all of its connections/connection IP addresses were loaded an error bar will appear at the top of the analytic, stating "_Maximum data response reached. Data my be truncated. Try adjusting timeframe_".
+If the IP address was initially loaded into the Vega table but not all of its connections/connection IP addresses were loaded an error bar will appear at the top of the analytic, stating "_Maximum data response reached. Data my be truncated. Try adjusting timeframe_".
 
 If you encounter a bug, please submit a bug report or an issue to the Malcolm repository.
 
@@ -142,7 +142,7 @@ The Modbus Trends graph plots the __write_single_coil__, __write_single_register
 
 |     |     |
 | --- | --- |
-| ![Modbus Node hover enrichment](./images/screenshots/analytics-modbus-node-hover.png) | Modbus-specific enrichment is available when you hover over the node. <br><ul><li>Dataset denotes which log the data is pulled from </li><li>The IP address/port of the communications </li><li>Unit Id associated with the communication </li><li>Which PLC address is being observed</li><li> The Modbus function </li><li>The value being communicated </li><li> Date/Time of communication</li><li>The Malcolm Event ID tied to this communication</li></ul>  |
+| ![Modbus Node hover enrichment](./images/screenshots/analytics-modbus-node-hover.png) | Modbus-specific enrichment is available when you hover over the node. <br><ul><li>Dataset denotes which log the data is pulled from </li><li>The IP address/port of the communications </li><li>Unit ID associated with the communication </li><li>Which PLC address is being observed</li><li> The Modbus function </li><li>The value being communicated </li><li> Date/Time of communication</li><li>The Malcolm Event ID tied to this communication</li></ul>  |
 | ![Modbus Unit Selection](./images/screenshots/analytics-modbus-unit-select.png) | If there is more than one modbus Unit ID available for the selected IP address, the Unit Selection box will appear below the IP Selection. |
 | ![Modbus Node shapes](./images/screenshots/analytics-vega-shapes2.png) | Node shapes help differentiate between different Modbus functions at a glance. <br><Sul><li> Square - Single Register Write </li><li> Circle - Single Coil Write </li><li> Diamond - Multi-Register Write </li><li> Triangle - Multi-Coil Write </li>|
 
@@ -167,7 +167,7 @@ No known issues at this time. If you encounter a bug, please submit a bug report
 ### <a name="ConnTreeDash"></a>IP Connections Tree Dashboard
 ![Example IP Connections Tree Screenshot](./images/screenshots/analytics-conn-tree-dashboard.png)
 
-The IP Connections Tree dashboard's purpose is to help identify potential avenues for lateral movement within a network, it allowsd you to visually focus in on Cyber Key Terrain (CKTs) and IP addresses that the user-defined root node communicates with.
+The IP Connections Tree dashboard's purpose is to help identify potential avenues for lateral movement within a network, it allowed you to visually focus in on Cyber Key Terrain (CKTs) and IP addresses that the user-defined root node communicates with.
 
 The root node exhibits different behaviors in the two visuals. On the left, the root node is only ever the source of communications. On the right, the root node is only ever a destination for communications.
 

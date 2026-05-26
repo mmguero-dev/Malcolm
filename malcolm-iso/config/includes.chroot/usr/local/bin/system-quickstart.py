@@ -167,7 +167,7 @@ def main():
 
                     http_url = ''
                     while True:
-                        # http/https URL for for htpdate
+                        # http/https URL for htpdate
                         code, values = d.form(
                             MSG_TIME_SYNC_HTPDATE_CONFIG,
                             [('URL', 1, 1, 'https://1.1.1.1:443', 1, 25, 30, 255)],

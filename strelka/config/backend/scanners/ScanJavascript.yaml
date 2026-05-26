@@ -1,4 +1,4 @@
-ScanJavascript:
+ScanJavaScript:
   - negative:
       flavors:
         - 'text/html'

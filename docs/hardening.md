@@ -15,7 +15,7 @@ The Malcolm aggregator base operating system uses the [harbian-audit](https://gi
 
 The Malcolm aggregator base operating system claims exceptions from the recommendations in this benchmark in the following categories:
 
-**1.1 Install Updates, Patches and Additional Security Software** - When the the Malcolm aggregator appliance software is built, all the latest applicable security patches and updates are included. How future updates are to be handled is still under design.
+**1.1 Install Updates, Patches and Additional Security Software** - When the Malcolm aggregator appliance software is built, all the latest applicable security patches and updates are included. How future updates are to be handled is still under design.
 
 **1.3 Enable verify the signature of local packages** - As the base distribution is not using embedded signatures, `debsig-verify` would reject all packages (see comment in `/etc/dpkg/dpkg.cfg`). Enabling embedded signatures after installation would disallow any future updates.
 
@@ -75,4 +75,4 @@ Please review the notes for these additional guidelines. While not claiming an e
 
 **7.4.4 Create /etc/hosts.deny**, **7.7.1 Ensure Firewall is active**, **7.7.4.1 Ensure default deny firewall policy**, **7.7.4.2 Ensure loopback traffic is configured**, **7.7.4.3 Ensure default deny firewall policy**, **7.7.4.4 Ensure outbound and established connections are configured** - The Malcolm aggregator base operating system **is** configured with an appropriately locked-down software firewall (managed by "[Uncomplicated Firewall](https://launchpad.net/ufw)" `ufw`). However, the methods outlined in the [CIS benchmark recommendations](https://www.cisecurity.org/cis-benchmarks/cis-benchmarks-faq/) do not account for this configuration.
 
-**8.6 Verifies integrity all packages** - The [script](https://github.com/hardenedlinux/harbian-audit/blob/master/bin/hardening/8.7_verify_integrity_packages.sh) that verifies package integrity only "fails" because of missing (status `??5??????` displayed by the utility) language ("locale") files, which are removed as part of the Malcolm aggregator base operating system's trimming-down process. All non-locale-related system files pass intergrity checks.
+**8.6 Verifies integrity all packages** - The [script](https://github.com/hardenedlinux/harbian-audit/blob/master/bin/hardening/8.7_verify_integrity_packages.sh) that verifies package integrity only "fails" because of missing (status `??5??????` displayed by the utility) language ("locale") files, which are removed as part of the Malcolm aggregator base operating system's trimming-down process. All non-locale-related system files pass integrity checks.

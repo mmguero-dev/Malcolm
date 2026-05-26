@@ -12,7 +12,7 @@
 * [Version](api-version.md)
 * [Examples](api-examples.md)
 
-Malcolm provides a [REST API]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/api/project/__init__.py) that can be used to programatically query some aspects of Malcolm's status and data.
+Malcolm provides a [REST API]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/api/project/__init__.py) that can be used to programmatically query some aspects of Malcolm's status and data.
 
 In addition to the items listed above, Malcolm will also forward requests to some of its components' APIs at the following URIs:
 

@@ -21,7 +21,7 @@ Although the configuration script automates many of the following configuration 
         + `INDEX_MANAGEMENT_RETENTION_TIME` - the period in hours or days that Arkime will keep records before deleting them (default `90d`)
         + `INDEX_MANAGEMENT_OLDER_SESSION_REPLICAS` - the number of replicas for older sessions indices (default `0`)
         + `INDEX_MANAGEMENT_HISTORY_RETENTION_WEEKS` - the retention time period (weeks) for Arkime history data (default `13`)
-        + `INDEX_MANAGEMENT_SEGMENTS` - the number of segments Arlime will use to optimize sessions (default `1`)
+        + `INDEX_MANAGEMENT_SEGMENTS` - the number of segments Arkime will use to optimize sessions (default `1`)
         + `INDEX_MANAGEMENT_HOT_WARM_ENABLED` - whether or not Arkime should use a hot/warm design (storing non-session data in a warm index); setting up hot/warm index policies also requires configuration on the local nodes in accordance with the [Arkime documentation](https://arkime.com/faq#ilm)
     - The following variables configure exposing [Arkime's WISE Plugin](https://arkime.com/wise). By default, Malcolm leverages the WISE plugin internally but does not expose the functionality to the end user:
         + `ARKIME_EXPOSE_WISE_GUI` - if set to `true` the WISE interface will be available at: `https://<MALCOLM-IP>/wise`. This defaults to `true`.
@@ -85,13 +85,13 @@ Although the configuration script automates many of the following configuration 
         + [`KC_HTTP_RELATIVE_PATH`](https://www.keycloak.org/server/all-config#category-http) - specifies the Malcolm path under which Keycloak serves resources (should not be changed from its default value of `/keycloak`)
         + [`KC_METRICS_ENABLED`](https://www.keycloak.org/server/all-config#category-metrics) - specifies if the server should expose metrics (default `false`)
         + [`KC_PROXY_HEADERS`](https://www.keycloak.org/server/all-config#category-proxy) - the proxy headers that should be accepted by Keycloak (should not be changed from its default value of `xforwarded`)
-        + `KC_BOOTSTRAP_ADMIN_USERNAME` and `KC_BOOTSTRAP_ADMIN_PASSWORD` - values for boostrapping the temporary Keycloak admin service account (see [Keycloak configuration](authsetup.md#AuthKeycloakEmbedded))
+        + `KC_BOOTSTRAP_ADMIN_USERNAME` and `KC_BOOTSTRAP_ADMIN_PASSWORD` - values for bootstrapping the temporary Keycloak admin service account (see [Keycloak configuration](authsetup.md#AuthKeycloakEmbedded))
 * **`logstash.env`** - settings specific to [Logstash](https://www.elastic.co/products/logstash)
     - `LOGSTASH_OUI_LOOKUP` – if set to `true`, Logstash will map MAC addresses to vendors for all source and destination MAC addresses when analyzing Zeek logs (default `true`)
     - `LOGSTASH_REVERSE_DNS` – if set to `true`, Logstash will perform a reverse DNS lookup for all external source and destination IP address values when analyzing Zeek logs (default `false`)
     - `LOGSTASH_SEVERITY_SCORING` - if set to `true`, Logstash will perform [severity scoring](severity.md#Severity) when analyzing Zeek logs (default `true`)
     - `LS_JAVA_OPTS` - part of LogStash's [JVM settings](https://www.elastic.co/guide/en/logstash/current/jvm-settings.html), the `-Xmx` and `-Xms` values set the size of LogStash's Java heap (we recommend somewhere between `1500m` and `4g`)
-    * `pipeline.workers`, `pipeline.batch.size` and `pipeline.batch.delay` - these settings are used to tune the performance and resource utilization of the the `logstash` container; see [Tuning and Profiling Logstash Performance](https://www.elastic.co/guide/en/logstash/current/tuning-logstash.html), [`logstash.yml`](https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html) and [Multiple Pipelines](https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html)
+    * `pipeline.workers`, `pipeline.batch.size` and `pipeline.batch.delay` - these settings are used to tune the performance and resource utilization of the `logstash` container; see [Tuning and Profiling Logstash Performance](https://www.elastic.co/guide/en/logstash/current/tuning-logstash.html), [`logstash.yml`](https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html) and [Multiple Pipelines](https://www.elastic.co/guide/en/logstash/current/multiple-pipelines.html)
 * **`lookup-common.env`** - settings for enrichment lookups, including those used for [customizing event severity scoring](severity.md#SeverityConfig)
     - `FREQ_LOOKUP` - if set to `true`, domain names (from DNS queries and SSL server names) will be assigned entropy scores as calculated by [`freq`](https://github.com/MarkBaggett/freq) (default `false`)
     - `FREQ_SEVERITY_THRESHOLD` - when [severity scoring](severity.md#Severity) is enabled, this variable indicates the entropy threshold for assigning severity to events with entropy scores calculated by [`freq`](https://github.com/MarkBaggett/freq); a lower value will only assign severity scores to fewer domain names with higher entropy (e.g., `2.0` for `NQZHTFHRMYMTVBQJE.COM`), while a higher value will assign severity scores to more domain names with lower entropy (e.g., `7.5` for `naturallanguagedomain.example.org`) (default `2.0`)
@@ -106,7 +106,7 @@ Although the configuration script automates many of the following configuration 
     - `NETBOX_AUTO_CREATE_PREFIX` - if set to `true`, Logstash will automatically create private subnet prefixes in the [NetBox inventory](asset-interaction-analysis.md#NetBoxPopPassive) based on observed network traffic
     - `NETBOX_DEFAULT_AUTOCREATE_MANUFACTURER` - if set to `true`, new manufacturer entries will be created in the NetBox database when [matching device manufacturers to OUIs](asset-interaction-analysis.md#NetBoxPopPassiveOUIMatch) (default `true`)
     - `NETBOX_DEFAULT_FUZZY_THRESHOLD` - fuzzy-matching threshold for [matching device manufacturers to OUIs](asset-interaction-analysis.md#NetBoxPopPassiveOUIMatch) (default `0.95`)
-    - The following variables should only be set if `NETBOX_MODE` is set to `remote`, otherwise they should be blank:
+    - The following variables should only be set if `NETBOX_MODE` is set to `remote`; otherwise, they should be blank:
         + `NETBOX_URL` - the URL of the remote NetBox instance (e.g., `https://netbox.example.org` or `https://example.com/netbox`)
         + `NETBOX_TOKEN` - the [API token](https://netboxlabs.com/docs/netbox/en/stable/integrations/rest-api/#tokens) for the remote NetBox instance (40 hexadecimal characters)
 * **`nginx.env`** - settings specific to Malcolm's nginx reverse proxy
@@ -120,7 +120,7 @@ Although the configuration script automates many of the following configuration 
 * **`opensearch.env`** - settings specific to [OpenSearch](https://opensearch.org/)
     - `OPENSEARCH_JAVA_OPTS` - one of OpenSearch's most [important settings](https://opensearch.org/docs/latest/install-and-configure/install-opensearch/index/#important-settings), the `-Xmx` and `-Xms` values set the size of OpenSearch's Java heap (we recommend setting this value to half of system RAM, up to 32 gigabytes)
     - `OPENSEARCH_PRIMARY` - one of `opensearch-local`, `opensearch-remote`, or `elasticsearch-remote`, to determine the [OpenSearch or Elasticsearch instance](opensearch-instances.md#OpenSearchInstance) Malcolm will use  (default `opensearch-local`)
-    - `OPENSEARCH_URL` - when using Malcolm's internal OpenSearch instance (i.e., `OPENSEARCH_PRIMARY` is `opensearch-local`) this should be `https://opensearch:9200`, otherwise this value specifies the primary remote instance URL in the format `protocol://host:port` (default `https://opensearch:9200`)
+    - `OPENSEARCH_URL` - when using Malcolm's internal OpenSearch instance (i.e., `OPENSEARCH_PRIMARY` is `opensearch-local`) this should be `https://opensearch:9200`; otherwise, this value specifies the primary remote instance URL in the format `protocol://host:port` (default `https://opensearch:9200`)
     - `OPENSEARCH_SSL_CERTIFICATE_VERIFICATION` - if set to `true`, connections to the primary remote OpenSearch instance will require full TLS certificate validation (this may fail if using self-signed certificates) (default `false`)
     - `OPENSEARCH_SECONDARY` - one of `opensearch-local`, `opensearch-remote`, `elasticsearch-remote`, or blank (unset) to indicate that Malcolm should forward logs to a secondary remote OpenSearch instance in addition to the primary OpenSearch instance (default is unset)
     - `OPENSEARCH_SECONDARY_URL` - when forwarding to a secondary remote OpenSearch instance (i.e., `OPENSEARCH_SECONDARY` is set) this value specifies the secondary remote instance URL in the format `protocol://host:port`
@@ -180,7 +180,7 @@ Although the configuration script automates many of the following configuration 
     - `ZEEK_INTEL_FEED_SINCE` - when querying a [TAXII](zeek-intel.md#ZeekIntelSTIX), [MISP](zeek-intel.md#ZeekIntelMISP), [Google](zeek-intel.md#ZeekIntelGoogle), or [Mandiant](zeek-intel.md#ZeekIntelMandiant) threat intelligence feed, only process threat indicators created or modified since the time represented by this value; it may be either a fixed date/time (`01/01/2025`) or relative interval (`24 hours ago`). Note that this value can be overridden per-feed by adding a `since:` value to each feed's respective configuration YAML file.
     - `ZEEK_INTEL_ITEM_EXPIRATION` - specifies the value for Zeek's [`Intel::item_expiration`](https://docs.zeek.org/en/current/scripts/base/frameworks/intel/main.zeek.html#id-Intel::item_expiration) timeout as used by the [Zeek Intelligence Framework](zeek-intel.md#ZeekIntel) (default `-1min`, which disables item expiration)
     - `ZEEK_INTEL_REFRESH_CRON_EXPRESSION` - specifies a [cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression) (using [`cronexpr`](https://github.com/aptible/supercronic/tree/master/cronexpr#implementation)-compatible syntax) indicating the refresh interval for generating the [Zeek Intelligence Framework](zeek-intel.md#ZeekIntel) files (defaults to empty, which disables automatic refresh)
-    - `ZEEK_INTEL_REFRESH_ON_STARTUP` - if set to `true`, Zeek intelligence framework filess will be refreshed upon startup
+    - `ZEEK_INTEL_REFRESH_ON_STARTUP` - if set to `true`, Zeek intelligence framework files will be refreshed upon startup
     - `ZEEK_JA4SSH_PACKET_COUNT` - the Zeek [JA4+ plugin](https://github.com/FoxIO-LLC/ja4) calculates the JA4SSH value once for every *x* SSH packets; *x* is set here (default `200`)
     - The following variables configure Malcolm's use of the [zeek-long-connections](https://github.com/corelight/zeek-long-connections) plugin:
         + `ZEEK_LONG_CONN_DURATIONS` - a comma-separated list of durations, in seconds, at which point "long connections" will be logged (default `300,600,1800,3600,43200,86400`)
@@ -254,7 +254,7 @@ Additional Configuration Options:
 
 Once Malcolm is configured correctly, the `--export-malcolm-config-file` option can be used to export the configuration to a file that can be used with `--import-malcolm-config-file` to restore it later or transfer it to another Malcolm instance for import.
 
-To modify Malcolm settings programatically in scripting, a tool like [`jq`](https://jqlang.org/) can be used with `--export-malcolm-config-file` and `--import-malcolm-config-file`, as illustrated here:
+To modify Malcolm settings programmatically in scripting, a tool like [`jq`](https://jqlang.org/) can be used with `--export-malcolm-config-file` and `--import-malcolm-config-file`, as illustrated here:
 ```bash
 # export the current configuration to a JSON file without modifying anything in ./config/
 SETTINGS_FILE="$(mktemp --suffix=.json)"

@@ -1226,7 +1226,7 @@
       ]
     },
     /****** START IP SELECT TABLE ******/
-    // We're doing a table since we can not (as of now) update binds dynamically
+    // We're doing a table since we cannot (as of now) update binds dynamically
     {
       "type": "group",
       "name": "ipSelect",

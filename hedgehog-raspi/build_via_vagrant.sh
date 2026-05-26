@@ -112,7 +112,7 @@ YML_IMAGE_VERSION="$(grep -P "^\s+image:.*/malcolm/" "$SCRIPT_PATH"/../docker-co
 [[ -n $YML_IMAGE_VERSION ]] && echo "$YML_IMAGE_VERSION" > "$SCRIPT_PATH"/shared/version.txt
 [[ -n $DOCKER_IMAGES_LOCAL ]] && echo "$(basename "$DOCKER_IMAGES_LOCAL")" > "$SCRIPT_PATH"/shared/docker_images.txt
 [[ ${#GITHUB_TOKEN} -gt 1 ]] && echo "export GITHUB_TOKEN=$GITHUB_TOKEN" >> "$SCRIPT_PATH"/shared/environment.chroot
-echo "export VCS_REVSION=$( git rev-parse --short HEAD 2>/dev/null || echo main )" >> "$SCRIPT_PATH"/shared/environment.chroot
+echo "export VCS_REVISION=$( git rev-parse --short HEAD 2>/dev/null || echo main )" >> "$SCRIPT_PATH"/shared/environment.chroot
 trap cleanup_shared_and_docs EXIT
 
 # send source code to VM

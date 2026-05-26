@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "Waiting for OpenSearch to be reponsive..." >&2
+echo "Waiting for OpenSearch to be responsive..." >&2
 
 until timeout 1 bash -c "</dev/tcp/localhost/9200" 2>/dev/null; do
     sleep 1

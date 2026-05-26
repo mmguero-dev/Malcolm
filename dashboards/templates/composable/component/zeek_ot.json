@@ -1003,7 +1003,7 @@
                 "find_device_response_flags_ieee_802_15_4_dsss_o_qpsk_modulation": {
                   "type": "keyword"
                 },
-                "find_device_response_flags_mutli_sensor_field_device": {
+                "find_device_response_flags_multi_sensor_field_device": {
                   "type": "keyword"
                 },
                 "find_device_response_flags_protocol_bridge_device": {
@@ -1943,7 +1943,7 @@
                 "session_log_record_session_status_summary_undefined_bits": {
                   "type": "long"
                 },
-                "session_log_record_session_status_summary_writes_occured": {
+                "session_log_record_session_status_summary_writes_occurred": {
                   "type": "keyword"
                 },
                 "session_log_record_start_configuration_change_count": {
@@ -2064,7 +2064,7 @@
                 "read_additional_device_status_contents_standardized_status2_undefined_bits": {
                   "type": "long"
                 },
-                "read_additional_device_status_contents_standardized_status3_bandwith_allocation_pending": {
+                "read_additional_device_status_contents_standardized_status3_bandwidth_allocation_pending": {
                   "type": "keyword"
                 },
                 "read_additional_device_status_contents_standardized_status3_block_transfer_pending": {
@@ -2076,7 +2076,7 @@
                 "read_additional_device_status_contents_standardized_status3_radio_failure": {
                   "type": "keyword"
                 },
-                "read_additional_device_status_contents_standardized_status3_resereved": {
+                "read_additional_device_status_contents_standardized_status3_reserved": {
                   "type": "keyword"
                 },
                 "read_additional_device_status_contents_standardized_status3_undefined_bits": {
@@ -3829,7 +3829,7 @@
                 "ext_obj_encoding": {
                   "type": "keyword"
                 },
-                "ext_obj_encryption_algorithom": {
+                "ext_obj_encryption_algorithm": {
                   "type": "keyword"
                 },
                 "ext_obj_password": {

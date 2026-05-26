@@ -198,7 +198,7 @@ def update_stats():
 
 
 '''
-    Javascript servicing
+    JavaScript servicing
 '''
 
 
