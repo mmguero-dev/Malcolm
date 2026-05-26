@@ -42,8 +42,8 @@ if mkdir $LOCKDIR; then
     xargs -P $FILEBEAT_PREPARE_PROCESS_COUNT -I '{}' bash -c '
 
     # separate filename and mime type
-    FILENAME="$( echo "{}" | awk -F"|" "{print \$1}" )"
-    FILEMIME="$( echo "{}" | awk -F"|" "{print \$2}" )"
+    FILENAME="$( echo "$1" | awk -F"|" "{print \$1}" )"
+    FILEMIME="$( echo "$1" | awk -F"|" "{print \$2}" )"
     # trim leading and trailing spaces
     FILENAME="${FILENAME#"${FILENAME%%[![:space:]]*}"}"
     FILENAME="${FILENAME%"${FILENAME##*[![:space:]]}"}"
@@ -135,6 +135,6 @@ if mkdir $LOCKDIR; then
 
       fi # fuser says the file is not in use
     fi # FILENAME and FILEMIME are good
-  '
+  ' _ {}
 
 fi
