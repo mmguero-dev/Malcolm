@@ -2,7 +2,7 @@
 
 * [Obtaining Malcolm's release artifacts](#FromGit)
 * [Using `git` to clone the Malcolm source code](#FromReleaseArtifacts)
-* [Software requirements](#SofwareRequirements)
+* [Software requirements](#SoftwareRequirements)
 * [Running `install.py`](#UIOpts)
 * [The Malcolm configuration menu](#ConfigMenu)
 * [The Malcolm installation menu](#InstallMenu)

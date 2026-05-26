@@ -1105,7 +1105,7 @@
                 "poll_sub_device_response_flags_ieee_802_15_4_dsss_o_qpsk_modulation": {
                   "type": "keyword"
                 },
-                "poll_sub_device_response_flags_mutli_sensor_field_device": {
+                "poll_sub_device_response_flags_multi_sensor_field_device": {
                   "type": "keyword"
                 },
                 "poll_sub_device_response_flags_protocol_bridge_device": {
@@ -2496,7 +2496,7 @@
                 "read_unique_identifier_long_tag_response_flags_ieee_802_15_4_dsss_o_qpsk_modulation": {
                   "type": "keyword"
                 },
-                "read_unique_identifier_long_tag_response_flags_mutli_sensor_field_device": {
+                "read_unique_identifier_long_tag_response_flags_multi_sensor_field_device": {
                   "type": "keyword"
                 },
                 "read_unique_identifier_long_tag_response_flags_protocol_bridge_device": {
@@ -2586,7 +2586,7 @@
                 "read_unique_identifier_response_flags_ieee_802_15_4_dsss_o_qpsk_modulation": {
                   "type": "keyword"
                 },
-                "read_unique_identifier_response_flags_mutli_sensor_field_device": {
+                "read_unique_identifier_response_flags_multi_sensor_field_device": {
                   "type": "keyword"
                 },
                 "read_unique_identifier_response_flags_protocol_bridge_device": {
@@ -2679,7 +2679,7 @@
                 "read_unique_identifier_tag_response_flags_ieee_802_15_4_dsss_o_qpsk_modulation": {
                   "type": "keyword"
                 },
-                "read_unique_identifier_tag_response_flags_mutli_sensor_field_device": {
+                "read_unique_identifier_tag_response_flags_multi_sensor_field_device": {
                   "type": "keyword"
                 },
                 "read_unique_identifier_tag_response_flags_protocol_bridge_device": {
