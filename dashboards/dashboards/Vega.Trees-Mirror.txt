@@ -151,7 +151,7 @@
       "update": "[0, width]" // width is automatically defined based on autosize at top of scheme
     },
     {
-    // Sets the custom range (y-axis) that is informed by autosize
+    // Sets the custom range range (y-axis) that is informed by autosize
       "name": "yrange",
       "update": "[height, 0]" // height is automatically defined based on autosize at top of scheme
     },
@@ -401,12 +401,12 @@
       "name": "rootIndex",
       "update": "indexof(pluck(data('table'), 'dst'), userInputRoot) "
     },
-    // Pulls the src information based on the rootIndex and stores it as initialRoot
+    // Pulls the src information based on the rootIndex and stores it as intitialRoot
     {
       "name": "initialRoot",
       "update": "pluck(data('table'), 'dst')[rootIndex]",
     },
-    // pulls enrichment data for the initialRoot based on rootIndex
+    // pulls enrichment data for the intialRoot based on rootIndex
     {
       "name": "initialRootData",
       "update": "pluck(data('table'), 'aggregated_objs')[rootIndex]",
@@ -947,7 +947,7 @@
         },
         {
           "trigger": "clear || initialRoot",
-          "insert": "(nonexistentIPWarning !== false) && (userInputRoot !== '') ? {'src': initialRoot, 'dst': null, 'id': initialRoot, 'depth': 0, 'enrichment': initialRootData, 'identifier': initialConnection2, 'parentIdentifier': null, 'testSplit': null, 'testCat': null} : null"    // If IP exists in table then insert the initial node; otherwise, do not insert
+          "insert": "(nonexistentIPWarning !== false) && (userInputRoot !== '') ? {'src': initialRoot, 'dst': null, 'id': initialRoot, 'depth': 0, 'enrichment': initialRootData, 'identifier': initialConnection2, 'parentIdentifier': null, 'testSplit': null, 'testCat': null} : null"    // If IP exists in table then insert the initial node, otherwise do not insert
         },
         {
           "trigger": "step",
@@ -1434,7 +1434,7 @@
             "enter": {
               // "align": {"value": "left"},
               "baseline": {"value": "top"},
-              "fill": {"value": "#159d8d"} // JCR, changed to match Malcolm color scheme
+              "fill": {"value": "#159d8d"} // JCR, changd to match Malcolm color scheme
             },
             "update": {
               "x": {"signal": "width-300"},
@@ -1451,7 +1451,7 @@
           "encode": {
             "enter": {
               "baseline": {"value": "top"},
-              "fill": {"value": "#159d8d"} // JCR, changed to match Malcolm color scheme
+              "fill": {"value": "#159d8d"} // JCR, changd to match Malcolm color scheme
             },
             "update": {
               "x": {"signal": "width-208"},
@@ -1459,7 +1459,7 @@
               "text": {"signal": "byte_data"},
               "font": {"value": "Arial"},
               "fontSize": {"value": 15},
-              "opacity": {"signal": "isArray(byte_data) ? 1 : 0" } // checks if byte_data is an array - if Array then text is a byte value and won't be [object Object] when opacity == 1
+              "opacity": {"signal": "isArray(byte_data) ? 1 : 0" } // checks if byte_data is an array - if Array then text is an byte value and won't be [object Object] when opacity == 1
             }
           }
         },
@@ -1468,7 +1468,7 @@
           "encode": {
             "enter": {
               "baseline": {"value": "top"},
-              "fill": {"value": "#159d8d"} // JCR, changed to match Malcolm color scheme
+              "fill": {"value": "#159d8d"} // JCR, changd to match Malcolm color scheme
             },
             "update": {
               "x": {"signal": "isArray(tooltip3) ? width-113 : width-300"},
@@ -1496,7 +1496,7 @@
                 "font": {"value": "Arial"},
                 "fontStyle": {"value": "bold"},
                 "fontSize": {"signal": "titleFontSize"},
-                "opacity": {"signal": "nonexistentIPWarning === true ? 0 : 1" } // if IP exists in table then do not show error; otherwise, show the error
+                "opacity": {"signal": "nonexistentIPWarning === true ? 0 : 1" } // if IP exists in table then do not show error, otherwise show the error
               }
             }
           },

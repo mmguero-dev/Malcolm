@@ -147,7 +147,7 @@
       "update": "[0, width]" // width is automatically defined based on autosize at top of scheme
     },
     {
-    // Sets the custom range (y-axis) that is informed by autosize
+    // Sets the custom range range (y-axis) that is informed by autosize
       "name": "yrange",
       "update": "[height, 0]" // height is automatically defined based on autosize at top of scheme
     },
@@ -853,7 +853,7 @@
         },
         {
           "trigger": "clear || initialRoot",
-          "insert": "(nonexistentIPWarning !== false) && (userInput !== '') ? {'parent': null, 'node': initialRoot, 'id': initialRoot, 'depth': 0, 'enrichment': rootData, 'identifier': initialConnection2, 'parentIdentifier': null} : null"    // If IP exists in table then insert the initial node; otherwise, do not insert
+          "insert": "(nonexistentIPWarning !== false) && (userInput !== '') ? {'parent': null, 'node': initialRoot, 'id': initialRoot, 'depth': 0, 'enrichment': rootData, 'identifier': initialConnection2, 'parentIdentifier': null} : null"    // If IP exists in table then insert the initial node, otherwise do not insert
         },
         {
           "trigger": "step",
@@ -1327,7 +1327,7 @@
               "enter": {
                 // "align": {"value": "left"},
                 "baseline": {"value": "top"},
-                "fill": {"value": "#159d8d"} // JCR, changed to match Malcolm color scheme
+                "fill": {"value": "#159d8d"} // JCR, changd to match Malcolm color scheme
               },
               "update": {
                 "x": {"value": -395},
@@ -1355,7 +1355,7 @@
                   "font": {"value": "Arial"},
                   "fontStyle": {"value": "bold"},
                   "fontSize": {"signal": "titleFontSize"},
-                  "opacity": {"signal": "nonexistentIPWarning === true ? 0 : 1" } // if IP exists in table then do not show error; otherwise, show the error
+                  "opacity": {"signal": "nonexistentIPWarning === true ? 0 : 1" } // if IP exists in table then do not show error, otherwise show the error
                 }
               }
           },

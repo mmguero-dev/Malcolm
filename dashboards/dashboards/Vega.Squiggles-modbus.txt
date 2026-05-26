@@ -559,13 +559,13 @@
             "type": "formula",
             "as": "dataType",
             "expr": "(datum.dataType === 'reg') && (indexof(datum.func, 'MULTIPLE') !== -1) ? 'mult_reg' : datum.dataType"
-            // Multiple or single register
+            // Multple or single register
             },
             {
             "type": "formula",
             "as": "dataType",
             "expr": "(datum.dataType === 'coil') && (indexof(datum.func, 'MULTIPLE') !== -1) ? 'mult_coil' : datum.dataType"
-            // Multiple or single coil
+            // Multple or single coil
             },
             // ## TODO: Add support for WRITE_MULTIPLE* functions [MZ]
             // // Comment out index/col solution because data is only for single functions at this time [MZ]
@@ -1431,7 +1431,7 @@
         ]
         },
         /****** START IP SELECT TABLE ******/
-        // We're doing a table since we cannot (as of now) update binds dynamically
+        // We're doing a table since we can not (as of now) update binds dynamically
         {
         "type": "group",
         "name": "ipSelect",
