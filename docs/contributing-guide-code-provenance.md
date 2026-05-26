@@ -36,7 +36,7 @@ Malcolm's source code and release artifacts are made up of the following:
 
 ## <a name="UpstreamComponents"></a> Upstream Components
 
-Malcolm is a tool suite that incorporates many open source components (some of which are listed [here](contributing-github-runners.md#GitHubRunners)).
+Malcolm is a tool suite that incorporates many open source components (some of which are listed [here](components.md#Components)).
 
 ![components](images/malcolm_components.png)
 
