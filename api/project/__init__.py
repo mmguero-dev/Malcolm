@@ -895,7 +895,11 @@ def fields():
         raise PermissionError("Not authorized to perform this action")
 
     args = get_request_arguments(request)
+
     template_name = malcolm_utils.deep_get(args, ["template"], app.config["MALCOLM_TEMPLATE"])
+    if not re.fullmatch(r'[A-Za-z0-9_*-]+', template_name):
+        raise ValueError(f"Invalid template name: {template_name}")
+
     doctype = doctype_from_args(args)
     include_arkime = (template_name == app.config["MALCOLM_TEMPLATE"]) and (doctype == "network")
 
