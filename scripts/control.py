@@ -2095,6 +2095,7 @@ def authSetup():
                             )
                             if password and (password == passwordConfirm):
                                 break
+                            logging.error("Passwords do not match")
 
                     # get previous admin username to remove from htpasswd file if it's changed
                     authEnvFile = os.path.join(args.configDir, 'auth.env')
@@ -2806,14 +2807,15 @@ def authSetup():
                             default='',
                             defaultBehavior=defaultBehavior,
                         )
-                        arkimePasswordConfirm = AskForPassword(
-                            f"Arkime password hash secret (again): ",
-                            default='',
-                            defaultBehavior=defaultBehavior,
-                        )
-                        if arkimePassword and (arkimePassword == arkimePasswordConfirm):
-                            break
-                        logging.error("Passwords do not match")
+                        if arkimePassword:
+                            arkimePasswordConfirm = AskForPassword(
+                                f"Arkime password hash secret (again): ",
+                                default='',
+                                defaultBehavior=defaultBehavior,
+                            )
+                            if arkimePassword and (arkimePassword == arkimePasswordConfirm):
+                                break
+                            logging.error("Passwords do not match")
 
                     if (not arkimePassword) and args.cmdAuthSetupNonInteractive and args.authArkimePassword:
                         arkimePassword = args.authArkimePassword
