@@ -97,6 +97,7 @@ from malcolm_common import (
 
 from malcolm_utils import (
     CountUntilException,
+    bool_to_str,
     deep_get,
     dictsearch,
     EscapeAnsi,
@@ -2442,13 +2443,16 @@ def authSetup():
                             # opt[0] - human readable description
                             # opt[1] - env. file
                             # opt[2] - env. variable name
-                            # opt[3] - can be blank
-                            # opt[4] - is a secret
-                            # opt[5] - default value
+                            # opt[3] - True == is a string, False == is a boolean
+                            # opt[4] - can be blank
+                            # opt[5] - is a secret
+                            # opt[6] - default value
+                            # opt[7] - valid auth mode(s) (set)
                             (
                                 'Keycloak realm',
                                 keycloakEnvFile,
                                 'KEYCLOAK_AUTH_REALM',
+                                True,
                                 False,
                                 False,
                                 (
@@ -2456,11 +2460,16 @@ def authSetup():
                                     if args.authKeycloakRealm
                                     else envValues[keycloakEnvFile].get('KEYCLOAK_AUTH_REALM', 'master')
                                 ),
+                                (
+                                    'keycloak',
+                                    'keycloak_remote',
+                                ),
                             ),
                             (
                                 'Keycloak redirect URI',
                                 keycloakEnvFile,
                                 'KEYCLOAK_AUTH_REDIRECT_URI',
+                                True,
                                 False,
                                 False,
                                 (
@@ -2468,11 +2477,16 @@ def authSetup():
                                     if args.authKeycloakRedirectUri
                                     else envValues[keycloakEnvFile].get('KEYCLOAK_AUTH_REDIRECT_URI', '/index.html')
                                 ),
+                                (
+                                    'keycloak',
+                                    'keycloak_remote',
+                                ),
                             ),
                             (
                                 'Keycloak URL',
                                 keycloakEnvFile,
                                 'KEYCLOAK_AUTH_URL',
+                                True,
                                 False,
                                 False,
                                 (
@@ -2480,17 +2494,40 @@ def authSetup():
                                     if args.authKeycloakUrl
                                     else envValues[keycloakEnvFile]['KEYCLOAK_AUTH_URL']
                                 ),
+                                (
+                                    'keycloak',
+                                    'keycloak_remote',
+                                ),
+                            ),
+                            (
+                                'Verify Keycloak SSL certificate',
+                                keycloakEnvFile,
+                                'KEYCLOAK_SSL_VERIFY',
+                                False,
+                                False,
+                                False,
+                                (
+                                    args.authKeycloakSslVerify
+                                    if args.authKeycloakSslVerify
+                                    else str2bool(envValues[keycloakEnvFile]['KEYCLOAK_SSL_VERIFY'])
+                                ),
+                                ('keycloak_remote',),
                             ),
                             (
                                 'Keycloak client ID',
                                 keycloakEnvFile,
                                 'KEYCLOAK_CLIENT_ID',
                                 True,
+                                True,
                                 False,
                                 (
                                     args.authKeycloakClientId
                                     if args.authKeycloakClientId
                                     else envValues[keycloakEnvFile]['KEYCLOAK_CLIENT_ID']
+                                ),
+                                (
+                                    'keycloak',
+                                    'keycloak_remote',
                                 ),
                             ),
                             (
@@ -2499,10 +2536,15 @@ def authSetup():
                                 'KEYCLOAK_CLIENT_SECRET',
                                 True,
                                 True,
+                                True,
                                 (
                                     args.authKeycloakClientSecret
                                     if args.authKeycloakClientSecret
                                     else envValues[keycloakEnvFile]['KEYCLOAK_CLIENT_SECRET']
+                                ),
+                                (
+                                    'keycloak',
+                                    'keycloak_remote',
                                 ),
                             ),
                             (
@@ -2510,11 +2552,16 @@ def authSetup():
                                 authCommonEnvFile,
                                 'NGINX_REQUIRE_GROUP',
                                 True,
+                                True,
                                 False,
                                 (
                                     args.authRequireGroup
                                     if args.authRequireGroup
                                     else envValues[authCommonEnvFile]['NGINX_REQUIRE_GROUP']
+                                ),
+                                (
+                                    'keycloak',
+                                    'keycloak_remote',
                                 ),
                             ),
                             (
@@ -2522,11 +2569,16 @@ def authSetup():
                                 authCommonEnvFile,
                                 'NGINX_REQUIRE_ROLE',
                                 True,
+                                True,
                                 False,
                                 (
                                     args.authRequireRole
                                     if args.authRequireRole
                                     else envValues[authCommonEnvFile]['NGINX_REQUIRE_ROLE']
+                                ),
+                                (
+                                    'keycloak',
+                                    'keycloak_remote',
                                 ),
                             ),
                             (
@@ -2534,12 +2586,14 @@ def authSetup():
                                 keycloakEnvFile,
                                 'KC_BOOTSTRAP_ADMIN_USERNAME',
                                 True,
+                                True,
                                 False,
                                 (
                                     args.authKeycloakBootstrapUser
                                     if args.authKeycloakBootstrapUser
                                     else envValues[keycloakEnvFile]['KC_BOOTSTRAP_ADMIN_USERNAME']
                                 ),
+                                ('keycloak',),
                             ),
                             (
                                 'Temporary Keycloak admin bootstrap password (blank to retain the previous value)',
@@ -2547,38 +2601,49 @@ def authSetup():
                                 'KC_BOOTSTRAP_ADMIN_PASSWORD',
                                 True,
                                 True,
+                                True,
                                 (
                                     args.authKeycloakBootstrapPassword
                                     if args.authKeycloakBootstrapPassword
                                     else envValues[keycloakEnvFile]['KC_BOOTSTRAP_ADMIN_PASSWORD']
                                 ),
+                                ('keycloak',),
                             ),
                         )
                         # see comment on keyCloakOpts above for definitions
                         for opt in keyCloakOpts:
-                            if (nginxAuthMode == 'keycloak') or (not opt[2].startswith('KC_')):
+                            if nginxAuthMode in opt[7]:
                                 loopBreaker = CountUntilException(MaxAskForValueCount, f'Invalid {opt[0]}')
                                 while loopBreaker.increment():
-                                    tmpVal = (
-                                        AskForString(
-                                            opt[0],
-                                            default=opt[5],
-                                            defaultBehavior=defaultBehavior,
+                                    if opt[3]:
+                                        tmpVal = (
+                                            AskForString(
+                                                opt[0],
+                                                default=opt[6],
+                                                defaultBehavior=defaultBehavior,
+                                            )
+                                            if (opt[5] == False)
+                                            else AskForPassword(
+                                                opt[0],
+                                                default=opt[6],
+                                                defaultBehavior=defaultBehavior,
+                                            )
                                         )
-                                        if (opt[4] == False)
-                                        else AskForPassword(
-                                            opt[0],
-                                            default=opt[5],
-                                            defaultBehavior=defaultBehavior,
+                                    else:
+                                        tmpVal = bool_to_str(
+                                            YesOrNo(
+                                                opt[0],
+                                                default=opt[6],
+                                                defaultBehavior=defaultBehavior,
+                                            )
                                         )
-                                    )
 
-                                    if (len(tmpVal) == 0) and (opt[4] == True):
+                                    if (len(tmpVal) == 0) and (opt[5] == True):
                                         # if this is a password/secret and they
                                         #   leave it blank, retain the old value
-                                        tmpVal = opt[5]
+                                        tmpVal = opt[6]
 
-                                    if (len(tmpVal) > 0) or (opt[3] == True):
+                                    if (len(tmpVal) > 0) or (opt[4] == True):
                                         if envValues[opt[1]][opt[2]] != tmpVal:
                                             changeMade[opt[1]] = True
                                         envValues[opt[1]][opt[2]] = tmpVal
@@ -3343,6 +3408,15 @@ def main():
         type=str,
         default='',
         help='Keycloak URL',
+    )
+    authSetupGroup.add_argument(
+        '--auth-keycloak-ssl-verify',
+        dest='authKeycloakSslVerify',
+        type=str2bool,
+        nargs='?',
+        const=True,
+        default=False,
+        help="Verify Keycloak SSL certificate (when --auth-method is keycloak_remote)",
     )
     authSetupGroup.add_argument(
         '--auth-keycloak-client-id',

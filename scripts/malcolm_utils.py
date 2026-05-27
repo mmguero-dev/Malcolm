@@ -1207,10 +1207,7 @@ def bool_to_str(v):
 
 
 def true_or_false_no_quotes(v):
-    if isinstance(v, bool):
-        return "true" if v else "false"
-    else:
-        return str(v)
+    return bool_to_str(v)
 
 
 def true_or_false_quotes(v):

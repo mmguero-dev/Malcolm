@@ -156,6 +156,7 @@ function _M.get_environment_variable(name)
 end
 
 local role_based_access_enabled = false
+local keycloak_ssl_verify = false
 
 function _M.is_role_based_access_enabled()
     return role_based_access_enabled
@@ -170,6 +171,14 @@ function _M.init()
         role_based_access_enabled = false
     end
     ngx.log(ngx.INFO, "RBAC enabled by ROLE_BASED_ACCESS: " .. tostring(role_based_access_enabled))
+
+    -- Determine if ssl_verify is true (for remote Keycloaks)
+    local ssl_verify_env_match, err = ngx.re.match(_M.get_environment_variable("KEYCLOAK_SSL_VERIFY"), "^true$", "jo")
+    if ssl_verify_env_match ~= nil then
+        keycloak_ssl_verify = true
+    else
+        keycloak_ssl_verify = false
+    end
 
     -- Build the role expansion map dynamically from environment variables
     for pattern, mappings in pairs(uri_role_mappings) do
@@ -259,7 +268,7 @@ function _M.refresh_token(httpc, token_url, client_id, client_secret, refresh_to
                 refresh_token = refresh_token
             }),
             headers = { ["Content-Type"] = "application/x-www-form-urlencoded" },
-            ssl_verify = false
+            ssl_verify = keycloak_ssl_verify
         })
         httpc:set_keepalive(60000, 10)
 
@@ -295,7 +304,7 @@ function _M.introspect_token(httpc, introspect_url, access_token, client_id, cli
             client_secret = client_secret
         }),
         headers = { ["Content-Type"] = "application/x-www-form-urlencoded" },
-        ssl_verify = false
+        ssl_verify = keycloak_ssl_verify
     })
     httpc:set_keepalive(60000, 10)
     if not res then
