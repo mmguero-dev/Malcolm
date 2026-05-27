@@ -282,9 +282,11 @@ def is_internal_request(req):
 
 
 def translate_roles(req):
-    roles_map = defaultdict(lambda: True)
+    roles_map = defaultdict(lambda: False)
     try:
         client_roles = [role for role in map(str.strip, req.headers.get('X-Forwarded-Roles', '').split(',')) if role]
+        roles_map['ping'] = True
+        roles_map['version'] = True
         roles_map['event'] = any(
             role in client_roles
             for role in (
@@ -352,6 +354,14 @@ def translate_roles(req):
             )
         )
         roles_map['ingest_stats'] = any(
+            role in client_roles
+            for role in (
+                app.config["ROLE_ADMIN"],
+                app.config["ROLE_READ_ACCESS"],
+                app.config["ROLE_READ_WRITE_ACCESS"],
+            )
+        )
+        roles_map['redis_keyspace_info'] = any(
             role in client_roles
             for role in (
                 app.config["ROLE_ADMIN"],
