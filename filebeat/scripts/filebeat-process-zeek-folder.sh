@@ -109,7 +109,7 @@ if mkdir $LOCKDIR; then
         else
           # extract archive to DESTDIR_EXTRACTED
           mv "$FILENAME" "$DESTNAME"
-          python3 -m pyunpack.cli "$DESTNAME" "$DESTDIR_EXTRACTED"
+          /usr/local/bin/safe-extract.py "$DESTNAME" "$DESTDIR_EXTRACTED"
         fi
 
         ZEEK_LOG_EXT=log

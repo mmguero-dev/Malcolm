@@ -102,6 +102,8 @@ RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
         file \
         gzip \
         inotify-tools \
+        libarchive \
+        lzip \
         jo \
         jq \
         openssl \
@@ -112,9 +114,9 @@ RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
         python3-setuptools \
         rsync \
         tar \
+        unrar \
         unzip \
-        xz \
-        xz-devel && \
+        xz && \
     curl -sSLf -o /usr/bin/tini "${TINI_URL}-${BINARCH}" && \
         chmod +x /usr/bin/tini && \
     python3 -m pip install --upgrade pip setuptools wheel && \
