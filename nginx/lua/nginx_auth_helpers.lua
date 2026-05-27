@@ -6,6 +6,11 @@ local cjson = require("cjson.safe")
 local path_role_envs = {
     -- Special cases (if you add deeper patterns, put them up here)
 
+    -- Service account authentication setup
+    { pattern = "^/(auth|htadmin|admin_login)", roles = {
+        "ROLE_ADMIN"
+    }},
+
     -- Arkime PCAP view/export
     { pattern = "^/arkime/(api/)?sessions?/.+/packets(?:$|[/?])", roles = {
         "ROLE_ADMIN",
