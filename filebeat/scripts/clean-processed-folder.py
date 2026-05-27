@@ -58,17 +58,18 @@ _LOG_MIME_TYPES = (
 
 _ARCHIVE_MIME_TYPES = (
     "application/gzip",
+    "application/vnd.rar",
     "application/x-7z-compressed",
     "application/x-bzip2",
     "application/x-cpio",
     "application/x-gzip",
     "application/x-lzip",
     "application/x-lzma",
-    "application/x-ms-evtx",
     "application/x-rar-compressed",
     "application/x-tar",
     "application/x-xz",
     "application/zip",
+    "application/x-ms-evtx",
 )
 
 _LOG_FILE_TYPE_PATTERNS = [

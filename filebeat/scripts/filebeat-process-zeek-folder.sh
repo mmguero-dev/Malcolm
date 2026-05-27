@@ -38,7 +38,7 @@ if mkdir $LOCKDIR; then
 
   # get new logs ready for processing
   cd "$ZEEK_LOGS_DIR"
-  find . -path ./processed -prune -o -path ./current -prune -o -path ./upload -prune -o -path ./extract_files -prune -o -path ./live -prune -o -type f -exec file --separator '|' --mime-type "{}" \; | grep -P "(application/gzip|application/x-gzip|application/x-7z-compressed|application/x-bzip2|application/x-cpio|application/x-lzip|application/x-lzma|application/x-rar-compressed|application/x-tar|application/x-xz|application/zip|application/x-ms-evtx|application/octet-stream)" | sort -V | \
+  find . -path ./processed -prune -o -path ./current -prune -o -path ./upload -prune -o -path ./extract_files -prune -o -path ./live -prune -o -type f -exec file --separator '|' --mime-type "{}" \; | grep -P "(application/gzip|application/vnd.rar|application/x-7z-compressed|application/x-bzip2|application/x-cpio|application/x-gzip|application/x-lzip|application/x-lzma|application/x-rar-compressed|application/x-tar|application/x-xz|application/zip|application/x-ms-evtx|application/octet-stream)" | sort -V | \
     xargs -P $FILEBEAT_PREPARE_PROCESS_COUNT -I '{}' bash -c '
 
     # separate filename and mime type
