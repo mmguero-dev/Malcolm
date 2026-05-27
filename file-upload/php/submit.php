@@ -118,6 +118,5 @@ function handle_transfer_ids_post($ids) {
         FilePond\remove_transfer_directory(TRANSFER_DIR, $id);
     }
 
-    $return_to = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '/upload';
-    header("Location: ". $return_to);
+    header("Location: /upload");
 }
