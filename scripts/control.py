@@ -2111,7 +2111,7 @@ def authSetup():
                         passwordEncrypted = args.authPasswordOpenssl
                     else:
                         err, out = run_process(
-                            [opensslBin, 'passwd', '-1', '-stdin'],
+                            [opensslBin, 'passwd', '-6', '-stdin'],
                             stdin=password,
                             stderr=False,
                             debug=log_level_is_debug(args.verbose),
@@ -2137,7 +2137,7 @@ def authSetup():
                                 b64encode(passwordEncrypted.encode()).decode("ascii"),
                             ),
                         ],
-                        stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH,
+                        stat.S_IRUSR | stat.S_IWUSR,
                     )
 
                     # create or update the htpasswd file
@@ -3290,7 +3290,7 @@ def main():
         metavar='<string>',
         type=str,
         default='',
-        help='Administrator password hash from "openssl -passwd -1" (for --auth-noninteractive)',
+        help='Administrator password hash from "openssl -passwd -6" (for --auth-noninteractive)',
     )
     authSetupGroup.add_argument(
         '--auth-admin-password-htpasswd',
