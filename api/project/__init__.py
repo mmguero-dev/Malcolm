@@ -898,7 +898,7 @@ def fields():
 
     template_name = malcolm_utils.deep_get(args, ["template"], app.config["MALCOLM_TEMPLATE"])
     if not re.fullmatch(r'[A-Za-z0-9_*-]+', template_name):
-        raise ValueError(f"Invalid template name: {template_name}")
+        return jsonify(error="Invalid template name"), 400
 
     doctype = doctype_from_args(args)
     include_arkime = (template_name == app.config["MALCOLM_TEMPLATE"]) and (doctype == "network")
