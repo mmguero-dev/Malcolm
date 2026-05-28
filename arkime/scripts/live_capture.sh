@@ -91,8 +91,10 @@ WISE_PLUGIN_FILE_ESCAPED="$(echo "${WISE_PLUGIN_FILE_BASE}" | sed 's@\.@\\\.@g')
 sed -i "/plugins=.*${WISE_PLUGIN_FILE_ESCAPED}/s/;\?${WISE_PLUGIN_FILE_ESCAPED}//g" "${ARKIME_CONFIG_FILE}"
 
 if [[ -n "${WISE_URL}" ]] && [[ ! "${WISE_URL}" =~ ^https?://(localhost|127\.0\.0\.1) ]]; then
-    WISE_HTTP_STATUS=$(curl -skL --max-time 10 -A "arkime" -o /dev/null -w "%{http_code}" "${WISE_URL}/")
-    if [[ "${WISE_HTTP_STATUS}" == "401" || "${WISE_HTTP_STATUS}" == "403" ]] && [[ "${WISE_URL}" != "http://arkime:8081" ]] && [[ -r "${OPENSEARCH_CREDS_CONFIG_FILE}" ]]; then
+    WISE_HTTP_RESPONSE=$(curl -skL --max-time 10 -A "arkime" -w "\n%{http_code}" "${WISE_URL}/_ns_/nstest.html")
+    WISE_HTTP_STATUS=$(echo "${WISE_HTTP_RESPONSE}" | tail -1)
+    WISE_HTTP_BODY=$(echo "${WISE_HTTP_RESPONSE}" | head -n -1)
+    if [[ ( "${WISE_HTTP_STATUS}" == "401" || "${WISE_HTTP_STATUS}" == "403" ) || ( "${WISE_HTTP_STATUS}" == "200" && -n "${WISE_HTTP_BODY}" ) ]] && [[ "${WISE_URL}" != "http://arkime:8081" ]] && [[ -r "${OPENSEARCH_CREDS_CONFIG_FILE}" ]]; then
         # we failed auth, so let's grab creds from OPENSEARCH_CREDS_CONFIG_FILE and try that
 
         # get the username/password from the curl file (I already wrote python code to do this, so sue me)
