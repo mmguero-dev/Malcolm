@@ -88,6 +88,7 @@ def file_processor(pathname, **kwargs):
                         'application/x-gzip',
                         'application/x-lzip',
                         'application/x-lzma',
+                        'application/x-rar',
                         'application/x-rar-compressed',
                         'application/x-tar',
                         'application/x-xz',
