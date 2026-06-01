@@ -1775,6 +1775,7 @@ class MalcolmSource extends WISESource {
       "zeek.intel.confidence",
       "zeek.intel.file_description",
       "zeek.intel.file_mime_type",
+      "zeek.intel.kill_chain_phases",
       "zeek.intel.reports",
       "zeek.intel.seen_node",
       "zeek.intel.seen_where",
