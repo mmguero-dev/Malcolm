@@ -52,7 +52,7 @@ ADD --chmod=644 zeek/requirements.txt /usr/local/src/requirements.txt
 
 ENV SUPERCRONIC_VERSION="0.2.46"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
-ENV SUPERCRONIC_CRONTAB="${ZEEK_DIR}/crontab"
+ENV SUPERCRONIC_CRONTAB="${ZEEK_DIR}/etc/crontab"
 
 # build and install system packages, zeek, spicy and plugins
 RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') && \
