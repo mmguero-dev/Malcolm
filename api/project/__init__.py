@@ -18,6 +18,7 @@ from flask import Flask, jsonify, request
 from requests.auth import HTTPBasicAuth
 from urllib.parse import urlparse
 from malcolm_constants import DatabaseMode
+from werkzeug.exceptions import HTTPException
 
 # map categories of field names to OpenSearch dashboards
 fields_to_urls = []
@@ -1834,6 +1835,10 @@ def basic_error(e):
     error
         Generic error message; exception details are logged server-side only.
     """
+    # Let HTTP exceptions return their proper status codes
+    if isinstance(e, HTTPException):
+        return jsonify(error=e.description), e.code
+
     errorStr = f"{type(e).__name__}: {str(e)}"
     if debugApi:
         print(errorStr)
