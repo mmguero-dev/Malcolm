@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi10/ubi-minimal AS manuf-builder
+FROM redhat/ubi10-minimal:latest AS manuf-builder
 
 COPY logstash/requirements.txt /work/
 COPY scripts/malcolm_utils.py /work/

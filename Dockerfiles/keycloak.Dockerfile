@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9 AS ubi-micro-build
+FROM redhat/ubi9:latest AS ubi-micro-build
 
 RUN mkdir -p /mnt/rootfs && \
     dnf install --nodocs -y --releasever 9 --setopt install_weak_deps=false --installroot /mnt/rootfs \
