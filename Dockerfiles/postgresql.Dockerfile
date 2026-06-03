@@ -30,6 +30,8 @@ ADD --chmod=755 postgres-scripts/docker-entrypoint-initdb.d/*.sh /docker-entrypo
 ADD --chmod=755 postgres-scripts/docker-entrypoint-startdb.d/*.sh /docker-entrypoint-startdb.d/
 ADD --chmod=755 postgres-scripts/*.sh /usr/local/bin/
 
+ENV PGDATA=/var/lib/postgresql/data
+
 RUN apk update --no-cache && \
     apk add --no-cache bash jq procps psmisc rsync shadow tini && \
     apk add --no-cache --virtual .build-deps rsync && \
@@ -40,6 +42,7 @@ RUN apk update --no-cache && \
     ln -s /usr/bin /usr/local/bin && \
     ln -s /usr/share /usr/local/share && \
     ln -s /usr/lib /usr/local/lib && \
+    mkdir -p "${PGDATA}" && \
     chmod 00775 /var/lib/postgresql /var/lib/postgresql/data /run/postgresql && \
     apk del .build-deps
 
