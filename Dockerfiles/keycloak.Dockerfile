@@ -13,7 +13,7 @@ RUN mkdir -p /mnt/rootfs && \
     dnf --installroot /mnt/rootfs clean all && \
     rpm --root /mnt/rootfs -e --nodeps setup
 
-FROM quay.io/keycloak/keycloak:26.5 AS builder
+FROM quay.io/keycloak/keycloak:26.6 AS builder
 
 ENV KC_HEALTH_ENABLED=true
 ENV KC_METRICS_ENABLED=false
