@@ -35,20 +35,8 @@ if ! (type "$REALPATH" && type "$DIRNAME") > /dev/null; then
 fi
 export SCRIPT_PATH="$($DIRNAME $($REALPATH -e "${BASH_SOURCE[0]}"))"
 
-# control_vars.conf file must be specified as argument to script or be found in an expected place
-# source configuration variables file if found (precedence: pwd, script directory, /opt/sensor/sensor_ctl)
-if [[ -n "$1" ]]; then
-  source "$1"
-else
-  CONTROL_VARS_FILE="control_vars.conf"
-  if [[ -r ./"$CONTROL_VARS_FILE" ]]; then
-    source ./"$CONTROL_VARS_FILE"
-  elif [[ -r "$SCRIPT_PATH"/"$CONTROL_VARS_FILE" ]]; then
-    source "$SCRIPT_PATH"/"$CONTROL_VARS_FILE"
-  elif [[ -r /opt/sensor/sensor_ctl/"$CONTROL_VARS_FILE" ]]; then
-    source /opt/sensor/sensor_ctl/"$CONTROL_VARS_FILE"
-  fi
-fi
+# source configuration variables file if provided
+[[ -n "$1" ]] && source "$1"
 
 # capture interface(s) *must* be specified
 if [[ -z "$CAPTURE_INTERFACE" ]] && [[ -n "$PCAP_IFACE" ]]; then
