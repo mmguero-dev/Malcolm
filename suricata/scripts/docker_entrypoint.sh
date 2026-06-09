@@ -3,7 +3,7 @@
 # ensure capabilities for capture
 setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip CAP_IPC_LOCK+eip' /usr/bin/suricata || true
 
-[[ -x /usr/bin/suricata-offline ]] && SURICATA_TEST_CONFIG_BIN=/usr/bin/suricata-offline || SURICATA_TEST_CONFIG_BIN=/usr/bin/suricata
+[[ -x /usr/bin/suricata-offline ]] && export SURICATA_TEST_CONFIG_BIN=/usr/bin/suricata-offline || export SURICATA_TEST_CONFIG_BIN=/usr/bin/suricata
 
 
 # - modify suricata.yaml according to environment variables (as non-root)
