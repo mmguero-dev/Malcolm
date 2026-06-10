@@ -1125,7 +1125,7 @@ def logs():
     global orchMode
     global shuttingDown
 
-    finishedStartingRegEx = re.compile(r'.+Pipelines\s+running\s+\{.*:non_running_pipelines=>\[\]\}')
+    finishedStartingRegEx = re.compile(r'.+Pipelines\s+running\s+\{.*non_running_pipelines:\s*\[\]\}')
 
     osEnv = os.environ.copy()
     # use local temporary path
