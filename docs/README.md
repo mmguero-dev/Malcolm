@@ -99,7 +99,7 @@ Malcolm can also easily be deployed locally on an ordinary consumer workstation 
     - [Alerting](alerting.md#Alerting)
         + [Email Sender Accounts](alerting.md#AlertingEmail)
         + [Event Logging Loopback API](api-event-logging.md)
-* [Search Queries in Arkime and OpenSearch Dashboards](queries-cheat-sheet.md#SearchCheatSheet)
+* [Search Queries in Arkime and OpenSearch Dashboards](queries-cheat-sheet.md)
 * Other Malcolm features
     - [Analytics](analytics.md#Analytics)
     - [Custom Rules, Scripts and Plugins](custom-rules.md#CustomRulesAndScripts)
