@@ -11,7 +11,6 @@ if [[ "$(uname -s)" == Darwin ]]; then
   BASENAME=gbasename
   DIRNAME=gdirname
   FIND=gfind
-  GREP=ggrep
   REALPATH=grealpath
   SED=gsed
   SORT=gsort
@@ -20,14 +19,13 @@ else
   BASENAME=basename
   DIRNAME=dirname
   FIND=find
-  GREP=grep
   REALPATH=realpath
   SED=sed
   SORT=sort
 fi
 
 required=(
-  jq rg "$AWK" "$BASENAME" "$DIRNAME" "$FIND" "$GREP" "$REALPATH" "$SED" "$SORT"
+  jq rg "$AWK" "$BASENAME" "$DIRNAME" "$FIND" "$REALPATH" "$SED" "$SORT"
 )
 
 missing=()
@@ -57,7 +55,16 @@ function get_field_names () {
     # now grep them out of the logstash filters
     rg --color=never -o --no-filename \
         -P '(?<![A-Za-z0-9_@.-])(?:\[[^\[\]]+\](?:\[[^\[\]]+\])+|[A-Za-z_@][A-Za-z0-9_@-]*(?:\.[A-Za-z_@][A-Za-z0-9_@-]*)+)(?![A-Za-z0-9_@.-])' ./logstash/pipelines | \
-        $SED -E '/^\[/{s/^\[//; s/\]$//; s/\]\[/./g;}' | $GREP -Pv "(^(@|zeek_cols)|^\.yaml$)"
+        $SED -E '/^\[/{s/^\[//; s/\]$//; s/\]\[/./g;}' | \
+        rg -v \
+          -e "(^(@|zeek_cols)|^\.yaml$)" \
+          -e '\.(log|rb|html|yaml|zeek|json|crt|key|pl|py|conf|bro|c)$' \
+          -e '\.(org|io|com|net)(\/|$)' \
+          -e '\.(nil|to_s|strip|to_i|to_a|to_f|hex|length|push|append|uniq|flatten|join|split|scan|gsub|sub|match|captures|start_with|end_with|delete_prefix|delete_suffix|reject|select|map|each|any|first|last|find|dig|compact|clone|call|kind_of|is_a|positive|zero|min|encode|bytesize|new|parse|read|empty|include)(\.|$)' \
+          -e '^\s*$' \
+          -e "'\s*\+" \
+          -e '#\{' \
+          -e '\.[0-9]+$'
 
     # finally, pull them out of the ./dashboards/templates themselves
     $FIND ./dashboards/templates -type f \( -name '*.json' -o -name '*.template' \) -print0 |
