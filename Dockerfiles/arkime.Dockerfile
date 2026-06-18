@@ -104,13 +104,13 @@ RUN export DEBARCH=$(dpkg --print-architecture) && \
     apt-get -q update && \
     apt-get install -q -y --no-install-recommends \
       bc \
-      bzip2 \
       curl \
       ethtool \
       file \
-      git \
-      gzip \
+      geoip-bin \
+      geoipupdate \
       inotify-tools \
+      iproute2 \
       jq \
       libcap2-bin \
       libglib2.0-0 \
@@ -130,9 +130,7 @@ RUN export DEBARCH=$(dpkg --print-architecture) && \
       libyara10 \
       libzmq5 \
       lua5.4 \
-      lzma \
       mmdb-bin \
-      p7zip-full \
       procps \
       psmisc \
       python3 \
@@ -140,13 +138,8 @@ RUN export DEBARCH=$(dpkg --print-architecture) && \
       python3-setuptools \
       python3-wheel \
       rsync \
-      tar \
       tini \
-      unrar \
-      unzip \
-      vim-tiny \
       wget \
-      xz-utils \
       zlib1g && \
     cd /tmp && \
       curl -fsSL -o ./arkime.deb "$(echo "${ARKIME_DEB_URL}" | sed "s/XXX/${DEBARCH}/g")" && \
@@ -159,7 +152,7 @@ RUN export DEBARCH=$(dpkg --print-architecture) && \
     ln -sfr $ARKIME_DIR/bin/npm /usr/local/bin/npm && \
       ln -sfr $ARKIME_DIR/bin/node /usr/local/bin/node && \
       ln -sfr $ARKIME_DIR/bin/npx /usr/local/bin/npx && \
-    apt-get -q -y --purge remove git gcc gcc-12 cpp cpp-12 && \
+    apt-get -q -y --purge remove libtool python3-setuptools python3-wheel gcc cpp && \
       apt-get -q -y autoremove && \
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
