@@ -5,7 +5,7 @@
 
 ###################################################################################################
 # Detect, partition, and format devices to be used for:
-#  - Malcolm - database and capture artifacts (both Malcolm and Malcolm-Hedgehog variants)
+#  - Malcolm - database and capture artifacts (both Malcolm and Hedgehog variants)
 #
 # Run the script with --help for options
 ###################################################################################################
@@ -57,14 +57,14 @@ CRYPT_DEV_PREFIX = 'crypt_dev_prefix'
 ###################################################################################################
 # Operating system mode constants
 OS_MODE_MALCOLM = "malcolm"
-OS_MODE_MALCOLM_HEDGEHOG = "malcolm-hedgehog"
+OS_MODE_HEDGEHOG = "hedgehog"
 
 ETC_INSTALLER_AGGREGATOR = "aggregator"
 ETC_INSTALLER_SENSOR = "sensor"
 
 OS_PARAMS = defaultdict(lambda: None)
 OS_PARAMS[OS_MODE_MALCOLM] = defaultdict(lambda: None)
-OS_PARAMS[OS_MODE_MALCOLM_HEDGEHOG] = defaultdict(lambda: None)
+OS_PARAMS[OS_MODE_HEDGEHOG] = defaultdict(lambda: None)
 OS_PARAMS[OS_MODE_MALCOLM].update(
     {
         MINIMUM_DEVICE_BYTES: 100 * 1024 * 1024 * 1024,  # 100GiB
@@ -82,7 +82,7 @@ OS_PARAMS[OS_MODE_MALCOLM].update(
         CRYPT_DEV_PREFIX: 'malcolm_vault_',
     }
 )
-OS_PARAMS[OS_MODE_MALCOLM_HEDGEHOG].update(
+OS_PARAMS[OS_MODE_HEDGEHOG].update(
     {
         **OS_PARAMS[OS_MODE_MALCOLM],
         MOUNT_DIRS: [d for d in OS_PARAMS[OS_MODE_MALCOLM][MOUNT_DIRS] if d != MALCOLM_DB_DIR],
@@ -234,7 +234,7 @@ def main():
         default=None,
         metavar='<string>',
         type=str,
-        help=f'Script mode: {OS_MODE_MALCOLM} or {OS_MODE_MALCOLM_HEDGEHOG} (default: autodetect)',
+        help=f'Script mode: {OS_MODE_MALCOLM} or {OS_MODE_HEDGEHOG} (default: autodetect)',
     )
     parser.add_argument(
         '-i',
@@ -298,7 +298,7 @@ def main():
     if not args.osMode:
         args.osMode = DetermineOSPlatform()
 
-    if args.osMode in (OS_MODE_MALCOLM, OS_MODE_MALCOLM_HEDGEHOG):
+    if args.osMode in (OS_MODE_MALCOLM, OS_MODE_HEDGEHOG):
         osMode = args.osMode
     else:
         parser.print_help()
@@ -709,7 +709,7 @@ def main():
                             createdUserDirs[subdir] = userDir
                             break
 
-                if (osMode in (OS_MODE_MALCOLM, OS_MODE_MALCOLM_HEDGEHOG)) and os.path.isdir(
+                if (osMode in (OS_MODE_MALCOLM, OS_MODE_HEDGEHOG)) and os.path.isdir(
                     os.path.join(ownerHome, 'Malcolm')
                 ):
                     # write .os-disk-config-defaults to be picked up by install.py
