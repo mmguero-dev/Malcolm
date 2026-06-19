@@ -48,7 +48,7 @@ RUN find /site -type f -name "*.md" -exec sed -i "s/{{[[:space:]]*site.github.bu
     find /site/_site -type f -name "*.html" -exec sed -i 's@\(href=\)"/"@\1"/readme/"@g' "{}" \;
 
 # obtain openresty source code bundle from download site or Git
-FROM alpine:3.23 AS getresty
+FROM alpine:3.24 AS getresty
 
 # OPENRESTY_VERSION can be like "1.29.2.4" or "318a52b814ef903066002ffa3166b7714b3b9c6f"
 ARG OPENRESTY_VERSION=1.31.1.1
