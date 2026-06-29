@@ -155,6 +155,24 @@ function _M.get_environment_variable(name)
     return (val and val ~= "") and val or nil
 end
 
+-- Normalize a raw request URI for RBAC matching.
+-- Uses request_uri (pre-rewrite) rather than ngx.var.uri (post-rewrite), but
+-- collapses path traversal sequences so that patterns like /x/../upload/
+-- cannot bypass role checks.
+local function normalize_uri_for_rbac(raw_uri)
+    local path = raw_uri:match("^[^?]+") or ""
+    -- Collapse /../ sequences in a loop until stable
+    local n
+    repeat
+        path, n = path:gsub("/[^/]*/%.%./", "/")
+    until n == 0
+    -- Strip any leading /../ sequences that couldn't be collapsed
+    repeat
+        path, n = path:gsub("^/%.%./", "/")
+    until n == 0
+    return path
+end
+
 local role_based_access_enabled = false
 local keycloak_ssl_verify = false
 
@@ -225,7 +243,7 @@ function _M.set_headers(username, token, groups, roles)
                 role_set[role] = true
             end
             -- Apply role expansion logic based on current request URI
-            local request_uri = ngx.var.request_uri:match("^[^?]+") or ""
+            local request_uri = normalize_uri_for_rbac(ngx.var.request_uri)
             for pattern, expansion in pairs(role_expansion_map) do
                 local m, err = ngx.re.match(request_uri, pattern)
                 if m then
@@ -386,8 +404,9 @@ function _M.check_rbac(token_data)
         return ngx.HTTP_OK
     end
 
-    -- URI -> ENV VARS mapping
-    local uri = ngx.var.request_uri:match("^[^?]+") or ""
+    -- Normalize request_uri for RBAC matching: use the pre-rewrite path but
+    -- collapse traversal sequences so that patterns like /x/../upload/ cannot bypass role checks.
+    local uri = normalize_uri_for_rbac(ngx.var.request_uri)
     local username = token_data.preferred_username or ""
     local roles = (token_data.realm_access and token_data.realm_access.roles) or {}
 
