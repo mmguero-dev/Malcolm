@@ -80,9 +80,11 @@ def extract_libarchive(archive, dest):
     Iterates entries manually to skip directory entries that some
     formats (e.g. RAR) mark in a way that confuses extract_file.
     Enforces limits on entry count, nesting depth, and total
-    uncompressed bytes to prevent archive bomb DoS."""
+    uncompressed bytes to prevent archive bomb DoS.
+    Validates directory entry paths to prevent traversal outside dest."""
     count = 0
     total_bytes = 0
+    real_dest = os.path.realpath(dest)
 
     try:
         with malcolm_utils.pushd(dest):
@@ -108,10 +110,15 @@ def extract_libarchive(archive, dest):
                         )
 
                     if entry.isdir:
-                        # create the directory explicitly rather than letting
-                        # libarchive attempt to decompress it as a data entry
-                        dirpath = os.path.join(dest, entry.pathname)
-                        os.makedirs(dirpath, exist_ok=True)
+                        # Validate resolved path stays within dest before creating;
+                        # os.makedirs with a raw entry.pathname has no traversal
+                        # protection unlike file entries handled via EXTRACT_FLAGS.
+                        target = os.path.realpath(os.path.join(dest, entry.pathname))
+                        if not target.startswith(real_dest + os.sep):
+                            raise ArchiveBombError(
+                                f"directory traversal detected: {entry.pathname!r} resolves outside dest"
+                            )
+                        os.makedirs(target, exist_ok=True)
                         continue
 
                     libarchive.extract.extract_entries([entry], flags=EXTRACT_FLAGS)
