@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # safe_extract.py - extract archive to dest with path traversal protection
-# usage: safe_extract.py <archive> <destdir>
-
+# usage: safe-extract.py <archive> <destdir>
 import sys
 import os
 import gzip
@@ -12,6 +11,7 @@ import libarchive.read
 import magic
 import malcolm_utils
 import re
+import shutil
 import subprocess
 
 EXTRACT_FLAGS = (
@@ -19,6 +19,11 @@ EXTRACT_FLAGS = (
     | libarchive.extract.EXTRACT_SECURE_NOABSOLUTEPATHS
     | libarchive.extract.EXTRACT_SECURE_SYMLINKS
 )
+
+# Archive bomb limits — override via environment variables
+MAX_ENTRIES = int(os.environ.get('SAFE_EXTRACT_MAX_ENTRIES', 1000))
+MAX_DEPTH = int(os.environ.get('SAFE_EXTRACT_MAX_DEPTH', 20))
+MAX_TOTAL_BYTES = int(os.environ.get('SAFE_EXTRACT_MAX_BYTES', 2 * 1024**3))  # 2 GiB
 
 # Raw single-stream compression formats: no container, no member paths.
 # Decompress to a single output file via stdlib.
@@ -34,6 +39,12 @@ TAR_COMPRESSED_EXTS = re.compile(
     r'\.(tgz|tbz2?|txz|tlz|tar\.(gz|bz2|xz|lz|lzma))$',
     flags=re.IGNORECASE,
 )
+
+
+class ArchiveBombError(Exception):
+    """Raised when an archive exceeds configured extraction limits."""
+
+    pass
 
 
 def strip_compression_ext(path):
@@ -67,17 +78,46 @@ def extract_lzip(archive, dest):
 def extract_libarchive(archive, dest):
     """Extract an archive using libarchive with security flags.
     Iterates entries manually to skip directory entries that some
-    formats (e.g. RAR) mark in a way that confuses extract_file."""
-    with malcolm_utils.pushd(dest):
-        with libarchive.read.file_reader(archive) as a:
-            for entry in a:
-                if entry.isdir:
-                    # create the directory explicitly rather than letting
-                    # libarchive attempt to decompress it as a data entry
-                    dirpath = os.path.join(dest, entry.pathname)
-                    os.makedirs(dirpath, exist_ok=True)
-                    continue
-                libarchive.extract.extract_entries([entry], flags=EXTRACT_FLAGS)
+    formats (e.g. RAR) mark in a way that confuses extract_file.
+    Enforces limits on entry count, nesting depth, and total
+    uncompressed bytes to prevent archive bomb DoS."""
+    count = 0
+    total_bytes = 0
+
+    try:
+        with malcolm_utils.pushd(dest):
+            with libarchive.read.file_reader(archive) as a:
+                for entry in a:
+                    count += 1
+                    total_bytes += getattr(entry, 'size', 0) or 0
+                    depth = entry.pathname.rstrip('/').count('/')
+
+                    if count > MAX_ENTRIES:
+                        raise ArchiveBombError(
+                            f"archive exceeds entry limit ({MAX_ENTRIES}): "
+                            f"stopped at entry {count} ({entry.pathname!r})"
+                        )
+                    if depth > MAX_DEPTH:
+                        raise ArchiveBombError(
+                            f"archive exceeds depth limit ({MAX_DEPTH}): {entry.pathname!r} is {depth} levels deep"
+                        )
+                    if total_bytes > MAX_TOTAL_BYTES:
+                        raise ArchiveBombError(
+                            f"archive exceeds size limit ({MAX_TOTAL_BYTES} bytes): "
+                            f"stopped at entry {count} ({entry.pathname!r})"
+                        )
+
+                    if entry.isdir:
+                        # create the directory explicitly rather than letting
+                        # libarchive attempt to decompress it as a data entry
+                        dirpath = os.path.join(dest, entry.pathname)
+                        os.makedirs(dirpath, exist_ok=True)
+                        continue
+
+                    libarchive.extract.extract_entries([entry], flags=EXTRACT_FLAGS)
+    except ArchiveBombError:
+        shutil.rmtree(dest, ignore_errors=True)
+        raise
 
 
 if len(sys.argv) != 3:
@@ -86,8 +126,7 @@ if len(sys.argv) != 3:
 
 archive = os.path.realpath(sys.argv[1])
 dest = os.path.realpath(sys.argv[2])
-
-os.makedirs(dest, exist_ok=True)
+os.makedirs(dest, exist_ok=False)
 
 file_mime_type = magic.from_file(archive, mime=True)
 
