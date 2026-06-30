@@ -1,4 +1,4 @@
-FROM docker.elastic.co/beats/filebeat-oss:9.4.2
+FROM docker.elastic.co/beats/filebeat-oss:9.4.3
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -116,6 +116,7 @@ RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
         tar \
         unrar \
         unzip \
+        util-linux \
         xz && \
     curl -sSLf -o /usr/bin/tini "${TINI_URL}-${BINARCH}" && \
         chmod +x /usr/bin/tini && \
@@ -143,6 +144,7 @@ ADD --chmod=644 filebeat/filebeat-zeek-files-logs.yml /usr/share/filebeat-zeek-f
 ADD filebeat/scripts /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_utils.py /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_constants.py /usr/local/bin/
+ADD --chmod=755 scripts/safe-extract.py /usr/local/bin/
 ADD --chmod=644 shared/bin/watch_common.py /usr/local/bin/
 ADD --chmod=755 shared/bin/opensearch_status.sh /usr/local/bin/
 ADD --chmod=644 filebeat/supervisord.conf /etc/supervisord.conf

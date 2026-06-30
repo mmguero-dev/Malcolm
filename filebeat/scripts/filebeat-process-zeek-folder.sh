@@ -101,13 +101,13 @@ if mkdir $LOCKDIR; then
         fi
 
         mkdir -p "$DESTDIR"
-        mkdir -p "$DESTDIR_EXTRACTED"
 
         if [[ "$FILEMIME" == "application/x-ms-evtx" ]]; then
           # special case for Windows event log files that are uploaded uncompressed
+          mkdir -p "$DESTDIR_EXTRACTED"
           mv "$FILENAME" "$DESTDIR_EXTRACTED"/"$(basename "$DESTNAME")"
         else
-          # extract archive to DESTDIR_EXTRACTED
+          # extract archive to DESTDIR_EXTRACTED (dir will be created by safe-extract.py)
           mv "$FILENAME" "$DESTNAME"
           /usr/local/bin/safe-extract.py "$DESTNAME" "$DESTDIR_EXTRACTED"
         fi

@@ -16,7 +16,7 @@ RUN microdnf -y install \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     python3 manuf-oui-parse.py -o vendor_macs.yaml
 
-FROM docker.elastic.co/logstash/logstash-oss:9.4.2
+FROM docker.elastic.co/logstash/logstash-oss:9.4.3
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
@@ -76,8 +76,9 @@ RUN set -x && \
         git \
         jq \
         patch \
+        rsync \
         supervisor \
-        rsync && \
+        util-linux && \
     curl -sSLf -o /usr/bin/tini "${TINI_URL}-${BINARCH}" && \
         chmod +x /usr/bin/tini && \
     curl -fsSL -o /usr/local/bin/yq "${YQ_URL}${BINARCH}" && \
