@@ -50,6 +50,7 @@ Malcolm leverages the following excellent open source tools, among others:
     * Amazon.com, Inc.'s [ICS protocol](https://github.com/amzn?q=zeek) analyzers
     * Andrew Klaus's [Sniffpass](https://github.com/cybera/zeek-sniffpass) plugin for detecting cleartext passwords in HTTP POST requests
     * Andrew Klaus's [zeek-httpattacks](https://github.com/precurse/zeek-httpattacks) plugin for detecting noncompliant HTTP requests
+    * [CERT.LV](https://cert.lv/en/about-us)'s (the Cyber Incident Response Institution of the Republic of Latvia) [spicy-iec104 parser](https://github.com/cert-lv/spicy-iec104), which is a fork of [George Makrakis](https://github.com/georgemakrakis)' work.
     * [ICS protocol analyzers](https://github.com/cisagov/ICSNPP) for Zeek published by Idaho National Lab and DHS CISA
     * Numerous packages from [Corelight, Inc.](https://github.com/corelight)
     * FoxIO's [JA4+](https://blog.foxio.io/ja4%2B-network-fingerprinting) network fingerprinting plugin
