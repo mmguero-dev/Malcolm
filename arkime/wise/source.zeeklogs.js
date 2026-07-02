@@ -939,6 +939,8 @@ class MalcolmSource extends WISESource {
       "zeek.conn.inner_vlan",
       "zeek.conn.ja4l",
       "zeek.conn.ja4ls",
+      "zeek.conn.ja4l_delta",
+      "zeek.conn.ja4ls_delta",
       "zeek.conn.ja4t",
       "zeek.conn.ja4ts",
       "zeek.conn.local_orig",
