@@ -489,7 +489,7 @@ if [[ "${CREATE_OS_ARKIME_SESSION_INDEX:-true}" = "true" ]] ; then
 
           #############################################################################################################################
           # Index pattern(s)
-          #   - Only set overwrite=true if we actually updated the templates above, otherwise overwrite=false and fail silently
+          #   - Only set overwrite=true if we actually updated the templates above; otherwise, overwrite=false and fail silently
           #     if they already exist (http result code 409)
           echo "Importing index pattern..."
           [[ "${TEMPLATES_IMPORTED}" == "true" ]] && SHOW_IMPORT_ERROR="--show-error" || SHOW_IMPORT_ERROR=

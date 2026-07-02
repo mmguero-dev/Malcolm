@@ -948,7 +948,7 @@ def StartMalcolm(
                             containerBelongsInProfile = False
                             break
 
-            # apply the manifests in this YAML file, otherwise skip it
+            # apply the manifests in this YAML file; otherwise, skip it
             if containerBelongsInProfile:
 
                 # Some manifests need to have some modifications done to them on-the-fly:
@@ -1053,7 +1053,7 @@ def StartMalcolm(
                                             ]['securityContext'].pop('capabilities', None)
                                             modified = True
 
-                                        # for resource requests we're only concerned about containters we've defined by name in CONTAINER_JAVA_OPTS_VARS
+                                        # for resource requests we're only concerned about containers we've defined by name in CONTAINER_JAVA_OPTS_VARS
                                         #   or that have been specified in kubernetes-container-resources.yml when injectResources is True
                                         if (containerName in CONTAINER_JAVA_OPTS_VARS) or (
                                             containerName in containerResources
@@ -1199,7 +1199,7 @@ def StartMalcolm(
                                         ) or str(e)
 
                             if manYamlFileContents:
-                                # load from the temporary file if we made modifications, otherwise load from the original
+                                # load from the temporary file if we made modifications; otherwise, load from the original
                                 results_dict['create_from_yaml']['result'][os.path.basename(yamlName)] = (
                                     kubeImported.utils.create_from_yaml(
                                         apiClient,

@@ -9,7 +9,7 @@
 #   - networks.cfg
 #
 # CAPTURE_INTERFACE or PCAP_IFACE - defines the capture interfaces, comma-separated list
-# CAPTURE_FILTER or PCAP_FILTER - bpf filter for capture, however see idaholab/Malcolm#474 as this does not seem to be propogated correctly
+# CAPTURE_FILTER or PCAP_FILTER - bpf filter for capture, however see idaholab/Malcolm#474 as this does not seem to be propagated correctly
 # ZEEK_LB_METHOD - Zeek load balancing method: should be "custom" for AF_Packet
 # ZEEK_AF_PACKET_BUFFER_SIZE - AF_Packet [ring buffer size](https://docs.zeek.org/en/master/scripts/builtin-plugins/Zeek_AF_Packet/init.zeek.html#id-AF_Packet::buffer_size) in bytes (default 67108864)
 # ZEEK_AF_PACKET_FANOUT_MODE - AF_Packet [fanout mode](https://docs.zeek.org/en/master/scripts/base/bif/plugins/Zeek_AF_Packet.af_packet.bif.zeek.html#type-AF_Packet::FanoutMode) (default FANOUT_HASH)
@@ -321,7 +321,7 @@ EOF
       # user explicitly specified worker CPUs to pin
       echo "pin_cpus=${!WORKER_CPU_PINS_VAR}" >> ./node.cfg
     elif [[ "$ZEEK_PIN_CPUS_WORKER_AUTO" == "true" ]]; then
-      # user asked us to autmatically PIN worker CPUs
+      # user asked us to automatically PIN worker CPUs
       echo -n "pin_cpus=" >> ./node.cfg
       for (( PIN=1; PIN <= WORKER_LB_PROCS; PIN++)); do
           echo -n "${CURRENT_CPU_ID}" >> ./node.cfg

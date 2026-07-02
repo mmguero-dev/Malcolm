@@ -18,7 +18,7 @@ Template: malcolm/autologin
 Type: boolean
 Default: true
 Description:
- Automatically login to the GUI session?
+ Automatically log in to the GUI session?
 
 Template: malcolm/autologin_title
 Type: text

@@ -29,8 +29,8 @@ You can now run Docker from the Applications folder. Docker Desktop on macOS als
 Some changes should be made for performance. See the following (unaffiliated) posts/articles for more information:
 
 * [What Are the Latest Docker Desktop Enterprise-Grade Performance Optimizations?](https://www.docker.com/blog/what-are-the-latest-docker-desktop-enterprise-grade-performance-optimizations/)
-* [Docker on MacOS is still slow?](https://www.paolomainardi.com/posts/docker-performance-macos-2025)
-* [Docker on MacOS is slow and how to fix it](https://www.cncf.io/blog/2023/02/02/docker-on-macos-is-slow-and-how-to-fix-it)
+* [Docker on macOS is still slow?](https://www.paolomainardi.com/posts/docker-performance-macos-2025)
+* [Docker on macOS is slow and how to fix it](https://www.cncf.io/blog/2023/02/02/docker-on-macos-is-slow-and-how-to-fix-it)
 * [The most performant Docker setup on macOS](https://medium.com/%40guillem.riera/the-most-performant-docker-setup-on-macos-apple-silicon-m1-m2-m3-for-x64-amd64-compatibility-da5100e2557d)
 * [Why Docker Compose Is Actually Killing Your M1 Mac](https://medium.com/%40sohail_saifi/why-docker-compose-is-actually-killing-your-m1-mac-the-performance-truth-no-one-talks-about-4357678c8584)
 

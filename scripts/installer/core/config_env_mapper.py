@@ -805,7 +805,7 @@ class EnvMapper:
             map_key_constant_value: The Python constant for the environment variable key
                               (e.g., env_keys.KEY_ENV_...).
         Returns:
-            The EnvVariable object if found, otherwise None.
+            The EnvVariable object if found; otherwise, None.
         """
         return self.env_var_by_map_key.get(map_key_constant_value)
 
@@ -817,7 +817,7 @@ class EnvMapper:
             variable_name: The name of the environment variable to search for.
 
         Returns:
-            The name of the .env file containing the variable if found, otherwise None.
+            The name of the .env file containing the variable if found; otherwise, None.
         """
         for file_name, var_list in self.env_vars_by_file.items():
             for var_instance in var_list:
@@ -833,7 +833,7 @@ class EnvMapper:
             file_name: The name of the .env file.
 
         Returns:
-            A list of EnvVariable objects if the file is found, otherwise None.
+            A list of EnvVariable objects if the file is found; otherwise, None.
             Returns a copy of the list; empty if the file exists but has no variables.
         """
         variables_list = self.env_vars_by_file.get(file_name)

@@ -141,7 +141,7 @@ function InitializeAggregatorNetworking() {
   [[ -n $NEED_NETWORKING_RESTART ]] && systemctl restart networking
 }
 
-# fix some permisions to make sure things belong to the right person
+# fix some permissions to make sure things belong to the right person
 function FixPermissions() {
   if [ -n "$1" ]; then
     USER_TO_FIX="$1"

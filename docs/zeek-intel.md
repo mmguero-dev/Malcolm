@@ -390,7 +390,7 @@ While there is no comprehensive list of possible values for [these filters](http
     <li>Capture system network information</li>
     <li>Capture TCP network connection state</li>
     <li>Capture token information</li>
-    <li>Capture Two Factor Autentication (2FA) codes</li>
+    <li>Capture Two Factor Authentication (2FA) codes</li>
     <li>Capture UDP network connection state</li>
     <li>Capture video</li>
     <li>Capture video with camera</li>
@@ -406,7 +406,7 @@ While there is no comprehensive list of possible values for [these filters](http
     <li>Collect video files</li>
     <li>Command and Control via the MQTT Pub/Sub Protocol Capability</li>
     <li>Command line capabilities</li>
-    <li>Communiates using SSH</li>
+    <li>Communicates using SSH</li>
     <li>Communicates bidirectionally with a web service</li>
     <li>Communicates using a binary protocol</li>
     <li>Communicates using a dead drop resolver</li>
@@ -479,13 +479,13 @@ While there is no comprehensive list of possible values for [these filters](http
     <li>Create a socket</li>
     <li>Create directories</li>
     <li>Create files</li>
-    <li>Create or drop a polymorhpic file</li>
+    <li>Create or drop a polymorphic file</li>
     <li>Creates HTTP Server</li>
     <li>Creates processes</li>
     <li>Creates processes in suspended state</li>
-    <li>Creates shorcut</li>
+    <li>Creates shortcut</li>
     <li>Creates user accounts</li>
-    <li>Creates Windows regisry keys or values</li>
+    <li>Creates Windows registry keys or values</li>
     <li>Create TCP socket</li>
     <li>Create thread</li>
     <li>Create UDP socket</li>
@@ -519,7 +519,7 @@ While there is no comprehensive list of possible values for [these filters](http
     <li>Deletes Windows registry keys</li>
     <li>Deletes Windows registry keys or values</li>
     <li>Deletes Windows registry values</li>
-    <li>Deltes Widnows Backup Catalog</li>
+    <li>Deletes Windows Backup Catalog</li>
     <li>Denial of Service</li>
     <li>Determines public IP address of host</li>
     <li>Directory manipulation</li>
@@ -528,7 +528,7 @@ While there is no comprehensive list of possible values for [these filters](http
     <li>Driver Capabilities</li>
     <li>Dumps process memory</li>
     <li>Email capabilities</li>
-    <li>Emnumerates Local Account</li>
+    <li>Enumerates Local Account</li>
     <li>Encodes communications using Base64</li>
     <li>Encodes communications using BasE91</li>
     <li>Encodes communications using custom Base64 alphabet</li>
@@ -713,7 +713,7 @@ While there is no comprehensive list of possible values for [these filters](http
     <li>Overwriting capabilities</li>
     <li>Password Cracks</li>
     <li>Password Sprays</li>
-    <li>Performs anti-disassembly obfucscation</li>
+    <li>Performs anti-disassembly obfuscation</li>
     <li>Performs CD-ROM operations</li>
     <li>Performs GUI operations</li>
     <li>Performs keyboard operations</li>
@@ -839,7 +839,7 @@ While there is no comprehensive list of possible values for [these filters](http
     <li>Tampers with Windows safe mode</li>
     <li>TCP Scan</li>
     <li>Terminates processes</li>
-    <li>Timestomping capabilities</li>
+    <li>Timestamping capabilities</li>
     <li>Tries to lock mutex</li>
     <li>Tunnels network traffic</li>
     <li>Unlocks mutex</li>
@@ -892,7 +892,7 @@ While there is no comprehensive list of possible values for [these filters](http
     <li>Uses Pastebin as part of C2</li>
     <li>Uses pCloud as part of C2</li>
     <li>Uses QuickLZ decompression</li>
-    <li>Uses RedHat OpenShift as part of C2</li>
+    <li>Uses Red Hat OpenShift as part of C2</li>
     <li>Uses Slack as a part of C2</li>
     <li>Uses Stack Overflow as part of C2</li>
     <li>Uses Statcounter for C2</li>

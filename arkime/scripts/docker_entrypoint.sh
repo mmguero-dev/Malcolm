@@ -89,7 +89,7 @@ if [[ ! -f "${ARKIME_CONFIG_FILE}" ]] && [[ -r "${ARKIME_DIR}"/etc/config.orig.i
     # note: when setting the node name, the viewer_service.sh script needs to match
     sed -i "s/MALCOLM_PCAP_NODE_NAME/${NODE_NAME}-upload/g" "${ARKIME_CONFIG_FILE}"
 
-    # certFile/keyFile is cleared based on ARKIME_SSL, or overriden via ARKIME_CERTFILE/ARKIME_KEYFILE
+    # certFile/keyFile is cleared based on ARKIME_SSL, or overridden via ARKIME_CERTFILE/ARKIME_KEYFILE
     [[ "${ARKIME_SSL:-true}" == "false" ]] && \
       ( sed -r -i "s/(certFile)\s*=\s*.*/\1=/" "${ARKIME_CONFIG_FILE}" ; sed -r -i "s/(keyFile)\s*=\s*.*/\1=/" "${ARKIME_CONFIG_FILE}" )
     [[ -n "$ARKIME_CERTFILE" ]] && \
@@ -262,7 +262,7 @@ fi
 
 
 # An example wise.ini file is baked into the container image by the Dockerfile as $ARKIME_DIR/etc/wise.ini.example
-# After the container is booted we copy wise.ini.example from $ARMIKE_DIR/etc/ to $ARKIME_DIR/wiseini/
+# After the container is booted we copy wise.ini.example from $ARKIME_DIR/etc/ to $ARKIME_DIR/wiseini/
 # if $ARKIME_DIR/wiseini/wise.ini does not already exist.
 # $ARKIME_DIR/wiseini/wise.ini will either be a R/W mounted file, when run under Docker Compose or
 # $ARKIME_DIR/wiseini/ will be a persistent volume when run under Kubernetes.

@@ -153,7 +153,7 @@ jobs:
           echo "${{ steps.extract_malcolm_version.outputs.mversion }}" > ./shared/version.txt
           echo "$(basename "$DEST_IMAGES_TXZ")" > ./shared/docker_images.txt
           echo "export GITHUB_TOKEN=${{ secrets.GITHUB_TOKEN }}" > ./shared/environment.chroot
-          echo "export VCS_REVSION=${{ steps.extract_commit_sha.outputs.sha }}" > ./shared/environment.chroot
+          echo "export VCS_REVISION=${{ steps.extract_commit_sha.outputs.sha }}" > ./shared/environment.chroot
           sudo make raspi_${{ inputs.rpi_model }}_${{ inputs.rpi_os }}.img.xz
           sudo rm -f raspi_${{ inputs.rpi_model }}_${{ inputs.rpi_os }}.img
           sudo chmod 644 ./raspi_${{ inputs.rpi_model }}_${{ inputs.rpi_os }}*.*

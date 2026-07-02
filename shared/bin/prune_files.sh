@@ -95,7 +95,7 @@ while true ; do
           # re-check disk capacity
           USAGE_PCT=$(UsagePercentagePwd)
           if ( (( THRESHOLD_PCT > 0 )) && (( USAGE_PCT > THRESHOLD_PCT )) ) ; then
-            # we still exceed the perdent threshold, continue to loop
+            # we still exceed the percent threshold, continue to loop
             [[ "$VERBOSE" == "1" ]] && echo "\"$PRUNE_PATH\" is at $USAGE_PCT% of capacity, pruning..." >&2
             exceeds_pct=true
           else

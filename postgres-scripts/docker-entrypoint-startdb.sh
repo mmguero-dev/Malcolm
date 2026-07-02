@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # The regular postgresql docker-entrypoint.sh runs
-#   /docker-entrypoint-initdb.d/* whenver the container
+#   /docker-entrypoint-initdb.d/* whenever the container
 #   starts up, but only if the database is empty.
 # This wrapper entrypoint will also run /docker-entrypoint-startdb.d/*.sh
 #   regardless of whether the database already exists. This

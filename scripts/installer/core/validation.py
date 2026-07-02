@@ -284,7 +284,7 @@ def _validate_live_pcap_capture(malcolm_config, add_issue) -> None:
     ):
         add_issue(
             KEY_CONFIG_ITEM_LIVE_ARKIME,
-            f"Arime live capture is not available for the {profile} run profile with {primary_mode} as the primary data store",
+            f"Arkime live capture is not available for the {profile} run profile with {primary_mode} as the primary data store",
         )
 
 

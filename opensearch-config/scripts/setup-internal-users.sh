@@ -37,7 +37,7 @@ _meta:
 EOF
 fi
 
-# do replacers from environment bariables for roles_mapping.yml
+# do replacers from environment variables for roles_mapping.yml
 if [[ -r "${ROLE_MAPPING_YML_ORIG}" ]]; then
   envsubst < "${ROLE_MAPPING_YML_ORIG}" \
     | yq 'del(.[] | select(.backend_roles and (.backend_roles[] == "")))' \

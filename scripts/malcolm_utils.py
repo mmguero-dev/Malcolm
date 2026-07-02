@@ -116,7 +116,7 @@ class CountUntilException:
 
 
 ###################################################################################################
-# if a string starts with 'base64:', decode it, otherwise return it as-is
+# if a string starts with 'base64:', decode it; otherwise, return it as-is
 def base64_decode_if_prefixed(s: str):
     if s.startswith('base64:'):
         return b64decode(s[7:]).decode('utf-8')
@@ -865,7 +865,7 @@ def flatten(coll):
 
 
 ###################################################################################################
-# if the object is an iterable, return it, otherwise return a tuple with it as a single element.
+# if the object is an iterable, return it; otherwise, return a tuple with it as a single element.
 # useful if you want to user either a scalar or an array in a loop, etc.
 def get_iterable(x):
     if isinstance(x, Iterable) and not isinstance(x, str):

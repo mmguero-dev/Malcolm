@@ -2600,7 +2600,7 @@ The HART-IP dashboard covers [Highway Addressable Remote Transducer (HART)](http
 * `zeek.hart_ip.token_passing_pdu_contents_response_device_status_configuration_changed`
 * `zeek.hart_ip.token_passing_pdu_contents_response_device_status_device_malfunction`
 * `zeek.hart_ip_session_record.session_log_record_session_status_summary_insecure_session`
-* `zeek.hart_ip_session_record.session_log_record_session_status_summary_writes_occured`
+* `zeek.hart_ip_session_record.session_log_record_session_status_summary_writes_occurred`
 * `zeek.hart_ip_universal_commands.read_message_response_message`
 * `zeek.hart_ip_universal_commands.read_unique_identifier_response_device_profile`
 * `zeek.hart_ip_universal_commands.read_unique_identifier_response_expanded_device_type`

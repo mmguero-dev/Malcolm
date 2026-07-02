@@ -18,7 +18,7 @@ ENCODING="utf-8"
 
 # parse command-line options
 VERBOSE_FLAG=""
-REVISION="${VCS_REVSION:-$( git rev-parse --short HEAD 2>/dev/null || true )}"
+REVISION="${VCS_REVISION:-$( git rev-parse --short HEAD 2>/dev/null || true )}"
 MALCOLM_VERSION=""
 REPOSITORY_NAME=""
 SITEMAP_URL=""

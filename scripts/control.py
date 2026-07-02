@@ -630,7 +630,7 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
 
                 dockerCmd = None
 
-                # determine if Malcolm is running; if so, we'll use docker-compose exec, other wise we'll use docker run
+                # determine if Malcolm is running; if so, we'll use docker-compose exec; otherwise, we'll use docker run
                 err, out = run_process(
                     [dockerComposeBin, '--profile', args.composeProfile, '-f', args.composeFile, 'ps', '-q', service],
                     env=osEnv,
@@ -664,7 +664,7 @@ def keystore_op(service, dropPriv=False, *keystore_args, **run_process_kwargs):
                     ]
 
                 else:
-                    # Malcolm isn't running, do 'docker run' to spin up a temporary container to run the ocmmand
+                    # Malcolm isn't running, do 'docker run' to spin up a temporary container to run the command
 
                     # "grep" the docker image out of the service's image: value from the docker-compose YML file
                     serviceImage = None
@@ -2163,7 +2163,7 @@ def authSetup():
                             if args.cmdAuthSetupNonInteractive and username and args.authPasswordHtpasswd:
                                 f.write(f'{username}:{args.authPasswordHtpasswd}')
                             for line in htpasswdLines:
-                                # if the admininstrator username has changed, remove the previous administrator username from htpasswd
+                                # if the administrator username has changed, remove the previous administrator username from htpasswd
                                 if (
                                     (usernamePrevious is not None)
                                     and (usernamePrevious != username)
@@ -2309,7 +2309,7 @@ def authSetup():
                                     defaultBehavior=defaultBehavior,
                                 )
 
-                                # test the connection if we're intereractive
+                                # test the connection if we're interactive
                                 if (
                                     not args.cmdAuthSetupNonInteractive
                                     and (
@@ -3755,7 +3755,7 @@ def main():
         checkEnvFilesAndValues()
         checkWiseFile()
 
-        # stop Malcolm (and wipe data if requestsed)
+        # stop Malcolm (and wipe data if requested)
         if args.cmdRestart or args.cmdStop or args.cmdWipe:
             stop(wipe=args.cmdWipe)
 

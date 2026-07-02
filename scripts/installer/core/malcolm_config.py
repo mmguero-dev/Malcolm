@@ -363,12 +363,12 @@ class MalcolmConfig(ObservableStoreMixin):
 
         if os.path.isdir(templates_dir):
             # if any *.env file doesn't exist, use the template *.env.example files as defaults
-            for env_exampl_file in glob.glob(os.path.join(templates_dir, '*.env.example')):
-                env_file = os.path.join(config_dir, os.path.basename(env_exampl_file[: -len('.example')]))
+            for env_example_file in glob.glob(os.path.join(templates_dir, '*.env.example')):
+                env_file = os.path.join(config_dir, os.path.basename(env_example_file[: -len('.example')]))
                 if not os.path.isfile(env_file):
-                    shutil.copyfile(env_exampl_file, env_file)
+                    shutil.copyfile(env_example_file, env_file)
                     InstallerLogger.info(
-                        f"Created {os.path.basename(env_file)} from {os.path.basename(env_exampl_file)}"
+                        f"Created {os.path.basename(env_file)} from {os.path.basename(env_example_file)}"
                     )
 
         else:

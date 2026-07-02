@@ -1,6 +1,6 @@
 # Forwarding Third-Party Logs to Malcolm
 
-Malcolm uses [OpenSearch](https://opensearch.org/) and [OpenSearch Dashboards](https://opensearch.org/docs/latest/dashboards/index/) for data storage and search and visualization, and [Logstash](https://www.elastic.co/logstash/) for log processing. Because these tools are data agnostic, Malcolm can be configured to accept various host logs and other third-party logs sent from log forwaders such as [Fluent Bit](https://fluentbit.io/) and [Beats](https://www.elastic.co/beats/). Some examples of the types of logs these forwarders might send include:
+Malcolm uses [OpenSearch](https://opensearch.org/) and [OpenSearch Dashboards](https://opensearch.org/docs/latest/dashboards/index/) for data storage and search and visualization, and [Logstash](https://www.elastic.co/logstash/) for log processing. Because these tools are data agnostic, Malcolm can be configured to accept various host logs and other third-party logs sent from log forwarders such as [Fluent Bit](https://fluentbit.io/) and [Beats](https://www.elastic.co/beats/). Some examples of the types of logs these forwarders might send include:
 
 * System resource utilization metrics (CPU, memory, disk, network, etc.)
 * System temperatures

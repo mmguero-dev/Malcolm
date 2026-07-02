@@ -316,7 +316,7 @@ def main():
                 remove_prefix(x, '/dev/mapper/')
                 for x in glob.glob(f"/dev/mapper/{OS_PARAMS[osMode][CRYPT_DEV_PREFIX]}*")
             ]:
-                logging.info(f"Running crypsetup luksClose on {cryptDev}...")
+                logging.info(f"Running cryptsetup luksClose on {cryptDev}...")
                 _, cryptOut = run_subprocess(
                     f"/sbin/cryptsetup --verbose luksClose {cryptDev}", stdout=True, stderr=True, timeout=300
                 )
@@ -485,7 +485,7 @@ def main():
                                 _, reloadOut = run_subprocess("systemctl daemon-reload")
 
                                 # for good measure, run luksErase in case it was a previous luks volume
-                                logging.info(f"Running crypsetup luksErase on {parDev}...")
+                                logging.info(f"Running cryptsetup luksErase on {parDev}...")
                                 _, cryptOut = run_subprocess(
                                     f"/sbin/cryptsetup --verbose --batch-mode luksErase {parDev}",
                                     stdout=True,
@@ -500,7 +500,7 @@ def main():
                                 # luks volume creation
 
                                 # format device as a luks volume
-                                logging.info(f"Running crypsetup luksFormat on {device}...")
+                                logging.info(f"Running cryptsetup luksFormat on {device}...")
                                 ecode, cryptOut = run_subprocess(
                                     f"/sbin/cryptsetup --verbose --batch-mode luksFormat {parDev} --uuid='{parUuid}' --key-file {OS_PARAMS[osMode][CRYPT_KEYFILE]}",
                                     stdout=True,
@@ -514,7 +514,7 @@ def main():
                                         logging.info(f"\t{line}")
                                 if ecode == 0:
                                     # open the luks volume in /dev/mapper/
-                                    logging.info(f"Running crypsetup luksOpen on {device}...")
+                                    logging.info(f"Running cryptsetup luksOpen on {device}...")
                                     parMapperDev = CreateMapperDeviceName(parDev)
                                     ecode, cryptOut = run_subprocess(
                                         f"/sbin/cryptsetup --verbose luksOpen {parDev} {CreateMapperName(parDev)} --key-file {OS_PARAMS[osMode][CRYPT_KEYFILE]}",

@@ -572,7 +572,7 @@ def map_stix_indicator_to_zeek(
                     # elevate to subnet if possible
                     zeek_type = "SUBNET"
             else:
-                # ignore private IP-space ADDR avlues
+                # ignore private IP-space ADDR values
                 continue
 
         # ... "fields containing only a hyphen are considered to be null values"
@@ -678,7 +678,7 @@ def map_misp_attribute_to_zeek(
                     # elevate to subnet if possible
                     zeek_type = "SUBNET"
             else:
-                # ignore private IP-space ADDR avlues
+                # ignore private IP-space ADDR values
                 continue
 
         # ... "fields containing only a hyphen are considered to be null values"
@@ -1093,14 +1093,14 @@ def UpdateFromMISP(
                             else defaultNow
                         )
                         if (since is None) or (eventTime >= since):
-                            mispObjectReponse = mispSession.get(
+                            mispObjectResponse = mispSession.get(
                                 newUrl,
                                 allow_redirects=True,
                                 verify=sslVerify,
                             )
-                            mispObjectReponse.raise_for_status()
+                            mispObjectResponse.raise_for_status()
                             if zeekPrinter.ProcessMISP(
-                                mispObjectReponse.json(),
+                                mispObjectResponse.json(),
                                 url=newUrl,
                             ):
                                 successCount.increment()
@@ -1142,14 +1142,14 @@ def UpdateFromMISP(
                                 )
                                 if (since is None) or (eventTime >= since):
                                     newUrl = f'{mispUrl.strip("/")}/{uri}.json'
-                                    mispObjectReponse = mispSession.get(
+                                    mispObjectResponse = mispSession.get(
                                         newUrl,
                                         allow_redirects=True,
                                         verify=sslVerify,
                                     )
-                                    mispObjectReponse.raise_for_status()
+                                    mispObjectResponse.raise_for_status()
                                     if zeekPrinter.ProcessMISP(
-                                        mispObjectReponse.json(),
+                                        mispObjectResponse.json(),
                                         url=newUrl,
                                     ):
                                         successCount.increment()
@@ -1167,14 +1167,14 @@ def UpdateFromMISP(
                 # just loop over, retrieve and process the .json files in this directory
                 for url in paths:
                     try:
-                        mispObjectReponse = mispSession.get(
+                        mispObjectResponse = mispSession.get(
                             url,
                             allow_redirects=True,
                             verify=sslVerify,
                         )
-                        mispObjectReponse.raise_for_status()
+                        mispObjectResponse.raise_for_status()
                         if zeekPrinter.ProcessMISP(
-                            mispObjectReponse.json(),
+                            mispObjectResponse.json(),
                             url=url,
                         ):
                             successCount.increment()

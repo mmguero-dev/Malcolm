@@ -1342,7 +1342,7 @@ def dashboard_export(dashid):
                 # ... or just return it as-is
                 responseText = response.text
 
-            # remove index pattern definition from exported dashboard as they get created programatically
+            # remove index pattern definition from exported dashboard as they get created programmatically
             #   on Malcolm startup and we don't want them to come in with imported dashboards
             if responseParsed := malcolm_utils.LoadStrIfJson(responseText):
                 if 'objects' in responseParsed and isinstance(responseParsed['objects'], list):
@@ -1421,7 +1421,7 @@ def ingest_stats():
             ).extra(size=0)
             # Exclusions:
             #   NGINX access and error logs: we want to exclude nginx error and
-            #       access logs, otherwise the very act of accessing Malcolm will
+            #       access logs; otherwise, the very act of accessing Malcolm will
             #       update the latest ingest time returned from this function.
             #   event() webhook: we want to exclude alerts written by the event()
             #       webhook API (see below) and limit our results to actual

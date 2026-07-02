@@ -7,9 +7,9 @@
 #   - are not in processed/ or current/ or upload/ or extract_files/ or live/ (-prune)
 #   - are archive files (or, application/x-ms-evtx, which are also handled here as we accept
 #     Windows event log .evtx files which may be compressed and we don't know what's inside
-#     the archvies prior to this)
+#     the archives prior to this)
 #   - are not in use (fuser -s)
-# 1. move file to processed/ (preserving original subdirectory heirarchy, if any)
+# 1. move file to processed/ (preserving original subdirectory hierarchy, if any)
 # 2. calculate tags based on splitting the file path and filename (splitting on
 #    on ",-/_.")
 

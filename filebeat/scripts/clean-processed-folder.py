@@ -278,7 +278,7 @@ def prune_files() -> None:
     # check the filescan logs
     filescan_files = list_files_in_dir(filescan_dir, sort_by_age=True)
     if filescan_files:
-        # filescan_files is sorted sorted oldest to newest; don't consider the newest file for deletion
+        # filescan_files is sorted oldest to newest; don't consider the newest file for deletion
         filescan_files.pop()
     logging.debug(f"Found {len(filescan_files)} filescan files to consider.")
     process_files(filescan_files, fb_files, check_logs=True, check_archives=False, label="Filescan")
