@@ -216,7 +216,7 @@ auth-setup:
     --auth-generate-postgres-password "${AUTH_GENERATE_POSTGRES_PASSWORD:-false}" \
     --auth-generate-keycloak-db-password "${AUTH_GENERATE_KEYCLOAK_DB_PASSWORD:-true}" \
     --auth-admin-username "${AUTH_ADMIN_USERNAME}" \
-    --auth-admin-password-openssl "$(echo -n "${AUTH_ADMIN_PASSWORD}" | openssl passwd -1 --stdin)" \
+    --auth-admin-password-openssl "$(echo -n "${AUTH_ADMIN_PASSWORD}" | openssl passwd -6 --stdin)" \
     --auth-admin-password-htpasswd "$(echo -n "${AUTH_ADMIN_PASSWORD}" | htpasswd -i -n -B username | cut -d: -f2 | head -n 1)" \
     --auth-arkime-password "${AUTH_ARKIME_PASSWORD:-Malcolm}" \
     --auth-generate-webcerts "${AUTH_GENERATE_WEBCERTS:-true}" \

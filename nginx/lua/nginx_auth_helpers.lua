@@ -6,6 +6,11 @@ local cjson = require("cjson.safe")
 local path_role_envs = {
     -- Special cases (if you add deeper patterns, put them up here)
 
+    -- Service account authentication setup
+    { pattern = "^/(auth|htadmin|admin_login)", roles = {
+        "ROLE_ADMIN"
+    }},
+
     -- Arkime PCAP view/export
     { pattern = "^/arkime/(api/)?sessions?/.+/packets(?:$|[/?])", roles = {
         "ROLE_ADMIN",
@@ -150,7 +155,26 @@ function _M.get_environment_variable(name)
     return (val and val ~= "") and val or nil
 end
 
+-- Normalize a raw request URI for RBAC matching.
+-- Uses request_uri (pre-rewrite) rather than ngx.var.uri (post-rewrite), but
+-- collapses path traversal sequences so that patterns like /x/../upload/
+-- cannot bypass role checks.
+local function normalize_uri_for_rbac(raw_uri)
+    local path = raw_uri:match("^[^?]+") or ""
+    -- Collapse /../ sequences in a loop until stable
+    local n
+    repeat
+        path, n = path:gsub("/[^/]*/%.%./", "/")
+    until n == 0
+    -- Strip any leading /../ sequences that couldn't be collapsed
+    repeat
+        path, n = path:gsub("^/%.%./", "/")
+    until n == 0
+    return path
+end
+
 local role_based_access_enabled = false
+local keycloak_ssl_verify = false
 
 function _M.is_role_based_access_enabled()
     return role_based_access_enabled
@@ -165,6 +189,14 @@ function _M.init()
         role_based_access_enabled = false
     end
     ngx.log(ngx.INFO, "RBAC enabled by ROLE_BASED_ACCESS: " .. tostring(role_based_access_enabled))
+
+    -- Determine if ssl_verify is true (for remote Keycloaks)
+    local ssl_verify_env_match, err = ngx.re.match(_M.get_environment_variable("KEYCLOAK_SSL_VERIFY"), "^true$", "jo")
+    if ssl_verify_env_match ~= nil then
+        keycloak_ssl_verify = true
+    else
+        keycloak_ssl_verify = false
+    end
 
     -- Build the role expansion map dynamically from environment variables
     for pattern, mappings in pairs(uri_role_mappings) do
@@ -211,7 +243,7 @@ function _M.set_headers(username, token, groups, roles)
                 role_set[role] = true
             end
             -- Apply role expansion logic based on current request URI
-            local request_uri = ngx.var.request_uri:match("^[^?]+") or ""
+            local request_uri = normalize_uri_for_rbac(ngx.var.request_uri)
             for pattern, expansion in pairs(role_expansion_map) do
                 local m, err = ngx.re.match(request_uri, pattern)
                 if m then
@@ -254,7 +286,7 @@ function _M.refresh_token(httpc, token_url, client_id, client_secret, refresh_to
                 refresh_token = refresh_token
             }),
             headers = { ["Content-Type"] = "application/x-www-form-urlencoded" },
-            ssl_verify = false
+            ssl_verify = keycloak_ssl_verify
         })
         httpc:set_keepalive(60000, 10)
 
@@ -290,7 +322,7 @@ function _M.introspect_token(httpc, introspect_url, access_token, client_id, cli
             client_secret = client_secret
         }),
         headers = { ["Content-Type"] = "application/x-www-form-urlencoded" },
-        ssl_verify = false
+        ssl_verify = keycloak_ssl_verify
     })
     httpc:set_keepalive(60000, 10)
     if not res then
@@ -372,8 +404,9 @@ function _M.check_rbac(token_data)
         return ngx.HTTP_OK
     end
 
-    -- URI -> ENV VARS mapping
-    local uri = ngx.var.request_uri:match("^[^?]+") or ""
+    -- Normalize request_uri for RBAC matching: use the pre-rewrite path but
+    -- collapse traversal sequences so that patterns like /x/../upload/ cannot bypass role checks.
+    local uri = normalize_uri_for_rbac(ngx.var.request_uri)
     local username = token_data.preferred_username or ""
     local roles = (token_data.realm_access and token_data.realm_access.roles) or {}
 

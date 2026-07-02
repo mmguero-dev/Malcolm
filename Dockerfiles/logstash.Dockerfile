@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi10/ubi-minimal AS manuf-builder
+FROM redhat/ubi10-minimal:latest AS manuf-builder
 
 COPY logstash/requirements.txt /work/
 COPY scripts/malcolm_utils.py /work/
@@ -16,7 +16,7 @@ RUN microdnf -y install \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     python3 manuf-oui-parse.py -o vendor_macs.yaml
 
-FROM docker.elastic.co/logstash/logstash-oss:9.4.1
+FROM docker.elastic.co/logstash/logstash-oss:9.4.3
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
@@ -48,7 +48,7 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PIP_ROOT_USER_ACTION=ignore
 
-ENV YQ_VERSION="4.53.2"
+ENV YQ_VERSION="4.53.3"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
 
 ENV TINI_VERSION=v0.19.0
@@ -76,8 +76,9 @@ RUN set -x && \
         git \
         jq \
         patch \
+        rsync \
         supervisor \
-        rsync && \
+        util-linux && \
     curl -sSLf -o /usr/bin/tini "${TINI_URL}-${BINARCH}" && \
         chmod +x /usr/bin/tini && \
     curl -fsSL -o /usr/local/bin/yq "${YQ_URL}${BINARCH}" && \

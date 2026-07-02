@@ -27,10 +27,10 @@ ENV RULES_UPDATE_ENABLED=$RULES_UPDATE_ENABLED
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TERM=xterm
 
-ENV YQ_VERSION="4.53.2"
+ENV YQ_VERSION="4.53.3"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
 
-ENV SUPERCRONIC_VERSION="0.2.45"
+ENV SUPERCRONIC_VERSION="0.2.46"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 

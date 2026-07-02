@@ -103,7 +103,7 @@
             },
             "strings": {
               "type": "wildcard",
-              "ignore_above": 4096,
+              "ignore_above": 16384,
               "doc_values": false,
               "normalizer": "lowercase"
             }

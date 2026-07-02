@@ -28,11 +28,13 @@ Expand **✴ Secrets and variables** in the left menu panel under **Security**, 
 
 Malcolm uses MaxMind's free GeoLite2 databases for GeoIP lookups. As of December 30, 2019, these databases are [no longer available](https://blog.maxmind.com/2019/12/18/significant-changes-to-accessing-and-using-geolite2-databases/) for download via a public URL. Instead, they must be downloaded using a MaxMind license key (available without charge [from MaxMind](https://www.maxmind.com/en/geolite2/signup)). This license key should be specified here as a repository secret so that the workflows may download the GeoLite2 databases to embed into the container images that use them. Keep in mind that MaxMind has a daily rate for the number of downloads allowed per license key.
 
-Click **New repository secret** and create a secret with the name `MAXMIND_GEOIP_DB_LICENSE_KEY` and the **Secret** value containing the user's free license key obtained from MaxMind. Then click **Add secret**. Click **New repository secret** and create a secret with the name `MAXMIND_GEOIP_DB_LICENSE_KEY` and the **Secret** value containing the user's free license key obtained from MaxMind. Then click **Add secret**. 
+Click **New repository secret** and create a secret with the name `MAXMIND_GEOIP_DB_ACCOUNT_ID` and the **Secret** value containing the user's account ID obtained from MaxMind. Then click **Add secret**.
+
+Click **New repository secret** and create a secret with the name `MAXMIND_GEOIP_DB_LICENSE_KEY` and the **Secret** value containing the user's free license key obtained from MaxMind. Then click **Add secret**.
 
 ![GitHub Actions secrets and variables](./images/screenshots/github-actions-secret.png)
 
-As an alternative to (or fallback for) `MAXMIND_GEOIP_DB_LICENSE_KEY`, a URL prefix may be specified in `MAXMIND_GEOIP_DB_ALTERNATE_DOWNLOAD_URL` (e.g., `https://example.org/foo/bar`) which will be used as a fallback. This URL should serve up `.tar.gz` files in the same format as those provided by the official source:
+As an alternative to (or fallback for) `MAXMIND_GEOIP_DB_ACCOUNT_ID` and `MAXMIND_GEOIP_DB_LICENSE_KEY`, a URL prefix may be specified in `MAXMIND_GEOIP_DB_ALTERNATE_DOWNLOAD_URL` (e.g., `https://example.org/foo/bar`) which will be used as a fallback. This URL should serve up `.tar.gz` files in the same format as those provided by the official source:
 
 ```bash
 $ ls

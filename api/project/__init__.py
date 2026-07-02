@@ -18,6 +18,7 @@ from flask import Flask, jsonify, request
 from requests.auth import HTTPBasicAuth
 from urllib.parse import urlparse
 from malcolm_constants import DatabaseMode
+from werkzeug.exceptions import HTTPException
 
 # map categories of field names to OpenSearch dashboards
 fields_to_urls = []
@@ -282,9 +283,11 @@ def is_internal_request(req):
 
 
 def translate_roles(req):
-    roles_map = defaultdict(lambda: True)
+    roles_map = defaultdict(lambda: False)
     try:
         client_roles = [role for role in map(str.strip, req.headers.get('X-Forwarded-Roles', '').split(',')) if role]
+        roles_map['ping'] = True
+        roles_map['version'] = True
         roles_map['event'] = any(
             role in client_roles
             for role in (
@@ -352,6 +355,14 @@ def translate_roles(req):
             )
         )
         roles_map['ingest_stats'] = any(
+            role in client_roles
+            for role in (
+                app.config["ROLE_ADMIN"],
+                app.config["ROLE_READ_ACCESS"],
+                app.config["ROLE_READ_WRITE_ACCESS"],
+            )
+        )
+        roles_map['redis_keyspace_info'] = any(
             role in client_roles
             for role in (
                 app.config["ROLE_ADMIN"],
@@ -895,7 +906,11 @@ def fields():
         raise PermissionError("Not authorized to perform this action")
 
     args = get_request_arguments(request)
+
     template_name = malcolm_utils.deep_get(args, ["template"], app.config["MALCOLM_TEMPLATE"])
+    if not re.fullmatch(r'[A-Za-z0-9_*-]+', template_name):
+        return jsonify(error="Invalid template name"), 400
+
     doctype = doctype_from_args(args)
     include_arkime = (template_name == app.config["MALCOLM_TEMPLATE"]) and (doctype == "network")
 
@@ -1820,6 +1835,10 @@ def basic_error(e):
     error
         Generic error message; exception details are logged server-side only.
     """
+    # Let HTTP exceptions return their proper status codes
+    if isinstance(e, HTTPException):
+        return jsonify(error=e.description), e.code
+
     errorStr = f"{type(e).__name__}: {str(e)}"
     if debugApi:
         print(errorStr)

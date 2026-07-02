@@ -320,7 +320,7 @@ Rule added
 
 ### Microsoft Windows Event Logs
 
-Microsoft Windows [event log files](https://learn.microsoft.com/en-us/windows/win32/eventlog/event-log-file-format) (with a `.evtx` file extension) can also be [uploaded](upload.md#Upload) via the artifact upload interface, either singly or in archive files (`application/gzip`, `application/x-gzip`, `application/x-7z-compressed`, `application/x-bzip2`, `application/x-cpio`, `application/x-lzip`, `application/x-lzma`, `application/x-rar-compressed`, `application/x-tar`, `application/x-xz`, or `application/zip`). These files are processed using [evtx](https://github.com/omerbenamram/evtx) and indexed as similarly as possible to the way forwarded Windows event logs are indexed.
+Microsoft Windows [event log files](https://learn.microsoft.com/en-us/windows/win32/eventlog/event-log-file-format) (with a `.evtx` file extension) can also be [uploaded](upload.md#Upload) via the artifact upload interface, either singly or in archive files (`application/gzip`, `application/vnd.rar`, `application/x-7z-compressed`, `application/x-bzip2`, `application/x-cpio`, `application/x-gzip`, `application/x-lzip`, `application/x-lzma`, `application/x-rar`, `application/x-rar-compressed`, `application/x-tar`, `application/x-xz`, `application/zip`). These files are processed using [evtx](https://github.com/omerbenamram/evtx) and indexed as similarly as possible to the way forwarded Windows event logs are indexed.
 
 ## <a name="Data"></a>Data Format and Visualization
 
