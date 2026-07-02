@@ -71,6 +71,12 @@
                 "ja4ls": {
                   "type": "keyword"
                 },
+                "ja4l_delta": {
+                  "type": "keyword"
+                },
+                "ja4ls_delta": {
+                  "type": "keyword"
+                },
                 "ja4t": {
                   "type": "keyword"
                 },
@@ -2572,10 +2578,16 @@
                     "L": {
                       "type": "keyword"
                     },
+                    "name": {
+                      "type": "keyword"
+                    },
                     "O": {
                       "type": "keyword"
                     },
                     "OU": {
+                      "type": "keyword"
+                    },
+                    "postalCode": {
                       "type": "keyword"
                     },
                     "pseudonym": {
@@ -2588,6 +2600,9 @@
                       "type": "keyword"
                     },
                     "ST": {
+                      "type": "keyword"
+                    },
+                    "street": {
                       "type": "keyword"
                     },
                     "title": {
@@ -2627,6 +2642,9 @@
                 },
                 "certificate_subject": {
                   "properties": {
+                    "businessCategory": {
+                      "type": "keyword"
+                    },
                     "C": {
                       "type": "keyword"
                     },
@@ -2648,7 +2666,16 @@
                     "initials": {
                       "type": "keyword"
                     },
+                    "jurisdictionC": {
+                      "type": "keyword"
+                    },
+                    "jurisdictionST": {
+                      "type": "keyword"
+                    },
                     "L": {
+                      "type": "keyword"
+                    },
+                    "name": {
                       "type": "keyword"
                     },
                     "O": {
