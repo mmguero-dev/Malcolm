@@ -107,6 +107,22 @@ STUNNEL_CONF=/etc/stunnel/stunnel.conf
 CA_TRUST_HOST_DIR=/var/local/ca-trust
 CA_TRUST_RUN_DIR=/var/run/ca-trust
 
+# separate directory (NOT CA_TRUST_RUN_DIR, which is wiped/rewritten below for the
+# LDAP/stunnel ssl_ca_dir c_rehash symlinks) for the combined PEM bundle used by
+# lua_ssl_trusted_certificate for OpenResty/lua-resty-openidc (Keycloak OIDC) cosocket
+# TLS verification. Cosocket-based TLS in OpenResty does NOT fall back to the OS trust
+# store automatically, so without this, KEYCLOAK_SSL_VERIFY=true will always fail with
+# "unable to get local issuer certificate" even against a publicly-trusted CA.
+LUA_SSL_TRUST_DIR=/var/run/ca-trust-lua
+LUA_SSL_TRUSTED_CERTIFICATE_BUNDLE="${LUA_SSL_TRUST_DIR}/lua_ssl_trusted_certificate.pem"
+SYSTEM_CA_BUNDLE=""
+for CANDIDATE in /etc/ssl/certs/ca-certificates.crt \
+                 /etc/pki/tls/certs/ca-bundle.crt \
+                 /usr/share/ssl/certs/ca-bundle.crt \
+                 /etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem; do
+  [[ -f "$CANDIDATE" ]] && { SYSTEM_CA_BUNDLE="$CANDIDATE"; break; }
+done
+
 # copy trusted CA certs to runtime directory and c_rehash them to create symlinks
 STUNNEL_CA_PATH_LINE=""
 STUNNEL_VERIFY_LINE=""
@@ -114,9 +130,34 @@ STUNNEL_CHECK_HOST_LINE=""
 STUNNEL_CHECK_IP_LINE=""
 NGINX_LDAP_CA_PATH_LINE=""
 NGINX_LDAP_CHECK_REMOTE_CERT_LINE=""
-mkdir -p "$CA_TRUST_RUN_DIR"
+mkdir -p "$CA_TRUST_RUN_DIR" "$LUA_SSL_TRUST_DIR"
 # attempt to make sure trusted CA certs dir is readable by unprivileged nginx worker
-chmod 755 "$CA_TRUST_RUN_DIR" || true
+chmod 755 "$CA_TRUST_RUN_DIR" "$LUA_SSL_TRUST_DIR" || true
+
+# seed the combined lua_ssl_trusted_certificate bundle with the system CA bundle so
+# publicly-trusted CAs (e.g., Let's Encrypt) still verify even when nothing custom
+# has been placed in CA_TRUST_HOST_DIR
+rm -f "$LUA_SSL_TRUSTED_CERTIFICATE_BUNDLE"
+if [[ -f "$SYSTEM_CA_BUNDLE" ]]; then
+  cat "$SYSTEM_CA_BUNDLE" > "$LUA_SSL_TRUSTED_CERTIFICATE_BUNDLE"
+else
+  : > "$LUA_SSL_TRUSTED_CERTIFICATE_BUNDLE"
+fi
+
+# append every cert found in CA_TRUST_HOST_DIR onto the combined lua trust bundle,
+# regardless of whether the LDAP-specific block below also runs
+for CA_FILE in "$CA_TRUST_HOST_DIR"/*; do
+  [[ -f "$CA_FILE" ]] || continue
+  # only concatenate things that look like PEM certs; skip hash symlinks, README, etc.
+  if grep -q -- "-----BEGIN CERTIFICATE-----" "$CA_FILE" 2>/dev/null; then
+    echo "" >> "$LUA_SSL_TRUSTED_CERTIFICATE_BUNDLE"
+    cat "$CA_FILE" >> "$LUA_SSL_TRUSTED_CERTIFICATE_BUNDLE"
+  fi
+done
+
+# make sure the combined lua trust bundle is readable by the unprivileged nginx worker
+chmod 644 "$LUA_SSL_TRUSTED_CERTIFICATE_BUNDLE" || true
+
 CA_FILES=$(shopt -s nullglob dotglob; echo "$CA_TRUST_HOST_DIR"/*)
 if (( ${#CA_FILES} )) ; then
   rm -f "$CA_TRUST_RUN_DIR"/*
@@ -126,7 +167,7 @@ if (( ${#CA_FILES} )) ; then
     # attempt to make sure trusted CA certs are readable by unprivileged nginx worker
     chmod 644 * || true
 
-    # create hash symlinks
+    # create hash symlinks (used by ssl_ca_dir for LDAP/stunnel, below)
     c_rehash -compat .
 
     # variables for stunnel config
