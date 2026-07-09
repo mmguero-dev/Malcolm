@@ -66,6 +66,9 @@ KEY_ENV_LOGSTASH_HOST = "LOGSTASH_HOST"  # Logstash host and port
 KEY_ENV_LOGSTASH_REVERSE_DNS = "LOGSTASH_REVERSE_DNS"  # automatic local reverse dns lookup
 KEY_ENV_LOGSTASH_OUI_LOOKUP = "LOGSTASH_OUI_LOOKUP"  # automatic MAC OUI lookup
 KEY_ENV_LOGSTASH_JAVA_OPTS = "LS_JAVA_OPTS"  # logstash memory allowance
+KEY_ENV_LOGSTASH_NETBOX_ENRICHED_LOG_TYPES = (
+    "LOGSTASH_NETBOX_ENRICHMENT_DATASETS"  # netbox-enriched log types via logstash
+)
 
 KEY_ENV_NETBOX_ENRICHMENT = "NETBOX_ENRICHMENT"  # enrich network traffic metadata via NetBox API calls
 KEY_ENV_NETBOX_AUTO_CREATE_PREFIX = (

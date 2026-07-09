@@ -157,6 +157,7 @@ _STRING_VARS = [
 # 3. List-of-strings transform logic
 _LIST_OF_STRING_VARS = [
     KEY_ENV_EXTRA_TAGS,
+    KEY_ENV_LOGSTASH_NETBOX_ENRICHED_LOG_TYPES,
 ]
 
 
@@ -532,6 +533,9 @@ class EnvMapper:
             ]
 
             # NetBox
+            self.env_var_by_map_key[KEY_ENV_LOGSTASH_NETBOX_ENRICHED_LOG_TYPES].config_items = [
+                KEY_CONFIG_ITEM_LOGSTASH_NETBOX_ENRICHED_LOG_TYPES
+            ]
             self.env_var_by_map_key[KEY_ENV_NETBOX_ENRICHMENT].config_items = [KEY_CONFIG_ITEM_NETBOX_LOGSTASH_ENRICH]
             self.env_var_by_map_key[KEY_ENV_NETBOX_AUTO_CREATE_PREFIX].config_items = [
                 KEY_CONFIG_ITEM_NETBOX_LOGSTASH_AUTO_CREATE_PREFIX

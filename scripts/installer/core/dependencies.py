@@ -899,6 +899,13 @@ DEPENDENCY_CONFIG: Dict[str, DependencySpec] = {
             ui_parent=KEY_CONFIG_ITEM_NETBOX_MODE,
         )
     ),
+    KEY_CONFIG_ITEM_LOGSTASH_NETBOX_ENRICHED_LOG_TYPES: DependencySpec(
+        visibility=VisibilityRule(
+            depends_on=[KEY_CONFIG_ITEM_MALCOLM_PROFILE, KEY_CONFIG_ITEM_NETBOX_MODE],
+            condition=lambda profile, mode: ((profile == PROFILE_MALCOLM) and (mode != NetboxMode.DISABLED.value)),
+            ui_parent=KEY_CONFIG_ITEM_NETBOX_MODE,
+        )
+    ),
     # -------------------------------------------------------------------------
     # FILE CARVING DEPENDENCIES
     # -------------------------------------------------------------------------
