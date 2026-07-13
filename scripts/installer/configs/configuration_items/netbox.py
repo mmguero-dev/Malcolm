@@ -95,8 +95,11 @@ CONFIG_ITEM_NETBOX_ENRICHED_LOG_TYPES = ListOfStringsConfigItem(
     label="NetBox-Enriched Log Types",
     default_value=MALCOLM_ENRICHABLE_LOG_TYPES_DEFAULT,
     validator=lambda x: (isinstance(x, str) and (x in MALCOLM_ENRICHABLE_LOG_TYPES))
-    or (isinstance(x, list) and all(isinstance(dataset, str) and (x in MALCOLM_ENRICHABLE_LOG_TYPES) for dataset in x)),
-    question="Log types enriched by NetBox",
+    or (
+        isinstance(x, list)
+        and all(isinstance(dataset, str) and (dataset in MALCOLM_ENRICHABLE_LOG_TYPES) for dataset in x)
+    ),
+    question='Log types to enrich via NetBox ("default", "all", "ics"/"ot" for ICS-tagged logs, provider.dataset pairs, or combinations)',
     widget_type=WidgetType.MULTISELECT,
 )
 

@@ -506,6 +506,8 @@ Proceed with Malcolm installation using the above configuration? (y / N): y
         + Select **Y** to [populate the NetBox inventory](asset-interaction-analysis.md#NetBoxPopPassive) based on observed network traffic. Autopopulation is **not** recommended: [manual inventory population](asset-interaction-analysis.md#NetBoxPopManual) is the preferred method to create an accurate representation of the intended network design.
     - **NetBox Enrichment**
         + Select **Y** to [cross-reference](asset-interaction-analysis.md#AssetInteractionAnalysis) network traffic logs against the NetBox asset inventory.
+    - **NetBox-Enriched Log Types**
+        + Defines which types of logs will be [enriched](asset-interaction-analysis.md#AssetInteractionAnalysis) via NetBox: a comma-separated list which may contain `provider.dataset` pairs (e.g., `zeek.dns`), the string `default` for the [built-in list]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/logstash/pipelines/enrichment/21_netbox.conf) of log types, `ics` (or `ot`) to enrich OT/ICS traffic, or `all` to enrich all logs. Values may be combined (e.g., `default,ics`).
     - **NetBox Site Name**
         + NetBox has the concept of [sites](https://demo.netbox.dev/static/docs/core-functionality/sites-and-racks/); this default site name will be used for NetBox enrichment lookups performed by Logstash and will be associated with traffic Malcolm itself [captures on local interfaces](live-analysis.md#LocalPCAP).
     - **NetBox IP Autopopulation Filter**
