@@ -33,6 +33,99 @@ The following fields are used across nearly all dashboards and are not repeated 
 
 ---
 
+## URIs for pivoting between Malcolm tools
+
+The following URI patterns are used to pivot between Malcolm components, such as from Arkime to OpenSearch Dashboards or from OpenSearch Dashboards to NetBox, with filters or search expressions pre-applied.
+
+The URI patterns are grouped below by destination.
+
+See also the [Malcolm REST APIs](api.md#API).
+
+### OpenSearch Dashboards
+
+Use the following URI pattern to open OpenSearch Dashboards with a field/value filter and time range applied:
+
+```text
+/idark2dash/filter?<URI parameters>
+```
+
+#### URI parameters
+
+* `start` - beginning of the search time frame, in ISO 8601 UTC format at second precision
+* `stop` - end of the search time frame, in ISO 8601 UTC format at second precision
+* `field` - name of the field to filter
+* `value` - value of the field to filter
+
+#### Example
+
+```text
+/idark2dash/filter?start=2026-07-13T21:19:14&stop=2026-07-15T21:19:57&field=event.provider&value=zeek
+```
+
+### Arkime
+
+Use the following URI pattern to open Arkime with a query expression applied:
+
+```text
+/iddash2ark/<expression>
+```
+
+`<expression>` is an Arkime search expression. For a detailed guide to Arkime query syntax, see the Arkime help page at **https://localhost/arkime/help#search** when connected locally. Users may also review the [Arkime source code](https://github.com/arkime/arkime/blob/main/viewer/vueapp/src/components/help/Help.vue) used to generate that help page.
+
+#### Example
+
+```text
+/iddash2ark/db:event.provider == "zeek"
+```
+
+### NetBox
+
+Use the following URI pattern to open NetBox with a search or object filter applied:
+
+```text
+/netbox/<expression>
+```
+
+`<expression>` depends on the Malcolm field being pivoted from and the type of NetBox object being searched.
+
+| Malcolm field           | NetBox URI                                                                                              |
+| ----------------------- | ------------------------------------------------------------------------------------------------------- |
+| `….segment.name`        | `/netbox/search/?q=<value>&obj_types=ipam.prefix&lookup=iexact`                                         |
+| `….device.name`         | `/netbox/search/?q=<value>&obj_types=dcim.device&obj_types=virtualization.virtualmachine&lookup=iexact` |
+| `….device.device_type`  | `/netbox/search/?q=<value>&obj_types=dcim.devicetype`                                                   |
+| `….device.manufacturer` | `/netbox/search/?q=<value>&obj_types=dcim.manufacturer`                                                 |
+| `….device.role`         | `/netbox/search/?q=<value>&obj_types=dcim.devicerole`                                                   |
+| `….device.site`         | `/netbox/search/?q=<value>&obj_types=dcim.site&lookup=iexact`                                           |
+| `….segment.site`        | `/netbox/search/?q=<value>&obj_types=dcim.site&lookup=iexact`                                           |
+| `network.name`          | `/netbox/search/?q=<value>&obj_types=ipam.prefix&lookup=iexact`                                         |
+| `related.device_name`   | `/netbox/search/?q=<value>&obj_types=dcim.device&obj_types=virtualization.virtualmachine&lookup=iexact` |
+| `related.device_type`   | `/netbox/search/?q=<value>&obj_types=dcim.devicetype`                                                   |
+| `related.manufacturer`  | `/netbox/search/?q=<value>&obj_types=dcim.manufacturer`                                                 |
+| `related.role`          | `/netbox/search/?q=<value>&obj_types=dcim.devicerole`                                                   |
+| `related.site`          | `/netbox/search/?q=<value>&obj_types=dcim.site&lookup=iexact`                                           |
+
+#### Example
+
+```text
+/netbox/search/?q=Cyberville&obj_types=dcim.site&lookup=iexact
+```
+
+### External links
+
+Use the following URI pattern to link to an external URL. Malcolm will display a redirect prompt before leaving the Malcolm interface:
+
+```text
+/dashboards/app/refred/<external URL>
+```
+
+#### Example
+
+```text
+/dashboards/app/refred/https://example.com/
+```
+
+---
+
 ## Table of Contents
 
 ### General Network Logs
