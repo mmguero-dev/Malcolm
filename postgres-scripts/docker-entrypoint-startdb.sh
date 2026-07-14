@@ -38,12 +38,34 @@ docker_process_start_files() {
 $@ &
 BACKGROUND_PID=$!
 
+# Forward termination signals to the postgres entrypoint. TERM is
+#   translated to INT: PostgreSQL treats SIGTERM as "smart" shutdown
+#   (wait for all clients to disconnect), which never completes while
+#   dependent services hold pooled connections and results in SIGKILL
+#   at the end of the stop grace period. SIGINT requests a "fast"
+#   shutdown: active transactions roll back, clients are disconnected,
+#   and a clean shutdown checkpoint is written.
+forward_signal() {
+    kill -s "$1" "$BACKGROUND_PID" 2>/dev/null
+}
+trap 'forward_signal INT' TERM INT
+trap 'forward_signal HUP' HUP
+trap 'forward_signal QUIT' QUIT
+
 until pg_isready -h localhost -p ${PGPORT:-5432} -U "${POSTGRES_USER:-postgres}" >/dev/null 2>&1; do
+  # bail out if the server process died (or was stopped) before ever becoming ready
+  kill -0 "$BACKGROUND_PID" 2>/dev/null || exit 1
   sleep 1
 done
 [[ -d /docker-entrypoint-startdb.d ]] && docker_process_start_files /docker-entrypoint-startdb.d/*
 
-# Wait for the background process to complete and exit with its exit code
+# Wait for the background process to complete and exit with its exit code.
+#   A trapped signal interrupts `wait` (returning 128+signum), so re-wait
+#   until the child has actually exited to collect its real exit code.
 wait $BACKGROUND_PID
 EXIT_CODE=$?
+while kill -0 "$BACKGROUND_PID" 2>/dev/null; do
+    wait $BACKGROUND_PID
+    EXIT_CODE=$?
+done
 exit $EXIT_CODE

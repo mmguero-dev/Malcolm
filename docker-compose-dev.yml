@@ -1370,6 +1370,7 @@ services:
       timeout: 15s
       retries: 20
       start_period: 20m
+    stop_grace_period: 1m
   valkey:
     image: ghcr.io/idaholab/malcolm/valkey:26.07.0
     profiles: ["malcolm", "hedgehog"]
