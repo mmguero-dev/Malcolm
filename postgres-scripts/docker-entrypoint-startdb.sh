@@ -28,6 +28,12 @@ docker_process_start_files() {
     done
 }
 
+# If ${PGDATA} was initialized by an older PostgreSQL major version, upgrade
+#   it in place before launching the server (no-op otherwise). This must
+#   happen before the server starts: a major-version mismatch is a FATAL
+#   startup error, and the pg_isready loop below would never succeed.
+/usr/local/bin/pg-major-upgrade.sh || exit $?
+
 # Launch the original entrypoint in the background and get its PID
 $@ &
 BACKGROUND_PID=$!

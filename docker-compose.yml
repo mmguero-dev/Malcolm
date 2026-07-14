@@ -1228,10 +1228,10 @@ services:
       target: /var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "/usr/local/bin/container_health.sh"]
-      interval: 60s
+      interval: 30s
       timeout: 15s
-      retries: 3
-      start_period: 45s
+      retries: 20
+      start_period: 20m
   valkey:
     image: ghcr.io/idaholab/malcolm/valkey:26.07.0
     profiles: ["malcolm", "hedgehog"]

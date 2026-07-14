@@ -52,15 +52,25 @@ spec:
               name: netbox-common-env
           - secretRef:
               name: postgres-env
+        # failureThreshold bounds max pg major-upgrade duration; raise it before upgrading unusually large clusters
+        startupProbe:
+          exec:
+            command:
+              - /usr/local/bin/container_health.sh
+          initialDelaySeconds: 0
+          periodSeconds: 30
+          timeoutSeconds: 15
+          successThreshold: 1
+          failureThreshold: 40
         livenessProbe:
           exec:
             command:
-            - /usr/local/bin/container_health.sh
-          initialDelaySeconds: 90
-          periodSeconds: 60
+              - /usr/local/bin/container_health.sh
+          initialDelaySeconds: 0
+          periodSeconds: 30
           timeoutSeconds: 15
           successThreshold: 1
-          failureThreshold: 10
+          failureThreshold: 20
         volumeMounts:
           - mountPath: /var/local/ca-trust/configmap
             name: postgres-var-local-catrust-volume

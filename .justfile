@@ -226,6 +226,7 @@ auth-setup:
     --auth-keycloak-url "${AUTH_KEYCLOAK_URL}" \
     --auth-keycloak-client-id "${AUTH_KEYCLOAK_CLIENT_ID}" \
     --auth-keycloak-client-secret "${AUTH_KEYCLOAK_CLIENT_SECRET}" \
+    --auth-keycloak-bootstrap-user "${AUTH_KEYCLOAK_BOOTSTRAP_USERNAME}" \
     --auth-keycloak-bootstrap-password "${AUTH_KEYCLOAK_BOOTSTRAP_PASSWORD}" \
     --auth-require-group "${AUTH_REQUIRE_GROUP}" \
     --auth-require-role "${AUTH_REQUIRE_ROLE}" \
