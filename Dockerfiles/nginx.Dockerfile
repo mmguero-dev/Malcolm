@@ -74,7 +74,7 @@ RUN apk update --no-cache; \
     fi
 
 # build NGINX image
-FROM alpine:3.23
+FROM alpine:3.24
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
