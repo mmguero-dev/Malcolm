@@ -236,6 +236,7 @@ RUN set -x ; \
     py3-pip \
     py3-setuptools \
     py3-wheel \
+    su-exec \
     tar \
     zlib-dev \
     ; \
