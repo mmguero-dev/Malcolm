@@ -211,8 +211,13 @@ else
   USER_HOME="${HOME:-/root}"
 fi
 
-# attempt to set ulimits (as user) and execute the entrypoint command specified
-su -s /bin/bash -p ${EXEC_USER} << EOF
+# attempt to set ulimits (as user) and execute the entrypoint command specified.
+#   Both su and the final command are exec'd so the container's main process ends
+#   up a direct child of tini and actually receives forwarded termination
+#   signals; otherwise intermediate bash processes with no signal handling die
+#   on SIGTERM, tini exits, and the real service is SIGKILLed by the PID
+#   namespace teardown (never getting a chance at a graceful shutdown).
+exec su -s /bin/bash -p ${EXEC_USER} << EOF
 export USER="${EXEC_USER}"
 export HOME="${USER_HOME}"
 id
@@ -227,9 +232,9 @@ if [[ "${PUSER_RLIMIT_UNLOCK:-false}" == "true" ]] && command -v ulimit >/dev/nu
 fi
 if [[ ! -z "${ENTRYPOINT_CMD}" ]]; then
   if [[ -z "${ENTRYPOINT_ARGS}" ]]; then
-    "${ENTRYPOINT_CMD}"
+    exec "${ENTRYPOINT_CMD}"
   else
-    "${ENTRYPOINT_CMD}" $(printf "%q " "${ENTRYPOINT_ARGS[@]}")
+    exec "${ENTRYPOINT_CMD}" $(printf "%q " "${ENTRYPOINT_ARGS[@]}")
   fi
 fi
 EOF
