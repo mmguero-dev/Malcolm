@@ -60,18 +60,19 @@ fi
 
 if ( [[ -z "$THRESHOLD_PCT" ]] || [[ ! "$THRESHOLD_PCT" =~ $INT_RE ]] || ! (( "$THRESHOLD_PCT" >= 1 && "$THRESHOLD_PCT" <= 100)) ) &&
    ( [[ -z "$MAXSIZE_GB" ]] || [[ ! "$MAXSIZE_GB" =~ $INT_RE ]] || ! (( "$MAXSIZE_GB" >= 1 )) ); then
-  echo "Please specify at least one prune trigger: threshold (percentage, 1-100) with -t; or, maximum size (gigabytes, >= 1) with -m" >&2
-  exit 1
+  echo "No prune trigger specified (threshold -t or maxsize -m); running in no-op mode." >&2
+  THRESHOLD_PCT=0
+  MAXSIZE_GB=0
 fi
-
-[[ -z "$THRESHOLD_PCT" ]] && THRESHOLD_PCT=0
-[[ -z "$MAXSIZE_GB" ]] && MAXSIZE_GB=0
 
 while true ; do
 
-  # check initial disk capacity
-  USAGE_PCT=$(UsagePercentagePwd)
-  USAGE_GB=$(UsageGigabytesPwd)
+  if (( THRESHOLD_PCT > 0 )) || (( MAXSIZE_GB > 0 )) || [[ "$VERBOSE" == "1" ]]; then
+    # check initial disk capacity
+    USAGE_PCT=$(UsagePercentagePwd)
+    USAGE_GB=$(UsageGigabytesPwd)
+  fi
+
   if ( (( $THRESHOLD_PCT > 0 )) && (( $USAGE_PCT > $THRESHOLD_PCT )) ) || ( (( $MAXSIZE_GB > 0 )) && (( $USAGE_GB > $MAXSIZE_GB )) ); then
 
     # we have exceeded the threshold, see if there is something to prune
