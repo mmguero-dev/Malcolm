@@ -700,12 +700,6 @@
                 "client_cert_subject": {
                   "type": "keyword"
                 },
-                "auth_ticket_sha256": {
-                  "type": "keyword"
-                },
-                "new_ticket_sha256": {
-                  "type": "keyword"
-                },
                 "cname": {
                   "type": "keyword"
                 },
