@@ -71,13 +71,13 @@ spec:
           timeoutSeconds: 15
           successThreshold: 1
           failureThreshold: 20
-        terminationGracePeriodSeconds: 60
         volumeMounts:
           - mountPath: /var/local/ca-trust/configmap
             name: postgres-var-local-catrust-volume
           - mountPath: /var/lib/postgresql/data
             name: postgres-volume
             subPath: postgres
+      terminationGracePeriodSeconds: 60
       initContainers:
       - name: postgres-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

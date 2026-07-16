@@ -72,6 +72,7 @@ spec:
           timeoutSeconds: 15
           successThreshold: 1
           failureThreshold: 10
+      terminationGracePeriodSeconds: 20
       initContainers:
       - name: htadmin-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

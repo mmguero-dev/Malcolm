@@ -63,6 +63,7 @@ spec:
           - mountPath: "/usr/local/zeek/share/zeek/site/intel"
             name: zeek-offline-intel-volume
             subPath: "zeek/intel"
+      terminationGracePeriodSeconds: 30
       initContainers:
       - name: zeek-offline-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

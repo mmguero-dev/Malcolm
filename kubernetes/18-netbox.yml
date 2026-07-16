@@ -93,6 +93,7 @@ spec:
           - mountPath: /opt/netbox/netbox/media
             name: netbox-media-volume
             subPath: netbox/media
+      terminationGracePeriodSeconds: 20
       initContainers:
       - name: netbox-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

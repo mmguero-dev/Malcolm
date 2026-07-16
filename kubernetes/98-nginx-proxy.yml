@@ -106,6 +106,7 @@ spec:
         - name: nginx-runtime-logs-volume
           mountPath: /var/log/nginx
           subPath: "nginx"
+      terminationGracePeriodSeconds: 20
       initContainers:
       - name: nginx-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

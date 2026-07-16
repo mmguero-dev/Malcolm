@@ -74,6 +74,7 @@ spec:
           - name: opensearch-config-persist-volume
             mountPath: /usr/share/opensearch/config/persist
             subPath: "opensearch"
+      terminationGracePeriodSeconds: 180
       initContainers:
       - name: opensearch-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

@@ -70,6 +70,7 @@ spec:
             name: pcap-monitor-pcap-volume
           - mountPath: "/zeek"
             name: pcap-monitor-zeek-volume
+      terminationGracePeriodSeconds: 20
       initContainers:
       - name: pcap-monitor-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

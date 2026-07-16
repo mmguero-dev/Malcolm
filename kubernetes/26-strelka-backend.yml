@@ -50,6 +50,7 @@ spec:
             name: strelka-backend-config-volume
           - mountPath: "/yara-rules/custom/configmap"
             name: strelka-backend-yara-rules-custom-volume
+      terminationGracePeriodSeconds: 20
       volumes:
         - name: strelka-backend-var-local-catrust-volume
           configMap:

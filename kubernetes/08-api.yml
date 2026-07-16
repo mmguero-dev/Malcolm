@@ -88,6 +88,7 @@ spec:
             name: api-var-local-catrust-volume
           - mountPath: /var/local/curlrc/secretmap
             name: api-opensearch-curlrc-secret-volume
+      terminationGracePeriodSeconds: 20
       volumes:
         - name: api-var-local-catrust-volume
           configMap:

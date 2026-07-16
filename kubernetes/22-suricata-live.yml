@@ -68,6 +68,7 @@ spec:
             name: suricata-live-custom-rules-volume
           - mountPath: "/opt/suricata/include-configs/configmap"
             name: suricata-live-custom-configs-volume
+      terminationGracePeriodSeconds: 30
       initContainers:
       - name: suricata-live-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

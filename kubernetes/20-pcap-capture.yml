@@ -62,6 +62,7 @@ spec:
           - mountPath: "/pcap"
             name: capture-pcap-volume
             subPath: "upload"
+      terminationGracePeriodSeconds: 30
       initContainers:
       - name: pcap-capture-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

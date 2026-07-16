@@ -47,6 +47,7 @@ spec:
             name: strelka-manager-var-local-catrust-volume
           - mountPath: "/etc/strelka/configmap"
             name: strelka-manager-config-volume
+      terminationGracePeriodSeconds: 20
       volumes:
         - name: strelka-manager-var-local-catrust-volume
           configMap:

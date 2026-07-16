@@ -89,6 +89,7 @@ spec:
           - name: filebeat-nginx-runtime-logs-volume
             mountPath: /nginx
             subPath: "nginx"
+      terminationGracePeriodSeconds: 30
       initContainers:
       - name: filebeat-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

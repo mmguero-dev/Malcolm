@@ -78,6 +78,7 @@ spec:
             name: arkime-live-config-volume
             subPath: "arkime/wiseini"
             readOnly: true
+      terminationGracePeriodSeconds: 30
       initContainers:
       - name: arkime-live-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

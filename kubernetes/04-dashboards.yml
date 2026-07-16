@@ -64,6 +64,7 @@ spec:
             name: dashboards-var-local-catrust-volume
           - mountPath: /var/local/curlrc/secretmap
             name: dashboards-opensearch-curlrc-secret-volume
+      terminationGracePeriodSeconds: 20
       volumes:
         - name: dashboards-var-local-catrust-volume
           configMap:

@@ -73,6 +73,7 @@ spec:
           - mountPath: "/var/www/upload/server/php/chroot/files"
             name: upload-pcap-volume
             subPath: "upload"
+      terminationGracePeriodSeconds: 20
       initContainers:
       - name: upload-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

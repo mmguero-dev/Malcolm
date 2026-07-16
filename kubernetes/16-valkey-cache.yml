@@ -71,6 +71,7 @@ spec:
         volumeMounts:
           - mountPath: /var/local/ca-trust/configmap
             name: valkey-cache-var-local-catrust-volume
+      terminationGracePeriodSeconds: 20
       volumes:
         - name: valkey-cache-var-local-catrust-volume
           configMap:

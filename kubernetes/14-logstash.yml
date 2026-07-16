@@ -105,6 +105,7 @@ spec:
           - name: logstash-config-persist-volume
             mountPath: /usr/share/logstash/config/persist
             subPath: "logstash"
+      terminationGracePeriodSeconds: 120
       initContainers:
       - name: logstash-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0

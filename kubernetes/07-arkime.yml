@@ -89,6 +89,7 @@ spec:
           - mountPath: "/opt/arkime/wiseini"
             name: arkime-config-volume
             subPath: "arkime/wiseini"  
+      terminationGracePeriodSeconds: 30
       initContainers:
       - name: arkime-dirinit-container
         image: ghcr.io/idaholab/malcolm/dirinit:26.07.0
