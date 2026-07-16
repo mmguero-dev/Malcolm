@@ -96,14 +96,14 @@ DEPENDENCY_CONFIG: Dict[str, DependencySpec] = {
     KEY_CONFIG_ITEM_PROCESS_USER_ID: DependencySpec(
         visibility=VisibilityRule(
             depends_on=KEY_CONFIG_ITEM_RUNTIME_BIN,
-            condition=lambda runtime: bool(runtime),
+            condition=lambda runtime: bool(runtime) and (not SYSTEM_INFO["malcolm_iso_install"]),
             ui_parent=KEY_CONFIG_ITEM_RUNTIME_BIN,
         )
     ),
     KEY_CONFIG_ITEM_PROCESS_GROUP_ID: DependencySpec(
         visibility=VisibilityRule(
             depends_on=KEY_CONFIG_ITEM_RUNTIME_BIN,
-            condition=lambda runtime: bool(runtime),
+            condition=lambda runtime: bool(runtime) and (not SYSTEM_INFO["malcolm_iso_install"]),
             ui_parent=KEY_CONFIG_ITEM_RUNTIME_BIN,
         )
     ),
@@ -157,7 +157,9 @@ DEPENDENCY_CONFIG: Dict[str, DependencySpec] = {
                 KEY_CONFIG_ITEM_DOCKER_ORCHESTRATION_MODE,
             ],
             condition=lambda profile, orch: (
-                profile == PROFILE_MALCOLM and orch == OrchestrationFramework.DOCKER_COMPOSE
+                profile == PROFILE_MALCOLM
+                and orch == OrchestrationFramework.DOCKER_COMPOSE
+                and (not SYSTEM_INFO["malcolm_iso_install"])
             ),
             is_top_level=True,
         )

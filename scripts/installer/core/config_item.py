@@ -152,7 +152,6 @@ class ListOfStringsConfigItem(ConfigItem):
 
         # Convert string input to list if needed
         converted_value = str_to_list(value)
-        InstallerLogger.error(converted_value)
 
         # Now validate the converted value
         if self.validator:
