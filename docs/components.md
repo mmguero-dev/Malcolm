@@ -53,7 +53,7 @@ Malcolm leverages the following excellent open source tools, among others:
     * [CERT.LV](https://cert.lv/en/about-us)'s (the Cyber Incident Response Institution of the Republic of Latvia) [spicy-iec104 parser](https://github.com/cert-lv/spicy-iec104), which is a fork of [George Makrakis](https://github.com/georgemakrakis)' work.
     * [ICS protocol analyzers](https://github.com/cisagov/ICSNPP) for Zeek published by Idaho National Lab and DHS CISA
     * Numerous packages from [Corelight, Inc.](https://github.com/corelight)
-    * FoxIO's [JA4+](https://blog.foxio.io/ja4%2B-network-fingerprinting) network fingerprinting plugin
+    * FoxIO's [JA4+](https://blog.foxio.io/ja4%2B-network-fingerprinting) network fingerprinting plugin. Note that JA4+ algorithms have licensing requirements. Please [familiarize](https://github.com/FoxIO-LLC/ja4/blob/main/LICENSE) yourself with those licensing requirements.
     * Johanna Amann's [CVE-2020-0601](https://github.com/0xxon/cve-2020-0601) ECC certificate validation plugin and [CVE-2020-13777](https://github.com/0xxon/cve-2020-13777) GnuTLS unencrypted session ticket detection plugin
     * Lexi Brent's [EternalSafety](https://github.com/0xl3x1/zeek-EternalSafety) plugin
     * MITRE Cyber Analytics Repository's [Bro/Zeek ATT&CK®-Based Analytics (BZAR)](https://github.com/mitre-attack/car/tree/master/implementations) scripts
