@@ -78,6 +78,7 @@ CONFIG_ITEM_NETBOX_AUTO_POPULATE_SUBNET_FILTER = ConfigItem(
     validator=lambda x: isinstance(x, str) and ValidNetBoxSubnetFilter(x),
     question='Comma-separated list of private CIDR subnets to control NetBox IP autopopulation',
     widget_type=WidgetType.TEXT,
+    accept_blank=True,
 )
 
 # Default value handled in MalcolmConfig based on AUTO_POPULATE/AUTO_CREATE_PREFIX and PCAP_NODE_NAME
