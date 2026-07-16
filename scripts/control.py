@@ -70,6 +70,7 @@ from malcolm_common import (
     ChooseOne,
     ClearScreen,
     DetermineYamlFileFormat,
+    DialogCanceledException,
     DisplayMessage,
     DisplayProgramBox,
     DotEnvDynamic,
@@ -1414,20 +1415,26 @@ def start():
 
         # make sure the auth files exist. if we are in an interactive shell and we're
         # missing any of the auth files, prompt to create them now
-        if sys.__stdin__.isatty() and (
-            not MalcolmAuthFilesExist(
+        missingAuthFiles = MalcolmAuthFilesExist(
+            configDir=args.configDir, run_profile=args.composeProfile, auth_method=getNginxAuthMethod()
+        )
+        if sys.__stdin__.isatty() and missingAuthFiles:
+            try:
+                authSetup()
+            except DialogCanceledException:
+                pass
+            missingAuthFiles = MalcolmAuthFilesExist(
                 configDir=args.configDir, run_profile=args.composeProfile, auth_method=getNginxAuthMethod()
             )
-        ):
-            authSetup()
 
         # still missing? sorry charlie
-        if not MalcolmAuthFilesExist(
-            configDir=args.configDir, run_profile=args.composeProfile, auth_method=getNginxAuthMethod()
-        ):
-            raise Exception(
-                'Files relating to authentication and/or secrets are missing, please run ./scripts/auth_setup to generate them'
-            )
+        if missingAuthFiles:
+            malcolmPathPrefix = GetMalcolmPath() + os.sep
+            missingAuthMessage = f'Files relating to authentication and/or secrets are missing: {", ".join([
+                p[len(malcolmPathPrefix) :] if p.startswith(malcolmPathPrefix) else p for p in missingAuthFiles
+            ])}; please run ./scripts/auth_setup to generate them'
+            DisplayMessage(missingAuthMessage)
+            raise Exception(missingAuthMessage)
 
         # if the OpenSearch keystore doesn't exist exist, create empty ones
         if ((orchMode is not OrchestrationFramework.DOCKER_COMPOSE) or (args.composeProfile == PROFILE_MALCOLM)) and (

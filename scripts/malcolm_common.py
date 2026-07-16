@@ -1467,32 +1467,32 @@ def MalcolmAuthFilesExist(configDir=None, run_profile=PROFILE_MALCOLM, auth_meth
     configDirToCheck = (
         configDir if configDir is not None and os.path.isdir(configDir) else os.path.join(MalcolmPath, 'config')
     )
-    return (
-        (
-            (run_profile == PROFILE_HEDGEHOG)
-            or (
-                AuthFileCheck(
-                    os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')),
-                    allowEmpty=(auth_method == 'no_authentication'),
-                )
-                and AuthFileCheck(
-                    os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf')),
-                    allowEmpty=(auth_method != 'ldap'),
-                )
-                and AuthFileCheck(
-                    os.path.join(MalcolmPath, os.path.join('nginx', os.path.join('certs', 'cert.pem'))), allowEmpty=True
-                )
-                and AuthFileCheck(
-                    os.path.join(MalcolmPath, os.path.join('nginx', os.path.join('certs', 'key.pem'))), allowEmpty=True
-                )
-                and AuthFileCheck(os.path.join(configDirToCheck, 'netbox-secret.env'))
-                and AuthFileCheck(os.path.join(configDirToCheck, 'postgres.env'))
-                and AuthFileCheck(os.path.join(configDirToCheck, 'auth.env'))
-            )
-        )
-        and AuthFileCheck(os.path.join(configDirToCheck, 'valkey.env'))
-        and AuthFileCheck(os.path.join(MalcolmPath, '.opensearch.primary.curlrc'))
-    )
+
+    missing = []
+
+    if run_profile != PROFILE_HEDGEHOG:
+        checks = [
+            (os.path.join(MalcolmPath, 'nginx', 'htpasswd'), auth_method == 'no_authentication'),
+            (os.path.join(MalcolmPath, 'nginx', 'nginx_ldap.conf'), auth_method != 'ldap'),
+            (os.path.join(MalcolmPath, 'nginx', 'certs', 'cert.pem'), True),
+            (os.path.join(MalcolmPath, 'nginx', 'certs', 'key.pem'), True),
+            (os.path.join(configDirToCheck, 'netbox-secret.env'), False),
+            (os.path.join(configDirToCheck, 'postgres.env'), False),
+            (os.path.join(configDirToCheck, 'auth.env'), False),
+        ]
+        for path, allowEmpty in checks:
+            if not AuthFileCheck(path, allowEmpty=allowEmpty):
+                missing.append(path)
+
+    # checked regardless of profile
+    for path in (
+        os.path.join(configDirToCheck, 'valkey.env'),
+        os.path.join(MalcolmPath, '.opensearch.primary.curlrc'),
+    ):
+        if not AuthFileCheck(path):
+            missing.append(path)
+
+    return missing
 
 
 ###################################################################################################
