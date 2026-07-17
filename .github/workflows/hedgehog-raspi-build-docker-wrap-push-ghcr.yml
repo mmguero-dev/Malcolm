@@ -17,6 +17,10 @@ on:
 
 jobs:
   build:
+    strategy:
+      fail-fast: false
+      matrix:
+        rpi_model: [4, 5]
     uses: ./.github/workflows/raspi-build-push.yml
     permissions:
       actions: write
@@ -25,5 +29,5 @@ jobs:
       security-events: write
     with:
       profile: hedgehog
-      rpi_model: 4
+      rpi_model: ${{ matrix.rpi_model }}
       rpi_os: trixie
