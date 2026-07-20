@@ -75,7 +75,7 @@ RUN apt-get -q update && \
     curl -s -S -L -J -O "https://maxcdn.bootstrapcdn.com/bootstrap/$BOOTSTRAP_VERSION/fonts/glyphicons-halflings-regular.woff2" && \
   chown -R ${PUSER}:${PGROUP} /var/www && \
   apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages --purge remove \
-    make libmcrypt-dev php-pear php-dev && \
+    curl make libmcrypt-dev php-pear php-dev && \
   apt-get autoremove -y -q && \
   apt-get clean -y -q && \
   rm -rf /var/lib/apt/lists/* /var/cache/* /tmp/* /var/tmp/* /var/www/html
