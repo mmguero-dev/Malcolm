@@ -1,4 +1,4 @@
- # <a name="SearchSyntax"></a> Search Queries in Arkime and OpenSearch Dashboards
+# <a name="SearchSyntax"></a> Search Queries in Arkime and OpenSearch Dashboards
 
 * [Query Syntax Comparison](#SearchCheatSheet)
 * [Arkime Query Syntax](#ArkimeQueries)
