@@ -47,7 +47,7 @@ In order to maintain the integrity and confidentiality of data, Malcolm's defaul
 
 ## <a name="FluentBit"></a>Fluent Bit
 
-[Fluent Bit](https://fluentbit.io/) is a fast and lightweight logging and metrics processor and forwarder that works well with Malcolm. It is [well-documented](https://docs.fluentbit.io/manual), supports a number of [platforms](https://docs.fluentbit.io/manual/installation/getting-started-with-fluent-bit) including [Linux](https://docs.fluentbit.io/manual/installation/linux), [Microsoft Windows](https://docs.fluentbit.io/manual/installation/windows), macOS (either built [via source](https://docs.fluentbit.io/manual/installation/macos) or installed with [Homebrew](https://formulae.brew.sh/formula/fluent-bit#default)) and more. It provides many [data sources](https://docs.fluentbit.io/manual/pipeline/inputs) (inputs).
+[Fluent Bit](https://fluentbit.io/) is a fast and lightweight logging and metrics processor and forwarder that works well with Malcolm. It is [well-documented](https://docs.fluentbit.io/manual), supports a number of [platforms](https://docs.fluentbit.io/manual/installation/getting-started-with-fluent-bit) including [Linux](https://docs.fluentbit.io/manual/installation/downloads/linux), [Microsoft Windows](https://docs.fluentbit.io/manual/installation/windows), macOS (either built [via source](https://docs.fluentbit.io/manual/installation/downloads/macos) or installed with [Homebrew](https://formulae.brew.sh/formula/fluent-bit#default)) and more. It provides many [data sources](https://docs.fluentbit.io/manual/pipeline/inputs) (inputs).
 
 ### <a name="FluentBitBash"></a>Convenience Script for Linux/macOS
 

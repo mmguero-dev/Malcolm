@@ -31,7 +31,7 @@ Some changes should be made for performance. See the following (unaffiliated) po
 * [What Are the Latest Docker Desktop Enterprise-Grade Performance Optimizations?](https://www.docker.com/blog/what-are-the-latest-docker-desktop-enterprise-grade-performance-optimizations/)
 * [Docker on macOS is still slow?](https://www.paolomainardi.com/posts/docker-performance-macos-2025)
 * [Docker on macOS is slow and how to fix it](https://www.cncf.io/blog/2023/02/02/docker-on-macos-is-slow-and-how-to-fix-it)
-* [The most performant Docker setup on macOS](https://medium.com/%40guillem.riera/the-most-performant-docker-setup-on-macos-apple-silicon-m1-m2-m3-for-x64-amd64-compatibility-da5100e2557d)
+* [The most performant Docker setup on macOS](https://medium.com/@guillem.riera/the-most-performant-docker-setup-on-macos-apple-silicon-m1-m2-m3-for-x64-amd64-compatibility-da5100e2557d)
 * [Why Docker Compose Is Actually Killing Your M1 Mac](https://medium.com/%40sohail_saifi/why-docker-compose-is-actually-killing-your-m1-mac-the-performance-truth-no-one-talks-about-4357678c8584)
 
 * **Resource allocation** - For best results, Mac users should be running recent system with at least 32GB RAM and an SSD. In the system tray, select **Docker** → **Preferences** → **Advanced**. Set the resources available to Docker to at least 6 CPUs and at least 24GB RAM (even more is preferable).

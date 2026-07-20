@@ -33,4 +33,4 @@ Tags may also be specified manually with the [browser-based upload form](#Upload
 
 ## <a name="UploadNetBoxSite"></a>NetBox site
 
-If NetBox was enabled during [configuration](malcolm-hedgehog-e2e-iso-install.md#MalcolmConfig), users may specify a NetBox [site](https://demo.netbox.dev/static/docs/core-functionality/sites-and-racks/) to associate the uploaded PCAP data using the dropdown to the right of the Tags input. See [**Asset Interaction Analysis**](asset-interaction-analysis.md#AssetInteractionAnalysis) for more information about NetBox.
+If NetBox was enabled during [configuration](malcolm-hedgehog-e2e-iso-install.md#MalcolmConfig), users may specify a NetBox [site](https://netboxlabs.com/docs/netbox/features/facilities/#sites) to associate the uploaded PCAP data using the dropdown to the right of the Tags input. See [**Asset Interaction Analysis**](asset-interaction-analysis.md#AssetInteractionAnalysis) for more information about NetBox.

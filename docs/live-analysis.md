@@ -89,7 +89,7 @@ Malcolm uses [Zeek's support](https://github.com/zeek/zeek-af_packet-plugin) for
 
 The relevant environment variables related to tuning Zeek for live packet capture are:
 
-- `ZEEK_AF_PACKET_BUFFER_SIZE` - AF_Packet [ring buffer size](https://docs.zeek.org/en/master/scripts/builtin-plugins/Zeek_AF_Packet/init.zeek.html#id-AF_Packet::buffer_size) in bytes (default `67108864`)
+- `ZEEK_AF_PACKET_BUFFER_SIZE` - AF_Packet [ring buffer size](https://docs.zeek.org/en/current/scripts/base/init-bare.zeek.html#id-AF_Packet::buffer_size) in bytes (default `67108864`)
 - `ZEEK_AF_PACKET_FANOUT_MODE` - AF_Packet [fanout mode](https://docs.zeek.org/en/master/scripts/base/bif/plugins/Zeek_AF_Packet.af_packet.bif.zeek.html#type-AF_Packet::FanoutMode) (default `FANOUT_HASH`)
 - `ZEEK_LB_PROCS_WORKER_DEFAULT` - ["Zeek is not multithreaded, so once the limitations of a single processor core are reached the only option currently is to spread the workload across many cores"](https://docs.zeek.org/en/master/cluster-setup.html#cluster-architecture). This value defines the number of processors to be assigned to each group of [workers](https://docs.zeek.org/en/master/frameworks/cluster.html#worker) created for each capture interface for [load balancing](https://docs.zeek.org/en/master/cluster-setup.html#load-balancing) (default `2`). A value of `0` means "autocalculate based on the number of CPUs present in the system."
 - `ZEEK_LB_PROCS_WORKER_n` - Explicitly defines the number of processor to be assigned to the group of workers for the *n*-th capture interface. If unspecified this defaults to the number of CPUs `ZEEK_PIN_CPUS_WORKER_n` if defined, or `ZEEK_LB_PROCS_WORKER_DEFAULT` otherwise.

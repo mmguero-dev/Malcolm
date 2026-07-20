@@ -46,7 +46,7 @@ Building the image should take under 30 minutes on a native ARM64 system; howeve
 
 ## <a name="HedgehogRaspiBurn"></a>Writing the Image to Flash Media
 
-The resulting `.img.xz` file can be written to a microSD card or other bootable media using the [Raspberry Pi Imager](https://www.raspberrypi.com/documentation/computers/getting-started.html#raspberry-pi-imager) or `dd`.
+The resulting `.img.xz` file can be written to a microSD card or other bootable media using the [Raspberry Pi Imager](https://www.raspberrypi.com/software/) or `dd`.
 
 ![Using the Raspberry Pi Imager](./images/screenshots/raspi_imager_hedgehog.png)
 

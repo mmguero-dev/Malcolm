@@ -20,16 +20,16 @@ Please see the [NetBox page on GitHub](https://github.com/netbox-community/netbo
 
 ## <a name="NetBoxEnrichment"></a>Enriching network traffic metadata via NetBox lookups
 
-As Zeek logs and Suricata alerts are parsed and enriched (if the `NETBOX_ENRICHMENT` [environment variable in `./config/netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) is set to `true`), the NetBox API will be queried for the associated hosts' information. If found, the information retrieved by NetBox will be used to enrich these logs through the creation of the following new fields. See [the NetBox API](https://demo.netbox.dev/api/docs/) documentation and [the NetBox documentation](https://demo.netbox.dev/static/docs/introduction/) for more information.
+As Zeek logs and Suricata alerts are parsed and enriched (if the `NETBOX_ENRICHMENT` [environment variable in `./config/netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) is set to `true`), the NetBox API will be queried for the associated hosts' information. If found, the information retrieved by NetBox will be used to enrich these logs through the creation of the following new fields. See [the NetBox API](https://demo.netbox.dev/api/schema/swagger-ui/) documentation and [the NetBox documentation](https://demo.netbox.dev/static/docs/introduction/) for more information.
 
 * `destination.…`
-    - `destination.device.cluster` (`/virtualization/clusters/`) (for [Virtual Machine](https://demo.netbox.dev/static/docs/coe-functionality/virtualization/) device types)
-    - [`destination.device.device_type`](https://demo.netbox.dev/static/docs/core-functionality/device-types/) (`/dcim/device-types/`)
+    - `destination.device.cluster` (`/virtualization/clusters/`) (for [Virtual Machine](https://docs.netbox.dev/en/stable/features/virtualization/) device types)
+    - [`destination.device.device_type`](https://docs.netbox.dev/en/stable/models/dcim/devicetype/) (`/dcim/device-types/`)
     - `destination.device.id` (`/dcim/devices/{id}`)
     - `destination.device.manufacturer` (`/dcim/manufacturers/`)
     - `destination.device.name` (`/dcim/devices/`)
     - `destination.device.role` (`/dcim/device-roles/`)
-    - [`destination.device.service`](https://demo.netbox.dev/static/docs/core-functionality/services/#service-templates) (`/ipam/services/`)
+    - [`destination.device.service`](https://netboxlabs.com/docs/netbox/models/ipam/servicetemplate/) (`/ipam/services/`)
     - `destination.device.site` (`/dcim/sites/`)
     - `destination.device.details` (full JSON object, [only with `NETBOX_ENRICHMENT_VERBOSE: 'true'`](malcolm-config.md#MalcolmConfigEnvVars))
     - `destination.segment.id` (`/ipam/prefixes/{id}`)
@@ -50,7 +50,7 @@ As Zeek logs and Suricata alerts are parsed and enriched (if the `NETBOX_ENRICHM
 
 For Malcolm's purposes, both physical devices and virtualized hosts will be stored as described above: the `device_type` field can be used to distinguish between them.
 
-NetBox has the concept of [sites](https://demo.netbox.dev/static/docs/core-functionality/sites-and-racks/). Sites can have overlapping IP address ranges. The site to associate with network traffic can be specified when [PCAP is uploaded](upload.md#Upload), when configuring [live analysis](live-analysis.md#LiveAnalysis), and when [configuring forwarding from Hedgehog Linux](malcolm-hedgehog-e2e-iso-install.md#HedgehogCommConfig). If not otherwise specified, the value of the `NETBOX_DEFAULT_SITE` variable in [environment variable in `netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) will be used for these enrichment lookups.
+NetBox has the concept of [sites](https://netboxlabs.com/docs/netbox/features/facilities/#sites). Sites can have overlapping IP address ranges. The site to associate with network traffic can be specified when [PCAP is uploaded](upload.md#Upload), when configuring [live analysis](live-analysis.md#LiveAnalysis), and when [configuring forwarding from Hedgehog Linux](malcolm-hedgehog-e2e-iso-install.md#HedgehogCommConfig). If not otherwise specified, the value of the `NETBOX_DEFAULT_SITE` variable in [environment variable in `netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) will be used for these enrichment lookups.
 
 When NetBox enrichment is attempted for a log, the value `netbox` is automatically added to its `tags` field.
 
@@ -101,7 +101,7 @@ Devices created using this autopopulate method will include a `tags` value of `A
 
 Since device autocreation is based on IP address, information about network segments (IP [prefixes](https://docs.netbox.dev/en/stable/models/ipam/prefix/)) must be first [manually specified](#NetBoxPopManual) in NetBox in order for devices to be automatically populated. Users should populate the `description` field in the NetBox IPAM Prefixes data model to specify a name to be used for NetBox network segment autopopulation and enrichment; otherwise, the IP prefix itself will be used.
 
-Although network devices can be automatically created using this method, [services](https://demo.netbox.dev/static/docs/core-functionality/services/#service-templates) should inventoried manually. The **Uninventoried Observed Services** visualization in the [**Zeek Known Summary** dashboard](dashboards.md#DashboardsVisualizations) can help users review network services to be created in NetBox.
+Although network devices can be automatically created using this method, [services](https://netboxlabs.com/docs/netbox/models/ipam/servicetemplate/) should inventoried manually. The **Uninventoried Observed Services** visualization in the [**Zeek Known Summary** dashboard](dashboards.md#DashboardsVisualizations) can help users review network services to be created in NetBox.
 
 See [idaholab/Malcolm#135](https://github.com/idaholab/Malcolm/issues/135) for more information on this feature.
 

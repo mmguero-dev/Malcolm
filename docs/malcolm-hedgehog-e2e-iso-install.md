@@ -105,7 +105,7 @@ At the end of the installation process, users will be prompted with a few self-e
 * **Disable IPv6?**
 * **Automatically log in to the GUI session?**
 * **Should the GUI session be locked due to inactivity?**
-* **Display the [Standard Mandatory DoD Notice and Consent Banner](https://www.stigviewer.com/stig/application_security_and_development/2018-12-24/finding/V-69349)?** *(only applies when installed on U.S. government information systems)*
+* **Display the [Standard Mandatory DoD Notice and Consent Banner](https://www.stigviewer.com/stigs/general_purpose_operating_system_security_requirements_guide/2024-07-02/finding/V-203595)?** *(only applies when installed on U.S. government information systems)*
 * **Allow SSH password authentication?** *(Caution: password authentication is less secure than public/private key pairs)*
 
 Following these prompts, the installer will reboot and the Malcolm base operating system will boot.
@@ -445,7 +445,7 @@ Proceed with Malcolm installation using the above configuration? (y / N): y
     - **Enable Suricata Rule Updates**
         + If the Malcolm instance has Internet connectivity, select **Y** to [enable automatic updates](https://suricata-update.readthedocs.io/en/latest/) of the Suricata rules used by Malcolm. This setting also applies to the rules used for live analysis when **Analyze Live Traffic with Suricata** is enabled.
 * **Enable Zeek Analysis**
-    - This option is used to enable [Zeek](https://www.zeek.org/index.html) (a network analysis framework and IDS) to analyze PCAP files uploaded to Malcolm via its upload web interface.
+    - This option is used to enable [Zeek](https://zeek.org/) (a network analysis framework and IDS) to analyze PCAP files uploaded to Malcolm via its upload web interface.
     - These options are used to configure [**automatic file extraction and scanning**](file-scanning.md#ZeekFileExtraction):
         - **File Extraction Mode**
             * This determines which files Zeek should extract for scanning:
@@ -509,7 +509,7 @@ Proceed with Malcolm installation using the above configuration? (y / N): y
     - **NetBox-Enriched Log Types**
         + Defines which types of logs will be [enriched](asset-interaction-analysis.md#AssetInteractionAnalysis) via NetBox: a comma-separated list which may contain `provider.dataset` pairs (e.g., `zeek.dns`), the string `default` for the [built-in list]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/logstash/pipelines/enrichment/21_netbox.conf) of log types, `ics` (or `ot`) to enrich OT/ICS traffic, or `all` to enrich all logs. Values may be combined (e.g., `default,ics`).
     - **NetBox Site Name**
-        + NetBox has the concept of [sites](https://demo.netbox.dev/static/docs/core-functionality/sites-and-racks/); this default site name will be used for NetBox enrichment lookups performed by Logstash and will be associated with traffic Malcolm itself [captures on local interfaces](live-analysis.md#LocalPCAP).
+        + NetBox has the concept of [sites](https://netboxlabs.com/docs/netbox/features/facilities/#sites); this default site name will be used for NetBox enrichment lookups performed by Logstash and will be associated with traffic Malcolm itself [captures on local interfaces](live-analysis.md#LocalPCAP).
     - **NetBox IP Autopopulation Filter**
         + Defines the filter for [subnets considered for autopopulation](asset-interaction-analysis.md#NetBoxAutoPopSubnets), which can be used to excluding IP ranges (such as dynamic address ranges used by DHCP) which should not trigger autopopulation in NetBox.
 * **Expose Malcolm Service Ports**

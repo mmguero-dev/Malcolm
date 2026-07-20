@@ -1351,7 +1351,7 @@ The IRC dashboard covers [Internet Relay Chat (IRC)](https://en.wikipedia.org/wi
 
 * ID: [82da3101-2a9c-4ae2-bb61-d447a3fbe673](#/dashboard/82da3101-2a9c-4ae2-bb61-d447a3fbe673)
 
-The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerberos_(protocol)) authentication traffic, covering ticket requests, error codes, service names, and participating hosts. It is useful for detecting Kerberoasting, AS-REP roasting, ticket forgery, and other Active Directory authentication abuse patterns. Analysts can use the error code breakdown to identify failed authentication spikes and unusual service ticket requests.
+The Kerberos dashboard surfaces [Kerberos](https://en.wikipedia.org/wiki/Kerberos_(protocol))) authentication traffic, covering ticket requests, error codes, service names, and participating hosts. It is useful for detecting Kerberoasting, AS-REP roasting, ticket forgery, and other Active Directory authentication abuse patterns. Analysts can use the error code breakdown to identify failed authentication spikes and unusual service ticket requests.
 
 #### Visualizations
 

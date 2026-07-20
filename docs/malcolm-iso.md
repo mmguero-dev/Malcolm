@@ -82,7 +82,7 @@ At the end of the installation process, users will be prompted with the followin
 * **Disable IPv6?**
 * **Automatically log in to the GUI session?**
 * **Should the GUI session be locked due to inactivity?**
-* **Display the [Standard Mandatory DoD Notice and Consent Banner](https://www.stigviewer.com/stig/application_security_and_development/2018-12-24/finding/V-69349)?** *(only applies when installed on U.S. government information systems)*
+* **Display the [Standard Mandatory DoD Notice and Consent Banner](https://www.stigviewer.com/stigs/general_purpose_operating_system_security_requirements_guide/2024-07-02/finding/V-203595)?** *(only applies when installed on U.S. government information systems)*
 * **Allow SSH password authentication?** *(Caution: password authentication is less secure than public/private key pairs)*
 
 Following these prompts, the installer will reboot and the Malcolm base operating system will boot.
