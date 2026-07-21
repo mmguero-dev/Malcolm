@@ -50,6 +50,10 @@ steps:
       - __FIRMWARE_COMPONENT_OLD__
     unless: rootfs_unpacked
 
+  # Mount /proc, /sys, /dev, /dev/pts, and other virtual filesystems
+  # required by package maintainer scripts and initramfs generation.
+  - virtual-filesystems: tag-root
+
   - create-file: /etc/apt/sources.list
     contents: |+
       deb http://deb.debian.org/debian __RELEASE__ main contrib __FIRMWARE_COMPONENT__ __FIRMWARE_COMPONENT_OLD__

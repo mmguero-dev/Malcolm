@@ -106,8 +106,6 @@ clean_up() {
     update-locale LANG=en_US.UTF-8 LANGUAGE=en.UTF-8
     sed -i -e 's/CHARMAP=.*/CHARMAP="UTF-8"/' -e 's/CODESET=.*/CODESET="Lat15"/' /etc/default/console-setup
     dpkg-reconfigure console-setup
-
-    umount -A -f /dev/pts /run /dev /proc /sys
 }
 
 create_user() {
@@ -270,14 +268,6 @@ install_hooks() {
 ################################
 ########## Main ################
 ################################
-
-# Make sure necessary virtual filesystems available in chroot
-mount -t proc /proc /proc
-mount -t devtmpfs /dev /dev
-mount -t devpts /dev/pts /dev/pts
-mount -t sysfs /sys /sys
-mount -t tmpfs /run /run
-
 
 [[ -f "$SHARED_DIR/environment.chroot" ]] && \
   . "$SHARED_DIR/environment.chroot"
