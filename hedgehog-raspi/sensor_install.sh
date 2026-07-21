@@ -10,6 +10,8 @@ if [ "$(id -u)" != "0" ]; then
    exit 1
 fi
 
+set -eo pipefail
+
 IMAGE_NAME=hedgehog
 IMAGE_PUBLISHER=idaholab
 IMAGE_VERSION=1.0.0
@@ -140,7 +142,7 @@ install_deps() {
     # htpdate removed because repo version doesn't support https
     # aide is removed as we're not applying the same hardening requirements ot the rpi image
     declare -a graphical_deps=( aide aide-common efibootmgr fonts-dejavu fuseext2 fusefat fuseiso gdb )
-    graphical_deps+=( gparted gdebi  google-perftools gvfs gvfs-daemons gvfs-fuse ghostscript ghostscript-x )
+    graphical_deps+=( gparted gdebi google-perftools gvfs gvfs-daemons gvfs-fuse ghostscript ghostscript-x )
     graphical_deps+=( hfsplus hfsprogs htpdate libgtk2.0-bin menu pmount rar )
     graphical_deps+=( ssh-askpass udisks2 upower user-setup xbitmaps zenity zenity-common )
     graphical_deps+=( libsmbclient samba-common samba-common-bin samba-dsdb-modules samba-libs smbclient )

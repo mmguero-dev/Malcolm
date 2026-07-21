@@ -87,7 +87,7 @@ extra_root_shell_cmds = [
 extra_chroot_shell_cmds.extend(
     [
         'chmod 755 /root/sensor_install.sh',
-        'bash -x /root/sensor_install.sh 2>&1 | tee -a /root/sensor_install_debug',
+        'bash -o pipefail -x /root/sensor_install.sh 2>&1 | tee -a /root/sensor_install_debug',
     ]
 )
 

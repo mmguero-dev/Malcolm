@@ -7,7 +7,6 @@ iproute2
 iputils-arping
 iputils-ping
 iputils-tracepath
-isc-dhcp-client
 libcurl4
 libssh2-1
 macchanger
