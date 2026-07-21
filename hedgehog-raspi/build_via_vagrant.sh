@@ -51,6 +51,15 @@ while getopts 'd:fi:z' OPTION; do
 done
 shift "$(($OPTIND -1))"
 
+case "$IMAGE" in
+  raspi_4_trixie.img|raspi_4_forky.img|raspi_5_forky.img)
+    ;;
+  *)
+    echo "Unsupported image: $IMAGE" >&2
+    exit 1
+    ;;
+esac
+
 
 function cleanup_shared_and_docs {
   # clean up temporary files
@@ -122,7 +131,9 @@ vagrant rsync
 vm_execute "sudo bash -c \"whoami && cd /Malcolm/hedgehog-raspi && pwd && make ${IMAGE}${XZ_EXT}\""
 
 # retrieve build artifacts from VM
-BUILD_ARTIFACTS="/Malcolm/hedgehog-raspi/raspi_*_trixie*.*"
+IMAGE_BASE="${IMAGE%.img}"
+BUILD_ARTIFACTS="/Malcolm/hedgehog-raspi/${IMAGE_BASE}.*"
+
 eval "$(vagrant ssh-config | awk '
 /HostName/ {host=$2}
 /Port/ {port=$2}

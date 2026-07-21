@@ -17,16 +17,25 @@ if len(sys.argv) != 3:
     print("E: need 2 arguments", file=sys.stderr)
     sys.exit(1)
 
+supported_suites = {
+    "4": {"trixie", "forky"},
+    "5": {"forky"},
+}
+
 version = sys.argv[1]
-if version not in ["4", "5"]:
-    print("E: unsupported version %s" % version, file=sys.stderr)
+if version not in supported_suites:
+    print(f"E: unsupported version {version}", file=sys.stderr)
     sys.exit(1)
 
 suite = sys.argv[2]
-if suite not in ['trixie']:
-    print("E: unsupported suite %s" % suite, file=sys.stderr)
+if suite not in supported_suites[version]:
+    print(
+        f"E: unsupported suite/model combination: Raspberry Pi {version} with {suite}",
+        file=sys.stderr,
+    )
     sys.exit(1)
-target_yaml = 'raspi_%s_%s.yaml' % (version, suite)
+
+target_yaml = f"raspi_{version}_{suite}.yaml"
 
 
 ### Setting variables based on suite and version starts here
