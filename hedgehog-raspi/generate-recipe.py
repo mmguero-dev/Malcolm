@@ -80,7 +80,7 @@ if version == '5':
         '- create-file: /etc/dracut.conf.d/raspi-usb.conf',
         '  contents: |',
         '    hostonly="no"',
-        '    force_drivers+=" rp1_pci xhci_hcd xhci_plat_hcd usb_storage uas sd_mod scsi_mod "',
+        '    force_drivers+=" irq_bcm2712_mip rp1_pci xhci_hcd xhci_plat_hcd usb_storage uas sd_mod scsi_mod "',
         '',
         '# Force the D-step Pi 5 device tree. Keeping this in raspi-firmware-custom',
         '# ensures later kernel and firmware updates preserve the setting.',
@@ -124,7 +124,10 @@ if version == '5':
             # /boot and /boot/firmware contain the final RP1-capable initramfs.
             'update-initramfs -u -k all',
             "grep -Fxq 'device_tree=bcm2712-d-rpi-5-b.dtb' /boot/firmware/config.txt",
-            "for initrd in /boot/initrd.img-*; do lsinitrd \"$initrd\" | grep -q '/rp1_pci[.]ko' || exit 1; done",
+            "for initrd in /boot/initrd.img-*; do "
+            "lsinitrd \"$initrd\" | grep -q '/irq-bcm2712-mip[.]ko' || exit 1; "
+            "lsinitrd \"$initrd\" | grep -q '/rp1_pci[.]ko' || exit 1; "
+            "done",
         ]
     )
 
