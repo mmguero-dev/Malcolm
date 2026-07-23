@@ -71,6 +71,7 @@ build_htpdate() {
 }
 
 clean_up() {
+    set +e
 
     # Remove network interface files left by installation
     rm -f /etc/network/interfaces.d/*
@@ -84,9 +85,9 @@ clean_up() {
     rm -rf $WORK_DIR \
            $SHARED_DIR \
            $MALCOLM_SRC \
-		   /opt/deps \
-		   /opt/hooks \
-		   /opt/patches \
+           /opt/deps \
+           /opt/hooks \
+           /opt/patches \
            /opt/requirements.txt \
            /root/.bash_history \
            /root/.wget-hsts \
@@ -94,9 +95,11 @@ clean_up() {
            /root/.local/share/gem \
            /root/.npm \
            "${DEBS_DIR}" \
-		   /tmp/*
+           /tmp/*
     find /var/log/ -type f -print0 2>/dev/null | \
         xargs -0 -r -I XXX bash -c "file 'XXX' | grep -q text && > 'XXX'"
+
+    set -e
 
     # Remove unnecessary build components
     apt-get remove $BUILD_DEPS -y
@@ -112,7 +115,12 @@ clean_up() {
     # These are the virtual filesystems mounted below for the later
     # sensor installation phase. The earlier vmdb2 apt step mounts and
     # unmounts its own temporary set in raspi_master.yaml.
-    umount -A -f /dev/pts /run /dev /proc /sys
+    local target
+    for target in /dev/pts /run /dev /sys /proc; do
+        if mountpoint -q "$target"; then
+            umount -f "$target"
+        fi
+    done
 }
 
 create_user() {
