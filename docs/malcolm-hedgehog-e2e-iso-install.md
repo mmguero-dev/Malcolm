@@ -463,6 +463,8 @@ Proceed with Malcolm installation using the above configuration? (y / N): y
             * Choosing **Y** enables scanning of Zeek-extracted files with [Strelka](https://target.github.io/strelka/#/).
         + **File scanning workers**
             * This specifies the number of [Strelka](https://target.github.io/strelka/#/) backend instances performing file scanning concurrently.
+        + **Enabled Strelka Scanners**
+            * Individual Strelka [scanners](https://target.github.io/strelka/#/?id=scanner-list) can be enabled/disabled by including/excluding the scanner's name from this comma-separated list, which may contain scanner names and/or the string `default` for the built-in list of scanners (see `MALCOLM_STRELKA_SCANNERS_DEFAULT` in [`malcolm_constants.py`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/scripts/malcolm_constants.py)). Values may be combined (e.g., `default,ScanStrings`).
         + **Extracted File Percent Threshold** and **Extracted File Size Threshold**
             * Files extracted by Zeek can be periodically pruned to ensure the disk storage they consume does not exceed a user-specified threshold. See the documentation on [managing Malcolm's disk usage](malcolm-config.md#DiskUsage) for more information.
         + **File Preservation**
