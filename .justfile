@@ -78,7 +78,12 @@ _base_config +CAPTURE_FLAG:
     | .configuration.exposeSFTP = ${SFTP_EXPOSE:-false}
     | .configuration.extractedFileMaxPercentThreshold = ${EXTRACTED_FILE_TOTAL_DISK_USAGE_PERCENT_THRESHOLD:-100}
     | .configuration.extractedFileMaxSizeThreshold = "${EXTRACTED_FILE_MAX_SIZE_THRESHOLD:-1T}"
-    | .configuration.extraTags = "${EXTRA_TAGS:-}"
+    | .configuration.extraTags = (
+        "${EXTRA_TAGS:-}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.filebeatTcpDefaults = ${FILEBEAT_TCP_EXPOSE:-false}
     | .configuration.fileCarveHttpServeEncryptKey = "${EXTRACTED_FILE_SERVER_PASSWORD:-infected}"
     | .configuration.fileCarveHttpServer = ${EXTRACTED_FILE_SERVER:-true}
@@ -116,6 +121,12 @@ _base_config +CAPTURE_FLAG:
     | .configuration.netboxMode = "${NETBOX:-local}"
     | .configuration.netboxSiteName = "${NETBOX_SITE_NAME:-Malcolm}"
     | .configuration.netboxUrl = "${NETBOX_URL}"
+    | .configuration.logstashNetBoxEnrichedDatasets = (
+        "${LOGSTASH_NETBOX_ENRICHMENT_DATASETS:-default}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.nginxResolverIpv4 = ${NGINX_RESOLVER_IPV4:-true}
     | .configuration.nginxResolverIpv6 = ${NGINX_RESOLVER_IPV6:-false}
     | .configuration.nginxSSL = ${HTTPS:-true}
@@ -128,7 +139,12 @@ _base_config +CAPTURE_FLAG:
     | .configuration.osMemory = "${OPENSEARCH_MEMORY}"
     | .configuration.pcapDir = "${PCAP_PATH}"
     | .configuration.pcapFilter = "${CAPTURE_FILTER}"
-    | .configuration.pcapIface = "${CAPTURE_IFACE}"
+    | .configuration.pcapIface = (
+        "${CAPTURE_IFACE:-}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.pcapNetSniff = ${CAPTURE_NETSNIFF}
     | .configuration.pcapNodeName = "${NODE_NAME:-$(hostname -s)}"
     | .configuration.pcapTcpDump = ${CAPTURE_TCPDUMP}
@@ -160,6 +176,8 @@ _base_config +CAPTURE_FLAG:
   EOF
 
   jq -f "${JQ_FILE}" "${SETTINGS_FILE}" | sponge "${SETTINGS_FILE}"
+
+  [[ "$DEBUG" == "true" ]] && jq < "${SETTINGS_FILE}" >&2
 
   python3 ./scripts/install.py --verbose "${DEBUG}" --configure --non-interactive \
     --configure-file "${MALCOLM_COMPOSE_FILE:-docker-compose.yml}" \
