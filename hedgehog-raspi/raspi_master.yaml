@@ -69,6 +69,8 @@ steps:
     perm: 0755
     unless: rootfs_unpacked
 
+  - __EXTRA_PRE_APT_STEPS__
+
   # The initial package installation occurs before sensor_install.sh runs.
   # Mount the virtual filesystems needed by package maintainer scripts here,
   # without using vmdb2's virtual-filesystems step, which interferes with the
@@ -206,6 +208,8 @@ steps:
         cat /boot/firmware/cmdline.txt >&2
         exit 1
       fi
+
+      __FINAL_CHROOT_SHELL_CMDS__
 
   # TODO(https://github.com/larswirzenius/vmdb2/issues/24): remove once vmdb
   # clears /etc/resolv.conf on its own.

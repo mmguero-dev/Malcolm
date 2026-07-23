@@ -73,6 +73,9 @@ build_htpdate() {
 clean_up() {
     set +e
 
+    # Do not remain inside WORK_DIR while deleting it.
+    cd /
+
     # Remove network interface files left by installation
     rm -f /etc/network/interfaces.d/*
 
@@ -111,16 +114,6 @@ clean_up() {
     update-locale LANG=en_US.UTF-8 LANGUAGE=en.UTF-8
     sed -i -e 's/CHARMAP=.*/CHARMAP="UTF-8"/' -e 's/CODESET=.*/CODESET="Lat15"/' /etc/default/console-setup
     dpkg-reconfigure console-setup
-
-    # These are the virtual filesystems mounted below for the later
-    # sensor installation phase. The earlier vmdb2 apt step mounts and
-    # unmounts its own temporary set in raspi_master.yaml.
-    local target
-    for target in /dev/pts /run /dev /sys /proc; do
-        if mountpoint -q "$target"; then
-            umount -f "$target"
-        fi
-    done
 }
 
 create_user() {
