@@ -155,6 +155,12 @@ _base_config +CAPTURE_FLAG:
     | .configuration.reverseDns = ${REVERSE_DNS:-false}
     | .configuration.suricataLogDir = "${SURICATA_PATH}"
     | .configuration.suricataRuleUpdate = ${SURICATA_RULE_UPDATE:-false}
+    | .configuration.suricataDisableSids = (
+        "${SURICATA_DISABLE_SIDS:-}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.syslogTcpPort = ${SYSLOG_PORT_TCP:-0}
     | .configuration.syslogUdpPort = ${SYSLOG_PORT_UDP:-0}
     | .configuration.traefikEntrypoint = "${TRAEFIK_ENTRYPOINT}"
@@ -199,7 +205,6 @@ _base_config +CAPTURE_FLAG:
           "opensearch.env:MALCOLM_NETWORK_INDEX_SUFFIX=${MALCOLM_NETWORK_INDEX_SUFFIX:-'%{%y%m%d}'}" \
           "opensearch.env:MALCOLM_OTHER_INDEX_ALIAS=${MALCOLM_OTHER_INDEX_ALIAS:-malcolm_other}" \
           "opensearch.env:MALCOLM_OTHER_INDEX_SUFFIX=${MALCOLM_OTHER_INDEX_SUFFIX:-'%{%y%m%d}'}" \
-          "suricata.env:SURICATA_DISABLE_SIDS=${SURICATA_DISABLE_SIDS:-}" \
           "suricata-offline.env:SURICATA_AUTO_ANALYZE_PCAP_PROCESSES=${SURICATA_AUTO_ANALYZE_PCAP_PROCESSES:-2}" \
           "suricata-offline.env:SURICATA_AUTO_ANALYZE_PCAP_THREADS=${SURICATA_AUTO_ANALYZE_PCAP_THREADS:-0}" \
           "upload-common.env:MALCOLM_API_DEBUG=${MALCOLM_API_DEBUG:-false}" \

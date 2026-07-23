@@ -158,6 +158,8 @@ _LIST_OF_STRING_VARS = [
     KEY_ENV_EXTRA_TAGS,
     KEY_ENV_LOGSTASH_NETBOX_ENRICHED_LOG_TYPES,
     KEY_ENV_PCAP_IFACE,
+    KEY_ENV_PCAP_IFACE,
+    KEY_ENV_SURICATA_DISABLE_SIDS,
 ]
 
 
@@ -639,6 +641,9 @@ class EnvMapper:
 
             # Suricata
             self.env_var_by_map_key[KEY_ENV_SURICATA_UPDATE_RULES].config_items = [KEY_CONFIG_ITEM_SURICATA_RULE_UPDATE]
+            self.env_var_by_map_key[KEY_ENV_SURICATA_DISABLE_SIDS].config_items = [
+                KEY_CONFIG_ITEM_SURICATA_DISABLE_SIDS
+            ]
             self.env_var_by_map_key[KEY_ENV_SURICATA_DISABLE_ICS_ALL].config_items = [KEY_CONFIG_ITEM_MALCOLM_ICS]
             self.env_var_by_map_key[KEY_ENV_SURICATA_LIVE_CAPTURE].config_items = [
                 KEY_CONFIG_ITEM_LIVE_SURICATA,

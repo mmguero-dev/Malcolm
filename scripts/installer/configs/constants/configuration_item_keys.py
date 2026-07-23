@@ -11,6 +11,7 @@ Configuration key constants for Malcolm
 KEY_CONFIG_ITEM_AUTO_ARKIME = "autoArkime"
 KEY_CONFIG_ITEM_AUTO_SURICATA = "autoSuricata"
 KEY_CONFIG_ITEM_SURICATA_RULE_UPDATE = "suricataRuleUpdate"
+KEY_CONFIG_ITEM_SURICATA_DISABLE_SIDS = "suricataDisableSids"
 KEY_CONFIG_ITEM_AUTO_ZEEK = "autoZeek"
 KEY_CONFIG_ITEM_MALCOLM_ICS = "malcolmIcs"
 KEY_CONFIG_ITEM_ZEEK_ICS_BEST_GUESS = "zeekICSBestGuess"
