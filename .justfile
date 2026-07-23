@@ -149,6 +149,12 @@ _base_config +CAPTURE_FLAG:
     | .configuration.pcapNodeName = "${NODE_NAME:-$(hostname -s)}"
     | .configuration.pcapTcpDump = ${CAPTURE_TCPDUMP}
     | .configuration.pipelineEnabled = ${PIPELINE_ENABLED:-true}
+    | .configuration.pipelineScanners = (
+        "${STRELKA_SCANNERS:-}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.pipelineWorkers = ${PIPELINE_WORKERS:-1}
     | .configuration.processGroupId = ${PGID:-$(id -g)}
     | .configuration.processUserId = ${PUID:-$(id -u)}

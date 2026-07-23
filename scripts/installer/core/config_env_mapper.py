@@ -160,6 +160,7 @@ _LIST_OF_STRING_VARS = [
     KEY_ENV_PCAP_IFACE,
     KEY_ENV_PCAP_IFACE,
     KEY_ENV_SURICATA_DISABLE_SIDS,
+    KEY_ENV_PIPELINE_SCANNERS,
 ]
 
 
@@ -723,6 +724,7 @@ class EnvMapper:
             ]
             self.env_var_by_map_key[KEY_ENV_PIPELINE_ENABLED].config_items = [KEY_CONFIG_ITEM_PIPELINE_ENABLED]
             self.env_var_by_map_key[KEY_ENV_PIPELINE_WORKERS].config_items = [KEY_CONFIG_ITEM_PIPELINE_WORKERS]
+            self.env_var_by_map_key[KEY_ENV_PIPELINE_SCANNERS].config_items = [KEY_CONFIG_ITEM_PIPELINE_SCANNERS]
 
             self.env_var_by_map_key[KEY_ENV_PIPELINE_RULES_UPDATE].config_items = [
                 KEY_CONFIG_ITEM_FILE_SCAN_RULE_UPDATE
