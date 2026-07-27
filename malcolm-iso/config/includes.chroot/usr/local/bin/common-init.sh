@@ -48,31 +48,36 @@ function CleanDefaultAccounts() {
 
 # disable automatic running of some services
 function DisableServices() {
-  for ACTION in stop disable; do
-    for SERVICE in apt-daily-upgrade.service \
-                   apt-daily-upgrade.timer \
-                   apt-daily.service \
-                   apt-daily.timer \
-                   clamav-clamonacc.service \
-                   clamav-daemon.socket \
-                   clamav-daemon.service \
-                   clamav-freshclam.service \
-                   ctrl-alt-del.target \
-                   filebeat.service \
-                   fluent-bit.service \
-                   htpdate.service \
-                   ntpsec.service \
-                   sendmail.service \
-                   supervisor.service \
-                   suricata.service; do
-      systemctl "$ACTION" "$SERVICE" >/dev/null 2>&1 || true
-    done
+  local service
+  local services=(
+    apt-daily-upgrade.service
+    apt-daily-upgrade.timer
+    apt-daily.service
+    apt-daily.timer
+    clamav-clamonacc.service
+    clamav-daemon.socket
+    clamav-daemon.service
+    clamav-freshclam-once.service
+    clamav-freshclam-once.timer
+    clamav-freshclam.service
+    ctrl-alt-del.target
+    filebeat.service
+    fluent-bit.service
+    htpdate.service
+    ntpsec.service
+    sendmail.service
+    supervisor.service
+    suricata.service
+  )
+
+  for service in "${services[@]}"; do
+    systemctl stop "$service" >/dev/null 2>&1 || true
+    systemctl disable "$service" >/dev/null 2>&1 || true
+    systemctl reset-failed "$service" >/dev/null 2>&1 || true
   done
-  for ACTION in disable remove; do
-    for SERVICE in clamav-daemon \
-                   clamav-freshclam; do
-      update-rc.d -f "$SERVICE" "$ACTION" >/dev/null 2>&1 || true
-    done
+
+  for service in clamav-daemon clamav-freshclam; do
+    update-rc.d -f "$service" remove >/dev/null 2>&1 || true
   done
 }
 
