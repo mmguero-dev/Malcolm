@@ -23,6 +23,7 @@ busybox
 bzip2
 ccache
 cifs-utils
+cloud-guest-utils
 coreutils
 cpio
 cracklib-runtime
