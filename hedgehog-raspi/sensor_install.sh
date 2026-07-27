@@ -143,7 +143,7 @@ install_deps() {
         sed -i '$a\' "$file"
         deps+="$(tr '\n' ' ' < "$file")"
     done
-    deps+=(fake-hwclock)
+    deps+=' fake-hwclock'
 
     # Remove packages not relevant to Raspberry Pi images.
     # rar is excluded because Debian does not provide an ARM package.
