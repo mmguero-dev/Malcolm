@@ -112,36 +112,11 @@ EOF
     changed=true
   fi
 
-  "$changed" && systemctl daemon-reload
-}
-
-# if the network configuration files for the interfaces haven't been set to come up on boot, configure that
-function InitializeSensorNetworking() {
-  unset NEED_NETWORKING_RESTART
-
-  # /etc/network/interfaces.d/sensor will manage network interfaces, not /etc/network/interfaces
-  # interfaces are configured by the system admin via system-quickstart.py.
-  NET_IFACES_LINES=$(wc -l /etc/network/interfaces | awk '{print $1}')
-  if [ $NET_IFACES_LINES -gt 4 ] ; then
-    echo -e "source /etc/network/interfaces.d/*\n\nauto lo\niface lo inet loopback" > /etc/network/interfaces
-    NEED_NETWORKING_RESTART=0
+  if "$changed"; then
+    systemctl daemon-reload
   fi
 
-  if [[ ! -f /etc/network/interfaces.d/sensor ]]; then
-    for IFACE_NAME in "${!IFACES[@]}"; do
-      echo "auto $IFACE_NAME" >> /etc/network/interfaces.d/sensor
-      echo "allow-hotplug $IFACE_NAME" >> /etc/network/interfaces.d/sensor
-      echo "iface $IFACE_NAME inet manual" >> /etc/network/interfaces.d/sensor
-      echo "  pre-up ip link set dev \$IFACE up" >> /etc/network/interfaces.d/sensor
-      echo "  post-down ip link set dev \$IFACE down" >> /etc/network/interfaces.d/sensor
-      echo "" >> /etc/network/interfaces.d/sensor
-    done
-    NEED_NETWORKING_RESTART=0
-  fi
-
-  SetNetworkingServiceTimeout
-
-  [[ -n $NEED_NETWORKING_RESTART ]] && systemctl restart networking
+  return 0
 }
 
 function InitializeAggregatorNetworking() {
