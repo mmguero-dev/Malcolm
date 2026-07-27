@@ -89,6 +89,32 @@ function InjectSkeleton() {
   fi
 }
 
+function SetNetworkingServiceTimeout() {
+  local wants_path='/etc/systemd/system/network-online.target.wants/networking.service'
+  local dropin_dir='/etc/systemd/system/networking.service.d'
+  local dropin_file="${dropin_dir}/timeout.conf"
+  local changed=false
+
+  # Remove an incorrectly created regular file. A .wants entry must be a symlink.
+  if [[ -e "$wants_path" ]] && [[ ! -L "$wants_path" ]]; then
+    rm -f "$wants_path"
+    changed=true
+  fi
+
+  mkdir -p "$dropin_dir"
+
+  if [[ ! -f "$dropin_file" ]] ||
+     ! grep --quiet '^TimeoutStartSec=1min$' "$dropin_file"; then
+    cat >"$dropin_file" <<'EOF'
+[Service]
+TimeoutStartSec=1min
+EOF
+    changed=true
+  fi
+
+  "$changed" && systemctl daemon-reload
+}
+
 # if the network configuration files for the interfaces haven't been set to come up on boot, configure that
 function InitializeSensorNetworking() {
   unset NEED_NETWORKING_RESTART
@@ -113,11 +139,7 @@ function InitializeSensorNetworking() {
     NEED_NETWORKING_RESTART=0
   fi
 
-  if ! grep --quiet ^TimeoutStartSec=1min /etc/systemd/system/network-online.target.wants/networking.service; then
-    # only wait 1 minute during boot for network interfaces to come up
-    sed -i 's/^\(TimeoutStartSec\)=.*/\1=1min/' /etc/systemd/system/network-online.target.wants/networking.service
-    NEED_NETWORKING_RESTART=0
-  fi
+  SetNetworkingServiceTimeout
 
   [[ -n $NEED_NETWORKING_RESTART ]] && systemctl restart networking
 }
@@ -132,11 +154,7 @@ function InitializeAggregatorNetworking() {
     NEED_NETWORKING_RESTART=0
   fi
 
-  if ! grep --quiet ^TimeoutStartSec=1min /etc/systemd/system/network-online.target.wants/networking.service; then
-    # only wait 1 minute during boot for network interfaces to come up
-    sed -i 's/^\(TimeoutStartSec\)=.*/\1=1min/' /etc/systemd/system/network-online.target.wants/networking.service
-    NEED_NETWORKING_RESTART=0
-  fi
+  SetNetworkingServiceTimeout
 
   [[ -n $NEED_NETWORKING_RESTART ]] && systemctl restart networking
 }
