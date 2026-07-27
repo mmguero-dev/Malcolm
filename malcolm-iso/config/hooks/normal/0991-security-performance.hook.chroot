@@ -163,6 +163,9 @@ EOF
 sed -r -i "s/((disk_full_action|disk_error_action)\s*=\s*).*/\1 SYSLOG/" /etc/audit/auditd.conf
 sed -r -i "s/(network_failure_action\s*=\s*).*/\1 syslog/" /etc/audit/audisp-remote.conf
 
+# filter auditd rules that don't apply to this platform
+/usr/local/bin/filter-audit-rules
+
 # disable ntp for now, and disable servers, but it could be turned back on later
 systemctl disable ntpsec || true
 sed -i "s/^\(pool \)/# \1/" /etc/ntpsec/ntp.conf
