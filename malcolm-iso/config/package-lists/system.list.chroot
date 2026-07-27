@@ -155,6 +155,8 @@ unzip
 upower
 usbutils
 user-setup
+util-linux
+util-linux-extra
 uuid-runtime
 vim-tiny
 whois
