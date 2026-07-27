@@ -47,9 +47,10 @@ function CleanDefaultAccounts() {
 }
 
 # disable automatic running of some services
+# disable automatic running of some services
 function DisableServices() {
   local service
-  local services=(
+  local -a services=(
     apt-daily-upgrade.service
     apt-daily-upgrade.timer
     apt-daily.service
@@ -70,6 +71,15 @@ function DisableServices() {
     suricata.service
   )
 
+  local -a networkd_units=(
+    systemd-networkd.service
+    systemd-networkd-wait-online.service
+    systemd-networkd.socket
+    systemd-networkd-varlink.socket
+    systemd-networkd-varlink-metrics.socket
+    systemd-networkd-resolve-hook.socket
+  )
+
   for service in "${services[@]}"; do
     systemctl stop "$service" >/dev/null 2>&1 || true
     systemctl disable "$service" >/dev/null 2>&1 || true
@@ -78,6 +88,12 @@ function DisableServices() {
 
   for service in clamav-daemon clamav-freshclam; do
     update-rc.d -f "$service" remove >/dev/null 2>&1 || true
+  done
+
+  for service in "${networkd_units[@]}"; do
+    systemctl disable --now "$service" >/dev/null 2>&1 || true
+    systemctl mask "$service" >/dev/null 2>&1 || true
+    systemctl reset-failed "$service" >/dev/null 2>&1 || true
   done
 }
 
