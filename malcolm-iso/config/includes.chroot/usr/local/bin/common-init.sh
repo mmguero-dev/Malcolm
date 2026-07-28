@@ -65,6 +65,7 @@ function DisableServices() {
     filebeat.service
     fluent-bit.service
     htpdate.service
+    ModemManager.service
     ntpsec.service
     sendmail.service
     supervisor.service
