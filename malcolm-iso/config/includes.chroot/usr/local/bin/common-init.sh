@@ -62,14 +62,11 @@ function DisableServices() {
     clamav-freshclam-once.timer
     clamav-freshclam.service
     ctrl-alt-del.target
-    filebeat.service
     fluent-bit.service
     htpdate.service
     ModemManager.service
     ntpsec.service
     sendmail.service
-    supervisor.service
-    suricata.service
   )
 
   local -a networkd_units=(
