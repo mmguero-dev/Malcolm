@@ -620,8 +620,6 @@ for TEMPLATE in "$NGINX_TEMPLATES_DIR"/*.conf.template; do
     exit 1
   fi
 done
-done
-
 
 if [[ -z "${NGINX_RESOLVER_OVERRIDE:-}" ]]; then
   # put the DNS resolver (nameserver from /etc/resolv.conf) into NGINX_RESOLVER_CONF
