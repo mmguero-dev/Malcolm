@@ -50,6 +50,8 @@ spec:
               name: ssl-env
           - configMapRef:
               name: opensearch-env
+          - configMapRef:
+              name: dashboards-env
         livenessProbe:
           exec:
             command:
