@@ -505,7 +505,7 @@ async def main(
                 'failed to open primary redis connection',
                 exc_info=True,
             )
-            log.fatal(
+            log.critical(
                 'unable to open primary redis connection: %s:%d/%d',
                 options.redis.host,
                 options.redis.port,
@@ -533,7 +533,7 @@ async def main(
                         'failed to open redis connection for watch',
                         exc_info=True,
                     )
-                    log.fatal(
+                    log.critical(
                         'unable to open redis connection for watch: %s:%d/%d',
                         watch.redis.host,
                         watch.redis.port,
