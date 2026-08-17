@@ -1,0 +1,14 @@
+biome:
+  type: select
+  label: Biome
+  required: false
+  filter_logic: exact
+  weight: 30
+  is_cloneable: true
+  on_objects:
+  - dcim.models.Device
+  - virtualization.models.VirtualMachine
+  choice_set:
+  - [it, IT]
+  - [ot, OT]
+  - [dmz, DMZ]
