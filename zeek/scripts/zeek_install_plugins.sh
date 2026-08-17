@@ -150,7 +150,7 @@ ZKG_GITHUB_URLS=(
   "https://github.com/corelight/zerologon"
   "https://github.com/cybera/zeek-sniffpass"
   "https://github.com/FoxIO-LLC/ja4|main"
-  "https://github.com/J-Gras/zeek-fuzzy-hashing|hash-all-files"
+  "https://github.com/J-Gras/zeek-fuzzy-hashing|topic/jgras/hash-all-files"
   "https://github.com/mmguero-dev/bzar"
   "https://github.com/corelight/json-streaming-logs|master"
   "https://github.com/ncsa/bro-is-darknet"
