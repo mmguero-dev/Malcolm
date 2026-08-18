@@ -1,6 +1,7 @@
 biome:
   type: select
   label: Biome
+  description: A user-defined network zone (e.g. IT, OT, DMZ) used to group devices for connection mapping.
   required: false
   filter_logic: exact
   weight: 30
