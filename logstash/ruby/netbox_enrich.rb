@@ -1278,7 +1278,7 @@ def lookup_devices(
                           :device_type => ((_dtype = _device.fetch(:device_type, nil)) && _dtype&.has_key?(:name)) ? _dtype[:name] : _dtype&.fetch(:display, nil),
                           :manufacturer => ((_manuf = _device.dig(:device_type, :manufacturer)) && _manuf&.has_key?(:name)) ? _manuf[:name] : _manuf&.fetch(:display, nil),
                           :details => @verbose ? _device : nil
-                        # merge in any NetBox custom_fields (e.g. :biome) as top-level keys; on key collision, keep our hardcoded value over the custom field
+                        # merge in any NetBox custom_fields (e.g. :purdue_zone) as top-level keys; on key collision, keep our hardcoded value over the custom field
                         }.merge(_device.fetch(:custom_fields, {}) || {}) { |_key, base_val, _custom_val| base_val }
           end
         end

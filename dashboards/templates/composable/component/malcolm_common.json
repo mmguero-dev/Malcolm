@@ -18,7 +18,7 @@
                 "uninventoried": {
                   "type": "keyword"
                 },
-                "biome": {
+                "purdue_zone": {
                   "type": "keyword"
                 },
                 "cluster": {
@@ -130,7 +130,7 @@
             "uninventoried": {
               "type": "keyword"
             },
-            "biome": {
+            "purdue_zone": {
               "type": "keyword"
             },
             "mac": {
@@ -187,7 +187,7 @@
                 "uninventoried": {
                   "type": "keyword"
                 },
-                "biome": {
+                "purdue_zone": {
                   "type": "keyword"
                 },
                 "cluster": {
