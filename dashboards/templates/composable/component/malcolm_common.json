@@ -18,6 +18,9 @@
                 "uninventoried": {
                   "type": "keyword"
                 },
+                "biome": {
+                  "type": "keyword"
+                },
                 "cluster": {
                   "type": "keyword"
                 },
@@ -127,6 +130,9 @@
             "uninventoried": {
               "type": "keyword"
             },
+            "biome": {
+              "type": "keyword"
+            },
             "mac": {
               "type": "keyword"
             },
@@ -179,6 +185,9 @@
                   "type": "keyword"
                 },
                 "uninventoried": {
+                  "type": "keyword"
+                },
+                "biome": {
                   "type": "keyword"
                 },
                 "cluster": {
