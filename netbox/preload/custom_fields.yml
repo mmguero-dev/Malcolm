@@ -8,6 +8,7 @@ purdue_zone:
   is_cloneable: true
   on_objects:
   - dcim.models.Device
+  - ipam.models.Prefix
   - virtualization.models.VirtualMachine
   choice_set:
   - [it, IT]
