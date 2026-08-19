@@ -37,6 +37,13 @@ fi
 
 if [[ "$MALCOLM_PROFILE" == "malcolm" ]]; then
 
+  # curl and tools called by Arkime's updater may expect lowercase proxy variables.
+  # Preserve explicitly configured lowercase values, otherwise mirror the common
+  # uppercase container environment variables.
+  [[ -n "${HTTP_PROXY:-}" && -z "${http_proxy:-}" ]] && export http_proxy="$HTTP_PROXY"
+  [[ -n "${HTTPS_PROXY:-}" && -z "${https_proxy:-}" ]] && export https_proxy="$HTTPS_PROXY"
+  [[ -n "${NO_PROXY:-}" && -z "${no_proxy:-}" ]] && export no_proxy="$NO_PROXY"
+
   # download and/or update geo updates
   $ARKIME_DIR/bin/arkime_update_geo.sh
 
