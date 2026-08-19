@@ -37,9 +37,18 @@ fi
 
 if [[ "$MALCOLM_PROFILE" == "malcolm" ]]; then
 
-  # curl and tools called by Arkime's updater may expect lowercase proxy variables.
-  # Preserve explicitly configured lowercase values, otherwise mirror the common
-  # uppercase container environment variables.
+  # curl and wget disagree on proxy env var casing. wget only reads the lowercase
+  # forms (http_proxy/https_proxy/no_proxy); curl reads the lowercase forms and
+  # also several uppercase forms (HTTPS_PROXY, NO_PROXY, etc.) at lower precedence,
+  # but by design never reads uppercase HTTP_PROXY specifically -- this is a
+  # deliberate curl safeguard against the "httpoxy" issue, where an attacker-
+  # controlled Proxy: request header could get turned into HTTP_PROXY in a CGI
+  # environment and redirect outbound traffic. See https://httpoxy.org/.
+  # Since arkime_update_geo.sh and maxmind-mmdb-download.sh use a mix of wget and
+  # curl, and some configurations may use plain http:// URLs, mirror the common
+  # uppercase container proxy variables into their lowercase equivalents here so
+  # both tools see them consistently. Explicitly configured lowercase values are
+  # preserved and take precedence.
   [[ -n "${HTTP_PROXY:-}" && -z "${http_proxy:-}" ]] && export http_proxy="$HTTP_PROXY"
   [[ -n "${HTTPS_PROXY:-}" && -z "${https_proxy:-}" ]] && export https_proxy="$HTTPS_PROXY"
   [[ -n "${NO_PROXY:-}" && -z "${no_proxy:-}" ]] && export no_proxy="$NO_PROXY"
