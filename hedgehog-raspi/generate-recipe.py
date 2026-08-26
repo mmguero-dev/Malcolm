@@ -43,8 +43,13 @@ target_yaml = f"raspi_{version}_{suite}.yaml"
 # Arch, kernel, DTB:
 if version in ['4', '5']:
     arch = 'arm64'
-    linux = 'linux-image-arm64'
     dtb = '/usr/lib/linux-image-*-arm64/broadcom/bcm*rpi*.dtb'
+
+# Pi 4 uses Debian's generic arm64 kernel. Pi 5 uses a locally built package
+# from Raspberry Pi's downstream kernel tree; the matching DTBs and RP1 PWM
+# driver are required for temperature reporting and automatic fan control.
+linux_packages = ['linux-image-arm64'] if version == '4' else ['dracut', 'linux-base']
+rpi5_kernel_deb = 'build/rpi5-kernel.deb'
 
 # Bookworm introduced the 'non-free-firmware' component¹; before that,
 # raspi-firmware was in 'non-free'
@@ -110,6 +115,11 @@ extra_root_shell_cmds = [
     % (MALCOLM_DIR),
 ]
 
+if version == '5':
+    extra_root_shell_cmds.append(
+        f'install -m 0644 {rpi5_kernel_deb} "${{ROOT?}}/root/rpi5-kernel.deb"'
+    )
+
 extra_chroot_shell_cmds.extend(
     [
         'chmod 755 /root/sensor_install.sh',
@@ -120,14 +130,38 @@ extra_chroot_shell_cmds.extend(
 if version == '5':
     extra_chroot_shell_cmds.extend(
         [
-            # Regenerate after all sensor packages and hooks have run so both
-            # /boot and /boot/firmware contain the final RP1-capable initramfs.
-            'update-initramfs -u -k all',
+            # Install the matched Raspberry Pi kernel, modules, and DTBs after
+            # all other package hooks have run. Debian's generic kernel is not
+            # installed for Pi 5, so raspi-firmware selects this kernel.
+            'rpi_kernel_package="$(dpkg-deb -f /root/rpi5-kernel.deb Package)"',
+            'rpi_kernel_release="${rpi_kernel_package#linux-image-}"',
+            'case "$rpi_kernel_package" in linux-image-*) ;; *) echo "Unexpected Pi kernel package: $rpi_kernel_package" >&2; exit 1 ;; esac',
+            'dpkg -i /root/rpi5-kernel.deb',
+            'depmod "$rpi_kernel_release"',
+            'if [ -e "/boot/initrd.img-$rpi_kernel_release" ]; then',
+            '    update-initramfs -u -k "$rpi_kernel_release"',
+            'else',
+            '    update-initramfs -c -k "$rpi_kernel_release"',
+            'fi',
+            # Record the selected release for support and future update hooks.
+            'printf "%s\\n" "$rpi_kernel_release" > /etc/hedgehog-rpi-kernel-release',
+            'rm -f /root/rpi5-kernel.deb',
+            # Validate the downstream configuration needed for USB-root boot,
+            # temperature sensing, and the four-pin Pi 5 PWM fan connector.
+            'kernel_config="/boot/config-$rpi_kernel_release"',
+            "grep -Eq '^CONFIG_THERMAL=y$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_BCM2711_THERMAL=(y|m)$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_SENSORS_PWM_FAN=(y|m)$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_PWM_RP1=(y|m)$' \"$kernel_config\"",
+            'test -s "/usr/lib/linux-image-$rpi_kernel_release/broadcom/bcm2712-d-rpi-5-b.dtb"',
+            'test -s "/boot/firmware/bcm2712-d-rpi-5-b.dtb"',
+            'test -s "/boot/firmware/vmlinuz-$rpi_kernel_release"',
+            'test -s "/boot/firmware/initrd.img-$rpi_kernel_release"',
             "grep -Fxq 'device_tree=bcm2712-d-rpi-5-b.dtb' /boot/firmware/config.txt",
-            "for initrd in /boot/initrd.img-*; do "
-            "lsinitrd \"$initrd\" | grep -q '/irq-bcm2712-mip[.]ko' || exit 1; "
-            "lsinitrd \"$initrd\" | grep -q '/rp1_pci[.]ko' || exit 1; "
-            "done",
+            'grep -Fxq "kernel=vmlinuz-$rpi_kernel_release" /boot/firmware/config.txt',
+            'grep -Fxq "initramfs initrd.img-$rpi_kernel_release" /boot/firmware/config.txt',
+            'lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -q "/irq-bcm2712-mip[.]ko"',
+            'lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -q "/rp1_pci[.]ko"',
         ]
     )
 
@@ -194,7 +228,6 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__ARCH__', arch)
             .replace('__FIRMWARE_COMPONENT__', firmware_component)
             .replace('__FIRMWARE_COMPONENT_OLD__', firmware_component_old)
-            .replace('__LINUX_IMAGE__', linux)
             .replace('__DTB__', dtb)
             .replace('__WIRELESS_FIRMWARE__', wireless_firmware)
             .replace('__BLUETOOTH_FIRMWARE__', bluetooth_firmware)
@@ -206,6 +239,7 @@ with open('raspi_master.yaml', 'r') as in_file:
         #            .replace('__BUILDTIME__', buildtime)
 
         out_text = align_replace(out_text, '- __EXTRA_PRE_APT_STEPS__', extra_pre_apt_steps)
+        out_text = align_replace(out_text, '- __LINUX_PACKAGES__', [f'- {package}' for package in linux_packages])
         out_text = align_replace(out_text, '__EXTRA_ROOT_SHELL_CMDS__', extra_root_shell_cmds)
         out_text = align_replace(out_text, '__EXTRA_CHROOT_SHELL_CMDS__', extra_chroot_shell_cmds)
         out_text = align_replace(out_text, '__FINAL_CHROOT_SHELL_CMDS__', final_chroot_shell_cmds)

@@ -104,7 +104,7 @@ steps:
       - ssh
       - wpasupplicant
       - systemd-timesyncd
-      - __LINUX_IMAGE__
+      - __LINUX_PACKAGES__
       - raspi-firmware
       - __WIRELESS_FIRMWARE__
       - __BLUETOOTH_FIRMWARE__
@@ -161,7 +161,12 @@ steps:
   # Copy the relevant device tree files to the boot partition
   - chroot: tag-root
     shell: |
-      install -m 644 -o root -g root __DTB__ /boot/firmware/
+      # Pi 4 gets its DTBs from Debian's kernel package here. Pi 5's matched
+      # downstream DTBs arrive later with the locally built kernel package.
+      for source_dtb in __DTB__; do
+        [ -e "$source_dtb" ] || continue
+        install -m 644 -o root -g root "$source_dtb" /boot/firmware/
+      done
 
   # Clean up archive cache (likely not useful) and lists (likely outdated) to
   # reduce image size by several hundred megabytes.
