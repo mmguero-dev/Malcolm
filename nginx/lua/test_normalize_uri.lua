@@ -162,6 +162,8 @@ check("dot to arkime sessions.pcap",        "/./arkime/api/sessions.pcap",      
 check("dot to upload/file (reporter path)", "/./upload/file",                     "/upload/file")
 check("multiple leading dot segments",      "/./././upload",              "/upload")
 check("trailing dot",                       "/upload/.",                  "/upload")
+check("trailing dot-slash",                 "/upload/./",                 "/upload/")
+check("trailing double-dot",               "/upload/x/..",               "/upload")
 check("dot in middle of path",              "/upload/./file",             "/upload/file")
 -- admin_login (third arm of auth/htadmin/admin_login pattern)
 check("dot to admin_login",                 "/./admin_login",             "/admin_login")
