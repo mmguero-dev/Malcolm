@@ -34,6 +34,7 @@ kubernetes
 malcolm-iso
 hedgehog-raspi
 nginx/nginx_ldap*.conf
+nginx/lua/test*.lua
 pcap
 _site
 shared/bin/malcolm_constants.py
