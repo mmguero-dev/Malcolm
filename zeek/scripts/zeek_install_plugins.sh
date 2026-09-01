@@ -149,7 +149,7 @@ ZKG_GITHUB_URLS=(
   "https://github.com/corelight/zeek-xor-exe-plugin|master"
   "https://github.com/corelight/zerologon"
   "https://github.com/cybera/zeek-sniffpass"
-  "https://github.com/FoxIO-LLC/ja4|40aa9321be95793cc361ba1edd6cf14f12707486"
+  "https://github.com/FoxIO-LLC/ja4|896b951e438c2979e0ef077a94ad390b1c973c23"
   "https://github.com/J-Gras/zeek-fuzzy-hashing|topic/jgras/hash-all-files"
   "https://github.com/mmguero-dev/bzar"
   "https://github.com/corelight/json-streaming-logs|master"
