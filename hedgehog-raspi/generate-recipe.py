@@ -85,7 +85,7 @@ if version == '5':
         '- create-file: /etc/dracut.conf.d/raspi-usb.conf',
         '  contents: |',
         '    hostonly="no"',
-        '    force_drivers+=" irq_bcm2712_mip rp1_pci xhci_hcd xhci_plat_hcd usb_storage uas sd_mod scsi_mod "',
+        '    force_drivers+=" irq_bcm2712_mip xhci_hcd xhci_plat_hcd usb_storage uas sd_mod scsi_mod "',
         '',
         '# Force the D-step Pi 5 device tree. Keeping this in raspi-firmware-custom',
         '# ensures later kernel and firmware updates preserve the setting.',
@@ -153,6 +153,8 @@ if version == '5':
             "grep -Eq '^CONFIG_BCM2711_THERMAL=(y|m)$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_SENSORS_PWM_FAN=(y|m)$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_PWM_RP1=(y|m)$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_PCIE_BRCMSTB=y$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_MFD_RP1=y$' \"$kernel_config\"",
             'test -s "/usr/lib/linux-image-$rpi_kernel_release/broadcom/bcm2712-d-rpi-5-b.dtb"',
             'test -s "/boot/firmware/bcm2712-d-rpi-5-b.dtb"',
             'test -s "/boot/firmware/vmlinuz-$rpi_kernel_release"',
@@ -160,8 +162,15 @@ if version == '5':
             "grep -Fxq 'device_tree=bcm2712-d-rpi-5-b.dtb' /boot/firmware/config.txt",
             'grep -Fxq "kernel=vmlinuz-$rpi_kernel_release" /boot/firmware/config.txt',
             'grep -Fxq "initramfs initrd.img-$rpi_kernel_release" /boot/firmware/config.txt',
-            'lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -q "/irq-bcm2712-mip[.]ko"',
-            'lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -q "/rp1_pci[.]ko"',
+            # Early drivers can be built into Image or supplied by initramfs.
+            'modules_builtin="/lib/modules/$rpi_kernel_release/modules.builtin"',
+            'grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko"',
+            'grep -Eq "/pcie[-_]brcmstb[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/pcie[-_]brcmstb[.]ko"',
+            'grep -Eq "/rp1[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/rp1[.]ko"',
+            'grep -Eq "/xhci[-_]hcd[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/xhci[-_]hcd[.]ko"',
+            'grep -Eq "/xhci[-_]plat[-_]hcd[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/xhci[-_]plat[-_]hcd[.]ko"',
+            'grep -Eq "/usb[-_]storage[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/usb[-_]storage[.]ko"',
+            'grep -Eq "/uas[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/uas[.]ko"',
         ]
     )
 

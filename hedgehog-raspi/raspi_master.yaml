@@ -184,6 +184,11 @@ steps:
   # sure we don't lose label-based booting.
   - chroot: tag-root
     shell: |
+      # Model-specific work must run first. For Pi 5 this installs the local
+      # downstream kernel package, whose raspi-firmware hook creates the boot
+      # files edited below.
+      __EXTRA_CHROOT_SHELL_CMDS__
+
       # raspi-firmware may generate a root device based on the build
       # environment, such as /dev/mmcblk0p2 or /dev/mapper/loop0p2.
       # Always replace the complete root= argument with the filesystem label.
@@ -203,8 +208,6 @@ steps:
       sed -i \
         's/^#ROOTPART=.*/ROOTPART=LABEL=RASPIROOT/' \
         /etc/default/raspi*-firmware
-
-      __EXTRA_CHROOT_SHELL_CMDS__
 
       # Validate the final kernel command line.
       grep -Eq \

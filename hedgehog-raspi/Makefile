@@ -12,8 +12,8 @@ RPI_KERNEL_REF ?= rpi-6.18.y
 RPI_KERNEL_JOBS ?= $(shell nproc)
 RPI_KERNEL_DEB := build/rpi5-kernel.deb
 RPI_KERNEL_BUILD_DEPS := \
-	bc bison build-essential device-tree-compiler dpkg-dev dwarves fakeroot \
-	flex git libelf-dev libssl-dev python3 rsync
+	bc bison build-essential debhelper device-tree-compiler dpkg-dev dwarves \
+	fakeroot flex git libdw-dev libelf-dev libssl-dev python3 rsync
 
 platforms := \
   $(foreach rel,$(BUILD_RELEASES_4),raspi_4_$(rel)) \

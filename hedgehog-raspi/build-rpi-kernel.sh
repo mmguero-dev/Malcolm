@@ -16,6 +16,7 @@ package_dir="${build_root}/packages"
 rpi_kernel_repo="${RPI_KERNEL_REPO:-https://github.com/raspberrypi/linux.git}"
 rpi_kernel_ref="${RPI_KERNEL_REF:-rpi-6.18.y}"
 rpi_kernel_jobs="${RPI_KERNEL_JOBS:-$(nproc)}"
+reuse_packages="${RPI_KERNEL_REUSE_PACKAGES:-0}"
 
 required_commands=(
     bc bison dpkg-buildpackage dpkg-deb dtc flex git make rsync
@@ -29,48 +30,55 @@ for command_name in "${required_commands[@]}"; do
 done
 
 mkdir -p "$output_dir" "$build_root"
-rm -rf "$source_dir" "$package_dir"
-mkdir -p "$package_dir"
 
-git clone --depth=1 --branch "$rpi_kernel_ref" "$rpi_kernel_repo" "$source_dir"
+if [[ "$reuse_packages" == "1" ]]; then
+    if [[ ! -d "$package_dir" ]]; then
+        echo "No completed kernel packages found in $package_dir" >&2
+        exit 1
+    fi
+else
+    rm -rf "$source_dir" "$package_dir"
+    mkdir -p "$package_dir"
 
-pushd "$source_dir" >/dev/null
+    git clone --depth=1 --branch "$rpi_kernel_ref" "$rpi_kernel_repo" "$source_dir"
 
-make bcm2712_defconfig
+    pushd "$source_dir" >/dev/null
 
-# Give the package a distinct release and guarantee the drivers used by the
-# Pi 5 temperature sensor, RP1 PWM controller, and four-pin fan connector.
-scripts/config --set-str LOCALVERSION "-hedgehog-rpi"
-scripts/config --disable LOCALVERSION_AUTO
-scripts/config --module BCM2711_THERMAL
-scripts/config --module SENSORS_PWM_FAN
-scripts/config --module PWM_RP1
-make olddefconfig
+    make bcm2712_defconfig
 
-grep -Eq '^CONFIG_THERMAL=y$' .config
-grep -Eq '^CONFIG_BCM2711_THERMAL=(y|m)$' .config
-grep -Eq '^CONFIG_SENSORS_PWM_FAN=(y|m)$' .config
-grep -Eq '^CONFIG_PWM_RP1=(y|m)$' .config
+    # Give the package a distinct release and guarantee the drivers used by the
+    # Pi 5 temperature sensor, RP1 PWM controller, and four-pin fan connector.
+    scripts/config --set-str LOCALVERSION "-hedgehog-rpi"
+    scripts/config --disable LOCALVERSION_AUTO
+    scripts/config --module BCM2711_THERMAL
+    scripts/config --module SENSORS_PWM_FAN
+    scripts/config --module PWM_RP1
+    make olddefconfig
 
-kernel_release="$(make -s kernelrelease)"
-kernel_version="$(make -s kernelversion)"
-package_version="${kernel_version}-1hedgehog1"
+    grep -Eq '^CONFIG_THERMAL=y$' .config
+    grep -Eq '^CONFIG_BCM2711_THERMAL=(y|m)$' .config
+    grep -Eq '^CONFIG_SENSORS_PWM_FAN=(y|m)$' .config
+    grep -Eq '^CONFIG_PWM_RP1=(y|m)$' .config
 
-make -j"$rpi_kernel_jobs" bindeb-pkg KDEB_PKGVERSION="$package_version"
+    kernel_version="$(make -s kernelversion)"
+    package_version="${kernel_version}-1hedgehog1"
 
-popd >/dev/null
+    make -j"$rpi_kernel_jobs" bindeb-pkg KDEB_PKGVERSION="$package_version"
 
-find "$build_root" -maxdepth 1 -type f -name '*.deb' -exec mv -t "$package_dir" {} +
+    popd >/dev/null
+
+    find "$build_root" -maxdepth 1 -type f -name '*.deb' -exec mv -t "$package_dir" {} +
+fi
 
 mapfile -t image_debs < <(
     find "$package_dir" -maxdepth 1 -type f \
-        -name "linux-image-${kernel_release}_*.deb" \
+        -name 'linux-image-*_*.deb' \
         ! -name '*-dbg_*' \
         -print
 )
 
 if [[ ${#image_debs[@]} -ne 1 ]]; then
-    echo "Expected one linux-image package for $kernel_release; found ${#image_debs[@]}" >&2
+    echo "Expected one linux-image package; found ${#image_debs[@]}" >&2
     printf '%s\n' "${image_debs[@]}" >&2
     exit 1
 fi
@@ -78,28 +86,89 @@ fi
 image_deb="${image_debs[0]}"
 package_name="$(dpkg-deb -f "$image_deb" Package)"
 
-if [[ "$package_name" != "linux-image-${kernel_release}" ]]; then
+if [[ "$package_name" != linux-image-* ]]; then
     echo "Unexpected kernel package name: $package_name" >&2
     exit 1
 fi
 
-package_listing="$(dpkg-deb -c "$image_deb")"
-grep -q "usr/lib/linux-image-${kernel_release}/broadcom/bcm2712-d-rpi-5-b.dtb" <<<"$package_listing"
-grep -Eq "lib/modules/${kernel_release}/.*/bcm2711_thermal[.]ko" <<<"$package_listing"
-grep -Eq "lib/modules/${kernel_release}/.*/pwm-fan[.]ko" <<<"$package_listing"
-grep -Eq "lib/modules/${kernel_release}/.*/pwm-rp1[.]ko" <<<"$package_listing"
-grep -Eq "lib/modules/${kernel_release}/.*/irq-bcm2712-mip[.]ko" <<<"$package_listing"
-grep -Eq "lib/modules/${kernel_release}/.*/rp1_pci[.]ko" <<<"$package_listing"
+kernel_release="${package_name#linux-image-}"
 
-dtb_dir="$(mktemp -d -p "$build_root" dtb-check.XXXXXX)"
-trap 'rm -rf "$dtb_dir"' EXIT
-dpkg-deb -x "$image_deb" "$dtb_dir"
-dtc -I dtb -O dts \
-    "$dtb_dir/usr/lib/linux-image-${kernel_release}/broadcom/bcm2712-d-rpi-5-b.dtb" \
-    >"$dtb_dir/bcm2712-d-rpi-5-b.dts" 2>/dev/null
-grep -q 'cooling_fan' "$dtb_dir/bcm2712-d-rpi-5-b.dts"
-grep -q 'compatible = "pwm-fan"' "$dtb_dir/bcm2712-d-rpi-5-b.dts"
-grep -q 'thermal-zones' "$dtb_dir/bcm2712-d-rpi-5-b.dts"
+package_listing="$(dpkg-deb -c "$image_deb")"
+
+package_root="$(mktemp -d -p "$build_root" package-check.XXXXXX)"
+trap 'rm -rf "$package_root"' EXIT
+dpkg-deb -x "$image_deb" "$package_root"
+
+require_package_entry() {
+    local entry="$1"
+    if ! grep -Fq -- "$entry" <<<"$package_listing"; then
+        echo "Kernel package is missing required entry: $entry" >&2
+        exit 1
+    fi
+}
+
+require_package_entry "usr/lib/linux-image-${kernel_release}/broadcom/bcm2712-d-rpi-5-b.dtb"
+require_package_entry "/bcm2711_thermal.ko"
+require_package_entry "/pwm-fan.ko"
+require_package_entry "/pwm-rp1.ko"
+
+require_kernel_driver() {
+    local module_file="$1"
+    local module_file_alt
+    local modules_dir="$package_root/lib/modules/$kernel_release"
+
+    if [[ "$module_file" == *-* ]]; then
+        module_file_alt="${module_file//-/_}"
+    else
+        module_file_alt="${module_file//_/-}"
+    fi
+
+    if find "$modules_dir" -type f \
+        \( -name "${module_file}.ko" -o -name "${module_file}.ko.*" \
+           -o -name "${module_file_alt}.ko" -o -name "${module_file_alt}.ko.*" \) \
+        -print -quit | grep -q .; then
+        return
+    fi
+
+    if [[ -f "$modules_dir/modules.builtin" ]] &&
+        grep -Eq "/(${module_file}|${module_file_alt})[.]ko$" \
+            "$modules_dir/modules.builtin"; then
+        return
+    fi
+
+    echo "Kernel package has neither modular nor built-in driver: $module_file" >&2
+    exit 1
+}
+
+# The downstream bcm2712_defconfig uses the RP1 MFD driver. Its Pi 5 PCIe,
+# RP1, and USB-root path is built into Image and recorded in modules.builtin.
+require_kernel_driver "irq-bcm2712-mip"
+require_kernel_driver "pcie-brcmstb"
+require_kernel_driver "rp1"
+require_kernel_driver "xhci-hcd"
+require_kernel_driver "xhci-pci"
+require_kernel_driver "xhci-plat-hcd"
+require_kernel_driver "usb-storage"
+require_kernel_driver "uas"
+
+dtb_path="$package_root/usr/lib/linux-image-${kernel_release}/broadcom/bcm2712-d-rpi-5-b.dtb"
+dts_path="$package_root/bcm2712-d-rpi-5-b.dts"
+if ! dtc -I dtb -O dts "$dtb_path" >"$dts_path" 2>/dev/null; then
+    echo "Unable to decompile required device tree: $dtb_path" >&2
+    exit 1
+fi
+
+require_dts_entry() {
+    local entry="$1"
+    if ! grep -Fq -- "$entry" "$dts_path"; then
+        echo "Pi 5 device tree is missing required entry: $entry" >&2
+        exit 1
+    fi
+}
+
+require_dts_entry 'cooling_fan'
+require_dts_entry 'compatible = "pwm-fan"'
+require_dts_entry 'thermal-zones'
 
 install -m 0644 "$image_deb" "$output_deb"
 
