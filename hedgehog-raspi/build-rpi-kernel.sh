@@ -12,6 +12,7 @@ output_dir="$(dirname "$output_deb")"
 build_root="${output_dir}/rpi-kernel"
 source_dir="${build_root}/linux"
 package_dir="${build_root}/packages"
+overlay_cache_dir="${package_dir}/overlays"
 
 rpi_kernel_repo="${RPI_KERNEL_REPO:-https://github.com/raspberrypi/linux.git}"
 rpi_kernel_ref="${RPI_KERNEL_REF:-rpi-6.18.y}"
@@ -45,6 +46,10 @@ else
     pushd "$source_dir" >/dev/null
 
     make bcm2712_defconfig
+    # Malcolm's native dependencies (fluent-bit) require a 4 KiB userspace page size.
+    scripts/config --enable ARM64_4K_PAGES
+    scripts/config --disable ARM64_16K_PAGES
+    scripts/config --disable ARM64_64K_PAGES
 
     # Give the package a distinct release and guarantee the drivers used by the
     # Pi 5 temperature sensor, RP1 PWM controller, and four-pin fan connector.
@@ -53,12 +58,19 @@ else
     scripts/config --module BCM2711_THERMAL
     scripts/config --module SENSORS_PWM_FAN
     scripts/config --module PWM_RP1
+    scripts/config --enable FB_SIMPLE
     make olddefconfig
-
+    grep -Eq '^CONFIG_ARM64_4K_PAGES=y$' .config
+    if grep -Eq '^CONFIG_ARM64_(16K|64K)_PAGES=y$' .config; then
+        echo "Kernel configuration selected an unsupported page size" >&2
+        exit 1
+    fi
     grep -Eq '^CONFIG_THERMAL=y$' .config
     grep -Eq '^CONFIG_BCM2711_THERMAL=(y|m)$' .config
     grep -Eq '^CONFIG_SENSORS_PWM_FAN=(y|m)$' .config
     grep -Eq '^CONFIG_PWM_RP1=(y|m)$' .config
+    grep -Eq '^CONFIG_DRM_VC4=(y|m)$' .config
+    grep -Eq '^CONFIG_FB_SIMPLE=y$' .config
 
     kernel_version="$(make -s kernelversion)"
     package_version="${kernel_version}-1hedgehog1"
@@ -68,6 +80,39 @@ else
     popd >/dev/null
 
     find "$build_root" -maxdepth 1 -type f -name '*.deb' -exec mv -t "$package_dir" {} +
+fi
+
+# bindeb-pkg installs the board DTBs, but it does not reliably include the
+# complete Raspberry Pi overlay set in linux-image. Cache the overlays built
+# from the same source revision so reuse mode can repack them without another
+# kernel compilation.
+if [[ ! -s "$overlay_cache_dir/vc4-kms-v3d-pi5.dtbo" ]]; then
+    overlay_source_dir=""
+    for candidate in \
+        "$source_dir/arch/arm64/boot/dts/overlays" \
+        "$source_dir/arch/arm/boot/dts/overlays"; do
+        if [[ -s "$candidate/vc4-kms-v3d-pi5.dtbo" ]]; then
+            overlay_source_dir="$candidate"
+            break
+        fi
+    done
+
+    if [[ -z "$overlay_source_dir" ]]; then
+        echo "Built Pi 5 KMS overlay not found in the kernel source tree" >&2
+        exit 1
+    fi
+
+    mkdir -p "$overlay_cache_dir"
+    rsync -a \
+        --include='*.dtbo' \
+        --include='README*' \
+        --exclude='*' \
+        "$overlay_source_dir/" "$overlay_cache_dir/"
+fi
+
+if [[ ! -s "$overlay_cache_dir/vc4-kms-v3d-pi5.dtbo" ]]; then
+    echo "Missing required cached overlay: vc4-kms-v3d-pi5.dtbo" >&2
+    exit 1
 fi
 
 mapfile -t image_debs < <(
@@ -93,11 +138,22 @@ fi
 
 kernel_release="${package_name#linux-image-}"
 
-package_listing="$(dpkg-deb -c "$image_deb")"
-
 package_root="$(mktemp -d -p "$build_root" package-check.XXXXXX)"
 trap 'rm -rf "$package_root"' EXIT
-dpkg-deb -x "$image_deb" "$package_root"
+dpkg-deb -R "$image_deb" "$package_root"
+
+# Add the complete overlay set to the kernel package. The image recipe copies
+# this directory to the firmware partition after dpkg installs the kernel.
+package_overlay_dir="$package_root/usr/lib/linux-image-${kernel_release}/broadcom/overlays"
+install -d -m 0755 "$package_overlay_dir"
+rsync -a "$overlay_cache_dir/" "$package_overlay_dir/"
+
+if [[ ! -s "$package_overlay_dir/vc4-kms-v3d-pi5.dtbo" ]]; then
+    echo "Kernel package staging tree is missing vc4-kms-v3d-pi5.dtbo" >&2
+    exit 1
+fi
+
+package_listing="$(find "$package_root" -printf '%P\n')"
 
 require_package_entry() {
     local entry="$1"
@@ -108,9 +164,34 @@ require_package_entry() {
 }
 
 require_package_entry "usr/lib/linux-image-${kernel_release}/broadcom/bcm2712-d-rpi-5-b.dtb"
+require_package_entry "usr/lib/linux-image-${kernel_release}/broadcom/overlays/vc4-kms-v3d-pi5.dtbo"
 require_package_entry "/bcm2711_thermal.ko"
 require_package_entry "/pwm-fan.ko"
 require_package_entry "/pwm-rp1.ko"
+
+package_kernel_config="$package_root/boot/config-${kernel_release}"
+if [[ ! -s "$package_kernel_config" ]]; then
+    echo "Kernel package is missing configuration: boot/config-${kernel_release}" >&2
+    exit 1
+fi
+
+require_builtin_driver() {
+    local config_symbol="$1"
+    local driver_name="$2"
+
+    if ! grep -Fxq "CONFIG_${config_symbol}=y" "$package_kernel_config"; then
+        echo "Kernel package is missing built-in driver: $driver_name (CONFIG_${config_symbol}=y)" >&2
+        exit 1
+    fi
+}
+
+require_builtin_driver BCM2712_MIP irq-bcm2712-mip
+require_builtin_driver PCIE_BRCMSTB pcie-brcmstb
+require_builtin_driver MFD_RP1 rp1
+require_builtin_driver USB_XHCI_HCD xhci-hcd
+require_builtin_driver USB_XHCI_PLATFORM xhci-plat-hcd
+require_builtin_driver USB_STORAGE usb-storage
+require_builtin_driver USB_UAS uas
 
 require_kernel_driver() {
     local module_file="$1"
@@ -169,7 +250,16 @@ require_dts_entry() {
 require_dts_entry 'cooling_fan'
 require_dts_entry 'compatible = "pwm-fan"'
 require_dts_entry 'thermal-zones'
+rm -f "$dts_path"
 
-install -m 0644 "$image_deb" "$output_deb"
+# Refresh package checksums after adding the overlays, then build the final
+# artifact consumed by vmdb2.
+(
+    cd "$package_root"
+    find . -path './DEBIAN' -prune -o -type f -printf '%P\0' \
+        | sort -z \
+        | xargs -0 md5sum >DEBIAN/md5sums
+)
+dpkg-deb --build --root-owner-group "$package_root" "$output_deb"
 
 echo "Built $output_deb ($kernel_release)"

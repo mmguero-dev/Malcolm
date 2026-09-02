@@ -69,8 +69,10 @@ backports_enable = False
 backports_suite = '%s-backports' % suite
 
 # Serial console:
-if version in ['4', '5']:
+if version == '4':
     serial = 'ttyS1,115200'
+else:
+    serial = 'ttyAMA0,115200'
 
 # Model-specific recipe steps that must run before the initial kernel install.
 extra_pre_apt_steps = []
@@ -87,11 +89,27 @@ if version == '5':
         '    hostonly="no"',
         '    force_drivers+=" irq_bcm2712_mip xhci_hcd xhci_plat_hcd usb_storage uas sd_mod scsi_mod "',
         '',
-        '# Force the D-step Pi 5 device tree. Keeping this in raspi-firmware-custom',
-        '# ensures later kernel and firmware updates preserve the setting.',
+        '# Force the D-step Pi 5 device tree and downstream VC4/KMS display path.',
+        '# Keeping these in raspi-firmware-custom makes raspi-firmware preserve',
+        '# them when the kernel or firmware package is updated.',
         '- create-file: /etc/default/raspi-firmware-custom',
         '  contents: |',
         '    device_tree=bcm2712-d-rpi-5-b.dtb',
+        '    upstream_kernel=1',
+        '    dtoverlay=vc4-kms-v3d-pi5',
+        '    max_framebuffers=2',
+        '    disable_fw_kms_setup=1',
+        '    dtparam=cooling_fan=on',
+    ]
+
+extra_kernel_args = []
+
+if version == '5':
+    # VC4 remains blacklisted while the firmware mailbox failure is unresolved:
+    # https://github.com/raspberrypi/linux/issues/7230
+    extra_kernel_args = [
+        'module_blacklist=vc4',
+        'modprobe.blacklist=vc4',
     ]
 
 extra_chroot_shell_cmds = []
@@ -137,6 +155,13 @@ if version == '5':
             'rpi_kernel_release="${rpi_kernel_package#linux-image-}"',
             'case "$rpi_kernel_package" in linux-image-*) ;; *) echo "Unexpected Pi kernel package: $rpi_kernel_package" >&2; exit 1 ;; esac',
             'dpkg -i /root/rpi5-kernel.deb',
+            # bindeb-pkg does not install the complete overlay set to the FAT
+            # firmware partition. Copy the overlays packaged from the exact
+            # same downstream source revision as the kernel and DTBs.
+            'overlay_source="/usr/lib/linux-image-$rpi_kernel_release/broadcom/overlays"',
+            'test -s "$overlay_source/vc4-kms-v3d-pi5.dtbo"',
+            'install -d -m 0755 /boot/firmware/overlays',
+            'cp -a "$overlay_source/." /boot/firmware/overlays/',
             'depmod "$rpi_kernel_release"',
             'if [ -e "/boot/initrd.img-$rpi_kernel_release" ]; then',
             '    update-initramfs -u -k "$rpi_kernel_release"',
@@ -153,15 +178,24 @@ if version == '5':
             "grep -Eq '^CONFIG_BCM2711_THERMAL=(y|m)$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_SENSORS_PWM_FAN=(y|m)$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_PWM_RP1=(y|m)$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_DRM_VC4=(y|m)$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_PCIE_BRCMSTB=y$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_MFD_RP1=y$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_ARM64_4K_PAGES=y$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_FB_SIMPLE=y$' \"$kernel_config\"",
             'test -s "/usr/lib/linux-image-$rpi_kernel_release/broadcom/bcm2712-d-rpi-5-b.dtb"',
             'test -s "/boot/firmware/bcm2712-d-rpi-5-b.dtb"',
             'test -s "/boot/firmware/vmlinuz-$rpi_kernel_release"',
             'test -s "/boot/firmware/initrd.img-$rpi_kernel_release"',
+            'test -s "/boot/firmware/overlays/vc4-kms-v3d-pi5.dtbo"',
             "grep -Fxq 'device_tree=bcm2712-d-rpi-5-b.dtb' /boot/firmware/config.txt",
+            "grep -Fxq 'upstream_kernel=1' /boot/firmware/config.txt",
+            "grep -Fxq 'dtoverlay=vc4-kms-v3d-pi5' /boot/firmware/config.txt",
+            "grep -Fxq 'max_framebuffers=2' /boot/firmware/config.txt",
+            "grep -Fxq 'disable_fw_kms_setup=1' /boot/firmware/config.txt",
             'grep -Fxq "kernel=vmlinuz-$rpi_kernel_release" /boot/firmware/config.txt',
             'grep -Fxq "initramfs initrd.img-$rpi_kernel_release" /boot/firmware/config.txt',
+            "grep -Fxq 'dtparam=cooling_fan=on' /boot/firmware/config.txt",
             # Early drivers can be built into Image or supplied by initramfs.
             'modules_builtin="/lib/modules/$rpi_kernel_release/modules.builtin"',
             'grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko"',
@@ -241,6 +275,7 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__WIRELESS_FIRMWARE__', wireless_firmware)
             .replace('__BLUETOOTH_FIRMWARE__', bluetooth_firmware)
             .replace('__SERIAL_CONSOLE__', serial)
+            .replace('__EXTRA_KERNEL_ARGS__', ' '.join(extra_kernel_args))
             .replace('__HOST__', hostname)
             .replace('__BUILDTIME__', buildtime)
         )

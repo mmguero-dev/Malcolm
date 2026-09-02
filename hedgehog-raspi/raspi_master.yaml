@@ -205,6 +205,18 @@ steps:
           /boot/firmware/cmdline.txt
       fi
 
+      # Add model-specific kernel arguments idempotently. Pi 5 currently uses
+      # the firmware-created simple framebuffer because VC4 cannot initialize
+      # while the Raspberry Pi firmware mailbox is returning invalid statuses.
+      for kernel_arg in __EXTRA_KERNEL_ARGS__; do
+        if ! tr ' ' '\n' < /boot/firmware/cmdline.txt |
+          grep -Fxq "$kernel_arg"; then
+          sed -E -i \
+            "s#(^|[[:space:]])root=#\1${kernel_arg} root=#" \
+            /boot/firmware/cmdline.txt
+        fi
+      done
+
       sed -i \
         's/^#ROOTPART=.*/ROOTPART=LABEL=RASPIROOT/' \
         /etc/default/raspi*-firmware
@@ -219,6 +231,15 @@ steps:
         /boot/firmware/cmdline.txt; then
         echo "Unexpected device-specific root in cmdline.txt:" >&2
         cat /boot/firmware/cmdline.txt >&2
+        exit 1
+      fi
+
+      # Raspberry Pi firmware requires the entire kernel command line to be
+      # stored on one physical line.
+      cmdline_lines="$(wc -l < /boot/firmware/cmdline.txt)"
+      if [ "$cmdline_lines" -ne 1 ]; then
+        echo "cmdline.txt must contain exactly one line:" >&2
+        nl -ba /boot/firmware/cmdline.txt >&2
         exit 1
       fi
 
