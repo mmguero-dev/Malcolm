@@ -205,21 +205,42 @@ steps:
           /boot/firmware/cmdline.txt
       fi
 
-      # Add model-specific kernel arguments idempotently. Pi 5 currently uses
-      # the firmware-created simple framebuffer because VC4 cannot initialize
-      # while the Raspberry Pi firmware mailbox is returning invalid statuses.
+      # Persist model-specific arguments so raspi-firmware retains them when
+      # regenerating /boot/firmware/cmdline.txt during first boot or upgrades.
+      # Pi 5 uses simplefb while the firmware mailbox failure prevents VC4
+      # from initializing successfully.
       for kernel_arg in __EXTRA_KERNEL_ARGS__; do
+        persistent_cmdline="$(
+          tr '\n' ' ' < /etc/default/raspi-extra-cmdline |
+            xargs
+        )"
+
+        if ! printf '%s\n' "$persistent_cmdline" |
+          tr ' ' '\n' |
+          grep -Fxq "$kernel_arg"; then
+          persistent_cmdline="${persistent_cmdline:+$persistent_cmdline }$kernel_arg"
+          printf '%s\n' "$persistent_cmdline" \
+            > /etc/default/raspi-extra-cmdline
+        fi
+
+        # Update the currently generated command line as well.
         if ! tr ' ' '\n' < /boot/firmware/cmdline.txt |
           grep -Fxq "$kernel_arg"; then
           sed -E -i \
             "s#(^|[[:space:]])root=#\1${kernel_arg} root=#" \
             /boot/firmware/cmdline.txt
         fi
-        if ! tr ' ' '\n' < /boot/firmware/cmdline.txt |
-          grep -Fxq "$kernel_arg"; then
-          echo "Failed to add kernel argument: $kernel_arg" >&2
-          exit 1
-        fi
+
+        for cmdline_file in \
+          /etc/default/raspi-extra-cmdline \
+          /boot/firmware/cmdline.txt
+        do
+          if ! tr ' ' '\n' < "$cmdline_file" |
+            grep -Fxq "$kernel_arg"; then
+            echo "Failed to add kernel argument to $cmdline_file: $kernel_arg" >&2
+            exit 1
+          fi
+        done
       done
 
       sed -i \
