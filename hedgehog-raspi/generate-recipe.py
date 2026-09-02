@@ -88,6 +88,12 @@ if version == '5':
         '  contents: |',
         '    hostonly="no"',
         '    force_drivers+=" irq_bcm2712_mip xhci_hcd xhci_plat_hcd usb_storage uas sd_mod scsi_mod "',
+        '    omit_drivers+=" vc4 "',
+        '- create-file: /etc/modprobe.d/hedgehog-vc4.conf',
+        '  contents: |',
+        '    # Preserve simplefb while the firmware mailbox cannot initialize VC4.',
+        '    blacklist vc4',
+        '    install vc4 /bin/false',
         '',
         '# Force the D-step Pi 5 device tree and downstream VC4/KMS display path.',
         '# Keeping these in raspi-firmware-custom makes raspi-firmware preserve',
@@ -110,6 +116,7 @@ if version == '5':
     extra_kernel_args = [
         'module_blacklist=vc4',
         'modprobe.blacklist=vc4',
+        'rd.driver.blacklist=vc4',
     ]
 
 extra_chroot_shell_cmds = []
@@ -134,9 +141,7 @@ extra_root_shell_cmds = [
 ]
 
 if version == '5':
-    extra_root_shell_cmds.append(
-        f'install -m 0644 {rpi5_kernel_deb} "${{ROOT?}}/root/rpi5-kernel.deb"'
-    )
+    extra_root_shell_cmds.append(f'install -m 0644 {rpi5_kernel_deb} "${{ROOT?}}/root/rpi5-kernel.deb"')
 
 extra_chroot_shell_cmds.extend(
     [
@@ -196,6 +201,12 @@ if version == '5':
             'grep -Fxq "kernel=vmlinuz-$rpi_kernel_release" /boot/firmware/config.txt',
             'grep -Fxq "initramfs initrd.img-$rpi_kernel_release" /boot/firmware/config.txt',
             "grep -Fxq 'dtparam=cooling_fan=on' /boot/firmware/config.txt",
+            "grep -Fxq 'blacklist vc4' /etc/modprobe.d/hedgehog-vc4.conf",
+            "grep -Fxq 'install vc4 /bin/false' /etc/modprobe.d/hedgehog-vc4.conf",
+            "grep -Fq 'omit_drivers+=\" vc4 \"' /etc/dracut.conf.d/raspi-usb.conf",
+            "if lsinitrd \"/boot/initrd.img-$rpi_kernel_release\" | "
+            "grep -Eq '/vc4[.]ko([.]|$)'; then "
+            "echo 'Final initramfs unexpectedly contains vc4.ko' >&2; exit 1; fi",
             # Early drivers can be built into Image or supplied by initramfs.
             'modules_builtin="/lib/modules/$rpi_kernel_release/modules.builtin"',
             'grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko"',
