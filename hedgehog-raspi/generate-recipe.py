@@ -208,7 +208,6 @@ if version == '5':
             "if lsinitrd \"/boot/initrd.img-$rpi_kernel_release\" | "
             "grep -Eq '/vc4[.]ko([.]|$)'; then "
             "echo 'Final initramfs unexpectedly contains vc4.ko' >&2; exit 1; fi",
-            "tr ' ' '\\n' < /boot/firmware/cmdline.txt | grep -Fxq 'rd.driver.blacklist=vc4'",
             # Early drivers can be built into Image or supplied by initramfs.
             'modules_builtin="/lib/modules/$rpi_kernel_release/modules.builtin"',
             'grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko"',

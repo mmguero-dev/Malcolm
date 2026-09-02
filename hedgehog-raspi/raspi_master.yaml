@@ -215,6 +215,11 @@ steps:
             "s#(^|[[:space:]])root=#\1${kernel_arg} root=#" \
             /boot/firmware/cmdline.txt
         fi
+        if ! tr ' ' '\n' < /boot/firmware/cmdline.txt |
+          grep -Fxq "$kernel_arg"; then
+          echo "Failed to add kernel argument: $kernel_arg" >&2
+          exit 1
+        fi
       done
 
       sed -i \
