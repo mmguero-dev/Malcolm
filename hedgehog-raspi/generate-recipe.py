@@ -81,7 +81,7 @@ if version == '5':
         '# Pi 5 USB is provided through RP1. Include and preload the complete',
         '# controller and storage chain so the root filesystem can be on USB.',
         '- shell: |',
-        '    mkdir -p "${ROOT?}/etc/dracut.conf.d"',
+        '    mkdir -p "${ROOT?}/etc/dracut.conf.d" "${ROOT?}/etc/modprobe.d"',
         '  root-fs: tag-root',
         '',
         '- create-file: /etc/dracut.conf.d/raspi-usb.conf',
@@ -89,6 +89,7 @@ if version == '5':
         '    hostonly="no"',
         '    force_drivers+=" irq_bcm2712_mip xhci_hcd xhci_plat_hcd usb_storage uas sd_mod scsi_mod "',
         '    omit_drivers+=" vc4 "',
+        '',
         '- create-file: /etc/modprobe.d/hedgehog-vc4.conf',
         '  contents: |',
         '    # Preserve simplefb while the firmware mailbox cannot initialize VC4.',
@@ -207,6 +208,7 @@ if version == '5':
             "if lsinitrd \"/boot/initrd.img-$rpi_kernel_release\" | "
             "grep -Eq '/vc4[.]ko([.]|$)'; then "
             "echo 'Final initramfs unexpectedly contains vc4.ko' >&2; exit 1; fi",
+            "tr ' ' '\\n' < /boot/firmware/cmdline.txt | grep -Fxq 'rd.driver.blacklist=vc4'",
             # Early drivers can be built into Image or supplied by initramfs.
             'modules_builtin="/lib/modules/$rpi_kernel_release/modules.builtin"',
             'grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko"',
