@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - staging
+      - otkb
     paths:
       - 'freq-server/**'
       - 'Dockerfiles/freq.Dockerfile'

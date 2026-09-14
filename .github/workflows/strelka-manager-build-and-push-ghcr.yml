@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - staging
+      - otkb
     paths:
       - 'Dockerfiles/strelka-manager.Dockerfile'
       - 'container-health-scripts/strelka-manager.sh'

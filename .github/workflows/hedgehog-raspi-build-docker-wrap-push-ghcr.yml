@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - staging
+      - otkb
     paths:
       - 'malcolm-iso/**'
       - 'hedgehog-raspi/**'

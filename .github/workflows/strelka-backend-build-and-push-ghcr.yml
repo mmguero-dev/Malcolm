@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - staging
+      - otkb
     paths:
       - 'Dockerfiles/strelka-backend.Dockerfile'
       - 'container-health-scripts/strelka-backend.sh'
