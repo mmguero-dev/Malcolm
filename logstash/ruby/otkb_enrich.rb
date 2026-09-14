@@ -1,0 +1,498 @@
+def concurrency
+  :shared
+end
+
+require 'faraday'
+require 'json'
+require 'time'
+require 'yaml'
+
+##############################################################################################
+# The fixture and its refresh state are global so every clone of this filter in this Logstash
+# process reads the same immutable snapshot. A different Logstash process has its own snapshot.
+$otkb_json_fixture ||= Concurrent::AtomicReference.new(nil)
+$otkb_json_fixture_refresh_mutex ||= Mutex.new
+$otkb_json_fixture_retry_after ||= Concurrent::AtomicReference.new(0.0)
+
+##############################################################################################
+# These global variables generate optional performance profiling stats for OTKB API calls.
+$otkb_timings_logging_thread_started ||= Concurrent::AtomicFixnum.new(0)
+$otkb_timings ||= Concurrent::Map.new
+$otkb_timings_logging_thread ||= nil
+$otkb_timings_logging_thread_running ||= false
+
+##############################################################################################
+class OtkbConnLazy
+  def initialize(
+    url,
+    token,
+    ssl_verify,
+    debug
+  )
+    @object = nil
+    @url = url
+    @token = token
+    @ssl_verify = ssl_verify
+    @conn_debug = debug
+    @connected = false
+  end
+
+  def method_missing(method, *args, &block)
+    puts "#{method}(#{args.map(&:inspect).join(', ')})" if @conn_debug
+
+    if $otkb_timings_logging_thread_running
+      key = "#{method} #{args[0]}".to_sym
+      start_time = Time.now
+    end
+
+    initialize_object unless @object
+    result = @object.send(method, *args, &block)
+
+    if $otkb_timings_logging_thread_running
+      duration = (Time.now - start_time) * 1000
+      $otkb_timings.compute_if_absent(key) { Concurrent::Array.new } << duration
+    end
+
+    @connected ||= !result.nil?
+    result
+  end
+
+  def respond_to_missing?(method, include_private = false)
+    initialize_object unless @object
+    @object.respond_to?(method, include_private) || super
+  end
+
+  def initialized?
+    !@object.nil? && @connected
+  end
+
+  private
+
+  def initialize_object
+    @object = Faraday.new(@url, ssl: { verify: @ssl_verify }) do |conn|
+      unless @token.nil? || @token.to_s.empty?
+        conn.request :authorization, 'Token', @token
+      end
+      conn.request :url_encoded
+      conn.response :json
+      conn.response :raise_error
+    end
+    @connected = false
+  end
+end
+
+##############################################################################################
+# Evaluates the rule objects stored in zeek_rules and wireshark_rules.
+class OtkbRuleEngine
+  def match?(rule, event_data)
+    case rule
+    when Hash
+      if rule.key?('and')
+        rule['and'].all? { |subrule| match?(subrule, event_data) }
+      elsif rule.key?('or')
+        rule['or'].any? { |subrule| match?(subrule, event_data) }
+      else
+        match_single_rule(rule, event_data)
+      end
+    when Array
+      rule.all? { |subrule| match?(subrule, event_data) }
+    else
+      false
+    end
+  end
+
+  # A larger value represents a rule containing more leaf conditions. This will be used to choose
+  # the most specific function when several functions match the same event.
+  def specificity(rule)
+    case rule
+    when Hash
+      if rule.key?('and')
+        rule['and'].sum { |subrule| specificity(subrule) }
+      elsif rule.key?('or')
+        rule['or'].map { |subrule| specificity(subrule) }.max || 0
+      else
+        rule.key?('field') ? 1 : 0
+      end
+    when Array
+      rule.sum { |subrule| specificity(subrule) }
+    else
+      0
+    end
+  end
+
+  private
+
+  def match_single_rule(rule, event_data)
+    field_path = rule['field']
+    return false if field_path.nil? || field_path.empty?
+
+    if rule.key?('log')
+      log_type = normalize_log_name(rule['log'])
+      field_path = "#{log_type}.#{field_path}"
+    end
+
+    value = dig_field(event_data, field_path)
+    return false if value.nil?
+
+    return value.to_s == rule['eq'].to_s if rule.key?('eq')
+
+    if rule.key?('gte') && rule.key?('lte')
+      return value.to_f >= rule['gte'].to_f && value.to_f <= rule['lte'].to_f
+    end
+
+    return value.to_f >= rule['gte'].to_f if rule.key?('gte')
+    return value.to_f <= rule['lte'].to_f if rule.key?('lte')
+
+    false
+  end
+
+  def normalize_log_name(value)
+    value.to_s.sub(/\.log\z/, '').tr('-', '_').sub(/_general\z/, '')
+  end
+
+  def dig_field(hash, field_path)
+    field_path.split('.').reduce(hash) do |value, key|
+      value.is_a?(Hash) ? value[key] : nil
+    end
+  end
+end
+
+##############################################################################################
+def register(
+  params
+)
+  # Enable or disable the filter using a script parameter or global environment variable.
+  _enabled_str = params['enabled']
+  _enabled_env = params['enabled_env']
+  if _enabled_str.nil? && !_enabled_env.nil?
+    _enabled_str = ENV[_enabled_env]
+  end
+  @otkb_enabled = [1, true, '1', 'true', 't', 'on', 'enabled'].include?(_enabled_str.to_s.downcase)
+
+  # Refresh the complete fixture after this many seconds. Zero loads it once per process.
+  _cache_ttl_val = integer_or_nil(params['cache_ttl'])
+  _cache_ttl_env = params['cache_ttl_env']
+  if (_cache_ttl_val.nil? || _cache_ttl_val.negative?) && !_cache_ttl_env.nil?
+    _cache_ttl_val = integer_or_nil(ENV[_cache_ttl_env])
+  end
+  @cache_ttl = if !_cache_ttl_val.nil? && _cache_ttl_val >= 0
+                 _cache_ttl_val
+               else
+                 300
+               end
+
+  _debug_str = params['debug']
+  _debug_env = params['debug_env']
+  if _debug_str.nil? && !_debug_env.nil?
+    _debug_str = ENV[_debug_env]
+  end
+  @debug_verbose = ['verbose', 'v', 'extra'].include?(_debug_str.to_s.downcase)
+  @debug = @debug_verbose || [1, true, '1', 'true', 't', 'on', 'enabled'].include?(_debug_str.to_s.downcase)
+
+  _debug_timings_str = params['debug_timings']
+  _debug_timings_env = params['debug_timings_env']
+  if _debug_timings_str.nil? && !_debug_timings_env.nil?
+    _debug_timings_str = ENV[_debug_timings_env]
+  end
+  @debug_timings = [1, true, '1', 'true', 't', 'on', 'enabled'].include?(_debug_timings_str.to_s.downcase)
+
+  # OTKB API base URL, specified directly or read from an environment variable.
+  @otkb_url = params['otkb_url'].to_s.delete_suffix('/')
+  _otkb_url_env = params['otkb_url_env'].to_s
+  if @otkb_url.empty? && !_otkb_url_env.empty?
+    @otkb_url = ENV[_otkb_url_env].to_s.delete_suffix('/')
+  end
+  @otkb_url = nil if @otkb_url.empty?
+
+  # OTKB API token, specified directly or read from the first populated environment variable.
+  @otkb_token = params['otkb_token']
+  _otkb_token_env = params['otkb_token_env']
+  if @otkb_token.nil? && !_otkb_token_env.nil?
+    @otkb_token = _otkb_token_env.split(/[;,:\s]+/)
+                                 .map { |env| ENV[env].to_s }
+                                 .find { |value| !value.strip.empty? }
+  end
+
+  _ssl_verify_str = params['ssl_verify']
+  _ssl_verify_env = params['ssl_verify_env']
+  if _ssl_verify_str.nil? && !_ssl_verify_env.nil?
+    _ssl_verify_str = ENV[_ssl_verify_env]
+  end
+  @otkb_ssl_verify = [1, true, '1', 'true', 't', 'on'].include?(_ssl_verify_str.to_s.downcase)
+
+  @otkb_conn = OtkbConnLazy.new(
+    "#{@otkb_url}/",
+    @otkb_token,
+    @otkb_ssl_verify,
+    @debug_verbose
+  ) unless @otkb_url.nil?
+  @otkb_rule_engine = OtkbRuleEngine.new
+
+  if @debug_timings &&
+     $otkb_timings_logging_thread_started.value == 0 &&
+     $otkb_timings_logging_thread_started.compare_and_set(0, 1)
+    $otkb_timings_logging_thread = Thread.new { log_otkb_timings_thread_proc }
+    $otkb_timings_logging_thread_running = true
+  end
+end
+
+##############################################################################################
+def filter(
+  event
+)
+  return [event] unless @otkb_enabled
+  return [event] if @otkb_conn.nil?
+
+  _parser = identify_parser(event)
+  case _parser
+  when :zeek
+    _event_data = event.get('[zeek]')
+    _rule_field = 'zeek_rules'
+  when :wireshark
+    _event_data = event.get('[wireshark]')
+    _rule_field = 'wireshark_rules'
+  else
+    return [event]
+  end
+  return [event] unless _event_data.is_a?(Hash)
+
+  _protocol_name = event.get('[network][protocol]')
+  _protocol_name = _protocol_name.first if _protocol_name.is_a?(Array)
+  return [event] unless _protocol_name.is_a?(String) && !_protocol_name.empty?
+
+  # This call returns the current snapshot and refreshes it from sync/json-fixture/ when its TTL
+  # has expired. A failed refresh leaves the previous snapshot available to this event.
+  _fixture = get_otkb_json_fixture
+  return [event] if _fixture.nil?
+
+  _protocol = _fixture['protocol_by_name'][normalize_index_key(_protocol_name)]
+  return [event] unless _protocol.is_a?(Hash)
+
+  _functions = _fixture['functions_by_protocol'].fetch(_protocol['id'], [])
+
+  # TODO: evaluate _functions[*][_rule_field] against _event_data, select the match with the
+  # greatest OtkbRuleEngine#specificity score (UUID ascending as the tie-break), resolve its
+  # related objects from the fixture indexes, and write the result under [otkb].
+
+  [event]
+end
+
+##############################################################################################
+def get_otkb_json_fixture
+  _now = monotonic_time
+  _fixture = $otkb_json_fixture.get
+  _fixture = nil unless otkb_json_fixture_source_matches?(_fixture)
+  return _fixture if otkb_json_fixture_fresh?(_fixture, _now)
+  return _fixture if _now < $otkb_json_fixture_retry_after.get
+
+  $otkb_json_fixture_refresh_mutex.synchronize do
+    _now = monotonic_time
+    _fixture = $otkb_json_fixture.get
+    _fixture = nil unless otkb_json_fixture_source_matches?(_fixture)
+    return _fixture if otkb_json_fixture_fresh?(_fixture, _now)
+    return _fixture if _now < $otkb_json_fixture_retry_after.get
+
+    # Avoid retrying the API for every event when the initial load or a refresh fails.
+    _retry_delay = @cache_ttl.zero? ? 60 : [[@cache_ttl, 60].min, 1].max
+    $otkb_json_fixture_retry_after.set(_now + _retry_delay)
+
+    begin
+      _response = @otkb_conn.get('sync/json-fixture/') do |request|
+        request.options.open_timeout = 5
+        request.options.timeout = 30
+      end
+      raise Faraday::Error, "OTKB fixture request returned HTTP #{_response.status}" unless _response.success?
+
+      _snapshot = build_otkb_json_fixture_snapshot(_response.body, _now)
+      $otkb_json_fixture.set(_snapshot)
+      $otkb_json_fixture_retry_after.set(0.0)
+      puts "Loaded OTKB JSON fixture version #{_snapshot['version']} generated at #{_snapshot['generated_at']}" if @debug
+      _snapshot
+    rescue Faraday::Error, JSON::ParserError, ArgumentError, TypeError => error
+      puts "OTKB JSON fixture refresh failed: #{error.class}: #{error.message}" if @debug
+      _fixture
+    end
+  end
+end
+
+##############################################################################################
+def otkb_json_fixture_source_matches?(fixture)
+  fixture.is_a?(Hash) && fixture['source_url'] == @otkb_url
+end
+
+##############################################################################################
+def otkb_json_fixture_fresh?(fixture, now)
+  return false unless otkb_json_fixture_source_matches?(fixture)
+  return true if @cache_ttl.zero?
+
+  loaded_at = fixture['_loaded_at_monotonic']
+  loaded_at.is_a?(Numeric) && (now - loaded_at) < @cache_ttl
+end
+
+##############################################################################################
+def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
+  body = response_body.is_a?(String) ? JSON.parse(response_body) : response_body
+  raise TypeError, 'OTKB JSON fixture response must be an object' unless body.is_a?(Hash)
+
+  collections = body['data']
+  raise TypeError, 'OTKB JSON fixture data must be an object' unless collections.is_a?(Hash)
+
+  by_id = {}
+  collections.each_pair do |collection_name, records|
+    raise TypeError, "OTKB fixture collection #{collection_name} must be an array" unless records.is_a?(Array)
+
+    by_id[collection_name] = records.each_with_object({}) do |record, index|
+      next unless record.is_a?(Hash)
+
+      id = record['id']
+      index[id] = record unless id.nil? || id.to_s.empty?
+    end
+  end
+
+  protocols = collections.fetch('otkb.protocol', [])
+  functions = collections.fetch('otkb.function', [])
+  function_notes = collections.fetch('otkb.functionnote', [])
+  procedures = collections.fetch('otkb.procedure', [])
+
+  protocol_by_name = {}
+  protocols.each do |protocol|
+    next unless protocol.is_a?(Hash)
+
+    ([protocol['name']] + Array(protocol['alternate_names'])).compact.each do |name|
+      key = normalize_index_key(name)
+      protocol_by_name[key] ||= protocol unless key.empty?
+    end
+  end
+
+  functions_by_protocol = group_records_by_field(functions, 'protocol')
+  function_notes_by_function = group_records_by_field(function_notes, 'function')
+  procedures_by_function = group_records_by_field(procedures, 'function')
+
+  functions_by_zeek_log = Hash.new { |hash, key| hash[key] = [] }
+  functions.each do |function|
+    next unless function.is_a?(Hash)
+
+    rule_values(function['zeek_rules'], 'log').map { |log_name| normalize_log_name(log_name) }.uniq.each do |log_name|
+      functions_by_zeek_log[log_name] << function unless log_name.empty?
+    end
+  end
+  functions_by_zeek_log.default = nil
+
+  loaded_at = Time.now.utc
+  snapshot = {
+    'version' => body['version'],
+    'generated_at' => body['generated_at'],
+    'loaded_at' => loaded_at.iso8601(6),
+    'source_url' => @otkb_url.dup,
+    'collections' => collections,
+    'by_id' => by_id,
+    'protocol_by_name' => protocol_by_name,
+    'functions_by_protocol' => functions_by_protocol,
+    'functions_by_zeek_log' => functions_by_zeek_log,
+    'function_notes_by_function' => function_notes_by_function,
+    'procedures_by_function' => procedures_by_function,
+    '_loaded_at_monotonic' => loaded_at_monotonic
+  }
+
+  deep_freeze(snapshot)
+end
+
+##############################################################################################
+def group_records_by_field(records, field)
+  index = Hash.new { |hash, key| hash[key] = [] }
+  records.each do |record|
+    next unless record.is_a?(Hash)
+
+    value = record[field]
+    index[value] << record unless value.nil? || value.to_s.empty?
+  end
+  index.default = nil
+  index
+end
+
+##############################################################################################
+def rule_values(rule, key, values = [])
+  case rule
+  when Hash
+    values << rule[key] if rule.key?(key)
+    rule.each_value { |value| rule_values(value, key, values) }
+  when Array
+    rule.each { |value| rule_values(value, key, values) }
+  end
+  values.compact
+end
+
+##############################################################################################
+def identify_parser(event)
+  return :zeek if event.get('[event][provider]') == 'zeek'
+  return :wireshark if event.get('[event][provider]') == 'wireshark'
+
+  tags = Array(event.get('[tags]')).compact
+  zeek_tags = [
+    '_filebeat_zeek',
+    '_filebeat_zeek_live',
+    '_filebeat_zeek_upload',
+    '_filebeat_zeek_hedgehog_live',
+    '_filebeat_zeek_malcolm_live',
+    '_filebeat_zeek_malcolm_upload'
+  ]
+  return :zeek unless (tags & zeek_tags).empty?
+
+  wireshark_tags = [
+    '_filebeat_wireshark',
+    '_filebeat_wireshark_live',
+    '_filebeat_wireshark_upload'
+  ]
+  return :wireshark unless (tags & wireshark_tags).empty?
+
+  nil
+end
+
+##############################################################################################
+def normalize_log_name(value)
+  value.to_s.sub(/\.log\z/, '').tr('-', '_').sub(/_general\z/, '')
+end
+
+##############################################################################################
+def normalize_index_key(value)
+  value.to_s.strip.downcase
+end
+
+##############################################################################################
+def monotonic_time
+  Process.clock_gettime(Process::CLOCK_MONOTONIC)
+end
+
+##############################################################################################
+def integer_or_nil(value)
+  return value if value.is_a?(Integer)
+
+  Integer(value, exception: false)
+end
+
+##############################################################################################
+def log_otkb_timings_thread_proc
+  while $otkb_timings_logging_thread_running
+    sleep 60
+    puts 'Method Execution Timings ---------------- :'
+    $otkb_timings.each do |method, times|
+      total_time = times.empty? ? 0 : times.sum
+      avg_time = times.empty? ? 0 : total_time / times.size
+      puts "#{method}: total #{total_time.round(2)} ms, avg #{avg_time.round(2)} ms over #{times.size} calls"
+    end
+  end
+end
+
+##############################################################################################
+def deep_freeze(object)
+  case object
+  when Hash
+    object.each_pair do |key, value|
+      deep_freeze(key)
+      deep_freeze(value)
+    end
+  when Array
+    object.each { |value| deep_freeze(value) }
+  end
+  object.freeze
+end

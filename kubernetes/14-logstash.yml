@@ -84,6 +84,8 @@ spec:
               name: lookup-common-env
           - configMapRef:
               name: logstash-env
+          - secretRef:
+              name: logstash-secret-env
         livenessProbe:
           exec:
             command:

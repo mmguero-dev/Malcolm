@@ -214,6 +214,7 @@ services:
     - ./config/beats-common.env
     - ./config/lookup-common.env
     - ./config/logstash.env
+    - ./config/logstash-secret.env
     depends_on:
     - opensearch
     ports:

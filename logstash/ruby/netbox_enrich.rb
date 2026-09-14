@@ -14,7 +14,7 @@ require 'stringex_lite'
 
 ##############################################################################################
 # Despite the warning against global variables, we are using them here in order to make sure that
-#   we don't have duplicate caches for things cross different clones of the filter,
+#   we don't have duplicate caches for things across different clones of the filter,
 #   which is what happens if you just use @instance_variables. However, we should
 #   be safe because 1) we are using Concurrent::Map to maintain these per-type caches, and
 #   2) because the caches themselves are threadsafe. Note that this will share these values
@@ -77,7 +77,6 @@ class NetBoxConnLazy
   end
 
   def method_missing(method, *args, &block)
-
     puts "#{method}(#{args.map(&:inspect).join(', ')})" if @netboxConnDebug
 
     if $method_timings_logging_thread_running
