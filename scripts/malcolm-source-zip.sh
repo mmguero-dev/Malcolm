@@ -18,9 +18,11 @@
 # With one or more Dockerfile paths as arguments, narrows the output to just
 # the files that Dockerfile's COPY/ADD instructions actually pull from the
 # build context, plus the Dockerfile(s) themselves and the compose files,
-# and names the output after the service(s):
+# and names the output after the service(s). A Dockerfile argument can be a
+# full or relative path, or just a bare filename, in which case it's looked
+# up under $SCRIPT_DIR/../Dockerfiles/ before giving up:
 #
-#   ./malcolm_source_zip.sh Dockerfiles/api.Dockerfile
+#   ./malcolm_source_zip.sh api.Dockerfile
 #   ./malcolm_source_zip.sh Dockerfiles/api.Dockerfile Dockerfiles/nginx.Dockerfile
 #
 # Assumes the Docker build context for every Dockerfile is the repo root
@@ -116,19 +118,26 @@ function match_source() {
   done < "$TMP_LIST"
 }
 
+export SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
 # Resolve Dockerfile args to absolute paths now, before the pushd below
 # changes the working directory out from under any relative path the
 # caller typed (from the repo root, from scripts/, from anywhere else).
+# A bare filename that doesn't exist as given (relative to the caller's
+# cwd, or absolute) falls back to $SCRIPT_DIR/../Dockerfiles/<name> before
+# giving up on it, so `api.Dockerfile` works without typing the full path.
 declare -a DOCKERFILE_ARGS=()
 for df in "$@"; do
-  if [[ ! -f "$df" ]]; then
-    echo "warning: '$df' not found, skipping" >&2
+  if [[ -f "$df" ]]; then
+    :
+  elif [[ -f "$SCRIPT_DIR/../Dockerfiles/$(basename "$df")" ]]; then
+    df="$SCRIPT_DIR/../Dockerfiles/$(basename "$df")"
+  else
+    echo "warning: '$df' not found (also checked Dockerfiles/$(basename "$df")), skipping" >&2
     continue
   fi
   DOCKERFILE_ARGS+=("$(realpath "$df")")
 done
-
-export SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 TMP_LIST=$(mktemp -t malcolm-files.XXXXXXXXXX)
 TMP_TRACKED=$(mktemp -t malcolm-tracked.XXXXXXXXXX)
