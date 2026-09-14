@@ -69,6 +69,7 @@ pushd "$SCRIPT_DIR"/.. >/dev/null 2>&1
 
   fd -t f '^(malcolm_(common|constants|utils)\.py|safe-extract\.py)$' ./scripts
   fd -t f '^(README|components|contributing-(dashboards|logstash|new-log-fields|zeek))\.md$' ./docs
+  fd -t f '^README\.md$' -d 1 .
 } | sed 's@^\./@@' | sort -u > "$TMP_LIST"
 
 git ls-files > "$TMP_TRACKED"
