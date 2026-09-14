@@ -35,7 +35,12 @@ ENV BOOTSTRAP_VERSION=$BOOTSTRAP_VERSION
 
 ENV HTADMIN_URL="https://codeload.github.com/mmguero-dev/htadmin/tar.gz/master"
 
-RUN apt-get -q update && \
+RUN rm -f /etc/apt/sources.list.d/* && \
+    printf '%s\n' \
+      'deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20260831T000000Z bullseye main' \
+      'deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20260831T000000Z bullseye-security main' \
+      > /etc/apt/sources.list && \
+    apt-get -q update && \
     apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends install \
       ca-certificates \
       curl \
