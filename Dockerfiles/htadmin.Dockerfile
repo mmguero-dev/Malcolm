@@ -26,11 +26,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TERM=xterm
 
 ARG PHP_VERSION=8.4
-ARG MCRYPT_VERSION=1.0.9
 ARG BOOTSTRAP_VERSION=3.3.6
 
 ENV PHP_VERSION=$PHP_VERSION
-ENV MCRYPT_VERSION=$MCRYPT_VERSION
 ENV BOOTSTRAP_VERSION=$BOOTSTRAP_VERSION
 
 ARG HTADMIN_REF=php-8
@@ -41,13 +39,7 @@ RUN apt-get -q update && \
       ca-certificates \
       curl \
       jq \
-      libmcrypt-dev \
-      libmcrypt4 \
-      make \
-      mcrypt \
       nginx-light \
-      php-dev \
-      php-pear \
       php$PHP_VERSION-apcu \
       php$PHP_VERSION-cli \
       php$PHP_VERSION-fpm \
@@ -56,11 +48,6 @@ RUN apt-get -q update && \
       rsync \
       supervisor \
       tini && \
-    ( yes '' | pecl channel-update pecl.php.net ) && \
-    ( yes '' | pecl install mcrypt-$MCRYPT_VERSION ) && \
-    printf '%s\n' 'extension=mcrypt.so' > /etc/php/$PHP_VERSION/mods-available/mcrypt.ini && \
-    phpenmod -v "$PHP_VERSION" mcrypt && \
-    php --ri mcrypt >/dev/null && \
     mkdir -p /run/php && \
   cd /tmp && \
     mkdir -p ./htadmin && \
@@ -77,9 +64,6 @@ RUN apt-get -q update && \
     curl -s -S -L -J -O "https://maxcdn.bootstrapcdn.com/bootstrap/$BOOTSTRAP_VERSION/fonts/glyphicons-halflings-regular.woff" && \
     curl -s -S -L -J -O "https://maxcdn.bootstrapcdn.com/bootstrap/$BOOTSTRAP_VERSION/fonts/glyphicons-halflings-regular.woff2" && \
   chown -R ${PUSER}:${PGROUP} /var/www && \
-  apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages --purge remove \
-    make libmcrypt-dev php-pear php-dev && \
-  apt-get autoremove -y -q && \
   apt-get clean -y -q && \
   rm -rf /var/lib/apt/lists/* /var/cache/* /tmp/* /var/tmp/* /var/www/html
 
