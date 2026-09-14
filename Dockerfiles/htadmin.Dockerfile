@@ -1,4 +1,4 @@
-FROM debian:11-slim
+FROM debian:13-slim
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -25,22 +25,18 @@ USER root
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TERM=xterm
 
-ARG PHP_VERSION=7.4
-ARG MCRYPT_VERSION=1.0.4
+ARG PHP_VERSION=8.4
+ARG MCRYPT_VERSION=1.0.9
 ARG BOOTSTRAP_VERSION=3.3.6
 
 ENV PHP_VERSION=$PHP_VERSION
 ENV MCRYPT_VERSION=$MCRYPT_VERSION
 ENV BOOTSTRAP_VERSION=$BOOTSTRAP_VERSION
 
-ENV HTADMIN_URL="https://codeload.github.com/mmguero-dev/htadmin/tar.gz/master"
+ARG HTADMIN_REF=php-8
+ENV HTADMIN_URL="https://codeload.github.com/mmguero-dev/htadmin/tar.gz/refs/heads/$HTADMIN_REF"
 
-RUN rm -f /etc/apt/sources.list.d/* && \
-    printf '%s\n' \
-      'deb [check-valid-until=no] http://snapshot.debian.org/archive/debian/20260831T000000Z bullseye main' \
-      'deb [check-valid-until=no] http://snapshot.debian.org/archive/debian-security/20260831T000000Z bullseye-security main' \
-      > /etc/apt/sources.list && \
-    apt-get -q update && \
+RUN apt-get -q update && \
     apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages --no-install-recommends install \
       ca-certificates \
       curl \
@@ -62,7 +58,9 @@ RUN rm -f /etc/apt/sources.list.d/* && \
       tini && \
     ( yes '' | pecl channel-update pecl.php.net ) && \
     ( yes '' | pecl install mcrypt-$MCRYPT_VERSION ) && \
-    ln -s -r /usr/lib/php/20??????/*.so /usr/lib/php/$PHP_VERSION/ && \
+    printf '%s\n' 'extension=mcrypt.so' > /etc/php/$PHP_VERSION/mods-available/mcrypt.ini && \
+    phpenmod -v "$PHP_VERSION" mcrypt && \
+    php --ri mcrypt >/dev/null && \
     mkdir -p /run/php && \
   cd /tmp && \
     mkdir -p ./htadmin && \
