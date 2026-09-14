@@ -10,9 +10,11 @@
 # packs, Logstash lookup maps). Keeps actual pipeline and service code,
 # plus a small allowlist of scripts/ files that are broadly useful context
 # even though the rest of that directory (the interactive installer, control
-# wrapper symlinks) isn't. Rebuilds the archive from scratch each run rather
-# than updating an existing one, so stale entries from a prior run's
-# exclude list can't linger silently in the zip.
+# wrapper symlinks) isn't. Also drops anything not tracked by git, so local
+# scratch files and uncommitted work-in-progress never end up in the archive.
+# Rebuilds the archive from scratch each run rather than updating an existing
+# one, so stale entries from a prior run's exclude list can't linger silently
+# in the zip.
 
 set -euo pipefail
 
@@ -24,8 +26,9 @@ function file_list_cleanup() {
 export SCRIPT_DIR="$( cd -P "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 TMP_LIST=$(mktemp -t malcolm-files.XXXXXXXXXX)
+TMP_TRACKED=$(mktemp -t malcolm-tracked.XXXXXXXXXX)
 TMP_ZIP=$(mktemp -t malcolm-files.XXXXXXXXXX.zip)
-trap "file_list_cleanup '${TMP_LIST}'; file_list_cleanup '${TMP_ZIP}'" SIGINT EXIT RETURN
+trap "file_list_cleanup '${TMP_LIST}'; file_list_cleanup '${TMP_TRACKED}'; file_list_cleanup '${TMP_ZIP}'" SIGINT EXIT RETURN
 pushd "$SCRIPT_DIR"/.. >/dev/null 2>&1
 
 {
@@ -64,9 +67,12 @@ pushd "$SCRIPT_DIR"/.. >/dev/null 2>&1
     -E '*.sample' \
     .
 
-  fd -t f '^(malcolm_(common|constants|utils)\.py|safe-extract\.py)$' ./scripts | sed "s@^\./@@"
-  fd -t f '^(README|components|contributing-(dashboards|logstash|new-log-fields|zeek))\.md$' ./docs | sed "s@^\./@@"
-} | sort -fu > "$TMP_LIST"
+  fd -t f '^(malcolm_(common|constants|utils)\.py|safe-extract\.py)$' ./scripts
+  fd -t f '^(README|components|contributing-(dashboards|logstash|new-log-fields|zeek))\.md$' ./docs
+} | sed 's@^\./@@' | sort -u > "$TMP_LIST"
+
+git ls-files > "$TMP_TRACKED"
+grep -Fxf "$TMP_TRACKED" "$TMP_LIST" > "${TMP_LIST}.tracked" && mv "${TMP_LIST}.tracked" "$TMP_LIST"
 
 rm -f "$TMP_ZIP"
 zip -q "$TMP_ZIP" -@ < "$TMP_LIST"
@@ -74,4 +80,3 @@ zip -q "$TMP_ZIP" -@ < "$TMP_LIST"
 popd >/dev/null 2>&1
 
 mv -v "$TMP_ZIP" ./malcolm_src.zip
-
