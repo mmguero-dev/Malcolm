@@ -500,6 +500,7 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
   raise TypeError, 'OTKB JSON fixture data must be an object' unless collections.is_a?(Hash)
 
   normalize_otkb_protocol_transports!(collections.fetch('otkb.protocol', []))
+  normalize_otkb_attack_ids!(collections)
 
   by_id = {}
   collections.each_pair do |collection_name, records|
@@ -627,6 +628,25 @@ def normalize_otkb_protocol_transports!(protocols)
 
       value = transport['protocol']
       transport['protocol'] = value.strip.downcase if value.is_a?(String)
+    end
+  end
+end
+
+##############################################################################################
+def normalize_otkb_attack_ids!(collections)
+  [
+    'otkb.procedure',
+    'otkb.asset',
+    'otkb.software',
+    'otkb.campaign'
+  ].each do |collection_name|
+    Array(collections[collection_name]).each do |record|
+      next unless record.is_a?(Hash)
+
+      attack_id = record['attack_id']
+      if attack_id.nil? || (attack_id.is_a?(String) && attack_id.strip.empty?)
+        record.delete('attack_id')
+      end
     end
   end
 end
