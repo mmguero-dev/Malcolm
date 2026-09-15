@@ -85,46 +85,48 @@ end
 # Evaluates the rule objects stored in zeek_rules and wireshark_rules.
 class OtkbRuleEngine
   def match?(rule, event_data)
-    case rule
-    when Hash
-      if rule.key?('and')
-        rule['and'].all? { |subrule| match?(subrule, event_data) }
-      elsif rule.key?('or')
-        rule['or'].any? { |subrule| match?(subrule, event_data) }
-      else
-        match_single_rule(rule, event_data)
-      end
-    when Array
-      rule.all? { |subrule| match?(subrule, event_data) }
-    else
-      false
-    end
+    !match_score(rule, event_data).nil?
   end
 
-  # A larger value represents a rule containing more leaf conditions. This will be used to choose
-  # the most specific function when several functions match the same event.
-  def specificity(rule)
+  # Return the number of leaf conditions in the matching path. A nil score means the rule did not
+  # match. The score lets the filter prefer a narrower match when several functions match an event.
+  def match_score(rule, event_data)
     case rule
     when Hash
       if rule.key?('and')
-        rule['and'].sum { |subrule| specificity(subrule) }
+        match_all(rule['and'], event_data)
       elsif rule.key?('or')
-        rule['or'].map { |subrule| specificity(subrule) }.max || 0
+        match_any(rule['or'], event_data)
       else
-        rule.key?('field') ? 1 : 0
+        match_single_rule(rule, event_data) ? 1 : nil
       end
     when Array
-      rule.sum { |subrule| specificity(subrule) }
+      match_all(rule, event_data)
     else
-      0
+      nil
     end
   end
 
   private
 
+  def match_all(rules, event_data)
+    return nil unless rules.is_a?(Array) && !rules.empty?
+
+    scores = rules.map { |subrule| match_score(subrule, event_data) }
+    return nil if scores.any?(&:nil?)
+
+    scores.sum
+  end
+
+  def match_any(rules, event_data)
+    return nil unless rules.is_a?(Array) && !rules.empty?
+
+    rules.map { |subrule| match_score(subrule, event_data) }.compact.max
+  end
+
   def match_single_rule(rule, event_data)
     field_path = rule['field']
-    return false if field_path.nil? || field_path.empty?
+    return false unless field_path.is_a?(String) && !field_path.empty?
 
     if rule.key?('log')
       log_type = normalize_log_name(rule['log'])
@@ -136,12 +138,17 @@ class OtkbRuleEngine
 
     return value.to_s == rule['eq'].to_s if rule.key?('eq')
 
-    if rule.key?('gte') && rule.key?('lte')
-      return value.to_f >= rule['gte'].to_f && value.to_f <= rule['lte'].to_f
-    end
+    begin
+      numeric_value = Float(value)
+      if rule.key?('gte') && rule.key?('lte')
+        return numeric_value >= Float(rule['gte']) && numeric_value <= Float(rule['lte'])
+      end
 
-    return value.to_f >= rule['gte'].to_f if rule.key?('gte')
-    return value.to_f <= rule['lte'].to_f if rule.key?('lte')
+      return numeric_value >= Float(rule['gte']) if rule.key?('gte')
+      return numeric_value <= Float(rule['lte']) if rule.key?('lte')
+    rescue ArgumentError, TypeError
+      return false
+    end
 
     false
   end
@@ -270,11 +277,145 @@ def filter(
 
   _functions = _fixture['functions_by_protocol'].fetch(_protocol['id'], [])
 
-  # TODO: evaluate _functions[*][_rule_field] against _event_data, select the match with the
-  # greatest OtkbRuleEngine#specificity score (UUID ascending as the tie-break), resolve its
-  # related objects from the fixture indexes, and write the result under [otkb].
+  _matches = []
+  _functions.each do |function|
+    next unless function.is_a?(Hash)
+
+    rule = function[_rule_field]
+    next if rule.nil?
+
+    begin
+      score = @otkb_rule_engine.match_score(rule, _event_data)
+    rescue StandardError => error
+      puts "Invalid OTKB rule for function #{function['id']}: #{error.class}: #{error.message}" if @debug
+      next
+    end
+    _matches << { 'function' => function, 'score' => score } unless score.nil?
+  end
+
+  if _matches.empty?
+    puts "No OTKB #{_parser} match for protocol #{_protocol_name}" if @debug_verbose
+    return [event]
+  end
+
+  # Prefer the matching rule with the most satisfied leaf conditions. Sort equal scores by UUID
+  # so fixture ordering cannot change which function is selected.
+  _match = _matches.min_by do |candidate|
+    [-candidate['score'], candidate['function']['id'].to_s]
+  end
+  _function = _match['function']
+
+  event.set('[otkb][function]', enrich_otkb_function(_function, _fixture))
+  event.set('[otkb][protocol]', enrich_otkb_citations(_protocol, _fixture))
+
+  _procedures = _fixture['procedures_by_function'].fetch(_function['id'], [])
+  unless _procedures.empty?
+    _enriched_procedures = _procedures.map { |procedure| enrich_otkb_procedure(procedure, _fixture) }
+    event.set('[otkb][procedures]', _enriched_procedures)
+    enrich_threat_from_otkb_procedures(event, _enriched_procedures)
+  end
+
+  puts "Matched OTKB function #{_function['id']} (#{_function['name']}) with score #{_match['score']}" if @debug_verbose
 
   [event]
+end
+
+##############################################################################################
+def enrich_otkb_function(function, fixture)
+  enriched = enrich_otkb_citations(function, fixture)
+
+  classifier = otkb_fixture_record(fixture, 'otkb.otkbclass', function['otkb_classifier'])
+  if classifier.nil?
+    enriched.delete('otkb_classifier')
+  else
+    enriched['otkb_classifier'] = deep_copy(classifier)
+  end
+
+  notes = fixture['function_notes_by_function'].fetch(function['id'], [])
+  enriched['notes'] = deep_copy(notes) unless notes.empty?
+  enriched
+end
+
+##############################################################################################
+def enrich_otkb_procedure(procedure, fixture)
+  enriched = enrich_otkb_citations(procedure, fixture)
+  {
+    'asset' => 'otkb.asset',
+    'software' => 'otkb.software',
+    'campaign' => 'otkb.campaign'
+  }.each_pair do |field, collection|
+    related = otkb_fixture_record(fixture, collection, procedure[field])
+    if related.nil?
+      enriched.delete(field)
+    else
+      enriched[field] = enrich_otkb_citations(related, fixture)
+    end
+  end
+  enriched
+end
+
+##############################################################################################
+def enrich_otkb_citations(record, fixture)
+  enriched = deep_copy(record)
+  return enriched unless record.is_a?(Hash) && record['citations'].is_a?(Array)
+
+  enriched['citations'] = record['citations'].map do |citation|
+    if citation.is_a?(Hash)
+      deep_copy(citation)
+    else
+      found = otkb_fixture_record(fixture, 'otkb.citation', citation)
+      deep_copy(found) unless found.nil?
+    end
+  end.compact
+  enriched
+end
+
+##############################################################################################
+def otkb_fixture_record(fixture, collection, id)
+  return nil if id.nil? || id.to_s.empty?
+
+  collection_index = fixture.fetch('by_id', {}).fetch(collection, {})
+  collection_index[id]
+end
+
+##############################################################################################
+def enrich_threat_from_otkb_procedures(event, procedures)
+  threat = event.get('[threat]')
+  threat = threat.is_a?(Hash) ? deep_copy(threat) : {}
+  matched_attack_id = false
+
+  procedures.each do |procedure|
+    attack_id = procedure['attack_id'].to_s
+    case attack_id
+    when /\ATA\d+\z/
+      append_unique_nested_value(threat, ['tactic', 'id'], attack_id)
+      matched_attack_id = true
+    when /\AT\d+\.\d+\z/
+      append_unique_nested_value(threat, ['technique', 'id'], attack_id.split('.').first)
+      append_unique_nested_value(threat, ['subtechnique', 'id'], attack_id)
+      matched_attack_id = true
+    when /\AT\d+\z/
+      append_unique_nested_value(threat, ['technique', 'id'], attack_id)
+      matched_attack_id = true
+    end
+  end
+
+  if matched_attack_id
+    threat['framework'] = 'MITRE ATT&CK'
+    event.set('[threat]', threat)
+  end
+end
+
+##############################################################################################
+def append_unique_nested_value(hash, path, value)
+  parent = path[0...-1].reduce(hash) do |current, key|
+    current[key] = {} unless current[key].is_a?(Hash)
+    current[key]
+  end
+  leaf = path.last
+  values = Array(parent[leaf]).compact
+  values << value unless values.include?(value)
+  parent[leaf] = values
 end
 
 ##############################################################################################
@@ -495,4 +636,9 @@ def deep_freeze(object)
     object.each { |value| deep_freeze(value) }
   end
   object.freeze
+end
+
+##############################################################################################
+def deep_copy(object)
+  Marshal.load(Marshal.dump(object))
 end
