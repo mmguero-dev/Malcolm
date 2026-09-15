@@ -447,7 +447,7 @@
                       "fields": {
                         "text": {
                           "type": "text",
-                          "nors": false
+                          "norms": false
                         }
                       }
                     },
