@@ -83,8 +83,9 @@ if type suricata-update >/dev/null 2>&1; then
     [[ -z "$SURICATA_RUN_DIR" ]] && SURICATA_RUN_DIR="${SUPERVISOR_PATH:-/var/run}/suricata"
     SURICATA_SOCKET="$SURICATA_RUN_DIR"/suricata-command.socket
 
-    test -S "$SURICATA_SOCKET" >/dev/null 2>&1 && \
-      suricatasc "$SURICATA_SOCKET" -c ruleset-reload-nonblocking >/dev/null 2>&1
+    if test -S "$SURICATA_SOCKET" 2>/dev/null; then
+      suricatasc "$SURICATA_SOCKET" -c ruleset-reload-nonblocking >/dev/null 2>&1 || true
+    fi
 
 else
   exit 1
