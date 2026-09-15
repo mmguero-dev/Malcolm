@@ -389,13 +389,34 @@ def enrich_threat_from_otkb_procedures(event, procedures)
     case attack_id
     when /\ATA\d+\z/
       append_unique_nested_value(threat, ['tactic', 'id'], attack_id)
+      append_unique_nested_value(
+        threat,
+        ['tactic', 'reference'],
+        "https://attack.mitre.org/tactics/#{attack_id}/"
+      )
       matched_attack_id = true
     when /\AT\d+\.\d+\z/
-      append_unique_nested_value(threat, ['technique', 'id'], attack_id.split('.').first)
-      append_unique_nested_value(threat, ['subtechnique', 'id'], attack_id)
+      technique_id, subtechnique_id = attack_id.split('.', 2)
+      append_unique_nested_value(threat, ['technique', 'id'], technique_id)
+      append_unique_nested_value(
+        threat,
+        ['technique', 'reference'],
+        "https://attack.mitre.org/techniques/#{technique_id}/"
+      )
+      append_unique_nested_value(threat, ['technique', 'subtechnique', 'id'], attack_id)
+      append_unique_nested_value(
+        threat,
+        ['technique', 'subtechnique', 'reference'],
+        "https://attack.mitre.org/techniques/#{technique_id}/#{subtechnique_id}/"
+      )
       matched_attack_id = true
     when /\AT\d+\z/
       append_unique_nested_value(threat, ['technique', 'id'], attack_id)
+      append_unique_nested_value(
+        threat,
+        ['technique', 'reference'],
+        "https://attack.mitre.org/techniques/#{attack_id}/"
+      )
       matched_attack_id = true
     end
   end
@@ -477,6 +498,8 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
 
   collections = body['data']
   raise TypeError, 'OTKB JSON fixture data must be an object' unless collections.is_a?(Hash)
+
+  normalize_otkb_protocol_transports!(collections.fetch('otkb.protocol', []))
 
   by_id = {}
   collections.each_pair do |collection_name, records|
@@ -592,6 +615,20 @@ end
 ##############################################################################################
 def normalize_log_name(value)
   value.to_s.sub(/\.log\z/, '').tr('-', '_').sub(/_general\z/, '')
+end
+
+##############################################################################################
+def normalize_otkb_protocol_transports!(protocols)
+  protocols.each do |protocol|
+    next unless protocol.is_a?(Hash)
+
+    Array(protocol['transport']).each do |transport|
+      next unless transport.is_a?(Hash)
+
+      value = transport['protocol']
+      transport['protocol'] = value.strip.downcase if value.is_a?(String)
+    end
+  end
 end
 
 ##############################################################################################
