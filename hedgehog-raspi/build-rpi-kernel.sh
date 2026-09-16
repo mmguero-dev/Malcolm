@@ -20,7 +20,7 @@ rpi_kernel_jobs="${RPI_KERNEL_JOBS:-$(nproc)}"
 reuse_packages="${RPI_KERNEL_REUSE_PACKAGES:-0}"
 
 required_commands=(
-    bc bison dpkg-buildpackage dpkg-deb dtc flex git make rsync
+    bc bison dpkg-buildpackage dpkg-deb dtc fdtget flex git make rsync
 )
 
 for command_name in "${required_commands[@]}"; do
@@ -58,6 +58,8 @@ else
     scripts/config --module BCM2711_THERMAL
     scripts/config --module SENSORS_PWM_FAN
     scripts/config --module PWM_RP1
+    scripts/config --module DRM_VC4
+    scripts/config --module DRM_V3D
     scripts/config --enable FB_SIMPLE
     make olddefconfig
     grep -Eq '^CONFIG_ARM64_4K_PAGES=y$' .config
@@ -70,6 +72,7 @@ else
     grep -Eq '^CONFIG_SENSORS_PWM_FAN=(y|m)$' .config
     grep -Eq '^CONFIG_PWM_RP1=(y|m)$' .config
     grep -Eq '^CONFIG_DRM_VC4=(y|m)$' .config
+    grep -Eq '^CONFIG_DRM_V3D=(y|m)$' .config
     grep -Eq '^CONFIG_FB_SIMPLE=y$' .config
 
     kernel_version="$(make -s kernelversion)"
@@ -112,6 +115,11 @@ fi
 
 if [[ ! -s "$overlay_cache_dir/vc4-kms-v3d-pi5.dtbo" ]]; then
     echo "Missing required cached overlay: vc4-kms-v3d-pi5.dtbo" >&2
+    exit 1
+fi
+
+if ! grep -aq 'cma-256' "$overlay_cache_dir/vc4-kms-v3d-pi5.dtbo"; then
+    echo "Pi 5 KMS overlay does not support the required cma-256 parameter" >&2
     exit 1
 fi
 
@@ -168,6 +176,8 @@ require_package_entry "usr/lib/linux-image-${kernel_release}/broadcom/overlays/v
 require_package_entry "/bcm2711_thermal.ko"
 require_package_entry "/pwm-fan.ko"
 require_package_entry "/pwm-rp1.ko"
+require_package_entry "/vc4.ko"
+require_package_entry "/v3d.ko"
 
 package_kernel_config="$package_root/boot/config-${kernel_release}"
 if [[ ! -s "$package_kernel_config" ]]; then
@@ -233,6 +243,25 @@ require_kernel_driver "usb-storage"
 require_kernel_driver "uas"
 
 dtb_path="$package_root/usr/lib/linux-image-${kernel_release}/broadcom/bcm2712-d-rpi-5-b.dtb"
+
+root_size_cells="$(fdtget -t x "$dtb_path" / '#size-cells')"
+if [[ "$root_size_cells" != "2" ]]; then
+    echo "Pi 5 device tree has invalid root #size-cells: $root_size_cells" >&2
+    exit 1
+fi
+
+cma_size="$(fdtget -t x "$dtb_path" /reserved-memory/linux,cma size)"
+if [[ "$cma_size" != "0 4000000" ]]; then
+    echo "Pi 5 device tree has an unexpected linux,cma size: $cma_size" >&2
+    exit 1
+fi
+
+cma_alloc_ranges="$(fdtget -t x "$dtb_path" /reserved-memory/linux,cma alloc-ranges)"
+if [[ "$cma_alloc_ranges" != "0 0 0 40000000" ]]; then
+    echo "Pi 5 device tree has an unsafe linux,cma alloc-ranges value: $cma_alloc_ranges" >&2
+    exit 1
+fi
+
 dts_path="$package_root/bcm2712-d-rpi-5-b.dts"
 if ! dtc -I dtb -O dts "$dtb_path" >"$dts_path" 2>/dev/null; then
     echo "Unable to decompile required device tree: $dtb_path" >&2
