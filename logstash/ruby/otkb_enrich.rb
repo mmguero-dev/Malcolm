@@ -112,16 +112,25 @@ class OtkbRuleEngine
   def match_all(rules, event_data)
     return nil unless rules.is_a?(Array) && !rules.empty?
 
-    scores = rules.map { |subrule| match_score(subrule, event_data) }
-    return nil if scores.any?(&:nil?)
+    total = 0
+    rules.each do |subrule|
+      score = match_score(subrule, event_data)
+      return nil if score.nil?
 
-    scores.sum
+      total += score
+    end
+    total
   end
 
   def match_any(rules, event_data)
     return nil unless rules.is_a?(Array) && !rules.empty?
 
-    rules.map { |subrule| match_score(subrule, event_data) }.compact.max
+    best = nil
+    rules.each do |subrule|
+      score = match_score(subrule, event_data)
+      best = score if !score.nil? && (best.nil? || score > best)
+    end
+    best
   end
 
   def match_single_rule(rule, event_data)
@@ -136,7 +145,7 @@ class OtkbRuleEngine
     value = dig_field(event_data, field_path)
     return false if value.nil?
 
-    return value.to_s == rule['eq'].to_s if rule.key?('eq')
+    return rule_values_equal?(value, rule['eq']) if rule.key?('eq')
 
     begin
       numeric_value = Float(value)
@@ -151,6 +160,30 @@ class OtkbRuleEngine
     end
 
     false
+  end
+
+  def comparable_integer(string)
+    if string.match?(/\A0[xX][0-9a-fA-F]+\z/)
+      Integer(string[2..], 16)
+    elsif string.match?(/\A[+-]?\d+\z/)
+      Integer(string, 10)
+    end
+  rescue ArgumentError, TypeError
+    nil
+  end
+
+  def rule_values_equal?(actual, expected)
+    actual_string = actual.to_s.strip
+    expected_string = expected.to_s.strip
+
+    return true if actual_string.casecmp?(expected_string)
+
+    actual_integer = comparable_integer(actual_string)
+    expected_integer = comparable_integer(expected_string)
+
+    !actual_integer.nil? &&
+      !expected_integer.nil? &&
+      actual_integer == expected_integer
   end
 
   def normalize_log_name(value)
@@ -250,18 +283,17 @@ def filter(
   return [event] unless @otkb_enabled
   return [event] if @otkb_conn.nil?
 
-  _parser = identify_parser(event)
-  case _parser
-  when :zeek
-    _event_data = event.get('[zeek]')
+  _event_data = event.get('[zeek]')
+  if _event_data.is_a?(Hash)
+    _parser = :zeek
     _rule_field = 'zeek_rules'
-  when :wireshark
-    _event_data = event.get('[wireshark]')
-    _rule_field = 'wireshark_rules'
   else
-    return [event]
+    _event_data = event.get('[wireshark]')
+    return [event] unless _event_data.is_a?(Hash)
+
+    _parser = :wireshark
+    _rule_field = 'wireshark_rules'
   end
-  return [event] unless _event_data.is_a?(Hash)
 
   _protocol_name = event.get('[network][protocol]')
   _protocol_name = _protocol_name.first if _protocol_name.is_a?(Array)
@@ -274,6 +306,25 @@ def filter(
 
   _protocol = _fixture['protocol_by_name'][normalize_index_key(_protocol_name)]
   return [event] unless _protocol.is_a?(Hash)
+
+  # Adapt Zeek's IEC 104 log-specific objects to the path used by the
+  # fixture rules we've observed: iec104.info_obj_type.
+  if _parser == :zeek && normalize_index_key(_protocol['name']) == 'iec104'
+    _dataset = event.get('[event][dataset]')
+    _dataset = _dataset.first if _dataset.is_a?(Array)
+
+    if _dataset.is_a?(String)
+      _iec104_data = _event_data[normalize_log_name(_dataset)]
+
+      if _iec104_data.is_a?(Hash) && !_iec104_data['asdu_type'].nil?
+        # Work with shallow copies so the Logstash event data is not modified.
+        _event_data = _event_data.dup
+        _event_data['iec104'] = {
+          'info_obj_type' => _iec104_data['asdu_type']
+        }
+      end
+    end
+  end
 
   _functions = _fixture['functions_by_protocol'].fetch(_protocol['id'], [])
 
@@ -422,7 +473,7 @@ def enrich_threat_from_otkb_procedures(event, procedures)
   end
 
   if matched_attack_id
-    threat['framework'] = 'MITRE ATT&CK'
+    threat['framework'] = 'MITRE ATT&CK for ICS'
     event.set('[threat]', threat)
   end
 end
@@ -588,32 +639,6 @@ def rule_values(rule, key, values = [])
 end
 
 ##############################################################################################
-def identify_parser(event)
-  return :zeek if event.get('[event][provider]') == 'zeek'
-  return :wireshark if event.get('[event][provider]') == 'wireshark'
-
-  tags = Array(event.get('[tags]')).compact
-  zeek_tags = [
-    '_filebeat_zeek',
-    '_filebeat_zeek_live',
-    '_filebeat_zeek_upload',
-    '_filebeat_zeek_hedgehog_live',
-    '_filebeat_zeek_malcolm_live',
-    '_filebeat_zeek_malcolm_upload'
-  ]
-  return :zeek unless (tags & zeek_tags).empty?
-
-  wireshark_tags = [
-    '_filebeat_wireshark',
-    '_filebeat_wireshark_live',
-    '_filebeat_wireshark_upload'
-  ]
-  return :wireshark unless (tags & wireshark_tags).empty?
-
-  nil
-end
-
-##############################################################################################
 def normalize_log_name(value)
   value.to_s.sub(/\.log\z/, '').tr('-', '_').sub(/_general\z/, '')
 end
@@ -667,6 +692,7 @@ def integer_or_nil(value)
 
   Integer(value, exception: false)
 end
+
 
 ##############################################################################################
 def log_otkb_timings_thread_proc
