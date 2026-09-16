@@ -81,20 +81,14 @@ if version == '5':
         '# Pi 5 USB is provided through RP1. Include and preload the complete',
         '# controller and storage chain so the root filesystem can be on USB.',
         '- shell: |',
-        '    mkdir -p "${ROOT?}/etc/dracut.conf.d" "${ROOT?}/etc/modprobe.d"',
+        '    mkdir -p "${ROOT?}/etc/dracut.conf.d"',
+        '    rm -f "${ROOT?}/etc/modprobe.d/hedgehog-vc4.conf"',
         '  root-fs: tag-root',
         '',
         '- create-file: /etc/dracut.conf.d/raspi-usb.conf',
         '  contents: |',
         '    hostonly="no"',
         '    force_drivers+=" irq_bcm2712_mip xhci_hcd xhci_plat_hcd usb_storage uas sd_mod scsi_mod "',
-        '    omit_drivers+=" vc4 "',
-        '',
-        '- create-file: /etc/modprobe.d/hedgehog-vc4.conf',
-        '  contents: |',
-        '    # Preserve simplefb while the firmware mailbox cannot initialize VC4.',
-        '    blacklist vc4',
-        '    install vc4 /bin/false',
         '',
         '# Force the D-step Pi 5 device tree and downstream VC4/KMS display path.',
         '# Keeping these in raspi-firmware-custom makes raspi-firmware preserve',
@@ -103,29 +97,19 @@ if version == '5':
         '  contents: |',
         '    device_tree=bcm2712-d-rpi-5-b.dtb',
         '    upstream_kernel=1',
-        '    dtoverlay=vc4-kms-v3d-pi5',
+        '    dtoverlay=vc4-kms-v3d-pi5,cma-256',
         '    max_framebuffers=2',
         '    disable_fw_kms_setup=1',
         '    dtparam=cooling_fan=on',
-    ]
-
-extra_kernel_args = []
-
-if version == '5':
-    # VC4 remains blacklisted while the firmware mailbox failure is unresolved:
-    # https://github.com/raspberrypi/linux/issues/7230
-    extra_kernel_args = [
-        'module_blacklist=vc4',
-        'modprobe.blacklist=vc4',
-        'rd.driver.blacklist=vc4',
     ]
 
 extra_chroot_shell_cmds = []
 final_chroot_shell_cmds = []
 
 # raspi-firmware adds cma=64M by default. Remove it for Raspberry Pi 4,
-# where Debian warns that explicitly setting CMA may prevent boot.
-# Raspberry Pi 5 has been tested successfully with the default value.
+# where Debian warns that explicitly setting CMA may prevent boot. Pi 5
+# disables the command-line setting below and sizes a low-memory CMA pool
+# through the vc4-kms-v3d-pi5 overlay instead.
 if version == '4':
     extra_chroot_shell_cmds.append(
         "sed -E -i 's/(^|[[:space:]])cma=64M([[:space:]]|$)/\\1/' /boot/firmware/cmdline.txt"
@@ -154,6 +138,16 @@ extra_chroot_shell_cmds.extend(
 if version == '5':
     extra_chroot_shell_cmds.extend(
         [
+            # A command-line cma= value bypasses the DT linux,cma node and its
+            # alloc-ranges constraint. On a Pi 5 with more than 1 GiB of RAM,
+            # that can place CMA above the firmware mailbox address limit.
+            # Set this before dpkg installs the kernel so raspi-firmware never
+            # writes cma= to the generated command line.
+            "if grep -q '^CMA=' /etc/default/raspi-firmware; then",
+            "    sed -i 's/^CMA=.*/CMA=0/' /etc/default/raspi-firmware",
+            'else',
+            "    printf '\\nCMA=0\\n' >> /etc/default/raspi-firmware",
+            'fi',
             # Install the matched Raspberry Pi kernel, modules, and DTBs after
             # all other package hooks have run. Debian's generic kernel is not
             # installed for Pi 5, so raspi-firmware selects this kernel.
@@ -185,6 +179,7 @@ if version == '5':
             "grep -Eq '^CONFIG_SENSORS_PWM_FAN=(y|m)$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_PWM_RP1=(y|m)$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_DRM_VC4=(y|m)$' \"$kernel_config\"",
+            "grep -Eq '^CONFIG_DRM_V3D=(y|m)$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_PCIE_BRCMSTB=y$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_MFD_RP1=y$' \"$kernel_config\"",
             "grep -Eq '^CONFIG_ARM64_4K_PAGES=y$' \"$kernel_config\"",
@@ -196,18 +191,24 @@ if version == '5':
             'test -s "/boot/firmware/overlays/vc4-kms-v3d-pi5.dtbo"',
             "grep -Fxq 'device_tree=bcm2712-d-rpi-5-b.dtb' /boot/firmware/config.txt",
             "grep -Fxq 'upstream_kernel=1' /boot/firmware/config.txt",
-            "grep -Fxq 'dtoverlay=vc4-kms-v3d-pi5' /boot/firmware/config.txt",
+            "grep -Fxq 'dtoverlay=vc4-kms-v3d-pi5,cma-256' /boot/firmware/config.txt",
             "grep -Fxq 'max_framebuffers=2' /boot/firmware/config.txt",
             "grep -Fxq 'disable_fw_kms_setup=1' /boot/firmware/config.txt",
             'grep -Fxq "kernel=vmlinuz-$rpi_kernel_release" /boot/firmware/config.txt',
             'grep -Fxq "initramfs initrd.img-$rpi_kernel_release" /boot/firmware/config.txt',
             "grep -Fxq 'dtparam=cooling_fan=on' /boot/firmware/config.txt",
-            "grep -Fxq 'blacklist vc4' /etc/modprobe.d/hedgehog-vc4.conf",
-            "grep -Fxq 'install vc4 /bin/false' /etc/modprobe.d/hedgehog-vc4.conf",
-            "grep -Fq 'omit_drivers+=\" vc4 \"' /etc/dracut.conf.d/raspi-usb.conf",
-            "if lsinitrd \"/boot/initrd.img-$rpi_kernel_release\" | "
-            "grep -Eq '/vc4[.]ko([.]|$)'; then "
-            "echo 'Final initramfs unexpectedly contains vc4.ko' >&2; exit 1; fi",
+            "grep -Fxq 'CMA=0' /etc/default/raspi-firmware",
+            "if tr ' ' '\\n' < /boot/firmware/cmdline.txt | grep -Eq '^cma='; then "
+            "echo 'Final kernel command line unexpectedly contains cma=' >&2; "
+            "cat /boot/firmware/cmdline.txt >&2; exit 1; fi",
+            "for cmdline_file in /etc/default/raspi-extra-cmdline /boot/firmware/cmdline.txt; do "
+            "if tr ' ' '\\n' < \"$cmdline_file\" | "
+            "grep -Eq '^(module_blacklist|modprobe[.]blacklist|rd[.]driver[.]blacklist)=vc4$'; then "
+            "echo \"Unexpected VC4 blacklist in $cmdline_file\" >&2; "
+            "cat \"$cmdline_file\" >&2; exit 1; fi; done",
+            "test ! -e /etc/modprobe.d/hedgehog-vc4.conf",
+            "if grep -Eq 'omit_drivers.*vc4' /etc/dracut.conf.d/raspi-usb.conf; then "
+            "echo 'VC4 is unexpectedly omitted from the initramfs' >&2; exit 1; fi",
             # Early drivers can be built into Image or supplied by initramfs.
             'modules_builtin="/lib/modules/$rpi_kernel_release/modules.builtin"',
             'grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko$" "$modules_builtin" || lsinitrd "/boot/initrd.img-$rpi_kernel_release" | grep -Eq "/irq[-_]bcm2712[-_]mip[.]ko"',
@@ -287,7 +288,6 @@ with open('raspi_master.yaml', 'r') as in_file:
             .replace('__WIRELESS_FIRMWARE__', wireless_firmware)
             .replace('__BLUETOOTH_FIRMWARE__', bluetooth_firmware)
             .replace('__SERIAL_CONSOLE__', serial)
-            .replace('__EXTRA_KERNEL_ARGS__', ' '.join(extra_kernel_args))
             .replace('__HOST__', hostname)
             .replace('__BUILDTIME__', buildtime)
         )
