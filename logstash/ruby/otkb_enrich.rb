@@ -5,7 +5,6 @@ end
 require 'faraday'
 require 'json'
 require 'time'
-require 'yaml'
 
 ##############################################################################################
 # The fixture and its refresh state are global so every clone of this filter in this Logstash
@@ -20,6 +19,81 @@ $otkb_timings_logging_thread_started ||= Concurrent::AtomicFixnum.new(0)
 $otkb_timings ||= Concurrent::Map.new
 $otkb_timings_logging_thread ||= nil
 $otkb_timings_logging_thread_running ||= false
+
+##############################################################################################
+# Zeek serializes IEC 60870-5-104 ASDU type IDs using the symbolic enum names
+# below, while OTKB rules use their numeric values.
+# Adapted from https://github.com/cert-lv/spicy-iec104/blob/main/scripts/iec104.zeek
+OTKB_IEC104_TYPE_IDS = {
+  'ASDU_TYPEUNDEF' => '0',
+  'M_SP_NA_1' => '1',
+  'M_SP_TA_1' => '2',
+  'M_DP_NA_1' => '3',
+  'M_DP_TA_1' => '4',
+  'M_ST_NA_1' => '5',
+  'M_ST_TA_1' => '6',
+  'M_BO_NA_1' => '7',
+  'M_BO_TA_1' => '8',
+  'M_ME_NA_1' => '9',
+  'M_ME_TA_1' => '10',
+  'M_ME_NB_1' => '11',
+  'M_ME_TB_1' => '12',
+  'M_ME_NC_1' => '13',
+  'M_ME_TC_1' => '14',
+  'M_IT_NA_1' => '15',
+  'M_IT_TA_1' => '16',
+  'M_EP_TA_1' => '17',
+  'M_EP_TB_1' => '18',
+  'M_EP_TC_1' => '19',
+  'M_PS_NA_1' => '20',
+  'M_ME_ND_1' => '21',
+  'M_SP_TB_1' => '30',
+  'M_DP_TB_1' => '31',
+  'M_ST_TB_1' => '32',
+  'M_BO_TB_1' => '33',
+  'M_ME_TD_1' => '34',
+  'M_ME_TE_1' => '35',
+  'M_ME_TF_1' => '36',
+  'M_IT_TB_1' => '37',
+  'M_EP_TD_1' => '38',
+  'M_EP_TE_1' => '39',
+  'M_EP_TF_1' => '40',
+  'C_SC_NA_1' => '45',
+  'C_DC_NA_1' => '46',
+  'C_RC_NA_1' => '47',
+  'C_SE_NA_1' => '48',
+  'C_SE_NB_1' => '49',
+  'C_SE_NC_1' => '50',
+  'C_BO_NA_1' => '51',
+  'C_SC_TA_1' => '58',
+  'C_DC_TA_1' => '59',
+  'C_RC_TA_1' => '60',
+  'C_SE_TA_1' => '61',
+  'C_SE_TB_1' => '62',
+  'C_SE_TC_1' => '63',
+  'C_BO_TA_1' => '64',
+  'M_EI_NA_1' => '70',
+  'C_IC_NA_1' => '100',
+  'C_CI_NA_1' => '101',
+  'C_RD_NA_1' => '102',
+  'C_CS_NA_1' => '103',
+  'C_TS_NA_1' => '104',
+  'C_RP_NA_1' => '105',
+  'C_CD_NA_1' => '106',
+  'C_TS_TA_1' => '107',
+  'P_ME_NA_1' => '110',
+  'P_ME_NB_1' => '111',
+  'P_ME_NC_1' => '112',
+  'P_AC_NA_1' => '113',
+  'F_FR_NA_1' => '120',
+  'F_SR_NA_1' => '121',
+  'F_SC_NA_1' => '122',
+  'F_LS_NA_1' => '123',
+  'F_AF_NA_1' => '124',
+  'F_SG_NA_1' => '125',
+  'F_DR_TA_1' => '126',
+  'F_SC_NB_1' => '127'
+}.freeze
 
 ##############################################################################################
 class OtkbConnLazy
@@ -307,8 +381,11 @@ def filter(
   _protocol = _fixture['protocol_by_name'][normalize_index_key(_protocol_name)]
   return [event] unless _protocol.is_a?(Hash)
 
-  # Adapt Zeek's IEC 104 log-specific objects to the path used by the
-  # fixture rules we've observed: iec104.info_obj_type.
+  # Adapt Zeek's IEC 104 log-specific objects to the numeric path and value
+  # representation used by the OTKB fixture rules:
+  #
+  #   Zeek: iec104_telemetry.asdu_type = "M_SP_NA_1"
+  #   OTKB: iec104.info_obj_type       = "1"
   if _parser == :zeek && normalize_index_key(_protocol['name']) == 'iec104'
     _dataset = event.get('[event][dataset]')
     _dataset = _dataset.first if _dataset.is_a?(Array)
@@ -317,10 +394,10 @@ def filter(
       _iec104_data = _event_data[normalize_log_name(_dataset)]
 
       if _iec104_data.is_a?(Hash) && !_iec104_data['asdu_type'].nil?
-        # Work with shallow copies so the Logstash event data is not modified.
         _event_data = _event_data.dup
         _event_data['iec104'] = {
-          'info_obj_type' => _iec104_data['asdu_type']
+          'info_obj_type' =>
+            normalize_iec104_type_id(_iec104_data['asdu_type'])
         }
       end
     end
@@ -641,6 +718,27 @@ end
 ##############################################################################################
 def normalize_log_name(value)
   value.to_s.sub(/\.log\z/, '').tr('-', '_').sub(/_general\z/, '')
+end
+
+##############################################################################################
+def normalize_iec104_type_id(value)
+  return nil if value.nil?
+
+  string = value.to_s
+
+  type_id = OTKB_IEC104_TYPE_IDS[string]
+  return type_id unless type_id.nil?
+
+  # Zeek represents reserved or unnamed values as ASDU_TYPE_<number>.
+  match = /\AASDU_TYPE_(\d{1,3})\z/.match(string)
+  return value if match.nil?
+
+  numeric_type_id = Integer(match[1], 10)
+  return numeric_type_id.to_s if numeric_type_id.between?(0, 255)
+
+  value
+rescue ArgumentError, TypeError
+  value
 end
 
 ##############################################################################################
