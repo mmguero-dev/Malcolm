@@ -378,7 +378,9 @@ def filter(
   _fixture = get_otkb_json_fixture
   return [event] if _fixture.nil?
 
-  _protocol = _fixture['protocol_by_name'][normalize_index_key(_protocol_name)]
+  _protocol_name_normalized = normalize_index_key(_protocol_name)
+
+  _protocol = _fixture['protocol_by_name'][_protocol_name_normalized]
   return [event] unless _protocol.is_a?(Hash)
 
   # Adapt Zeek's IEC 104 log-specific objects to the numeric path and value
@@ -386,7 +388,7 @@ def filter(
   #
   #   Zeek: iec104_telemetry.asdu_type = "M_SP_NA_1"
   #   OTKB: iec104.info_obj_type       = "1"
-  if _parser == :zeek && normalize_index_key(_protocol['name']) == 'iec104'
+  if _parser == :zeek && _protocol_name_normalized == 'iec104'
     _dataset = event.get('[event][dataset]')
     _dataset = _dataset.first if _dataset.is_a?(Array)
 
