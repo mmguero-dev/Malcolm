@@ -304,22 +304,13 @@ def filter(
     [-candidate['score'], candidate['function']['id'].to_s]
   end
   _function = _match['function']
-  _function_id = _function['id']
-  _enriched_function =
-    _fixture['enriched_function_by_id'][_function_id]
-  _enriched_protocol =
-    _fixture['enriched_protocol_by_id'][_protocol['id']]
 
-  return [event] unless _enriched_function.is_a?(Hash)
-  return [event] unless _enriched_protocol.is_a?(Hash)
+  event.set('[otkb][function]', enrich_otkb_function(_function, _fixture))
+  event.set('[otkb][protocol]', enrich_otkb_citations(_protocol, _fixture))
 
-  event.set('[otkb][function]', _enriched_function)
-  event.set('[otkb][protocol]', _enriched_protocol)
-
-  _enriched_procedures =
-    _fixture['enriched_procedures_by_function'][_function_id]
-
-  unless _enriched_procedures.nil? || _enriched_procedures.empty?
+  _procedures = _fixture['procedures_by_function'].fetch(_function['id'], [])
+  unless _procedures.empty?
+    _enriched_procedures = _procedures.map { |procedure| enrich_otkb_procedure(procedure, _fixture) }
     event.set('[otkb][procedures]', _enriched_procedures)
     enrich_threat_from_otkb_procedures(event, _enriched_procedures)
   end
@@ -488,11 +479,7 @@ end
 
 ##############################################################################################
 def otkb_json_fixture_source_matches?(fixture)
-  fixture.is_a?(Hash) &&
-    fixture['source_url'] == @otkb_url &&
-    fixture['enriched_protocol_by_id'].is_a?(Hash) &&
-    fixture['enriched_function_by_id'].is_a?(Hash) &&
-    fixture['enriched_procedures_by_function'].is_a?(Hash)
+  fixture.is_a?(Hash) && fixture['source_url'] == @otkb_url
 end
 
 ##############################################################################################
@@ -571,42 +558,6 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
     'procedures_by_function' => procedures_by_function,
     '_loaded_at_monotonic' => loaded_at_monotonic
   }
-
-  # Build the objects emitted by the filter once per fixture refresh.
-  enriched_protocol_by_id = {}
-  protocols.each do |protocol|
-    next unless protocol.is_a?(Hash)
-
-    protocol_id = protocol['id']
-    next if protocol_id.nil? || protocol_id.to_s.empty?
-
-    enriched_protocol_by_id[protocol_id] =
-      enrich_otkb_citations(protocol, snapshot)
-  end
-
-  enriched_function_by_id = {}
-  functions.each do |function|
-    next unless function.is_a?(Hash)
-
-    function_id = function['id']
-    next if function_id.nil? || function_id.to_s.empty?
-
-    enriched_function_by_id[function_id] =
-      enrich_otkb_function(function, snapshot)
-  end
-
-  enriched_procedures_by_function = {}
-  procedures_by_function.each_pair do |function_id, function_procedures|
-    enriched_procedures_by_function[function_id] =
-      function_procedures.map do |procedure|
-        enrich_otkb_procedure(procedure, snapshot)
-      end
-  end
-
-  snapshot['enriched_protocol_by_id'] = enriched_protocol_by_id
-  snapshot['enriched_function_by_id'] = enriched_function_by_id
-  snapshot['enriched_procedures_by_function'] =
-    enriched_procedures_by_function
 
   deep_freeze(snapshot)
 end
