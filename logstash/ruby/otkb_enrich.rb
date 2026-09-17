@@ -383,11 +383,11 @@ def filter(
   _protocol = _fixture['protocol_by_name'][_protocol_name_normalized]
   return [event] unless _protocol.is_a?(Hash)
 
-  # Adapt Zeek's IEC 104 log-specific objects to the numeric path and value
-  # representation used by the OTKB fixture rules:
-  #
-  #   Zeek: iec104_telemetry.asdu_type = "M_SP_NA_1"
-  #   OTKB: iec104.info_obj_type       = "1"
+  _direct_function = nil
+
+  # Zeek stores IEC 104 fields under dataset-specific objects and serializes
+  # ASDU type IDs using symbolic enum names. OTKB uses iec104.info_obj_type
+  # with numeric string values.
   if _parser == :zeek && _protocol_name_normalized == 'iec104'
     _dataset = event.get('[event][dataset]')
     _dataset = _dataset.first if _dataset.is_a?(Array)
@@ -396,43 +396,76 @@ def filter(
       _iec104_data = _event_data[normalize_log_name(_dataset)]
 
       if _iec104_data.is_a?(Hash) && !_iec104_data['asdu_type'].nil?
-        _event_data = _event_data.dup
-        _event_data['iec104'] = {
-          'info_obj_type' =>
-            normalize_iec104_type_id(_iec104_data['asdu_type'])
-        }
+        _iec104_type_id =
+          normalize_iec104_type_id(_iec104_data['asdu_type'])
+
+        _direct_function =
+          _fixture['iec104_function_by_type_id'][_iec104_type_id.to_s]
+
+        # Preserve the synthetic field for generic matching when this ASDU
+        # type does not have a directly indexed simple equality rule.
+        unless _direct_function.is_a?(Hash)
+          _event_data = _event_data.dup
+          _event_data['iec104'] = {
+            'info_obj_type' => _iec104_type_id
+          }
+        end
       end
     end
   end
 
-  _functions = _fixture['functions_by_protocol'].fetch(_protocol['id'], [])
+  if _direct_function.is_a?(Hash)
+    _match = {
+      'function' => _direct_function,
+      'score' => 1
+    }
+  else
+    _functions =
+      _fixture['functions_by_protocol'].fetch(_protocol['id'], [])
 
-  _matches = []
-  _functions.each do |function|
-    next unless function.is_a?(Hash)
+    _matches = []
 
-    rule = function[_rule_field]
-    next if rule.nil?
+    _functions.each do |function|
+      next unless function.is_a?(Hash)
 
-    begin
-      score = @otkb_rule_engine.match_score(rule, _event_data)
-    rescue StandardError => error
-      puts "Invalid OTKB rule for function #{function['id']}: #{error.class}: #{error.message}" if @debug
-      next
+      rule = function[_rule_field]
+      next if rule.nil?
+
+      begin
+        score = @otkb_rule_engine.match_score(rule, _event_data)
+      rescue StandardError => error
+        if @debug
+          puts "Invalid OTKB rule for function #{function['id']}: " \
+               "#{error.class}: #{error.message}"
+        end
+        next
+      end
+
+      unless score.nil?
+        _matches << {
+          'function' => function,
+          'score' => score
+        }
+      end
     end
-    _matches << { 'function' => function, 'score' => score } unless score.nil?
+
+    if _matches.empty?
+      if @debug_verbose
+        puts "No OTKB #{_parser} match for protocol #{_protocol_name}"
+      end
+      return [event]
+    end
+
+    # Prefer the matching rule with the most satisfied leaf conditions.
+    # Sort equal scores by UUID so fixture ordering cannot affect selection.
+    _match = _matches.min_by do |candidate|
+      [
+        -candidate['score'],
+        candidate['function']['id'].to_s
+      ]
+    end
   end
 
-  if _matches.empty?
-    puts "No OTKB #{_parser} match for protocol #{_protocol_name}" if @debug_verbose
-    return [event]
-  end
-
-  # Prefer the matching rule with the most satisfied leaf conditions. Sort equal scores by UUID
-  # so fixture ordering cannot change which function is selected.
-  _match = _matches.min_by do |candidate|
-    [-candidate['score'], candidate['function']['id'].to_s]
-  end
   _function = _match['function']
 
   event.set('[otkb][function]', enrich_otkb_function(_function, _fixture))
@@ -663,6 +696,39 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
   function_notes_by_function = group_records_by_field(function_notes, 'function')
   procedures_by_function = group_records_by_field(procedures, 'function')
 
+  # Index simple IEC 104 equality rules by numeric ASDU type ID. This lets the
+  # filter bypass the generic rule engine for the common IEC 104 match path.
+  iec104_function_by_type_id = {}
+  iec104_protocol = protocol_by_name['iec104']
+
+  if iec104_protocol.is_a?(Hash)
+    iec104_protocol_id = iec104_protocol['id']
+
+    Array(functions_by_protocol[iec104_protocol_id]).each do |function|
+      next unless function.is_a?(Hash)
+
+      rule = function['zeek_rules']
+      next unless rule.is_a?(Hash)
+      next unless rule['field'] == 'info_obj_type'
+      next unless normalize_log_name(rule['log']) == 'iec104'
+      next unless rule.key?('eq')
+
+      # Compound or extended rules continue through the generic rule engine.
+      next unless (rule.keys - %w[field log eq]).empty?
+
+      type_id = rule['eq'].to_s
+      next if type_id.empty?
+
+      existing = iec104_function_by_type_id[type_id]
+
+      # Preserve the generic matcher's deterministic UUID tie-break behavior.
+      if existing.nil? ||
+         function['id'].to_s < existing['id'].to_s
+        iec104_function_by_type_id[type_id] = function
+      end
+    end
+  end
+
   functions_by_zeek_log = Hash.new { |hash, key| hash[key] = [] }
   functions.each do |function|
     next unless function.is_a?(Hash)
@@ -684,6 +750,7 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
     'protocol_by_name' => protocol_by_name,
     'functions_by_protocol' => functions_by_protocol,
     'functions_by_zeek_log' => functions_by_zeek_log,
+    'iec104_function_by_type_id' => iec104_function_by_type_id,
     'function_notes_by_function' => function_notes_by_function,
     'procedures_by_function' => procedures_by_function,
     '_loaded_at_monotonic' => loaded_at_monotonic
