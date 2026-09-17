@@ -132,6 +132,9 @@ extra_chroot_shell_cmds.extend(
     [
         'chmod 755 /root/sensor_install.sh',
         'bash -o pipefail -x /root/sensor_install.sh 2>&1 | tee -a /root/sensor_install_debug',
+        # NetworkManager owns the interfaces. Prevent ifupdown from competing
+        # with it and timing out during boot.
+        'systemctl disable networking.service',
     ]
 )
 
