@@ -250,15 +250,15 @@ if [[ "$root_size_cells" != "2" ]]; then
     exit 1
 fi
 
-cma_size="$(fdtget -t x "$dtb_path" /reserved-memory/linux,cma size)"
-if [[ "$cma_size" != "0 4000000" ]]; then
-    echo "Pi 5 device tree has an unexpected linux,cma size: $cma_size" >&2
+cma_size_bytes="$(fdtget -t bx "$dtb_path" /reserved-memory/linux,cma size)"
+if [[ "$cma_size_bytes" != "0 0 0 0 4 0 0 0" ]]; then
+    echo "Pi 5 device tree has an unexpected linux,cma size: $cma_size_bytes" >&2
     exit 1
 fi
 
-cma_alloc_ranges="$(fdtget -t x "$dtb_path" /reserved-memory/linux,cma alloc-ranges)"
-if [[ "$cma_alloc_ranges" != "0 0 0 40000000" ]]; then
-    echo "Pi 5 device tree has an unsafe linux,cma alloc-ranges value: $cma_alloc_ranges" >&2
+cma_alloc_ranges_bytes="$(fdtget -t bx "$dtb_path" /reserved-memory/linux,cma alloc-ranges)"
+if [[ "$cma_alloc_ranges_bytes" != "0 0 0 0 0 0 0 0 0 0 0 0 40 0 0 0" ]]; then
+    echo "Pi 5 device tree has an unsafe linux,cma alloc-ranges value: $cma_alloc_ranges_bytes" >&2
     exit 1
 fi
 
