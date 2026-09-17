@@ -667,13 +667,21 @@ end
 
 ##############################################################################################
 # Return the current immutable fixture snapshot. One worker refreshes it when needed while other
-# workers continue using the previous snapshot.
+# workers continue using the previous snapshot. During the initial load, workers wait for the
+# loading worker because there is no previous snapshot to use.
 def get_otkb_json_fixture
   _now = monotonic_time
   _fixture = $otkb_json_fixture.get
   _fixture = nil unless otkb_json_fixture_source_matches?(_fixture)
+
   return _fixture if otkb_json_fixture_fresh?(_fixture, _now)
   return _fixture if _now < $otkb_json_fixture_retry_after.get
+
+  # When a refresh is already running, keep using the previous snapshot. On the initial load,
+  # _fixture is nil, so workers continue to the mutex and wait for the loading worker.
+  if !_fixture.nil? && $otkb_json_fixture_refresh_mutex.locked?
+    return _fixture
+  end
 
   # Repeat all checks after taking the mutex because another worker may have refreshed the fixture
   # while this worker was waiting.
@@ -681,12 +689,9 @@ def get_otkb_json_fixture
     _now = monotonic_time
     _fixture = $otkb_json_fixture.get
     _fixture = nil unless otkb_json_fixture_source_matches?(_fixture)
+
     return _fixture if otkb_json_fixture_fresh?(_fixture, _now)
     return _fixture if _now < $otkb_json_fixture_retry_after.get
-
-    # Avoid retrying the API for every event when the initial load or a refresh fails.
-    _retry_delay = @cache_ttl.zero? ? 60 : [[@cache_ttl, 60].min, 1].max
-    $otkb_json_fixture_retry_after.set(_now + _retry_delay)
 
     # The endpoint returns every OTKB collection in one response. All indexes used during event
     # processing are rebuilt from that response before the global reference is replaced.
@@ -695,17 +700,36 @@ def get_otkb_json_fixture
         request.options.open_timeout = 5
         request.options.timeout = 30
       end
-      raise Faraday::Error, "OTKB fixture request returned HTTP #{_response.status}" unless _response.success?
+      unless _response.success?
+        raise Faraday::Error,
+              "OTKB fixture request returned HTTP #{_response.status}"
+      end
 
       _snapshot = build_otkb_json_fixture_snapshot(_response.body, _now)
       $otkb_json_fixture.set(_snapshot)
       $otkb_json_fixture_retry_after.set(0.0)
-      puts "Loaded OTKB JSON fixture version #{_snapshot['version']} generated at #{_snapshot['generated_at']}" if @debug
+
+      if @debug
+        puts "Loaded OTKB JSON fixture version #{_snapshot['version']} " \
+             "generated at #{_snapshot['generated_at']}"
+      end
+
       _snapshot
     # A refresh failure does not discard a previously loaded fixture. Initial-load failures return
-    # nil, causing the event to pass through without enrichment until the retry window expires.
+    # nil, causing events to pass through without enrichment until the retry window expires.
     rescue Faraday::Error, JSON::ParserError, ArgumentError, TypeError => error
-      puts "OTKB JSON fixture refresh failed: #{error.class}: #{error.message}" if @debug
+      # Start the retry window when the request fails. Calculating this after the request keeps the
+      # complete delay intact when a connection or response timeout takes several seconds.
+      _retry_delay = @cache_ttl.zero? ? 60 : [[@cache_ttl, 60].min, 1].max
+      $otkb_json_fixture_retry_after.set(
+        monotonic_time + _retry_delay
+      )
+
+      if @debug
+        puts "OTKB JSON fixture refresh failed: " \
+             "#{error.class}: #{error.message}"
+      end
+
       _fixture
     end
   end
@@ -998,3 +1022,549 @@ end
 def deep_copy(object)
   Marshal.load(Marshal.dump(object))
 end
+
+
+##############################################################################################
+# tests
+#
+# These startup tests use only invented records and identifiers. The fixture is built through the
+# same snapshot builder used for API responses, then installed under a test-only source URL before
+# each enrichment event. No test opens a network connection.
+
+OTKB_INLINE_TEST_URL = 'https://otkb-inline-test.invalid/api/v1'.freeze
+
+OTKB_INLINE_TEST_FIXTURE = deep_freeze(
+  {
+    'version' => 'synthetic-inline-test-v1',
+    'generated_at' => '2000-01-01T00:00:00.000000+00:00Z',
+    'data' => {
+      'otkb.reference' => [
+        {
+          'id' => 'reference-synthetic',
+          'name' => 'Synthetic Reference'
+        }
+      ],
+      'otkb.author' => [],
+      'otkb.citation' => [
+        {
+          'id' => 'citation-synthetic',
+          'reference' => 'reference-synthetic',
+          'section' => 'Synthetic Section'
+        }
+      ],
+      'otkb.protocol' => [
+        {
+          'id' => 'protocol-synthetic',
+          'name' => 'Synthetic Protocol',
+          'alternate_names' => ['synproto'],
+          'transport' => [
+            {
+              'protocol' => ' TCP ',
+              'port' => 12_345
+            }
+          ],
+          'citations' => ['citation-synthetic']
+        },
+        {
+          'id' => 'protocol-iec104',
+          'name' => 'IEC104',
+          'alternate_names' => ['iec104', 'IEC 104'],
+          'transport' => [
+            {
+              'protocol' => 'Tcp',
+              'port' => 2404
+            }
+          ]
+        },
+        {
+          'id' => 'protocol-tie',
+          'name' => 'Tie Protocol',
+          'alternate_names' => ['tieproto'],
+          'transport' => []
+        }
+      ],
+      'otkb.term' => [],
+      'otkb.otkbclass' => [
+        {
+          'id' => 'classifier-synthetic',
+          'name' => 'Synthetic Classifier',
+          'definition' => 'Invented classifier used only by startup tests.'
+        }
+      ],
+      'otkb.function' => [
+        {
+          'id' => 'function-general',
+          'name' => 'Synthetic General Read',
+          'protocol' => 'protocol-synthetic',
+          'zeek_rules' => {
+            'log' => 'synthetic.log',
+            'field' => 'operation',
+            'eq' => 'READ'
+          },
+          'wireshark_rules' => {
+            'field' => 'synthetic.operation',
+            'eq' => 'READ'
+          }
+        },
+        {
+          'id' => 'function-specific',
+          'name' => 'Synthetic Specific Read',
+          'protocol' => 'protocol-synthetic',
+          'otkb_classifier' => 'classifier-synthetic',
+          'citations' => ['citation-synthetic'],
+          'zeek_rules' => {
+            'and' => [
+              {
+                'log' => 'synthetic.log',
+                'field' => 'operation',
+                'eq' => 'READ'
+              },
+              {
+                'log' => 'synthetic.log',
+                'field' => 'function_code',
+                'eq' => '16'
+              }
+            ]
+          },
+          'wireshark_rules' => {
+            'and' => [
+              {
+                'field' => 'synthetic.operation',
+                'eq' => 'READ'
+              },
+              {
+                'field' => 'synthetic.function_code',
+                'eq' => '0x10'
+              }
+            ]
+          }
+        },
+        {
+          'id' => 'function-iec104-1',
+          'name' => 'Synthetic IEC 104 Single Point',
+          'protocol' => 'protocol-iec104',
+          'zeek_rules' => {
+            'log' => 'iec104',
+            'field' => 'info_obj_type',
+            'eq' => '1'
+          }
+        },
+        {
+          'id' => 'function-tie-a',
+          'name' => 'Synthetic Tie Winner',
+          'protocol' => 'protocol-tie',
+          'zeek_rules' => {
+            'log' => 'tieproto',
+            'field' => 'operation',
+            'eq' => 'PING'
+          }
+        },
+        {
+          'id' => 'function-tie-b',
+          'name' => 'Synthetic Tie Runner-up',
+          'protocol' => 'protocol-tie',
+          'zeek_rules' => {
+            'log' => 'tieproto',
+            'field' => 'operation',
+            'eq' => 'PING'
+          }
+        }
+      ],
+      'otkb.functionnote' => [
+        {
+          'id' => 'note-synthetic',
+          'function' => 'function-specific',
+          'content' => 'Synthetic function note.'
+        }
+      ],
+      'otkb.asset' => [
+        {
+          'id' => 'asset-synthetic',
+          'name' => 'Synthetic Controller',
+          'attack_id' => '   '
+        }
+      ],
+      'otkb.campaign' => [],
+      'otkb.software' => [],
+      'otkb.procedure' => [
+        {
+          'id' => 'procedure-tactic',
+          'function' => 'function-specific',
+          'attack_id' => 'TA9999',
+          'asset' => 'asset-synthetic'
+        },
+        {
+          'id' => 'procedure-technique',
+          'function' => 'function-specific',
+          'attack_id' => 'T9998'
+        },
+        {
+          'id' => 'procedure-subtechnique',
+          'function' => 'function-specific',
+          'attack_id' => 'T9999.001'
+        }
+      ]
+    }
+  }
+)
+
+##############################################################################################
+# The test DSL changes the receiver inside parameters and in_event blocks to its TestContext, so
+# those blocks cannot call methods defined on this script execution object. Build the shared test
+# snapshot here, then use literal hashes inside the DSL blocks below.
+_otkb_inline_original_url = @otkb_url
+begin
+  @otkb_url = OTKB_INLINE_TEST_URL
+  $otkb_json_fixture.set(
+    build_otkb_json_fixture_snapshot(
+      deep_copy(OTKB_INLINE_TEST_FIXTURE),
+      monotonic_time
+    )
+  )
+ensure
+  @otkb_url = _otkb_inline_original_url
+end
+$otkb_json_fixture_retry_after.set(0.0)
+
+##############################################################################################
+test 'OTKB rule values handle case, hexadecimal, and numeric ranges' do
+  parameters do
+    {
+      'enabled' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event { {} }
+
+  expect('rule values match their normalized representations') do |_events|
+    engine = OtkbRuleEngine.new
+    data = {
+      'synthetic' => {
+        'operation' => 'read',
+        'function_code' => '0x10',
+        'quantity' => 12
+      }
+    }
+
+    engine.match_score(
+      {
+        'log' => 'synthetic.log',
+        'field' => 'operation',
+        'eq' => 'READ'
+      },
+      data
+    ) == 1 &&
+      engine.match_score(
+        {
+          'log' => 'synthetic',
+          'field' => 'function_code',
+          'eq' => 16
+        },
+        data
+      ) == 1 &&
+      engine.match_score(
+        {
+          'log' => 'synthetic',
+          'field' => 'quantity',
+          'gte' => 10,
+          'lte' => 20
+        },
+        data
+      ) == 1
+  end
+end
+
+##############################################################################################
+test 'OTKB rule scoring handles nested AND and OR branches' do
+  parameters do
+    {
+      'enabled' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event { {} }
+
+  expect('the most-specific successful OR branch contributes to the score') do |_events|
+    engine = OtkbRuleEngine.new
+    rule = {
+      'and' => [
+        {
+          'log' => 'synthetic',
+          'field' => 'operation',
+          'eq' => 'read'
+        },
+        {
+          'or' => [
+            {
+              'log' => 'synthetic',
+              'field' => 'function_code',
+              'eq' => '0x10'
+            },
+            {
+              'and' => [
+                {
+                  'log' => 'synthetic',
+                  'field' => 'function_code',
+                  'gte' => 1
+                },
+                {
+                  'log' => 'synthetic',
+                  'field' => 'function_code',
+                  'lte' => 32
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+    data = {
+      'synthetic' => {
+        'operation' => 'READ',
+        'function_code' => 16
+      }
+    }
+
+    engine.match_score(rule, data) == 3
+  end
+end
+
+##############################################################################################
+test 'malformed OTKB rules are safe non-matches' do
+  parameters do
+    {
+      'enabled' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event { {} }
+
+  expect('malformed rules do not raise or match') do |_events|
+    engine = OtkbRuleEngine.new
+    data = {
+      'synthetic' => {
+        'value' => 'not-a-number'
+      }
+    }
+    malformed_rules = [
+      nil,
+      {},
+      'not-a-rule',
+      [],
+      { 'and' => [] },
+      { 'or' => [] },
+      { 'log' => 'synthetic', 'eq' => 'value' },
+      { 'log' => 'synthetic', 'field' => '', 'eq' => 'value' },
+      { 'log' => 'synthetic', 'field' => 'missing', 'eq' => 'value' },
+      { 'log' => 'synthetic', 'field' => 'value', 'gte' => 'broken' },
+      { 'log' => 'synthetic', 'field' => 'value' }
+    ]
+
+    malformed_rules.all? { |rule| engine.match_score(rule, data).nil? }
+  end
+end
+
+##############################################################################################
+test 'OTKB enriches a synthetic Zeek event' do
+  parameters do
+    {
+      'enabled' => true,
+      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
+      'otkb_token' => 'synthetic-token',
+      'cache_ttl' => 0,
+      'ssl_verify' => false,
+      'debug' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event do
+    {
+      'network' => {
+        'protocol' => 'SYNPROTO'
+      },
+      'event' => {
+        'dataset' => 'synthetic'
+      },
+      'zeek' => {
+        'synthetic' => {
+          'operation' => 'read',
+          'function_code' => '0x10'
+        }
+      },
+      'threat' => {
+        'indicator' => {
+          'provider' => 'preexisting'
+        }
+      }
+    }
+  end
+
+  expect('the more-specific function and its relationships are written') do |events|
+    event = events.first
+    function = event.get('[otkb][function]')
+    protocol = event.get('[otkb][protocol]')
+    procedures = event.get('[otkb][procedures]')
+    cached_function = $otkb_json_fixture.get['by_id']['otkb.function']['function-specific']
+
+    events.length == 1 &&
+      function['id'] == 'function-specific' &&
+      function['otkb_classifier']['name'] == 'Synthetic Classifier' &&
+      function['notes'][0]['content'] == 'Synthetic function note.' &&
+      function['citations'][0]['section'] == 'Synthetic Section' &&
+      protocol['transport'][0]['protocol'] == 'tcp' &&
+      procedures.length == 3 &&
+      procedures[0]['asset']['name'] == 'Synthetic Controller' &&
+      !procedures[0]['asset'].key?('attack_id') &&
+      event.get('[threat][framework]') == 'MITRE ATT&CK for ICS' &&
+      event.get('[threat][tactic][id]') == ['TA9999'] &&
+      event.get('[threat][technique][id]') == ['T9998', 'T9999'] &&
+      event.get('[threat][technique][subtechnique][id]') == ['T9999.001'] &&
+      event.get('[threat][indicator][provider]') == 'preexisting' &&
+      cached_function['citations'] == ['citation-synthetic']
+  end
+end
+
+##############################################################################################
+test 'OTKB enriches a synthetic Wireshark event' do
+  parameters do
+    {
+      'enabled' => true,
+      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
+      'otkb_token' => 'synthetic-token',
+      'cache_ttl' => 0,
+      'ssl_verify' => false,
+      'debug' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event do
+    {
+      'network' => {
+        'protocol' => ['synproto']
+      },
+      'wireshark' => {
+        'synthetic' => {
+          'operation' => 'READ',
+          'function_code' => 16
+        }
+      }
+    }
+  end
+
+  expect('nested fields and hexadecimal values select the specific function') do |events|
+    events.length == 1 &&
+      events.first.get('[otkb][function][id]') == 'function-specific'
+  end
+end
+
+##############################################################################################
+test 'OTKB maps a symbolic IEC 104 ASDU type through the direct index' do
+  parameters do
+    {
+      'enabled' => true,
+      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
+      'otkb_token' => 'synthetic-token',
+      'cache_ttl' => 0,
+      'ssl_verify' => false,
+      'debug' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event do
+    {
+      'network' => {
+        'protocol' => 'iec104'
+      },
+      'event' => {
+        'dataset' => 'iec104_telemetry'
+      },
+      'zeek' => {
+        'iec104_telemetry' => {
+          'asdu_type' => 'M_SP_NA_1'
+        }
+      }
+    }
+  end
+
+  expect('the numeric type ID selects the indexed function') do |events|
+    events.length == 1 &&
+      events.first.get('[otkb][function][id]') == 'function-iec104-1'
+  end
+end
+
+##############################################################################################
+test 'OTKB resolves equal-score matches by function ID' do
+  parameters do
+    {
+      'enabled' => true,
+      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
+      'otkb_token' => 'synthetic-token',
+      'cache_ttl' => 0,
+      'ssl_verify' => false,
+      'debug' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event do
+    {
+      'network' => {
+        'protocol' => 'tieproto'
+      },
+      'event' => {
+        'dataset' => 'tieproto'
+      },
+      'zeek' => {
+        'tieproto' => {
+          'operation' => 'PING'
+        }
+      }
+    }
+  end
+
+  expect('the lexically lower function ID wins') do |events|
+    events.length == 1 &&
+      events.first.get('[otkb][function][id]') == 'function-tie-a'
+  end
+end
+
+##############################################################################################
+test 'OTKB leaves a nonmatching supported event unenriched' do
+  parameters do
+    {
+      'enabled' => true,
+      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
+      'otkb_token' => 'synthetic-token',
+      'cache_ttl' => 0,
+      'ssl_verify' => false,
+      'debug' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event do
+    {
+      'network' => {
+        'protocol' => 'synproto'
+      },
+      'zeek' => {
+        'synthetic' => {
+          'operation' => 'WRITE',
+          'function_code' => 99
+        }
+      }
+    }
+  end
+
+  expect('the event passes through without an OTKB object') do |events|
+    events.length == 1 && events.first.get('[otkb]').nil?
+  end
+end
+
+##############################################################################################
