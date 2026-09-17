@@ -463,7 +463,8 @@ def filter(
     _functions =
       _fixture['functions_by_protocol'].fetch(_protocol['id'], [])
 
-    _matches = []
+    _best_function = nil
+    _best_score = nil
 
     _functions.each do |function|
       next unless function.is_a?(Hash)
@@ -481,29 +482,32 @@ def filter(
         next
       end
 
-      unless score.nil?
-        _matches << {
-          'function' => function,
-          'score' => score
-        }
+      next if score.nil?
+
+      # Prefer the matching rule with the most satisfied leaf conditions.
+      # Sort equal scores by UUID so fixture ordering cannot affect selection.
+      if _best_function.nil? ||
+         score > _best_score ||
+         (
+           score == _best_score &&
+           function['id'].to_s < _best_function['id'].to_s
+         )
+        _best_function = function
+        _best_score = score
       end
     end
 
-    if _matches.empty?
+    if _best_function.nil?
       if @debug_verbose
         puts "No OTKB #{_parser} match for protocol #{_protocol_name}"
       end
       return [event]
     end
 
-    # Prefer the matching rule with the most satisfied leaf conditions.
-    # Sort equal scores by UUID so fixture ordering cannot affect selection.
-    _match = _matches.min_by do |candidate|
-      [
-        -candidate['score'],
-        candidate['function']['id'].to_s
-      ]
-    end
+    _match = {
+      'function' => _best_function,
+      'score' => _best_score
+    }
   end
 
   _function = _match['function']
