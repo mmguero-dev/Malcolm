@@ -96,6 +96,8 @@ OTKB_IEC104_TYPE_IDS = {
 }.freeze
 
 ##############################################################################################
+# Creates the Faraday connection the first time it is used. Keeping this wrapper lazy allows the
+# pipeline to start when enrichment is disabled or the OTKB URL has not been configured.
 class OtkbConnLazy
   def initialize(
     url,
@@ -114,6 +116,8 @@ class OtkbConnLazy
   def method_missing(method, *args, &block)
     puts "#{method}(#{args.map(&:inspect).join(', ')})" if @conn_debug
 
+    # API timings are collected here so the normal request path does not need separate timing
+    # code for every Faraday method we might call.
     if $otkb_timings_logging_thread_running
       key = "#{method} #{args[0]}".to_sym
       start_time = Time.now
@@ -137,12 +141,16 @@ class OtkbConnLazy
   end
 
   def initialized?
+    # A constructed Faraday object does not prove the endpoint is reachable. Treat the wrapper as
+    # initialized after the first request returns a result.
     !@object.nil? && @connected
   end
 
   private
 
   def initialize_object
+    # Faraday joins relative request paths to this base URL. The API expects the token scheme in
+    # the form "Authorization: Token <token>".
     @object = Faraday.new(@url, ssl: { verify: @ssl_verify }) do |conn|
       unless @token.nil? || @token.to_s.empty?
         conn.request :authorization, 'Token', @token
@@ -158,6 +166,7 @@ end
 ##############################################################################################
 # Evaluates the rule objects stored in zeek_rules and wireshark_rules.
 class OtkbRuleEngine
+  # This boolean form is useful to callers that do not need to rank multiple matches.
   def match?(rule, event_data)
     !match_score(rule, event_data).nil?
   end
@@ -186,6 +195,7 @@ class OtkbRuleEngine
   def match_all(rules, event_data)
     return nil unless rules.is_a?(Array) && !rules.empty?
 
+    # Stop on the first failed branch. A successful AND scores as the sum of all matching leaves.
     total = 0
     rules.each do |subrule|
       score = match_score(subrule, event_data)
@@ -199,6 +209,7 @@ class OtkbRuleEngine
   def match_any(rules, event_data)
     return nil unless rules.is_a?(Array) && !rules.empty?
 
+    # Only the most-specific matching OR branch contributes to the score.
     best = nil
     rules.each do |subrule|
       score = match_score(subrule, event_data)
@@ -212,6 +223,8 @@ class OtkbRuleEngine
     return false unless field_path.is_a?(String) && !field_path.empty?
 
     if rule.key?('log')
+      # Zeek rules store the log and field separately. Event data is nested by normalized log name,
+      # so combine the two here before walking the event hash.
       log_type = normalize_log_name(rule['log'])
       field_path = "#{log_type}.#{field_path}"
     end
@@ -221,6 +234,8 @@ class OtkbRuleEngine
 
     return rule_values_equal?(value, rule['eq']) if rule.key?('eq')
 
+    # Range comparisons are numeric. Malformed limits or nonnumeric event values simply make the
+    # rule a non-match so a bad upstream rule cannot interrupt event processing.
     begin
       numeric_value = Float(value)
       if rule.key?('gte') && rule.key?('lte')
@@ -237,6 +252,8 @@ class OtkbRuleEngine
   end
 
   def comparable_integer(string)
+    # Treat decimal and hexadecimal strings as the same integer for protocols that format numeric
+    # identifiers differently between Zeek, Wireshark, and the fixture.
     if string.match?(/\A0[xX][0-9a-fA-F]+\z/)
       Integer(string[2..], 16)
     elsif string.match?(/\A[+-]?\d+\z/)
@@ -250,6 +267,8 @@ class OtkbRuleEngine
     actual_string = actual.to_s.strip
     expected_string = expected.to_s.strip
 
+    # Most values match here. Besides being faster, this handles symbolic protocol values whose
+    # capitalization differs between the parser and the fixture.
     return true if actual_string.casecmp?(expected_string)
 
     actual_integer = comparable_integer(actual_string)
@@ -265,6 +284,8 @@ class OtkbRuleEngine
   end
 
   def dig_field(hash, field_path)
+    # Return nil when an intermediate value is missing or is not an object. Rules can therefore
+    # reference optional fields without raising an exception.
     field_path.split('.').reduce(hash) do |value, key|
       value.is_a?(Hash) ? value[key] : nil
     end
@@ -272,6 +293,9 @@ class OtkbRuleEngine
 end
 
 ##############################################################################################
+# Read script parameters once for this filter instance. Parameters may contain literal values or
+# the names of environment variables, which keeps secrets and deployment settings out of the
+# pipeline configuration.
 def register(
   params
 )
@@ -303,6 +327,8 @@ def register(
   @debug_verbose = ['verbose', 'v', 'extra'].include?(_debug_str.to_s.downcase)
   @debug = @debug_verbose || [1, true, '1', 'true', 't', 'on', 'enabled'].include?(_debug_str.to_s.downcase)
 
+  # API timing collection is separate from normal debug output because it starts a background
+  # reporting thread and retains individual request durations.
   _debug_timings_str = params['debug_timings']
   _debug_timings_env = params['debug_timings_env']
   if _debug_timings_str.nil? && !_debug_timings_env.nil?
@@ -334,6 +360,8 @@ def register(
   end
   @otkb_ssl_verify = [1, true, '1', 'true', 't', 'on'].include?(_ssl_verify_str.to_s.downcase)
 
+  # Leave the connection nil when no URL is configured. filter can then return immediately without
+  # attempting any API or fixture work.
   @otkb_conn = OtkbConnLazy.new(
     "#{@otkb_url}/",
     @otkb_token,
@@ -342,6 +370,8 @@ def register(
   ) unless @otkb_url.nil?
   @otkb_rule_engine = OtkbRuleEngine.new
 
+  # Filter clones share one timing thread. The atomic compare-and-set makes thread creation safe
+  # when several clones register at the same time.
   if @debug_timings &&
      $otkb_timings_logging_thread_started.value == 0 &&
      $otkb_timings_logging_thread_started.compare_and_set(0, 1)
@@ -351,12 +381,16 @@ def register(
 end
 
 ##############################################################################################
+# Match the event against OTKB functions for its parser and network protocol, then attach the
+# selected function, its protocol, any related procedures, and derived ATT&CK fields.
 def filter(
   event
 )
   return [event] unless @otkb_enabled
   return [event] if @otkb_conn.nil?
 
+  # Prefer the parser-specific object already present on the event. Pipeline-level guards normally
+  # limit calls to these two event shapes, and this check keeps the script safe on other events.
   _event_data = event.get('[zeek]')
   if _event_data.is_a?(Hash)
     _parser = :zeek
@@ -370,6 +404,8 @@ def filter(
   end
 
   _protocol_name = event.get('[network][protocol]')
+  # ECS fields may be scalar or arrays. OTKB currently performs one protocol lookup per event, so
+  # use the first value when Logstash has promoted the field to an array.
   _protocol_name = _protocol_name.first if _protocol_name.is_a?(Array)
   return [event] unless _protocol_name.is_a?(String) && !_protocol_name.empty?
 
@@ -380,6 +416,7 @@ def filter(
 
   _protocol_name_normalized = normalize_index_key(_protocol_name)
 
+  # protocol_by_name includes both canonical names and alternate names from the fixture.
   _protocol = _fixture['protocol_by_name'][_protocol_name_normalized]
   return [event] unless _protocol.is_a?(Hash)
 
@@ -415,11 +452,14 @@ def filter(
   end
 
   if _direct_function.is_a?(Hash)
+    # Every directly indexed IEC 104 rule contains one equality leaf, so its match score is one.
     _match = {
       'function' => _direct_function,
       'score' => 1
     }
   else
+    # All other traffic, along with IEC 104 types that do not qualify for the direct index, uses the
+    # general rule engine so compound and range-based rules retain their normal behavior.
     _functions =
       _fixture['functions_by_protocol'].fetch(_protocol['id'], [])
 
@@ -468,9 +508,13 @@ def filter(
 
   _function = _match['function']
 
+  # Only objects written to the event are copied. The shared snapshot remains frozen and can be
+  # read safely by every filter worker.
   event.set('[otkb][function]', enrich_otkb_function(_function, _fixture))
   event.set('[otkb][protocol]', enrich_otkb_citations(_protocol, _fixture))
 
+  # Procedures are optional and may reference assets, software, campaigns, citations, and ATT&CK
+  # IDs. Resolve those relationships only for the selected function.
   _procedures = _fixture['procedures_by_function'].fetch(_function['id'], [])
   unless _procedures.empty?
     _enriched_procedures = _procedures.map { |procedure| enrich_otkb_procedure(procedure, _fixture) }
@@ -484,6 +528,8 @@ def filter(
 end
 
 ##############################################################################################
+# Prepare the selected function for insertion into the event. Foreign-key IDs are replaced with
+# their fixture records, and function notes are attached from their separate collection.
 def enrich_otkb_function(function, fixture)
   enriched = enrich_otkb_citations(function, fixture)
 
@@ -500,6 +546,8 @@ def enrich_otkb_function(function, fixture)
 end
 
 ##############################################################################################
+# Expand the records related to a procedure. Missing relationships are removed instead of leaving
+# a mixture of IDs and objects in the indexed event.
 def enrich_otkb_procedure(procedure, fixture)
   enriched = enrich_otkb_citations(procedure, fixture)
   {
@@ -518,6 +566,8 @@ def enrich_otkb_procedure(procedure, fixture)
 end
 
 ##############################################################################################
+# Fixture citations may already be embedded objects or may be IDs into otkb.citation. Always return
+# copied objects so event mutation cannot alter the globally shared snapshot.
 def enrich_otkb_citations(record, fixture)
   enriched = deep_copy(record)
   return enriched unless record.is_a?(Hash) && record['citations'].is_a?(Array)
@@ -534,6 +584,7 @@ def enrich_otkb_citations(record, fixture)
 end
 
 ##############################################################################################
+# Look up one fixture record through the collection-specific ID indexes built during refresh.
 def otkb_fixture_record(fixture, collection, id)
   return nil if id.nil? || id.to_s.empty?
 
@@ -542,6 +593,8 @@ def otkb_fixture_record(fixture, collection, id)
 end
 
 ##############################################################################################
+# Convert ATT&CK IDs on matched procedures into the ECS threat fields used by the rest of the
+# pipeline. Names are filled in later by the Logstash translate filters.
 def enrich_threat_from_otkb_procedures(event, procedures)
   threat = event.get('[threat]')
   threat = threat.is_a?(Hash) ? deep_copy(threat) : {}
@@ -551,6 +604,7 @@ def enrich_threat_from_otkb_procedures(event, procedures)
     attack_id = procedure['attack_id'].to_s
     case attack_id
     when /\ATA\d+\z/
+      # TA identifiers represent tactics.
       append_unique_nested_value(threat, ['tactic', 'id'], attack_id)
       append_unique_nested_value(
         threat,
@@ -559,6 +613,8 @@ def enrich_threat_from_otkb_procedures(event, procedures)
       )
       matched_attack_id = true
     when /\AT\d+\.\d+\z/
+      # ECS stores a subtechnique under its parent technique. Preserve the full ID and build the
+      # reference path using the parent and child portions expected by attack.mitre.org.
       technique_id, subtechnique_id = attack_id.split('.', 2)
       append_unique_nested_value(threat, ['technique', 'id'], technique_id)
       append_unique_nested_value(
@@ -574,6 +630,7 @@ def enrich_threat_from_otkb_procedures(event, procedures)
       )
       matched_attack_id = true
     when /\AT\d+\z/
+      # T identifiers without a decimal portion represent top-level techniques.
       append_unique_nested_value(threat, ['technique', 'id'], attack_id)
       append_unique_nested_value(
         threat,
@@ -591,6 +648,8 @@ def enrich_threat_from_otkb_procedures(event, procedures)
 end
 
 ##############################################################################################
+# Append one value at an arbitrary nested path without overwriting threat data produced by another
+# filter. The leaf is kept as an array because one event may map to several procedures.
 def append_unique_nested_value(hash, path, value)
   parent = path[0...-1].reduce(hash) do |current, key|
     current[key] = {} unless current[key].is_a?(Hash)
@@ -603,6 +662,8 @@ def append_unique_nested_value(hash, path, value)
 end
 
 ##############################################################################################
+# Return the current immutable fixture snapshot. One worker refreshes it when needed while other
+# workers continue using the previous snapshot.
 def get_otkb_json_fixture
   _now = monotonic_time
   _fixture = $otkb_json_fixture.get
@@ -610,6 +671,8 @@ def get_otkb_json_fixture
   return _fixture if otkb_json_fixture_fresh?(_fixture, _now)
   return _fixture if _now < $otkb_json_fixture_retry_after.get
 
+  # Repeat all checks after taking the mutex because another worker may have refreshed the fixture
+  # while this worker was waiting.
   $otkb_json_fixture_refresh_mutex.synchronize do
     _now = monotonic_time
     _fixture = $otkb_json_fixture.get
@@ -621,6 +684,8 @@ def get_otkb_json_fixture
     _retry_delay = @cache_ttl.zero? ? 60 : [[@cache_ttl, 60].min, 1].max
     $otkb_json_fixture_retry_after.set(_now + _retry_delay)
 
+    # The endpoint returns every OTKB collection in one response. All indexes used during event
+    # processing are rebuilt from that response before the global reference is replaced.
     begin
       _response = @otkb_conn.get('sync/json-fixture/') do |request|
         request.options.open_timeout = 5
@@ -633,6 +698,8 @@ def get_otkb_json_fixture
       $otkb_json_fixture_retry_after.set(0.0)
       puts "Loaded OTKB JSON fixture version #{_snapshot['version']} generated at #{_snapshot['generated_at']}" if @debug
       _snapshot
+    # A refresh failure does not discard a previously loaded fixture. Initial-load failures return
+    # nil, causing the event to pass through without enrichment until the retry window expires.
     rescue Faraday::Error, JSON::ParserError, ArgumentError, TypeError => error
       puts "OTKB JSON fixture refresh failed: #{error.class}: #{error.message}" if @debug
       _fixture
@@ -641,11 +708,15 @@ def get_otkb_json_fixture
 end
 
 ##############################################################################################
+# A global snapshot may be shared by several filter clones or pipelines. Only reuse it when it was
+# built for this API base URL.
 def otkb_json_fixture_source_matches?(fixture)
   fixture.is_a?(Hash) && fixture['source_url'] == @otkb_url
 end
 
 ##############################################################################################
+# TTL zero means load once for the life of the Logstash process. Positive TTL values are measured
+# from a monotonic timestamp so wall-clock adjustments cannot make a snapshot unexpectedly stale.
 def otkb_json_fixture_fresh?(fixture, now)
   return false unless otkb_json_fixture_source_matches?(fixture)
   return true if @cache_ttl.zero?
@@ -655,6 +726,8 @@ def otkb_json_fixture_fresh?(fixture, now)
 end
 
 ##############################################################################################
+# Validate and normalize the API response, build the indexes used by filter, and freeze the final
+# object before publishing it through the global atomic reference.
 def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
   body = response_body.is_a?(String) ? JSON.parse(response_body) : response_body
   raise TypeError, 'OTKB JSON fixture response must be an object' unless body.is_a?(Hash)
@@ -662,9 +735,13 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
   collections = body['data']
   raise TypeError, 'OTKB JSON fixture data must be an object' unless collections.is_a?(Hash)
 
+  # Normalize values that otherwise vary in representation before building indexes or exposing
+  # records to event enrichment.
   normalize_otkb_protocol_transports!(collections.fetch('otkb.protocol', []))
   normalize_otkb_attack_ids!(collections)
 
+  # Most relationships in the fixture are UUID references. Build one ID index per collection so
+  # later joins do not scan the source arrays for every enriched event.
   by_id = {}
   collections.each_pair do |collection_name, records|
     raise TypeError, "OTKB fixture collection #{collection_name} must be an array" unless records.is_a?(Array)
@@ -682,6 +759,8 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
   function_notes = collections.fetch('otkb.functionnote', [])
   procedures = collections.fetch('otkb.procedure', [])
 
+  # network.protocol may contain a canonical OTKB name or one of its alternate names. Point every
+  # normalized spelling at the same protocol record.
   protocol_by_name = {}
   protocols.each do |protocol|
     next unless protocol.is_a?(Hash)
@@ -692,6 +771,7 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
     end
   end
 
+  # These one-to-many indexes cover the joins performed for every matched function.
   functions_by_protocol = group_records_by_field(functions, 'protocol')
   function_notes_by_function = group_records_by_field(function_notes, 'function')
   procedures_by_function = group_records_by_field(procedures, 'function')
@@ -729,6 +809,8 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
     end
   end
 
+  # Record which functions mention each Zeek log anywhere in their rule tree. Keeping this in the
+  # snapshot also makes the fixture ready for narrower log-based candidate selection in the future.
   functions_by_zeek_log = Hash.new { |hash, key| hash[key] = [] }
   functions.each do |function|
     next unless function.is_a?(Hash)
@@ -739,6 +821,7 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
   end
   functions_by_zeek_log.default = nil
 
+  # Store a human-readable load time for diagnostics and a monotonic time for TTL calculations.
   loaded_at = Time.now.utc
   snapshot = {
     'version' => body['version'],
@@ -760,6 +843,8 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
 end
 
 ##############################################################################################
+# Group records by one foreign-key field. Set the default back to nil before freezing the index so
+# a missing lookup cannot try to modify a frozen hash through its construction-time default proc.
 def group_records_by_field(records, field)
   index = Hash.new { |hash, key| hash[key] = [] }
   records.each do |record|
@@ -773,6 +858,8 @@ def group_records_by_field(records, field)
 end
 
 ##############################################################################################
+# Recursively collect values for one key from a rule tree. This is used for metadata such as the
+# Zeek log names referenced inside nested AND and OR expressions.
 def rule_values(rule, key, values = [])
   case rule
   when Hash
@@ -785,11 +872,14 @@ def rule_values(rule, key, values = [])
 end
 
 ##############################################################################################
+# Convert Zeek log filenames and variants to the object names used under the event's [zeek] field.
 def normalize_log_name(value)
   value.to_s.sub(/\.log\z/, '').tr('-', '_').sub(/_general\z/, '')
 end
 
 ##############################################################################################
+# Convert the symbolic IEC 104 ASDU values emitted by Zeek to the numeric strings used by OTKB.
+# Unknown values are returned unchanged so they can safely fall through to the generic matcher.
 def normalize_iec104_type_id(value)
   return nil if value.nil?
 
@@ -811,6 +901,8 @@ rescue ArgumentError, TypeError
 end
 
 ##############################################################################################
+# Keep transport protocols consistent with ECS network.transport values and with values already
+# written elsewhere in the pipeline.
 def normalize_otkb_protocol_transports!(protocols)
   protocols.each do |protocol|
     next unless protocol.is_a?(Hash)
@@ -825,6 +917,8 @@ def normalize_otkb_protocol_transports!(protocols)
 end
 
 ##############################################################################################
+# Remove blank ATT&CK IDs from fixture records. Empty strings are not useful enrichment values and
+# would otherwise survive into both [otkb] and ECS [threat] fields.
 def normalize_otkb_attack_ids!(collections)
   [
     'otkb.procedure',
@@ -844,16 +938,19 @@ def normalize_otkb_attack_ids!(collections)
 end
 
 ##############################################################################################
+# Names used as lookup keys are case-insensitive, with surrounding whitespace ignored.
 def normalize_index_key(value)
   value.to_s.strip.downcase
 end
 
 ##############################################################################################
+# Use monotonic time for elapsed-time comparisons because it is unaffected by NTP or clock changes.
 def monotonic_time
   Process.clock_gettime(Process::CLOCK_MONOTONIC)
 end
 
 ##############################################################################################
+# Parse optional integer parameters without raising during pipeline registration.
 def integer_or_nil(value)
   return value if value.is_a?(Integer)
 
@@ -862,6 +959,8 @@ end
 
 
 ##############################################################################################
+# Periodically report API request timings collected by OtkbConnLazy. The thread is started only
+# when debug timing is enabled and is shared by all clones of this filter.
 def log_otkb_timings_thread_proc
   while $otkb_timings_logging_thread_running
     sleep 60
@@ -875,6 +974,7 @@ def log_otkb_timings_thread_proc
 end
 
 ##############################################################################################
+# Recursively freeze a fixture snapshot before sharing it across Logstash workers and pipelines.
 def deep_freeze(object)
   case object
   when Hash
@@ -889,6 +989,8 @@ def deep_freeze(object)
 end
 
 ##############################################################################################
+# Produce an independent event-owned value from a frozen fixture record. Marshal preserves the
+# nested hashes and arrays used throughout the JSON fixture.
 def deep_copy(object)
   Marshal.load(Marshal.dump(object))
 end
