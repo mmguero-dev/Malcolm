@@ -2,6 +2,7 @@
 [Overview](#/dashboard/0ad3d7c2-3441-485e-9dfe-dbb22e84e576)
 [Security Overview](#/dashboard/95479950-41f2-11ea-88fa-7151df485405)
 [ICS/IoT Security Overview](#/dashboard/4a4bde20-4760-11ea-949c-bbb5a9feecbf)
+[OT Knowledge Base](#/dashboard/3fea2770-b2de-11f1-91ff-4d5b77d89b8f)
 [Severity](#/dashboard/d2dd0180-06b1-11ec-8c6b-353266ade330)
 [Connections](#/dashboard/abdd7550-2c7c-40dc-947e-f6d186a158c4)
 [IP Connections Tree](#/dashboard/89714140-a2d5-11f0-b5ae-e139a66d2205)
