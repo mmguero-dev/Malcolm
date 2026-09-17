@@ -4,12 +4,26 @@ set -euo pipefail
 
 if (( EUID != 0 )); then
     printf 'Run this test with sudo: sudo %s\n' "$0" >&2
-    exit 1
+    exit 2
 fi
+
+model_text="$(tr -d '\000' < /proc/device-tree/model 2>/dev/null || true)"
+case "$model_text" in
+    *"Raspberry Pi 5"*|*"Raspberry Pi 500"*|*"Compute Module 5"*)
+        ;;
+    *"Raspberry Pi 4"*|*"Raspberry Pi 400"*|*"Compute Module 4"*)
+        printf 'SKIP: Raspberry Pi 4 has no standard onboard PWM fan controller.\n'
+        exit 0
+        ;;
+    *)
+        printf 'FAIL: unsupported or unidentified hardware: %s\n' "${model_text:-unknown}" >&2
+        exit 2
+        ;;
+esac
 
 fan_device=""
 for device in /sys/class/thermal/cooling_device*; do
-    [[ -d "$device" ]] || continue
+    [[ -r "$device/type" ]] || continue
     if [[ "$(< "$device/type")" == "pwm-fan" ]]; then
         fan_device="$device"
         break
@@ -17,7 +31,7 @@ for device in /sys/class/thermal/cooling_device*; do
 done
 
 if [[ -z "$fan_device" ]]; then
-    echo "pwm-fan cooling device is missing" >&2
+    printf 'FAIL: pwm-fan cooling device is missing\n' >&2
     exit 1
 fi
 
@@ -56,4 +70,5 @@ sleep 4
 restore_fan
 trap - EXIT INT TERM
 printf 'Restored state: %s/%s\n' "$(< "$fan_device/cur_state")" "$max_state"
-printf 'A reported RPM of zero is expected with fans that do not expose a tachometer signal.\n'
+printf 'CHECK: confirm that the fan spun physically during the test.\n'
+printf 'INFO: an RPM value of zero is normal for fans without a tachometer signal.\n'
