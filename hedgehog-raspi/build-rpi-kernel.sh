@@ -251,10 +251,16 @@ if [[ "$root_size_cells" != "2" ]]; then
 fi
 
 cma_size_bytes="$(fdtget -t bx "$dtb_path" /reserved-memory/linux,cma size)"
-if [[ "$cma_size_bytes" != "0 0 0 0 4 0 0 0" ]]; then
-    echo "Pi 5 device tree has an unexpected linux,cma size: $cma_size_bytes" >&2
-    exit 1
-fi
+case "$cma_size_bytes" in
+    # Raspberry Pi's base DTB may encode its 64 MiB default in one cell or
+    # two. The required cma-256 overlay replaces it with the final two-cell
+    # 256 MiB value before Linux parses the device tree.
+    "4 0 0 0" | "0 0 0 0 4 0 0 0") ;;
+    *)
+        echo "Pi 5 device tree has an unexpected linux,cma size: $cma_size_bytes" >&2
+        exit 1
+        ;;
+esac
 
 cma_alloc_ranges_bytes="$(fdtget -t bx "$dtb_path" /reserved-memory/linux,cma alloc-ranges)"
 if [[ "$cma_alloc_ranges_bytes" != "0 0 0 0 0 0 0 0 0 0 0 0 40 0 0 0" ]]; then
