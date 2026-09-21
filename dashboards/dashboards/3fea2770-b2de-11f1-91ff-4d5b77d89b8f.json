@@ -8,7 +8,7 @@
           "searchSourceJSON": "{\"highlightAll\":false,\"version\":true,\"query\":{\"language\":\"lucene\",\"query\":\"*\"},\"filter\":[]}"
         },
         "optionsJSON": "{\"useMargins\":true}",
-        "panelsJSON": "[{\"version\":\"3.8.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":8,\"h\":32,\"i\":\"1\"},\"panelIndex\":\"1\",\"embeddableConfig\":{},\"panelRefName\":\"panel_0\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":8,\"y\":0,\"w\":7,\"h\":32,\"i\":\"7ca056f4-63c8-4f95-a9bb-c092816c3ca3\"},\"panelIndex\":\"7ca056f4-63c8-4f95-a9bb-c092816c3ca3\",\"embeddableConfig\":{},\"panelRefName\":\"panel_1\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":15,\"y\":0,\"w\":33,\"h\":13,\"i\":\"e184bce6-2314-4bd0-ad4b-15121c31d964\"},\"panelIndex\":\"e184bce6-2314-4bd0-ad4b-15121c31d964\",\"embeddableConfig\":{\"vis\":{\"legendOpen\":false}},\"panelRefName\":\"panel_2\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":0,\"y\":32,\"w\":48,\"h\":29,\"i\":\"1ff56a16-7829-4fc4-ac6d-c58fb0eea0f2\"},\"panelIndex\":\"1ff56a16-7829-4fc4-ac6d-c58fb0eea0f2\",\"embeddableConfig\":{},\"panelRefName\":\"panel_3\"}]",
+        "panelsJSON": "[{\"version\":\"3.8.0\",\"gridData\":{\"x\":0,\"y\":0,\"w\":8,\"h\":51,\"i\":\"1\"},\"panelIndex\":\"1\",\"embeddableConfig\":{},\"panelRefName\":\"panel_0\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":8,\"y\":0,\"w\":10,\"h\":6,\"i\":\"eb5441a2-9259-41bb-bdc7-6b008e913d37\"},\"panelIndex\":\"eb5441a2-9259-41bb-bdc7-6b008e913d37\",\"embeddableConfig\":{\"hidePanelTitles\":false},\"panelRefName\":\"panel_1\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":18,\"y\":0,\"w\":10,\"h\":26,\"i\":\"6f50ec35-47dc-4796-af69-fb5175a15129\"},\"panelIndex\":\"6f50ec35-47dc-4796-af69-fb5175a15129\",\"embeddableConfig\":{},\"panelRefName\":\"panel_2\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":28,\"y\":0,\"w\":20,\"h\":11,\"i\":\"e184bce6-2314-4bd0-ad4b-15121c31d964\"},\"panelIndex\":\"e184bce6-2314-4bd0-ad4b-15121c31d964\",\"embeddableConfig\":{\"vis\":{\"legendOpen\":true}},\"panelRefName\":\"panel_3\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":8,\"y\":6,\"w\":5,\"h\":7,\"i\":\"3b042022-73c9-4bc3-9cf9-8f9a6d93c9dc\"},\"panelIndex\":\"3b042022-73c9-4bc3-9cf9-8f9a6d93c9dc\",\"embeddableConfig\":{\"hidePanelTitles\":false},\"panelRefName\":\"panel_4\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":13,\"y\":6,\"w\":5,\"h\":7,\"i\":\"4f0d95ef-3e9e-4a8d-95e0-cbde3d80aa95\"},\"panelIndex\":\"4f0d95ef-3e9e-4a8d-95e0-cbde3d80aa95\",\"embeddableConfig\":{\"hidePanelTitles\":false},\"panelRefName\":\"panel_5\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":28,\"y\":11,\"w\":20,\"h\":20,\"i\":\"78ffff89-b33d-44ca-ab45-dac34c7e46bd\"},\"panelIndex\":\"78ffff89-b33d-44ca-ab45-dac34c7e46bd\",\"embeddableConfig\":{\"table\":null,\"vis\":{\"columnsWidth\":[{\"colIndex\":4,\"width\":81.56165002893519},{\"colIndex\":3,\"width\":98}],\"sortColumn\":{\"colIndex\":4,\"direction\":\"desc\"}}},\"panelRefName\":\"panel_6\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":8,\"y\":13,\"w\":10,\"h\":13,\"i\":\"7ca056f4-63c8-4f95-a9bb-c092816c3ca3\"},\"panelIndex\":\"7ca056f4-63c8-4f95-a9bb-c092816c3ca3\",\"embeddableConfig\":{\"hidePanelTitles\":false},\"panelRefName\":\"panel_7\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":8,\"y\":26,\"w\":20,\"h\":25,\"i\":\"bc17af25-aefb-4f7e-a394-4a156ad6167c\"},\"panelIndex\":\"bc17af25-aefb-4f7e-a394-4a156ad6167c\",\"embeddableConfig\":{\"table\":null,\"vis\":{\"columnsWidth\":[{\"colIndex\":3,\"width\":98}],\"sortColumn\":{\"colIndex\":3,\"direction\":\"desc\"}}},\"panelRefName\":\"panel_8\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":28,\"y\":31,\"w\":10,\"h\":20,\"i\":\"c6b19ab9-c4b6-4ba9-a607-972bf8f04dc0\"},\"panelIndex\":\"c6b19ab9-c4b6-4ba9-a607-972bf8f04dc0\",\"embeddableConfig\":{},\"panelRefName\":\"panel_9\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":38,\"y\":31,\"w\":10,\"h\":20,\"i\":\"08c42adb-cf54-42cc-baa6-0c4dabcc87a3\"},\"panelIndex\":\"08c42adb-cf54-42cc-baa6-0c4dabcc87a3\",\"embeddableConfig\":{},\"panelRefName\":\"panel_10\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":0,\"y\":51,\"w\":13,\"h\":19,\"i\":\"d64611ab-da11-45a2-9a6d-46a09d329956\"},\"panelIndex\":\"d64611ab-da11-45a2-9a6d-46a09d329956\",\"embeddableConfig\":{},\"panelRefName\":\"panel_11\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":13,\"y\":51,\"w\":19,\"h\":19,\"i\":\"d613ac97-a7c6-4c02-92be-b7c3841b23f1\"},\"panelIndex\":\"d613ac97-a7c6-4c02-92be-b7c3841b23f1\",\"embeddableConfig\":{\"vis\":{\"columnsWidth\":[{\"colIndex\":2,\"width\":94}],\"sortColumn\":{\"colIndex\":3,\"direction\":\"desc\"}}},\"panelRefName\":\"panel_12\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":32,\"y\":51,\"w\":16,\"h\":19,\"i\":\"46cac00e-d82e-4de3-94a4-d3870388eb9f\"},\"panelIndex\":\"46cac00e-d82e-4de3-94a4-d3870388eb9f\",\"embeddableConfig\":{\"vis\":{\"columnsWidth\":[{\"colIndex\":2,\"width\":94}],\"sortColumn\":{\"colIndex\":3,\"direction\":\"desc\"}}},\"panelRefName\":\"panel_13\"},{\"version\":\"3.8.0\",\"gridData\":{\"x\":0,\"y\":70,\"w\":48,\"h\":29,\"i\":\"1ff56a16-7829-4fc4-ac6d-c58fb0eea0f2\"},\"panelIndex\":\"1ff56a16-7829-4fc4-ac6d-c58fb0eea0f2\",\"embeddableConfig\":{},\"panelRefName\":\"panel_14\"}]",
         "timeRestore": false,
         "title": "OT Knowledge Base",
         "version": 1
@@ -27,24 +27,79 @@
           "type": "visualization"
         },
         {
-          "id": "a5f21ba0-b2dd-11f1-91ff-4d5b77d89b8f",
+          "id": "697ddcf0-b5cf-11f1-98ff-610d814ed01f",
           "name": "panel_1",
           "type": "visualization"
         },
         {
-          "id": "e58b1550-b2dd-11f1-91ff-4d5b77d89b8f",
+          "id": "9cba8a70-b5cd-11f1-98ff-610d814ed01f",
           "name": "panel_2",
           "type": "visualization"
         },
         {
-          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "id": "e58b1550-b2dd-11f1-91ff-4d5b77d89b8f",
           "name": "panel_3",
+          "type": "visualization"
+        },
+        {
+          "id": "8f1e2050-b5cf-11f1-98ff-610d814ed01f",
+          "name": "panel_4",
+          "type": "visualization"
+        },
+        {
+          "id": "ceb41750-b5d0-11f1-98ff-610d814ed01f",
+          "name": "panel_5",
+          "type": "visualization"
+        },
+        {
+          "id": "5aec8c80-b5c6-11f1-98ff-610d814ed01f",
+          "name": "panel_6",
+          "type": "visualization"
+        },
+        {
+          "id": "a5f21ba0-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "panel_7",
+          "type": "visualization"
+        },
+        {
+          "id": "1f32d690-b5cb-11f1-98ff-610d814ed01f",
+          "name": "panel_8",
+          "type": "visualization"
+        },
+        {
+          "id": "2e628050-b5c8-11f1-98ff-610d814ed01f",
+          "name": "panel_9",
+          "type": "visualization"
+        },
+        {
+          "id": "3a1a12f0-b5c8-11f1-98ff-610d814ed01f",
+          "name": "panel_10",
+          "type": "visualization"
+        },
+        {
+          "id": "8d466c60-b5ca-11f1-98ff-610d814ed01f",
+          "name": "panel_11",
+          "type": "visualization"
+        },
+        {
+          "id": "78b2a910-b5c7-11f1-98ff-610d814ed01f",
+          "name": "panel_12",
+          "type": "visualization"
+        },
+        {
+          "id": "35be7240-b5ce-11f1-98ff-610d814ed01f",
+          "name": "panel_13",
+          "type": "visualization"
+        },
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "panel_14",
           "type": "search"
         }
       ],
       "type": "dashboard",
-      "updated_at": "2026-09-17T21:25:04.999Z",
-      "version": "WzEzNjAsMV0="
+      "updated_at": "2026-09-21T15:30:54.294Z",
+      "version": "WzE3NTQsMV0="
     },
     {
       "attributes": {
@@ -66,8 +121,8 @@
       ],
       "references": [],
       "type": "visualization",
-      "updated_at": "2026-09-17T18:54:45.364Z",
-      "version": "WzEzMTIsMV0="
+      "updated_at": "2026-09-17T22:00:17.731Z",
+      "version": "WzEzMTcsMV0="
     },
     {
       "attributes": {
@@ -76,12 +131,12 @@
           "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
         },
         "savedSearchRefName": "search_0",
-        "title": "OT Knowledge Base - Log Type",
+        "title": "OT Knoweldge Base - Enriched Logs",
         "uiStateJSON": "{}",
         "version": 1,
-        "visState": "{\"title\":\"OT Knowledge Base - Log Type\",\"type\":\"metric\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"network.protocol\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":100,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"customLabel\":\"OT Knowledge Base - Log Type\"},\"schema\":\"group\"}],\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":true},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":48}}}}"
+        "visState": "{\"title\":\"OT Knoweldge Base - Enriched Logs\",\"type\":\"metric\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{\"customLabel\":\"OT Knowledge Base Enriched Logs\"},\"schema\":\"metric\"}],\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":true},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":24}}}}"
       },
-      "id": "a5f21ba0-b2dd-11f1-91ff-4d5b77d89b8f",
+      "id": "697ddcf0-b5cf-11f1-98ff-610d814ed01f",
       "migrationVersion": {
         "visualization": "7.10.0"
       },
@@ -96,8 +151,38 @@
         }
       ],
       "type": "visualization",
-      "updated_at": "2026-09-17T21:20:46.682Z",
-      "version": "WzEzNTYsMV0="
+      "updated_at": "2026-09-21T15:28:17.028Z",
+      "version": "WzE3NTIsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knoweldge Base - Function Classifier",
+        "uiStateJSON": "{\"vis\":{\"legendOpen\":false}}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knoweldge Base - Function Classifier\",\"type\":\"horizontal_bar\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.function.otkb_classifier.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":25,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"customLabel\":\"Function Classifier\"},\"schema\":\"segment\"},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.function.otkb_classifier.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":25,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"customLabel\":\"Function Classifier\"},\"schema\":\"group\"}],\"params\":{\"type\":\"histogram\",\"grid\":{\"categoryLines\":false},\"categoryAxes\":[{\"id\":\"CategoryAxis-1\",\"type\":\"category\",\"position\":\"left\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"linear\"},\"labels\":{\"show\":true,\"rotate\":0,\"filter\":false,\"truncate\":200},\"title\":{}}],\"valueAxes\":[{\"id\":\"ValueAxis-1\",\"name\":\"LeftAxis-1\",\"type\":\"value\",\"position\":\"bottom\",\"show\":true,\"style\":{},\"scale\":{\"type\":\"square root\",\"mode\":\"normal\"},\"labels\":{\"show\":true,\"rotate\":75,\"filter\":true,\"truncate\":100},\"title\":{\"text\":\"Count\"}}],\"seriesParams\":[{\"show\":true,\"type\":\"histogram\",\"mode\":\"stacked\",\"data\":{\"label\":\"Count\",\"id\":\"1\"},\"valueAxis\":\"ValueAxis-1\",\"drawLinesBetweenPoints\":true,\"lineWidth\":2,\"showCircles\":true}],\"addTooltip\":true,\"addLegend\":true,\"legendPosition\":\"right\",\"times\":[],\"addTimeMarker\":false,\"labels\":{},\"thresholdLine\":{\"show\":false,\"value\":10,\"width\":1,\"style\":\"full\",\"color\":\"#E7664C\"}}}"
+      },
+      "id": "9cba8a70-b5cd-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T15:07:11.757Z",
+      "version": "WzE3MzgsMV0="
     },
     {
       "attributes": {
@@ -126,18 +211,316 @@
         }
       ],
       "type": "visualization",
-      "updated_at": "2026-09-17T21:23:05.587Z",
-      "version": "WzEzNTgsMV0="
+      "updated_at": "2026-09-17T21:59:14.557Z",
+      "version": "WzYxOCwxXQ=="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knoweldge Base - Unique Functions",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knoweldge Base - Unique Functions\",\"type\":\"metric\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"cardinality\",\"params\":{\"field\":\"otkb.function.id\",\"customLabel\":\"Unique Functions\"},\"schema\":\"metric\"}],\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":true},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":24}}}}"
+      },
+      "id": "8f1e2050-b5cf-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T15:18:59.565Z",
+      "version": "WzE3NDgsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"threat.tactic.id:* OR threat.technique.id:*\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knoweldge Base - ATT&CK-Mapped Logs",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knoweldge Base - ATT&CK-Mapped Logs\",\"type\":\"metric\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{\"customLabel\":\"ATT&CK-Mapped Logs\"},\"schema\":\"metric\"}],\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":true},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":24}}}}"
+      },
+      "id": "ceb41750-b5d0-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T15:28:44.251Z",
+      "version": "WzE3NTMsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knowledge Base - Function",
+        "uiStateJSON": "{\"vis\":{\"sortColumn\":{\"colIndex\":4,\"direction\":\"desc\"},\"columnsWidth\":[{\"colIndex\":4,\"width\":98}]}}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knowledge Base - Function\",\"type\":\"table\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"network.protocol\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Protocol\"},\"schema\":\"bucket\"},{\"id\":\"5\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.function.otkb_classifier.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Function Classifier\"},\"schema\":\"bucket\"},{\"id\":\"6\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.function.specification_classifier\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Specification Classifier\"},\"schema\":\"bucket\"},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.function.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Function Name\"},\"schema\":\"bucket\"}],\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"showTotal\":false,\"totalFunc\":\"sum\",\"percentageCol\":\"\"}}"
+      },
+      "id": "5aec8c80-b5c6-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T14:51:56.394Z",
+      "version": "WzE3MzEsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knowledge Base - Log Type",
+        "uiStateJSON": "{}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knowledge Base - Log Type\",\"type\":\"metric\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"network.protocol\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":100,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"customLabel\":\"OT Knowledge Base - Log Type\"},\"schema\":\"group\"}],\"params\":{\"addTooltip\":true,\"addLegend\":false,\"type\":\"metric\",\"metric\":{\"percentageMode\":false,\"useRanges\":false,\"colorSchema\":\"Green to Red\",\"metricColorMode\":\"None\",\"colorsRange\":[{\"from\":0,\"to\":10000}],\"labels\":{\"show\":true},\"invertColors\":false,\"style\":{\"bgFill\":\"#000\",\"bgColor\":false,\"labelColor\":false,\"subText\":\"\",\"fontSize\":24}}}}"
+      },
+      "id": "a5f21ba0-b2dd-11f1-91ff-4d5b77d89b8f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T14:55:47.088Z",
+      "version": "WzE3MzIsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"event.action:* or event.result:*\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knowledge Base - Action and Result",
+        "uiStateJSON": "{\"vis\":{\"sortColumn\":{\"colIndex\":3,\"direction\":\"desc\"}}}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knowledge Base - Action and Result\",\"type\":\"table\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"network.protocol\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"customLabel\":\"Protocol\"},\"schema\":\"bucket\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"event.action\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Action\"},\"schema\":\"bucket\"},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"event.result\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Result\"},\"schema\":\"bucket\"}],\"params\":{\"perPage\":15,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"showTotal\":false,\"totalFunc\":\"sum\",\"percentageCol\":\"\"}}"
+      },
+      "id": "1f32d690-b5cb-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T15:23:18.708Z",
+      "version": "WzE3NDksMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knowledge Base - Source IP",
+        "uiStateJSON": "{\"vis\":{\"sortColumn\":{\"colIndex\":1,\"direction\":\"desc\"}}}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knowledge Base - Source IP\",\"type\":\"table\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"source.ip\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"customLabel\":\"Source IP\"},\"schema\":\"bucket\"}],\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"showTotal\":false,\"totalFunc\":\"sum\",\"percentageCol\":\"\"}}"
+      },
+      "id": "2e628050-b5c8-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T14:24:40.148Z",
+      "version": "WzE3MTUsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knowledge Base - Destination IP",
+        "uiStateJSON": "{\"vis\":{\"sortColumn\":{\"colIndex\":1,\"direction\":\"desc\"}}}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knowledge Base - Destination IP\",\"type\":\"table\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"destination.ip\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":false,\"missingBucketLabel\":\"Missing\",\"customLabel\":\"Destination.IP\"},\"schema\":\"bucket\"}],\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"showTotal\":false,\"totalFunc\":\"sum\",\"percentageCol\":\"\"}}"
+      },
+      "id": "3a1a12f0-b5c8-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T14:26:10.170Z",
+      "version": "WzE3MTgsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"otkb.procedures.campaign.name:* OR otkb.procedures.software.name:*\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knowledge Base - Campaign and Software",
+        "uiStateJSON": "{\"vis\":{\"sortColumn\":{\"colIndex\":2,\"direction\":\"desc\"}}}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knowledge Base - Campaign and Software\",\"type\":\"table\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.procedures.campaign.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Campaign\"},\"schema\":\"bucket\"},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.procedures.software.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Software\"},\"schema\":\"bucket\"}],\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"showTotal\":false,\"totalFunc\":\"sum\",\"percentageCol\":\"\"}}"
+      },
+      "id": "8d466c60-b5ca-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T14:41:38.342Z",
+      "version": "WzE3MjcsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"threat.tactic.id:* OR threat.technique.id:* \",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knowledge Base - ATT&CK for ICS",
+        "uiStateJSON": "{\"vis\":{\"columnsWidth\":[{\"colIndex\":2,\"width\":94}],\"sortColumn\":{\"colIndex\":4,\"direction\":\"desc\"}}}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knowledge Base - ATT&CK for ICS\",\"type\":\"table\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"5\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"threat.tactic.id\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Tactic ID\"},\"schema\":\"bucket\"},{\"id\":\"2\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"threat.tactic.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Tactic\"},\"schema\":\"bucket\"},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"threat.technique.id\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Technique ID\"},\"schema\":\"bucket\"},{\"id\":\"3\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"threat.technique.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Technique\"},\"schema\":\"bucket\"}],\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"showTotal\":false,\"totalFunc\":\"sum\",\"percentageCol\":\"\"}}"
+      },
+      "id": "78b2a910-b5c7-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T15:10:26.561Z",
+      "version": "WzE3NDAsMV0="
+    },
+    {
+      "attributes": {
+        "description": "",
+        "kibanaSavedObjectMeta": {
+          "searchSourceJSON": "{\"query\":{\"query\":\"otkb.function.otkb_classifier.defend_id:*\",\"language\":\"kuery\"},\"filter\":[]}"
+        },
+        "savedSearchRefName": "search_0",
+        "title": "OT Knowledge Base - D3FEND Mapping",
+        "uiStateJSON": "{\"vis\":{\"columnsWidth\":[{\"colIndex\":2,\"width\":94}],\"sortColumn\":{\"colIndex\":2,\"direction\":\"desc\"}}}",
+        "version": 1,
+        "visState": "{\"title\":\"OT Knowledge Base - D3FEND Mapping\",\"type\":\"table\",\"aggs\":[{\"id\":\"1\",\"enabled\":true,\"type\":\"count\",\"params\":{},\"schema\":\"metric\"},{\"id\":\"4\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.function.otkb_classifier.name\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":false,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"Function Classifier\"},\"schema\":\"bucket\"},{\"id\":\"5\",\"enabled\":true,\"type\":\"terms\",\"params\":{\"field\":\"otkb.function.otkb_classifier.defend_id\",\"orderBy\":\"1\",\"order\":\"desc\",\"size\":250,\"otherBucket\":true,\"otherBucketLabel\":\"Other\",\"missingBucket\":true,\"missingBucketLabel\":\"-\",\"customLabel\":\"D3FEND ID\"},\"schema\":\"bucket\"}],\"params\":{\"perPage\":10,\"showPartialRows\":false,\"showMetricsAtAllLevels\":false,\"showTotal\":false,\"totalFunc\":\"sum\",\"percentageCol\":\"\"}}"
+      },
+      "id": "35be7240-b5ce-11f1-98ff-610d814ed01f",
+      "migrationVersion": {
+        "visualization": "7.10.0"
+      },
+      "namespaces": [
+        "default"
+      ],
+      "references": [
+        {
+          "id": "457b2190-b2dd-11f1-91ff-4d5b77d89b8f",
+          "name": "search_0",
+          "type": "search"
+        }
+      ],
+      "type": "visualization",
+      "updated_at": "2026-09-21T15:11:39.992Z",
+      "version": "WzE3NDEsMV0="
     },
     {
       "attributes": {
         "columns": [
-          "event.dataset",
           "network.protocol",
           "source.ip",
           "destination.ip",
           "otkb.function.name",
-          "otkb.function.message_type",
           "otkb.function.specification_classifier",
           "otkb.function.otkb_classifier.name",
           "threat.technique.name",
@@ -173,8 +556,8 @@
         }
       ],
       "type": "search",
-      "updated_at": "2026-09-17T21:18:04.841Z",
-      "version": "WzEzNTUsMV0="
+      "updated_at": "2026-09-17T21:59:14.557Z",
+      "version": "WzYxOSwxXQ=="
     }
   ],
   "version": "3.8.0"
