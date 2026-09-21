@@ -528,6 +528,20 @@ def filter(
 
   puts "Matched OTKB function #{_function['id']} (#{_function['name']}) with score #{_match['score']}" if @debug_verbose
 
+  _otkb = event.get('[otkb]')
+
+  if _otkb.is_a?(Hash)
+    _otkb = crush(_otkb)
+
+    if _otkb.empty?
+      event.remove('[otkb]')
+    else
+      event.set('[otkb]', _otkb)
+    end
+  end
+
+  [event]
+
   [event]
 end
 
@@ -1023,6 +1037,23 @@ def deep_copy(object)
   Marshal.load(Marshal.dump(object))
 end
 
+##############################################################################################
+# Recursively removes empty values from nested Ruby arrays and hashes.
+def crush(thing)
+  if thing.is_a?(Array)
+    thing.each_with_object([]) do |v, a|
+      v = crush(v)
+      a << v unless [nil, [], {}, ""].include?(v)
+    end
+  elsif thing.is_a?(Hash)
+    thing.each_with_object({}) do |(k,v), h|
+      v = crush(v)
+      h[k] = v unless [nil, [], {}, ""].include?(v)
+    end
+  else
+    thing
+  end
+end
 
 ##############################################################################################
 # tests
