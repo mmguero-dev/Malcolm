@@ -16,7 +16,6 @@ function finish {
 if type suricata-update >/dev/null 2>&1; then
   trap finish EXIT
 
-  [[ "${SURICATA_UPDATE_ETOPEN:-"true"}" == "true" ]] && ETOPEN_FLAG="--etopen" || ETOPEN_FLAG=""
   if [[ "${SURICATA_UPDATE_DEBUG:-"false"}" == "true" ]]; then
     DEBUG_FLAG="--verbose"
     UPDATE_IGNORE_FLAG=
@@ -71,7 +70,6 @@ if type suricata-update >/dev/null 2>&1; then
 
   suricata-update update \
     $DEBUG_FLAG \
-    $ETOPEN_FLAG \
     --suricata /usr/bin/suricata-offline \
     --data-dir "${SURICATA_MANAGED_DIR:-/var/lib/suricata}" \
     --config "${SURICATA_UPDATE_CONFIG_FILE:-/etc/suricata/update.yaml}" \
