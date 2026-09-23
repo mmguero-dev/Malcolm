@@ -18,7 +18,7 @@ fi
 "${SURICATA_SETUP_COMMAND[@]}" << 'EOF'
     run_startup_rule_update() {
         local status
-        local timeout_seconds="${SURICATA_UPDATE_STARTUP_TIMEOUT:-120}"
+        local timeout_seconds="${SURICATA_UPDATE_STARTUP_TIMEOUT:-300}"
         if timeout "${timeout_seconds}s" "$@"; then
             return 0
         else
@@ -33,6 +33,9 @@ fi
     }
 
     /usr/local/bin/suricata_config_populate.py --suricata ${SURICATA_TEST_CONFIG_BIN} ${SURICATA_TEST_CONFIG_VERBOSITY:-} >&2
+    if [[ -f "${SURICATA_UPDATE_CONFIG_FILE:-/etc/suricata/update.yaml}" ]]; then
+        yq -i '.sources = []' "${SURICATA_UPDATE_CONFIG_FILE:-/etc/suricata/update.yaml}"
+    fi
     if [[ -n "${SURICATA_DISABLE_SIDS}" ]]; then
         tr ',' '\n' <<<"${SURICATA_DISABLE_SIDS}" | awk '{ gsub(/^[[:space:]]+|[[:space:]]+$/, ""); if (length) print }' | \
             while IFS= read -r line; do
@@ -41,7 +44,7 @@ fi
         if [[ "${SURICATA_UPDATE_RULES:-false}" == "true" ]]; then
             run_startup_rule_update /usr/local/bin/suricata-update-rules.sh
         else
-            run_startup_rule_update env SURICATA_UPDATE_RULES=true SURICATA_UPDATE_SOURCES=false SURICATA_UPDATE_ETOPEN=false /usr/local/bin/suricata-update-rules.sh
+            run_startup_rule_update env SURICATA_UPDATE_RULES=true SURICATA_UPDATE_SOURCES=false /usr/local/bin/suricata-update-rules.sh
         fi
     elif [[ "${SURICATA_UPDATE_RULES:-false}" == "true" ]]; then
         run_startup_rule_update /usr/local/bin/suricata-update-rules.sh
