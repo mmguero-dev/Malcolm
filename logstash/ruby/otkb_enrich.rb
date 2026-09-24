@@ -4,6 +4,7 @@ end
 
 require 'faraday'
 require 'json'
+require 'tempfile'
 require 'time'
 
 ##############################################################################################
@@ -344,6 +345,15 @@ def register(
   end
   @otkb_url = nil if @otkb_url.empty?
 
+  # Optional path to a complete JSON fixture. A valid file seeds the shared fixture during
+  # registration, which also allows enrichment to operate without an API connection.
+  @otkb_json_fixture_file = params['otkb_json_fixture_file'].to_s
+  _otkb_json_fixture_file_env = params['otkb_json_fixture_file_env'].to_s
+  if @otkb_json_fixture_file.empty? && !_otkb_json_fixture_file_env.empty?
+    @otkb_json_fixture_file = ENV[_otkb_json_fixture_file_env].to_s
+  end
+  @otkb_json_fixture_file = nil if @otkb_json_fixture_file.empty?
+
   # OTKB API token, specified directly or read from the first populated environment variable.
   @otkb_token = params['otkb_token']
   _otkb_token_env = params['otkb_token_env']
@@ -370,6 +380,15 @@ def register(
   ) unless @otkb_url.nil?
   @otkb_rule_engine = OtkbRuleEngine.new
 
+  # Load the local file before events begin flowing. When an API is also configured, this snapshot
+  # remains available immediately and is replaced by an API response after the normal TTL expires.
+  if @otkb_enabled && !@otkb_json_fixture_file.nil?
+    # A file that cannot supply a snapshot is treated as though the parameter was not specified.
+    # This allows an API configuration to continue normally and restores the inexpensive early
+    # return for a filter that has neither a usable file nor an API URL.
+    @otkb_json_fixture_file = nil if load_otkb_json_fixture_file.nil?
+  end
+
   # Filter clones share one timing thread. The atomic compare-and-set makes thread creation safe
   # when several clones register at the same time.
   if @debug_timings &&
@@ -387,7 +406,7 @@ def filter(
   event
 )
   return [event] unless @otkb_enabled
-  return [event] if @otkb_conn.nil?
+  return [event] if @otkb_conn.nil? && @otkb_json_fixture_file.nil?
 
   # Prefer the parser-specific object already present on the event. Pipeline-level guards normally
   # limit calls to these two event shapes, and this check keeps the script safe on other events.
@@ -689,6 +708,9 @@ def get_otkb_json_fixture
   _fixture = nil unless otkb_json_fixture_source_matches?(_fixture)
 
   return _fixture if otkb_json_fixture_fresh?(_fixture, _now)
+  # A file-only fixture has no remote source to refresh. Keep using its immutable snapshot for the
+  # life of this Logstash process, regardless of the configured API cache TTL.
+  return _fixture if @otkb_conn.nil?
   return _fixture if _now < $otkb_json_fixture_retry_after.get
 
   # When a refresh is already running, keep using the previous snapshot. On the initial load,
@@ -750,10 +772,61 @@ def get_otkb_json_fixture
 end
 
 ##############################################################################################
-# A global snapshot may be shared by several filter clones or pipelines. Only reuse it when it was
-# built for this API base URL.
+# Load a complete fixture from disk and publish it through the same immutable global snapshot used
+# by API responses. The mutex prevents filter clones from parsing and publishing duplicate copies.
+def load_otkb_json_fixture_file
+  unless File.file?(@otkb_json_fixture_file)
+    if @otkb_enabled
+      puts "OTKB JSON fixture file was not found: #{@otkb_json_fixture_file}"
+    end
+    return nil
+  end
+
+  $otkb_json_fixture_refresh_mutex.synchronize do
+    _fixture = $otkb_json_fixture.get
+    return _fixture if otkb_json_fixture_source_matches?(_fixture)
+
+    _snapshot = build_otkb_json_fixture_snapshot(
+      File.read(@otkb_json_fixture_file),
+      monotonic_time
+    )
+    $otkb_json_fixture.set(_snapshot)
+    $otkb_json_fixture_retry_after.set(0.0)
+
+    if @debug
+      puts "Loaded OTKB JSON fixture version #{_snapshot['version']} " \
+           "generated at #{_snapshot['generated_at']} " \
+           "from #{@otkb_json_fixture_file}"
+    end
+
+    _snapshot
+  end
+rescue SystemCallError, IOError, JSON::ParserError, ArgumentError, TypeError => error
+  if @otkb_enabled
+    puts "OTKB JSON fixture file load failed: " \
+         "#{error.class}: #{error.message}"
+  end
+  nil
+end
+
+##############################################################################################
+# Use the API URL as the shared cache identity when one is configured. Otherwise the fixture's
+# full file path identifies file-only filter clones that can safely share one snapshot.
+def otkb_json_fixture_source_key
+  return "url:#{@otkb_url}" unless @otkb_url.nil?
+  return "file:#{@otkb_json_fixture_file}" unless @otkb_json_fixture_file.nil?
+
+  nil
+end
+
+##############################################################################################
+# A global snapshot may be shared by several filter clones or pipelines. Only reuse it when its
+# API URL or file-only path matches the source configured for this filter instance.
 def otkb_json_fixture_source_matches?(fixture)
-  fixture.is_a?(Hash) && fixture['source_url'] == @otkb_url
+  source_key = otkb_json_fixture_source_key
+  !source_key.nil? &&
+    fixture.is_a?(Hash) &&
+    fixture['source_key'] == source_key
 end
 
 ##############################################################################################
@@ -761,6 +834,7 @@ end
 # from a monotonic timestamp so wall-clock adjustments cannot make a snapshot unexpectedly stale.
 def otkb_json_fixture_fresh?(fixture, now)
   return false unless otkb_json_fixture_source_matches?(fixture)
+  return true if @otkb_conn.nil?
   return true if @cache_ttl.zero?
 
   loaded_at = fixture['_loaded_at_monotonic']
@@ -869,7 +943,9 @@ def build_otkb_json_fixture_snapshot(response_body, loaded_at_monotonic)
     'version' => body['version'],
     'generated_at' => body['generated_at'],
     'loaded_at' => loaded_at.iso8601(6),
-    'source_url' => @otkb_url.dup,
+    'source_key' => otkb_json_fixture_source_key,
+    'source_url' => @otkb_url&.dup,
+    'source_file' => @otkb_json_fixture_file&.dup,
     'collections' => collections,
     'by_id' => by_id,
     'protocol_by_name' => protocol_by_name,
@@ -1239,6 +1315,16 @@ OTKB_INLINE_TEST_FIXTURE = deep_freeze(
   }
 )
 
+# Keep the temporary file open for the life of the script so the file-only startup test can pass
+# its path through the normal register parameters without depending on an external fixture.
+OTKB_INLINE_TEST_FIXTURE_TEMPFILE = Tempfile.new(
+  ['otkb-inline-test-fixture-', '.json']
+)
+OTKB_INLINE_TEST_FIXTURE_TEMPFILE.write(
+  JSON.generate(OTKB_INLINE_TEST_FIXTURE)
+)
+OTKB_INLINE_TEST_FIXTURE_TEMPFILE.flush
+
 ##############################################################################################
 # The test DSL changes the receiver inside parameters and in_event blocks to its TestContext, so
 # those blocks cannot call methods defined on this script execution object. Build the shared test
@@ -1595,6 +1681,45 @@ test 'OTKB leaves a nonmatching supported event unenriched' do
 
   expect('the event passes through without an OTKB object') do |events|
     events.length == 1 && events.first.get('[otkb]').nil?
+  end
+end
+
+##############################################################################################
+test 'OTKB enriches from a local fixture without an API URL' do
+  parameters do
+    {
+      'enabled' => true,
+      'otkb_json_fixture_file' => OTKB_INLINE_TEST_FIXTURE_TEMPFILE.path,
+      'cache_ttl' => 1,
+      'debug' => false,
+      'debug_timings' => false
+    }
+  end
+
+  in_event do
+    {
+      'network' => {
+        'protocol' => 'synproto'
+      },
+      'event' => {
+        'dataset' => 'synthetic'
+      },
+      'zeek' => {
+        'synthetic' => {
+          'operation' => 'READ',
+          'function_code' => 16
+        }
+      }
+    }
+  end
+
+  expect('the file-only fixture remains available without an API connection') do |events|
+    fixture = $otkb_json_fixture.get
+
+    events.length == 1 &&
+      events.first.get('[otkb][function][id]') == 'function-specific' &&
+      fixture['source_url'].nil? &&
+      fixture['source_file'] == OTKB_INLINE_TEST_FIXTURE_TEMPFILE.path
   end
 end
 
