@@ -54,3 +54,4 @@ netbox/media
 netbox/custom-plugins
 netbox/custom-scripts
 zeek/custom
+logstash/maps/otkb_fixture.json
