@@ -1135,10 +1135,8 @@ end
 # tests
 #
 # These startup tests use only invented records and identifiers. The fixture is built through the
-# same snapshot builder used for API responses, then installed under a test-only source URL before
-# each enrichment event. No test opens a network connection.
-
-OTKB_INLINE_TEST_URL = 'https://otkb-inline-test.invalid/api/v1'.freeze
+# same snapshot builder used for API responses, then loaded from a temporary local file. No test
+# opens a network connection.
 
 OTKB_INLINE_TEST_FIXTURE = deep_freeze(
   {
@@ -1326,24 +1324,6 @@ OTKB_INLINE_TEST_FIXTURE_TEMPFILE.write(
 OTKB_INLINE_TEST_FIXTURE_TEMPFILE.flush
 
 ##############################################################################################
-# The test DSL changes the receiver inside parameters and in_event blocks to its TestContext, so
-# those blocks cannot call methods defined on this script execution object. Build the shared test
-# snapshot here, then use literal hashes inside the DSL blocks below.
-_otkb_inline_original_url = @otkb_url
-begin
-  @otkb_url = OTKB_INLINE_TEST_URL
-  $otkb_json_fixture.set(
-    build_otkb_json_fixture_snapshot(
-      deep_copy(OTKB_INLINE_TEST_FIXTURE),
-      monotonic_time
-    )
-  )
-ensure
-  @otkb_url = _otkb_inline_original_url
-end
-$otkb_json_fixture_retry_after.set(0.0)
-
-##############################################################################################
 test 'OTKB rule values handle case, hexadecimal, and numeric ranges' do
   parameters do
     {
@@ -1489,10 +1469,8 @@ test 'OTKB enriches a synthetic Zeek event' do
   parameters do
     {
       'enabled' => true,
-      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
-      'otkb_token' => 'synthetic-token',
+      'otkb_json_fixture_file' => OTKB_INLINE_TEST_FIXTURE_TEMPFILE.path,
       'cache_ttl' => 0,
-      'ssl_verify' => false,
       'debug' => false,
       'debug_timings' => false
     }
@@ -1550,10 +1528,8 @@ test 'OTKB enriches a synthetic Wireshark event' do
   parameters do
     {
       'enabled' => true,
-      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
-      'otkb_token' => 'synthetic-token',
+      'otkb_json_fixture_file' => OTKB_INLINE_TEST_FIXTURE_TEMPFILE.path,
       'cache_ttl' => 0,
-      'ssl_verify' => false,
       'debug' => false,
       'debug_timings' => false
     }
@@ -1584,10 +1560,8 @@ test 'OTKB maps a symbolic IEC 104 ASDU type through the direct index' do
   parameters do
     {
       'enabled' => true,
-      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
-      'otkb_token' => 'synthetic-token',
+      'otkb_json_fixture_file' => OTKB_INLINE_TEST_FIXTURE_TEMPFILE.path,
       'cache_ttl' => 0,
-      'ssl_verify' => false,
       'debug' => false,
       'debug_timings' => false
     }
@@ -1620,10 +1594,8 @@ test 'OTKB resolves equal-score matches by function ID' do
   parameters do
     {
       'enabled' => true,
-      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
-      'otkb_token' => 'synthetic-token',
+      'otkb_json_fixture_file' => OTKB_INLINE_TEST_FIXTURE_TEMPFILE.path,
       'cache_ttl' => 0,
-      'ssl_verify' => false,
       'debug' => false,
       'debug_timings' => false
     }
@@ -1656,10 +1628,8 @@ test 'OTKB leaves a nonmatching supported event unenriched' do
   parameters do
     {
       'enabled' => true,
-      'otkb_url' => 'https://otkb-inline-test.invalid/api/v1',
-      'otkb_token' => 'synthetic-token',
+      'otkb_json_fixture_file' => OTKB_INLINE_TEST_FIXTURE_TEMPFILE.path,
       'cache_ttl' => 0,
-      'ssl_verify' => false,
       'debug' => false,
       'debug_timings' => false
     }
