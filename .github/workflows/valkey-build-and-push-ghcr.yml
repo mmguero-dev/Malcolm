@@ -5,7 +5,6 @@ on:
     branches:
       - main
       - staging
-      - otkb
     paths:
       - 'Dockerfiles/valkey.Dockerfile'
       - 'container-health-scripts/valkey.sh'
