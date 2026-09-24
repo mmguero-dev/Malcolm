@@ -3,7 +3,7 @@
 set -euo pipefail
 
 OPENSEARCH_URL="${OPENSEARCH_URL:-https://opensearch:9200}"
-INDEX_PATTERN="${INDEX_PATTERN:-network_logs-*}"
+INDEX_PATTERN="${INDEX_PATTERN:-malcolm_network}"
 OUTPUT_FILE="${OUTPUT_FILE:-otkb-enriched-documents.ndjson}"
 PAGE_SIZE="${PAGE_SIZE:-2000}"
 SCROLL_KEEPALIVE="${SCROLL_KEEPALIVE:-5m}"
