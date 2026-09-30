@@ -410,7 +410,7 @@ done
 for PAIR in filebeat:filebeat-oss \
             nginx:nginx-proxy \
             redis:valkey; do \
-    "$CONTAINER_ENGINE" tag ghcr.io/idaholab/malcolm/${PAIR%:*}:$v ghcr.io/idaholab/malcolm/${PAIR#*:}:$v
+    "$CONTAINER_ENGINE" tag ghcr.io/idaholab/malcolm/${PAIR%:*}:$TAG ghcr.io/idaholab/malcolm/${PAIR#*:}:$TAG
 done
 ```
 
