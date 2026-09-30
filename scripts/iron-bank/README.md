@@ -83,7 +83,7 @@ done
 IRON_BANK_PARENT_PATH=/path/to/iron-bank
 BRANCH=inl-26.x
 TAG=26.08.0-ib
-CONTAINER_ENGINE=docker
+export CONTAINER_ENGINE=docker
 
 for REPO_DIR in $(find "$IRON_BANK_PARENT_PATH" -mindepth 1 -maxdepth 1 -type d | sed "s@\./@@") \
 ; do
