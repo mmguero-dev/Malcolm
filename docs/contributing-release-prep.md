@@ -414,7 +414,12 @@ for PAIR in filebeat:filebeat-oss \
 done
 ```
 
-Modify your local Malcolm installation's `docker-compose.yml` to use the `-ib`-tagged images, start Malcolm, and verify that all containers are running as expected.
+You'll need to modify your local Malcolm installation's `docker-compose.yml` file:
+
+* `yq -i '.services[] |= . + {"user": "0:0"}' docker-compose.yml`
+* Add `-ib` (or whatever else you used as  tag suffix in the commands above, if any, to the `image:` line of each service)
+
+Start Malcolm and verify that all containers are running as expected.
 
 ## 7. Submit pull requests to Iron Bank
 
