@@ -389,6 +389,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/arkime.Dockerfile
+      secrets:
+        - MAXMIND_GEOIP_DB_ACCOUNT_ID
+        - MAXMIND_GEOIP_DB_LICENSE_KEY
+        - MAXMIND_GEOIP_DB_ALTERNATE_DOWNLOAD_URL
     image: ghcr.io/idaholab/malcolm/arkime:26.10.0
     profiles: ["malcolm", "hedgehog"]
     logging:
@@ -477,6 +481,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/arkime.Dockerfile
+      secrets:
+        - MAXMIND_GEOIP_DB_ACCOUNT_ID
+        - MAXMIND_GEOIP_DB_LICENSE_KEY
+        - MAXMIND_GEOIP_DB_ALTERNATE_DOWNLOAD_URL
     image: ghcr.io/idaholab/malcolm/arkime:26.10.0
     profiles: ["malcolm", "hedgehog"]
     logging:
@@ -1574,6 +1582,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/nginx.Dockerfile
+      secrets:
+        - GITHUB_TOKEN
     image: ghcr.io/idaholab/malcolm/nginx-proxy:26.10.0
     profiles: ["malcolm"]
     logging:
@@ -1653,6 +1663,18 @@ services:
     stop_grace_period: 20s
     labels:
       traefik.enable: false
+
+# build-time secrets for "docker compose build" (see scripts/build.sh), sourced from
+#   environment variables so they aren't passed as build arguments
+secrets:
+  GITHUB_TOKEN:
+    environment: GITHUB_TOKEN
+  MAXMIND_GEOIP_DB_ACCOUNT_ID:
+    environment: MAXMIND_GEOIP_DB_ACCOUNT_ID
+  MAXMIND_GEOIP_DB_LICENSE_KEY:
+    environment: MAXMIND_GEOIP_DB_LICENSE_KEY
+  MAXMIND_GEOIP_DB_ALTERNATE_DOWNLOAD_URL:
+    environment: MAXMIND_GEOIP_DB_ALTERNATE_DOWNLOAD_URL
 
 volumes:
   dashboards-helper-data-init:
