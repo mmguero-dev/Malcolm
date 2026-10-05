@@ -13,6 +13,7 @@ import urllib3
 import warnings
 
 from collections import defaultdict, OrderedDict
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from flask import Flask, jsonify, request
 from requests.auth import HTTPBasicAuth
@@ -211,6 +212,12 @@ redisPort = app.config["VALKEY_PORT"]
 redisPassword = app.config["VALKEY_PASSWORD"]
 strelkaHost = app.config["STRELKA_HOST"]
 strelkaPort = app.config["STRELKA_PORT"]
+
+# (connect, read) timeouts for outbound HTTP requests to other Malcolm services, so a stalled
+#   dependency can't hold an API worker indefinitely
+httpTimeout = (app.config["MALCOLM_API_HTTP_CONNECT_TIMEOUT_SEC"], app.config["MALCOLM_API_HTTP_READ_TIMEOUT_SEC"])
+# timeout applied to each individual check performed by the readiness endpoint
+readyTimeout = app.config["MALCOLM_API_READY_TIMEOUT_SEC"]
 
 opensearchLocal = (databaseMode == DatabaseMode.OpenSearchLocal) or (opensearchUrl == 'https://opensearch:9200')
 opensearchSslVerify = app.config["OPENSEARCH_SSL_CERTIFICATE_VERIFICATION"] == "true"
@@ -997,6 +1004,7 @@ def indices():
         f'{opensearchUrl}/_cat/indices?format=json',
         auth=opensearchReqHttpAuth,
         verify=opensearchSslVerify,
+        timeout=httpTimeout,
     ).json()
     result["malcolm_network_index_pattern"] = app.config["MALCOLM_NETWORK_INDEX_PATTERN"]
     result["malcolm_other_index_pattern"] = app.config["MALCOLM_OTHER_INDEX_PATTERN"]
@@ -1086,6 +1094,7 @@ def get_opensearch_template_fields(template_name):
             f"{opensearchUrl}/_index_template/{template_name}",
             auth=opensearchReqHttpAuth,
             verify=opensearchSslVerify,
+            timeout=httpTimeout,
         ).json()
 
         for template in malcolm_utils.deep_get(response, ["index_templates"], []):
@@ -1104,6 +1113,7 @@ def get_opensearch_template_fields(template_name):
                     f"{opensearchUrl}/_component_template/{comp_name}",
                     auth=opensearchReqHttpAuth,
                     verify=opensearchSslVerify,
+                    timeout=httpTimeout,
                 ).json()
                 for component in malcolm_utils.get_iterable(malcolm_utils.deep_get(comp_resp, ["component_templates"])):
                     result.update(
@@ -1131,6 +1141,7 @@ def get_dashboards_fields(args):
             },
             auth=opensearchReqHttpAuth,
             verify=opensearchSslVerify,
+            timeout=httpTimeout,
         ).json()
 
         for field in resp.get('fields', []):
@@ -1212,6 +1223,7 @@ def version():
         opensearchUrl,
         auth=opensearchReqHttpAuth,
         verify=opensearchSslVerify,
+        timeout=httpTimeout,
     ).json()
     if isinstance(opensearchStats, dict):
         opensearchStats['health'] = dict(databaseClient.cluster.health())
@@ -1279,6 +1291,7 @@ def ready():
                 port=port,
                 password=password,
                 socket_connect_timeout=timeout,
+                socket_timeout=timeout,
             )
             return r.ping()
         except Exception:
@@ -1328,40 +1341,76 @@ def ready():
                 print(f"{type(e).__name__}: {e} getting {name} status")
             return default
 
-    # Each component’s check becomes a small lambda
+    # Each component's check becomes a small lambda. Every check is bounded by readyTimeout so a
+    #   stalled dependency can't hold the request open.
     checks = {
-        "arkime": (lambda: requests.get(arkimeStatusUrl, verify=False).raise_for_status() or True, False),
+        "arkime": (
+            lambda: requests.get(arkimeStatusUrl, verify=False, timeout=readyTimeout).raise_for_status() or True,
+            False,
+        ),
         "dashboards": (
             lambda: requests.get(
                 f"{dashboardsUrl}/api/status",
                 auth=opensearchReqHttpAuth,
                 verify=opensearchSslVerify,
+                timeout=readyTimeout,
             ).json(),
             {},
         ),
-        "dashboards_maps": (lambda: malcolm_utils.check_socket(dashboardsHelperHost, dashboardsMapsPort), False),
-        "extracted_files": (lambda: malcolm_utils.check_socket(filescanHost, filescanHttpServerPort), False),
-        "filebeat_tcp": (lambda: malcolm_utils.check_socket(filebeatHost, filebeatTcpJsonPort), False),
-        "filescan": (lambda: filescan_healthy(filescanHost, filescanHealthPort), False),
-        "freq": (lambda: requests.get(freqUrl).raise_for_status() or True, False),
-        "logstash_health": (lambda: requests.get(f"{logstashUrl}/_health_report").json(), {}),
-        "logstash_lumberjack": (lambda: malcolm_utils.check_socket(logstashHost, logstashLJPort), False),
+        "dashboards_maps": (
+            lambda: malcolm_utils.check_socket(dashboardsHelperHost, dashboardsMapsPort, timeout=readyTimeout),
+            False,
+        ),
+        "extracted_files": (
+            lambda: malcolm_utils.check_socket(filescanHost, filescanHttpServerPort, timeout=readyTimeout),
+            False,
+        ),
+        "filebeat_tcp": (
+            lambda: malcolm_utils.check_socket(filebeatHost, filebeatTcpJsonPort, timeout=readyTimeout),
+            False,
+        ),
+        "filescan": (lambda: filescan_healthy(filescanHost, filescanHealthPort, timeout=readyTimeout), False),
+        "freq": (lambda: requests.get(freqUrl, timeout=readyTimeout).raise_for_status() or True, False),
+        "logstash_health": (
+            lambda: requests.get(f"{logstashUrl}/_health_report", timeout=readyTimeout).json(),
+            {},
+        ),
+        "logstash_lumberjack": (
+            lambda: malcolm_utils.check_socket(logstashHost, logstashLJPort, timeout=readyTimeout),
+            False,
+        ),
         "netbox": (
             lambda: requests.get(
                 f"{netboxUrl}/api/?format=json",
                 headers={"Authorization": f"Token {netboxToken}"} if netboxToken else None,
                 verify=False,
+                timeout=readyTimeout,
             ).json(),
             {},
         ),
         "opensearch": (lambda: dict(databaseClient.cluster.health()), {}),
-        "pcap_monitor": (lambda: malcolm_utils.check_socket(pcapMonitorHost, pcapTopicPort), False),
-        "redis": (lambda: redis_accessible(redisHost, redisPort, redisPassword), False),
-        "redis_cache": (lambda: redis_accessible(redisCacheHost, redisCachePort, redisPassword), False),
-        "strelka": (lambda: malcolm_utils.check_socket(strelkaHost, strelkaPort), False),
+        "pcap_monitor": (
+            lambda: malcolm_utils.check_socket(pcapMonitorHost, pcapTopicPort, timeout=readyTimeout),
+            False,
+        ),
+        "redis": (lambda: redis_accessible(redisHost, redisPort, redisPassword, timeout=readyTimeout), False),
+        "redis_cache": (
+            lambda: redis_accessible(redisCacheHost, redisCachePort, redisPassword, timeout=readyTimeout),
+            False,
+        ),
+        "strelka": (
+            lambda: malcolm_utils.check_socket(strelkaHost, strelkaPort, timeout=readyTimeout),
+            False,
+        ),
     }
 
-    results = {name: safe_check(name, func, default) for name, (func, default) in checks.items()}
+    # run the checks concurrently so the total time is bounded by the slowest single check
+    #   rather than the sum of all of them
+    with ThreadPoolExecutor(max_workers=len(checks)) as executor:
+        futures = {
+            name: executor.submit(safe_check, name, func, default) for name, (func, default) in checks.items()
+        }
+        results = {name: future.result() for name, future in futures.items()}
 
     return jsonify(
         arkime=results["arkime"],
@@ -1437,6 +1486,7 @@ def dashboard_export(dashid):
                 },
                 auth=opensearchReqHttpAuth,
                 verify=opensearchSslVerify,
+                timeout=httpTimeout,
             )
             response.raise_for_status()
 
@@ -1622,7 +1672,7 @@ def netbox_sites():
         url = f'{netboxUrl}/api/dcim/sites/?format=json'
         while url:
             try:
-                response = requests.get(url, headers=headers, verify=False)
+                response = requests.get(url, headers=headers, verify=False, timeout=httpTimeout)
                 response.raise_for_status()
             except Exception as e:
                 if debugApi:
@@ -1698,6 +1748,7 @@ def redis_keyspace_info():
                 port=port,
                 password=password,
                 socket_connect_timeout=timeout,
+                socket_timeout=timeout,
                 decode_responses=True,
             )
             return r.info("keyspace")

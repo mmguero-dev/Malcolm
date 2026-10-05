@@ -270,9 +270,9 @@ def get_function_name(depth=0):
 
 ###################################################################################################
 # test if a remote port is open
-def check_socket(host, port):
+def check_socket(host, port, timeout=10):
     with contextlib.closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as sock:
-        sock.settimeout(10)
+        sock.settimeout(timeout)
         if sock.connect_ex((host, port)) == 0:
             return True
         else:

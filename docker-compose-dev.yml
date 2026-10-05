@@ -1499,7 +1499,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfiles/api.Dockerfile
-    command: gunicorn --bind 0:5000 manage:app
+    command: gunicorn --bind 0:5000 --workers 2 --threads 4 manage:app
     restart: "no"
     stdin_open: false
     tty: true
