@@ -18,7 +18,7 @@ from flask import Flask, jsonify, request
 from requests.auth import HTTPBasicAuth
 from urllib.parse import urlparse
 from malcolm_constants import DatabaseMode
-from werkzeug.exceptions import HTTPException
+from werkzeug.exceptions import BadRequest, HTTPException
 
 # map categories of field names to OpenSearch dashboards
 fields_to_urls = []
@@ -693,16 +693,95 @@ def filtervalues(search, args):
     return (filters, s)
 
 
-def aggfields(fieldnames, current_request, urls=None):
+def nonnegative_integer_argument(args, name, default=None):
+    """Parse an integer without silently truncating floats or accepting booleans."""
+    value = args.get(name, default)
+    if type(value) is int and value >= 0:
+        return value
+    if isinstance(value, str) and re.fullmatch(r'[0-9]+', value.strip()):
+        try:
+            return int(value.strip())
+        except ValueError:
+            pass
+    raise BadRequest(f"'{name}' must be a nonnegative integer")
+
+
+def document_sort(args):
+    """Normalize a comma-separated string or JSON array of field sort expressions."""
+    if 'sort' not in args:
+        return []
+    expressions = args['sort']
+    if isinstance(expressions, str):
+        expressions = expressions.split(',')
+    if not isinstance(expressions, list) or not expressions:
+        raise BadRequest("'sort' must be a nonempty string or array of strings")
+
+    sorts = []
+    for expression in expressions:
+        if not isinstance(expression, str) or not (expression := expression.strip()):
+            raise BadRequest("Each sort expression must be a nonempty string")
+        direction = 'asc'
+        field = expression
+        if ':' in expression:
+            field, direction = expression.rsplit(':', 1)
+            field, direction = field.strip(), direction.strip().lower()
+        elif expression.startswith('-'):
+            field, direction = expression[1:], 'desc'
+        if (
+            not field
+            or field.startswith(('-', '+'))
+            or any(char.isspace() or char in ',:' for char in field)
+            or direction not in ('asc', 'desc')
+        ):
+            raise BadRequest("Sort expressions must use 'field', '-field', or 'field:asc|desc'")
+        sorts.append({field: {'order': direction}})
+    return sorts
+
+
+def document_track_total_hits(args):
+    """Accept a boolean or nonnegative counting threshold, preserving backend defaults."""
+    if 'track_total_hits' not in args:
+        return None
+    value = args['track_total_hits']
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str) and value.strip().lower() in ('true', 'false'):
+        return value.strip().lower() == 'true'
+    return nonnegative_integer_argument(args, 'track_total_hits')
+
+
+def search_response_metadata(response):
+    """Preserve search status; absent metadata remains unknown (JSON null)."""
+    return {'shards': response.get('_shards'), 'timed_out': response.get('timed_out')}
+
+
+def debug_search_response(endpoint, response, **details):
+    """Log a compact search summary and any shard failures when API debugging is enabled."""
+    if debugApi:
+        shards = response.get('_shards') or {}
+        details.update(
+            timed_out=response.get('timed_out'),
+            shards_total=shards.get('total'),
+            shards_successful=shards.get('successful'),
+            shards_skipped=shards.get('skipped'),
+            shards_failed=shards.get('failed'),
+            took_ms=response.get('took'),
+        )
+        print(f"{endpoint}: {json.dumps(details, default=str)}")
+        if failures := shards.get('failures'):
+            print(f"{endpoint} shard failures: {json.dumps(failures, default=str)}")
+
+
+def aggfields(fieldnames, args, urls=None):
     """Returns a bucket aggregation for a particular field over a given time range
 
     Parameters
     ----------
     fieldname : string or Array of string
         The name of the field(s) on which to perform the aggregation
-    current_request : Request
-        The flask Request object being processed (see gettimes/filtertime and getfilters/filtervalues)
-        Uses 'from', 'to', 'limit', 'filter', and 'doctype' from current_request arguments
+    args : dict
+        Parsed request arguments (see gettimes/filtertime and getfilters/filtervalues).
+        Uses 'from', 'to', 'limit', 'filter', and 'doctype'.
 
     Returns
     -------
@@ -715,7 +794,10 @@ def aggfields(fieldnames, current_request, urls=None):
     fields
         the name of the field(s) on which the aggregation was performed
     """
-    args = get_request_arguments(current_request)
+    top_bucket_name = next(iter(malcolm_utils.get_iterable(fieldnames)))
+    if top_bucket_name in ('range', 'filter', 'fields', 'urls', 'shards', 'timed_out'):
+        raise BadRequest(f"Aggregation field '{top_bucket_name}' conflicts with a reserved response key")
+
     idx = index_from_args(args)
     s = SearchClass(
         using=databaseClient,
@@ -723,7 +805,9 @@ def aggfields(fieldnames, current_request, urls=None):
     ).extra(size=0)
     start_time_ms, end_time_ms, s = filtertime(s, args)
     filters, s = filtervalues(s, args)
-    bucket_limit = int(malcolm_utils.deep_get(args, ["limit"], app.config["RESULT_SET_LIMIT"]))
+    bucket_limit = nonnegative_integer_argument(args, 'limit', app.config['RESULT_SET_LIMIT'])
+    if bucket_limit == 0:
+        raise BadRequest("Aggregation 'limit' must be greater than zero")
     last_bucket = s.aggs
 
     for fname in malcolm_utils.get_iterable(fieldnames):
@@ -757,17 +841,26 @@ def aggfields(fieldnames, current_request, urls=None):
             missing=missing_val,
         )
 
-    response = s.execute()
+    response = s.execute().to_dict()
 
-    top_bucket_name = next(iter(malcolm_utils.get_iterable(fieldnames)))
     result_dict = {
-        top_bucket_name: response.aggregations.to_dict().get(top_bucket_name, {}),
+        top_bucket_name: response.get('aggregations', {}).get(top_bucket_name, {}),
         'range': (start_time_ms // 1000, end_time_ms // 1000),
         'filter': filters,
         'fields': malcolm_utils.get_iterable(fieldnames),
+        **search_response_metadata(response),
     }
     if (urls is not None) and (len(urls) > 0):
         result_dict['urls'] = urls
+
+    if debugApi:
+        buckets = result_dict[top_bucket_name].get('buckets')
+        debug_search_response(
+            'agg',
+            response,
+            fields=result_dict['fields'],
+            buckets=len(buckets) if buckets is not None else None,
+        )
 
     return jsonify(result_dict)
 
@@ -801,11 +894,12 @@ def aggregate(fieldname):
     if not check_roles(request):
         raise PermissionError("Not authorized to perform this action")
 
-    start_time, end_time = gettimes(get_request_arguments(request))
+    args = get_request_arguments(request)
+    start_time, end_time = gettimes(args)
     fields = fieldname.split(",")
     return aggfields(
         fields,
-        request,
+        args,
         urls=urls_for_field(fields, start_time=start_time, end_time=end_time),
     )
 
@@ -820,7 +914,8 @@ def document():
     Parameters
     ----------
     request : Request
-        Uses 'from', 'to', 'limit', 'filter', and 'doctype' from request arguments
+        Uses 'from', 'to', 'limit', 'filter', 'doctype', 'sort', 'offset', and
+        'track_total_hits' from request arguments
 
     Returns
     -------
@@ -828,21 +923,47 @@ def document():
         dict containing the filters, e.g., {"_id":"210301-Cgnjsc2Tkdl38g25D6-cotp-5485"}
     results
         array of the documents retrieved (up to 'limit')
+    total
+        backend hit count and relation, or None if counting is disabled
+    shards, timed_out
+        backend search status, or None when unavailable
     """
     if not check_roles(request):
         raise PermissionError("Not authorized to perform this action")
 
     args = get_request_arguments(request)
+    limit = nonnegative_integer_argument(args, 'limit', app.config['RESULT_SET_LIMIT'])
+    offset = nonnegative_integer_argument(args, 'offset', 0)
+    sorts = document_sort(args)
+    track_total_hits = document_track_total_hits(args)
     s = SearchClass(
         using=databaseClient,
         index=index_from_args(args),
-    ).extra(size=int(malcolm_utils.deep_get(args, ["limit"], app.config["RESULT_SET_LIMIT"])))
+    ).extra(**{'size': limit, 'from': offset})
+    if sorts:
+        s = s.sort(*sorts)
+    if track_total_hits is not None:
+        s = s.extra(track_total_hits=track_total_hits)
     start_time_ms, end_time_ms, s = filtertime(s, args, default_from="1970-1-1", default_to="now")
     filters, s = filtervalues(s, args)
+    response = s.execute().to_dict()
+    if debugApi:
+        hits = response.get('hits', {})
+        total = hits.get('total')
+        debug_search_response(
+            'document',
+            response,
+            returned=len(hits.get('hits', [])),
+            offset=offset,
+            total=total.get('value') if isinstance(total, dict) else total,
+            relation=total.get('relation') if isinstance(total, dict) else None,
+        )
     return jsonify(
-        results=s.execute().to_dict().get('hits', {}).get('hits', []),
+        results=response.get('hits', {}).get('hits', []),
+        total=response.get('hits', {}).get('total'),
         range=(start_time_ms // 1000, end_time_ms // 1000),
         filter=filters,
+        **search_response_metadata(response),
     )
 
 
