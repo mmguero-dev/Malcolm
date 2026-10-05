@@ -1452,8 +1452,8 @@ def start():
             os.path.join(GetMalcolmPath(), os.path.join('htadmin', 'metadata')),
         ]:
             if os.path.isfile(authFile):
-                # chmod 644 authFile
-                os.chmod(authFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP | stat.S_IROTH)
+                # chmod 640 authFile
+                os.chmod(authFile, stat.S_IRUSR | stat.S_IWUSR | stat.S_IRGRP)
         for authFile in [
             os.path.join(GetMalcolmPath(), os.path.join('nginx', 'nginx_ldap.conf')),
             os.path.join(GetMalcolmPath(), '.opensearch.primary.curlrc'),
