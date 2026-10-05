@@ -25,7 +25,7 @@ Although the configuration script automates many of the following configuration 
         + `INDEX_MANAGEMENT_SEGMENTS` - the number of segments Arkime will use to optimize sessions (default `1`)
         + `INDEX_MANAGEMENT_HOT_WARM_ENABLED` - whether or not Arkime should use a hot/warm design (storing non-session data in a warm index); setting up hot/warm index policies also requires configuration on the local nodes in accordance with the [Arkime documentation](https://arkime.com/faq#ilm)
     - The following variables configure exposing [Arkime's WISE Plugin](https://arkime.com/wise). By default, Malcolm leverages the WISE plugin internally but does not expose the functionality to the end user:
-        + `ARKIME_WISE_CONFIG_PIN_CODE` - the WISE service requires a configuration pin if the wise UI is write-enabled via `ARKIME_EXPOSE_WISE_GUI` (see below). This value will be required to save any WISE configuration changes. The default value is `WISE2019`.
+        + `ARKIME_WISE_CONFIG_PIN_CODE` - the WISE service requires a configuration pin if the wise UI is write-enabled via `ARKIME_EXPOSE_WISE_GUI` (see below). This value will be required to save any WISE configuration changes.
         + `ARKIME_WISE_SERVICE_URL` - to leverage WISE, Arkime `capture` needs to be provided a `wiseURL` value. The value of this environment variable is copied into the `wiseURL` value in `arkime-live` containers.
 * **`arkime-live.env`** - settings for live traffic capture with Arkime
     - `ARKIME_LIVE_CAPTURE` - whether or not Arkime should monitor live traffic on a local interface (`PCAP_IFACE` in `pcap-capture.env` specifies the interface)
