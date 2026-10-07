@@ -17,6 +17,8 @@ inflection==0.5.1
 pydantic==2.11.7; python_version < "3.14"
 pydantic>=2.12; python_version >= "3.14"
 supervisor==4.3.0
+# filescan Strelka bindings (make -C filescan/python-filescan)
+grpcio-tools
 
 # threat feeds (zeek/requirements.txt)
 git+https://github.com/mmguero-dev/mandiant-ti-client
