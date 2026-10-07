@@ -1863,7 +1863,8 @@ def event():
     status
         the JSON-formatted OpenSearch response from indexing/updating the alert record
     """
-    if (not is_internal_request(request)) and (not check_roles(request)):
+    internal_request = is_internal_request(request)
+    if (not internal_request) and (not check_roles(request)):
         raise PermissionError("Not authorized to perform this action")
 
     alert = {}
@@ -1973,14 +1974,22 @@ def event():
                 if hitCount := malcolm_utils.deep_get(alertResults[0], ['hits', 'total', 'value'], 0):
                     alert['event']['hits'] = hitCount
 
+        # Record who submitted this document. It's set after the merge so the submitted body can't supply it.
+        alert['event']['submitter'] = (
+            'internal' if internal_request else (request.headers.get('X-Forwarded-User') or 'unknown')
+        )
+
         docDateStr = (
             _parse_query_time(alert[app.config["MALCOLM_NETWORK_INDEX_TIME_FIELD"]])
             .astimezone(timezone.utc)
             .strftime('%y%m%d')
         )
+        # The "alert." namespace keeps caller-supplied IDs from colliding with (and overwriting) pipeline
+        # records in the same index: Arkime IDs are URL-safe base64 and Zeek UIDs are alphanumeric, so
+        # neither ever contains a '.'.
         idxResponse = databaseClient.index(
             index=f"{app.config['MALCOLM_NETWORK_INDEX_PATTERN'].rstrip('*')}{docDateStr}",
-            id=f"{docDateStr}-{alert['event']['id']}",
+            id=f"{docDateStr}-alert.{alert['event']['id']}",
             body=alert,
         )
 
