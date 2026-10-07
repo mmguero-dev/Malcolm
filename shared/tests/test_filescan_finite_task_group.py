@@ -1,17 +1,18 @@
 """Finite filescan task groups must terminate without losing child work."""
 
 import importlib.util
+import os
 import signal
-from pathlib import Path
 import subprocess
 import sys
 
 import anyio
 import pytest
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
 from filescan import aio
+
+# Child processes have no conftest, so hand them this process's import path.
+CHILD_ENV = {**os.environ, 'PYTHONPATH': os.pathsep.join(sys.path)}
 
 
 @pytest.fixture(params=['asyncio', 'trio'])
@@ -104,7 +105,9 @@ def test_explicit_forever_mode_requires_cancellation(backend):
 
 def test_run_as_main_returns_value_in_a_bounded_child_process():
     code = "from filescan.aio import run_as_main\nasync def value(): return 17\nprint(run_as_main(value()), flush=True)"
-    completed = subprocess.run([sys.executable, '-c', code], capture_output=True, text=True, timeout=4, check=False)
+    completed = subprocess.run(
+        [sys.executable, '-c', code], capture_output=True, text=True, timeout=4, check=False, env=CHILD_ENV
+    )
     assert completed.returncode == 0, completed.stderr
     assert completed.stdout.strip() == '17'
 
@@ -147,7 +150,12 @@ async def main():
 anyio.run(main)
 """
     completed = subprocess.run(
-        [sys.executable, '-c', code, str(int(signum))], capture_output=True, text=True, timeout=5, check=False
+        [sys.executable, '-c', code, str(int(signum))],
+        capture_output=True,
+        text=True,
+        timeout=5,
+        check=False,
+        env=CHILD_ENV,
     )
     assert completed.returncode == 0, completed.stderr
     assert completed.stdout.strip() == 'stopped'
