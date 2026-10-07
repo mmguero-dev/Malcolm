@@ -3,16 +3,27 @@
 import asyncio
 from contextlib import asynccontextmanager
 import json
-from pathlib import Path
+import os
 import subprocess
 import sys
 from unittest.mock import patch
 
 import pytest
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-from filescan import strelka  # noqa: E402 - standalone sources require their checkout paths
+try:
+    from filescan import strelka
+except ImportError:
+    pytest.skip(
+        'Strelka protobuf bindings not generated (run make in filescan/python-filescan)', allow_module_level=True
+    )
+
+
+def run_isolated(code, timeout):
+    # The child process has no conftest, so hand it this process's import path.
+    env = {**os.environ, 'PYTHONPATH': os.pathsep.join(sys.path)}
+    return subprocess.run(
+        [sys.executable, '-c', code, __file__], capture_output=True, text=True, timeout=timeout, check=False, env=env
+    )
 
 
 class UploadError(Exception):
@@ -96,9 +107,7 @@ def test_cancellation_preserves_original_error_without_waiting(stage, emit_first
 def test_pending_future_cancellation_finishes_in_a_separate_process():
     code = "import asyncio,importlib.util,sys; s=importlib.util.spec_from_file_location('regression',sys.argv[1]); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); asyncio.run(m.cancellation_case('partial',guarded=False))"
     try:
-        result = subprocess.run(
-            [sys.executable, '-c', code, __file__], capture_output=True, text=True, timeout=5, check=False
-        )
+        result = run_isolated(code, timeout=5)
     except subprocess.TimeoutExpired:
         pytest.fail('scan cancellation blocked on an unfinished Future')
     assert result.returncode == 0, result.stderr
@@ -150,9 +159,7 @@ async def real_grpc_cancellation():
 def test_real_grpc_cancellation_finishes_with_an_incomplete_upload():
     code = "import asyncio,importlib.util,sys; s=importlib.util.spec_from_file_location('regression',sys.argv[1]); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); asyncio.run(m.real_grpc_cancellation())"
     try:
-        result = subprocess.run(
-            [sys.executable, '-c', code, __file__], capture_output=True, text=True, timeout=8, check=False
-        )
+        result = run_isolated(code, timeout=8)
     except subprocess.TimeoutExpired:
         pytest.fail('real gRPC cancellation blocked with an unfinished upload')
     assert result.returncode == 0, result.stderr
