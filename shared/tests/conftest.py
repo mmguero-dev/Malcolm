@@ -12,6 +12,7 @@ SOURCE_DIRS = (
     REPO_ROOT / 'scripts',
     REPO_ROOT / 'filescan' / 'python-filescan',
     REPO_ROOT / 'dashboards' / 'scripts',
+    REPO_ROOT / 'api',
 )
 
 sys.path[0:0] = [str(p) for p in SOURCE_DIRS if str(p) not in sys.path]

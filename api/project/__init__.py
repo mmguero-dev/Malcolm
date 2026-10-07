@@ -1969,7 +1969,11 @@ def event():
                 if hitCount := malcolm_utils.deep_get(alertResults[0], ['hits', 'total', 'value'], 0):
                     alert['event']['hits'] = hitCount
 
-        docDateStr = dateparser.parse(alert[app.config["MALCOLM_NETWORK_INDEX_TIME_FIELD"]]).strftime('%y%m%d')
+        docDateStr = (
+            _parse_query_time(alert[app.config["MALCOLM_NETWORK_INDEX_TIME_FIELD"]])
+            .astimezone(timezone.utc)
+            .strftime('%y%m%d')
+        )
         idxResponse = databaseClient.index(
             index=f"{app.config['MALCOLM_NETWORK_INDEX_PATTERN'].rstrip('*')}{docDateStr}",
             id=f"{docDateStr}-{alert['event']['id']}",
