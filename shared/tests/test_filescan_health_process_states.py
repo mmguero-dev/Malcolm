@@ -1,15 +1,10 @@
 """Supervisor process failures must not disappear from filescan health."""
 
 import importlib
-from pathlib import Path
-import sys
 from unittest.mock import Mock, patch
 
 import pytest
 import supervisor.childutils
-
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
 
 # Replace the external supervisor interface before importing the health module.
 with patch.object(supervisor.childutils, 'getRPCInterface', return_value=Mock()):
