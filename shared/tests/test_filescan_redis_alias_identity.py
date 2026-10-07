@@ -1,15 +1,11 @@
 """Typed Redis aliases must remain usable through repeated normalization."""
 
-from pathlib import Path
-import sys
 from unittest.mock import AsyncMock, Mock
 
 import anyio
 from pydantic import BaseModel
 import pytest
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
 from filescan import redis as messages
 
 
