@@ -5,14 +5,12 @@ import importlib
 import json
 import os
 from pathlib import Path
-import sys
 from unittest.mock import Mock, patch
 
 import pytest
 import requests
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path[:0] = [str(ROOT / 'scripts'), str(ROOT / 'api')]
 
 with patch.dict(
     os.environ,
@@ -140,7 +138,8 @@ def test_fields_endpoint_uses_nested_inline_and_component_mappings(monkeypatch, 
         return response
 
     monkeypatch.setattr(api.requests, 'get', Mock(side_effect=get))
-    response = api.app.test_client().get('/mapi/fields?template=fixture')
+    url = '/' + api.app.config['MALCOLM_API_PREFIX'].strip('/') + '/fields'
+    response = api.app.test_client().get(url, query_string={'template': 'fixture'})
     assert response.status_code == 200, response.data
     data = response.get_json()
     assert data['fields']['inline.count']['type'] == 'integer'
