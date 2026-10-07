@@ -2,8 +2,6 @@
 
 import io
 import json
-from pathlib import Path
-import sys
 
 import pytest
 
@@ -13,9 +11,6 @@ for _module in ('antlr4', 'stix2', 'stix2patterns', 'pymisp', 'taxii2client', 'm
 from stix2.v20 import Bundle as Bundle20, Indicator as Indicator20
 from stix2.v21 import Indicator as Indicator21
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / 'scripts'))
-sys.path.insert(0, str(ROOT / 'zeek' / 'scripts'))
 import zeek_threat_feed_utils as feeds
 
 

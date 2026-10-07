@@ -1,8 +1,6 @@
 """MISP context values (file names alongside hashes, to_ids=False attributes) don't become intel items of their own."""
 
 import io
-from pathlib import Path
-import sys
 
 import pytest
 
@@ -11,9 +9,6 @@ for _module in ('antlr4', 'stix2', 'stix2patterns', 'pymisp', 'taxii2client', 'm
 
 from pymisp import MISPAttribute, MISPEvent, MISPObject
 
-ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / 'scripts'))
-sys.path.insert(0, str(ROOT / 'zeek' / 'scripts'))
 import zeek_threat_feed_utils as feeds
 
 MD5 = '0123456789abcdef0123456789abcdef'

@@ -1,0 +1,26 @@
+# test dependencies for shared/tests
+# pip install -r shared/tests/requirements.txt
+
+pytest
+trio
+
+# filescan (filescan/python-filescan/requirements.txt)
+anyio==4.14.2
+human-id==0.2.0
+
+# threat feeds (zeek/requirements.txt)
+git+https://github.com/mmguero-dev/mandiant-ti-client
+dateparser==1.2.2
+pymisp==2.5.17.2
+stix2==3.0.1
+taxii2-client==2.3.0
+vt-py==0.22.0
+
+# pcap watcher (pcap-monitor/requirements.txt)
+elasticsearch==8.19.2
+elasticsearch-dsl==8.18.0
+opensearch-py==3.2.0
+python-magic==0.4.27
+pyzmq==27.1.0
+requests==2.33.1
+watchdog==6.0.0
