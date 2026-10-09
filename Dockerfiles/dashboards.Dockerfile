@@ -46,10 +46,11 @@ ENV TERM=xterm
 ENV TINI_VERSION=v0.19.0
 ENV TINI_URL=https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini
 
-ARG NODE_OPTIONS="--max_old_space_size=4096"
-ENV NODE_OPTIONS=$NODE_OPTIONS
 ENV OPENSEARCH_DASHBOARDS_HOME=/usr/share/opensearch-dashboards
 ENV PATH="$PATH:$OPENSEARCH_DASHBOARDS_HOME/bin"
+ARG NODE_OPTIONS="--max_old_space_size=4096"
+ADD --chmod=644 dashboards/scripts/socket-timeout-guard.js $OPENSEARCH_DASHBOARDS_HOME/config/socket-timeout-guard.js
+ENV NODE_OPTIONS="$NODE_OPTIONS --require $OPENSEARCH_DASHBOARDS_HOME/config/socket-timeout-guard.js"
 
 USER root
 
@@ -88,7 +89,6 @@ ADD --chmod=755 container-health-scripts/dashboards.sh /usr/local/bin/container_
 ADD --chmod=755 dashboards/scripts/docker_entrypoint.sh /usr/local/bin/
 COPY --from=permissions $OPENSEARCH_DASHBOARDS_HOME $OPENSEARCH_DASHBOARDS_HOME
 ADD --chmod=644 dashboards/opensearch_dashboards.yml $OPENSEARCH_DASHBOARDS_HOME/config/opensearch_dashboards.orig.yml
-ADD --chmod=755 dashboards/scripts/docker_entrypoint.sh /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_utils.py /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_constants.py /usr/local/bin/
 
