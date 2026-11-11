@@ -21,8 +21,12 @@ def show_config_ingest_dialog(
     parent: customtkinter.CTk,
     malcolm_config: "MalcolmConfig",
     default_config_dir: str,
-) -> Tuple[bool, Optional[str], Optional[str]]:
-    """Show config ingestion dialog to select and load configuration directory.
+) -> Tuple[bool, Optional[str], Optional[str], Optional[str]]:
+    """Show config ingestion dialog to select a configuration directory.
+
+    Like the TUI/DUI flow, this only decides whether existing .env files should be loaded; it
+    doesn't load them. install.py loads every configuration source together afterward
+    (load_configuration_sources), so precedence and the dependency rules apply the same way.
 
     Args:
         parent: Parent CTk window
@@ -30,14 +34,15 @@ def show_config_ingest_dialog(
         default_config_dir: Default configuration directory path
 
     Returns:
-        Tuple of (success, input_dir, output_dir)
+        Tuple of (success, input_dir, output_dir, env_dir_to_load)
         - success: True if user completed the flow, False if cancelled
         - input_dir: Selected input configuration directory (or None if cancelled)
         - output_dir: Selected output configuration directory (or None if cancelled)
+        - env_dir_to_load: Directory of existing .env files the user chose to load (or None)
     """
     dialog = ConfigIngestDialog(parent, malcolm_config, default_config_dir)
-    result = dialog.run()
-    return result
+    success, input_dir, output_dir = dialog.run()
+    return success, input_dir, output_dir, (dialog.env_dir_to_load if success else None)
 
 
 class ConfigIngestDialog:
@@ -60,6 +65,7 @@ class ConfigIngestDialog:
         self.malcolm_config = malcolm_config
         self.default_config_dir = default_config_dir
         self.result = (False, None, None)
+        self.env_dir_to_load: Optional[str] = None  # set when the user chooses to load existing .env files
 
     def run(self) -> Tuple[bool, Optional[str], Optional[str]]:
         """Run the config ingestion flow.
@@ -285,7 +291,7 @@ class ConfigIngestDialog:
         dialog: customtkinter.CTkToplevel,
         config_dir: str,
     ) -> Tuple[bool, Optional[str], Optional[str]]:
-        """Validate config directory and optionally load existing .env files.
+        """Validate config directory and ask whether to load existing .env files (see env_dir_to_load).
 
         Args:
             dialog: The dialog window
@@ -356,39 +362,14 @@ class ConfigIngestDialog:
             )
 
             if load_existing:
-                try:
-                    self.malcolm_config.load_from_env_files(config_dir)
-                    InstallerLogger.info(f"Loaded existing .env files from: {config_dir}")
-
-                    # Also try to load from orchestration file (docker-compose.yml)
-                    from scripts.malcolm_constants import OrchestrationFramework
-                    from scripts.installer.configs.constants.configuration_item_keys import (
-                        KEY_CONFIG_ITEM_DOCKER_ORCHESTRATION_MODE,
-                    )
-
-                    orch_mode = self.malcolm_config.get_value(KEY_CONFIG_ITEM_DOCKER_ORCHESTRATION_MODE)
-                    if orch_mode != OrchestrationFramework.KUBERNETES:
-                        try:
-                            loaded_from_orch = self.malcolm_config.load_from_orchestration_file(
-                                config_dir, None  # malcolm_orchestration_file = None (auto-detect)
-                            )
-                            if loaded_from_orch:
-                                InstallerLogger.info(f"Loaded config from: {loaded_from_orch}")
-                        except Exception as e:
-                            # Not fatal - just log the error
-                            InstallerLogger.warning(f"Could not load from orchestration file: {e}")
-
-                except Exception as e:
-                    show_message_dialog(
-                        dialog,
-                        f"Error loading .env files:\n{e}",
-                        title="Load Error",
-                        message_type="error",
-                    )
-                    return (False, None, None)
+                # loaded later with the other sources (and the compose file), not here
+                self.env_dir_to_load = config_dir
+                InstallerLogger.info(f"Will load existing .env files from: {config_dir}")
             else:
+                self.env_dir_to_load = None
                 InstallerLogger.info("User chose to use default values instead of loading existing .env files")
         else:
+            self.env_dir_to_load = None
             InstallerLogger.info(f"No existing .env files found in {config_dir}. Using default values.")
 
         # Success - use same directory for both input and output

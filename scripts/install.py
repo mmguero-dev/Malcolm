@@ -419,7 +419,7 @@ def handle_config_directories_gui_mode(malcolm_config):
         malcolm_config: MalcolmConfig instance
 
     Returns:
-        tuple: (success, config_dir_input, config_dir_output) or (False, None, None)
+        tuple: (success, config_dir_input, config_dir_output, env_dir_to_load) or (False, None, None, None)
     """
     import customtkinter
     import signal
@@ -451,9 +451,7 @@ def handle_config_directories_gui_mode(malcolm_config):
     try:
         # Show config ingestion dialog
         default_dir = get_default_config_dir()
-        success, input_dir, output_dir = show_config_ingest_dialog(root, malcolm_config, default_dir)
-
-        return (success, input_dir, output_dir)
+        return show_config_ingest_dialog(root, malcolm_config, default_dir)
 
     finally:
         # Clean up temporary root window
@@ -870,22 +868,23 @@ def main():
             or (parsed_args.importMalcolmConfigFile is not None)
         )
         if skip_config_ingest:
-            if not handle_config_directories_tui_mode(
+            # this returns (success, env_dir_to_load); the tuple itself is always truthy
+            success, env_dir_to_load = handle_config_directories_tui_mode(
                 malcolm_config,
                 ui_impl,
                 parsed_args.non_interactive,
                 parsed_args.use_defaults,
                 parsed_args.loadExistingEnv,
-                parsed_args.malcolmOrchestrationFile,
                 parsed_args.importMalcolmConfigFile is not None,
                 dirs,
                 no_write=control_flow.is_dry_run(),
-            ):
+            )
+            if not success:
                 InstallerLogger.error("Failed to setup configuration directories.")
                 sys.exit(1)
         else:
             # GUI mode: config directory handling will be done during GUI flow
-            success, input_dir, output_dir = handle_config_directories_gui_mode(malcolm_config)
+            success, input_dir, output_dir, env_dir_to_load = handle_config_directories_gui_mode(malcolm_config)
             if not success:
                 InstallerLogger.error("Config directory setup cancelled by user.")
                 sys.exit(1)

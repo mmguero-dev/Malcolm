@@ -206,13 +206,15 @@ class InstallContext:
         return self.items
 
     def _notify_observers(self, key: str, value: Any) -> None:
+        """Call the observers for key. These are UI refreshes (the GUI): a failing one is logged and
+        the rest still run, so a widget problem can't stop the value from being set."""
         if not hasattr(self, "_observers"):
             return
-        for cb in self._observers.get(key, ()):
+        for cb in list(self._observers.get(key, ())):
             try:
                 cb(value)
-            except Exception:
-                pass
+            except Exception as e:
+                InstallerLogger.error(f"Error in observer for installation item '{key}': {e}")
 
     @property
     def auto_tweaks(self) -> bool:

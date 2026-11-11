@@ -1,0 +1,5 @@
+# GUI installer tests (shared/tests/installer/gui), on top of requirements.txt.
+#   Without these (or tkinter, or a display), those tests are skipped and everything else still runs.
+#   tkinter comes from the OS (e.g., python3-tk); for a headless run use xvfb-run.
+customtkinter>=6.0.0
+Pillow==13.0.0

@@ -1,0 +1,5 @@
+# Extra packages for the GUI installer (install.py --gui), on top of requirements.txt.
+#   tkinter itself comes from the OS (e.g., python3-tk), not pip.
+#   cairosvg is optional: without it the GUI shows no SVG logo (it also needs the system cairo library).
+customtkinter>=5.2.0
+Pillow>=13.0.0

@@ -211,7 +211,8 @@ def apply_systemd_limits(malcolm_config, config_dir: str, platform, ctx) -> tupl
     systemd_dir = "/etc/systemd/system.conf.d"
     limits_file = os.path.join(systemd_dir, "99-malcolm.conf")
     desired_content = [
-        "[Manager]" "DefaultLimitNOFILE=65535:65535",
+        "[Manager]",
+        "DefaultLimitNOFILE=65535:65535",
         "DefaultLimitMEMLOCK=infinity",
     ]
 

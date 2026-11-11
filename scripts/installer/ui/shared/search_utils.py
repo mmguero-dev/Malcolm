@@ -31,17 +31,35 @@ def group_nav_label(label: str) -> str:
     return strip_group_label(label) + " Settings"
 
 
+def _get_node(malcolm_config, key: str):
+    """The config item or menu item for key (None if neither)."""
+    return malcolm_config.get_item(key) or malcolm_config.get_menu_item(key)
+
+
 def get_ancestor_keys(malcolm_config, key: str) -> List[str]:
-    """Return the ui_parent chain for key, ordered root first, excluding key itself."""
+    """Return the ui_parent chain for key, ordered root first, excluding key itself.
+
+    The chain runs through both config items and menu items, up to the top-level menu.
+    """
     chain: List[str] = []
     seen = {key}
-    item = malcolm_config.get_item(key)
-    while item and item.ui_parent and item.ui_parent not in seen:
-        parent_key = item.ui_parent
+    node = _get_node(malcolm_config, key)
+    while node and node.ui_parent and node.ui_parent not in seen:
+        parent_key = node.ui_parent
         seen.add(parent_key)
         chain.insert(0, parent_key)
-        item = malcolm_config.get_item(parent_key)
+        node = _get_node(malcolm_config, parent_key)
     return chain
+
+
+def menu_entry_label(malcolm_config, key: str) -> str:
+    """Label of the menu entry that opens key's children, for a config item or a menu item."""
+    item = malcolm_config.get_item(key)
+    if item:
+        return group_nav_label(item.label or key)
+    menu_item = malcolm_config.get_menu_item(key)
+    label = (menu_item.label if menu_item else None) or key
+    return label if label.endswith(" Settings") else f"{label} Settings"
 
 
 def format_menu_path(
@@ -57,8 +75,7 @@ def format_menu_path(
     """
     parts = [root_label]
     for ancestor_key in get_ancestor_keys(malcolm_config, key):
-        ancestor = malcolm_config.get_item(ancestor_key)
-        parts.append(group_nav_label(ancestor.label if ancestor else ancestor_key))
+        parts.append(menu_entry_label(malcolm_config, ancestor_key))
     return separator.join(parts)
 
 
@@ -70,7 +87,8 @@ def find_gating_ancestor(malcolm_config, key: str) -> Optional[str]:
     visible (or the item has no ancestors).
     """
     for ancestor_key in reversed(get_ancestor_keys(malcolm_config, key)):
-        if malcolm_config.is_item_visible(ancestor_key):
+        # only config items have a value to change; menu items are skipped
+        if malcolm_config.get_item(ancestor_key) and malcolm_config.is_item_visible(ancestor_key):
             return ancestor_key
     return None
 
@@ -131,8 +149,7 @@ def _resolve_depends_on(malcolm_config, dep_chain: List[str], ui_parent: Optiona
                 label = f"{label} Settings"
             return label
         parent_item = malcolm_config.get_item(ui_parent)
-        if parent_item:
-            return parent_item.label if parent_item else ui_parent
+        return parent_item.label if parent_item else ui_parent
     return "None"
 
 
@@ -212,13 +229,16 @@ def format_search_results_text(
             depends_on = " -> ".join(menu_path) if menu_path else "(top-level)"
             item_token = "-"
         else:
-            # Item is only visible in UI if dependency rules pass AND any MenuItem parent is expanded
-            is_visible_in_ui = visible
-            menu_item_parent = None
-            if ui_parent:
-                menu_item_parent = malcolm_config.get_menu_item(ui_parent)
-                if menu_item_parent:
-                    is_visible_in_ui = visible and malcolm_config.is_menu_item_expanded(ui_parent)
+            # An item is on screen only if its rules show it AND every menu item above it is
+            #   expanded (nested menus included); otherwise point at the menus to open.
+            collapsed_menus = [
+                a
+                for a in get_ancestor_keys(malcolm_config, key)
+                if malcolm_config.get_menu_item(a) and not malcolm_config.is_menu_item_expanded(a)
+            ]
+            menu_ancestors = [a for a in get_ancestor_keys(malcolm_config, key) if malcolm_config.get_menu_item(a)]
+            menu_item_parent = bool(collapsed_menus)
+            is_visible_in_ui = visible and not collapsed_menus
 
             if is_visible_in_ui:
                 visible_count += 1
@@ -228,14 +248,8 @@ def format_search_results_text(
                 hidden_count += 1
                 status = "hidden"
                 if menu_item_parent and visible:
-                    menu_path = _build_menu_item_path(malcolm_config, ui_parent)
-                    if menu_path:
-                        depends_on = " -> ".join(menu_path)
-                    else:
-                        menu_label = menu_item_parent.label or ui_parent
-                        if not menu_label.endswith(" Settings"):
-                            menu_label = f"{menu_label} Settings"
-                        depends_on = menu_label
+                    # visible, just inside collapsed menus: list the menus that lead to it
+                    depends_on = " -> ".join(menu_entry_label(malcolm_config, a) for a in menu_ancestors)
                 else:
                     depends_on = _resolve_depends_on(malcolm_config, dep_chain, ui_parent)
 
