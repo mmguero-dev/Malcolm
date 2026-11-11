@@ -13,7 +13,6 @@ from the MenuItem class to avoid circular import issues.
 # Menu item key constants
 KEY_MENU_ITEM_NETWORK = "menuNetwork"
 KEY_MENU_ITEM_ANALYSIS = "menuAnalysis"
-KEY_MENU_ITEM_ANALYSIS_LIVE = "menuAnalysisLive"
 KEY_MENU_ITEM_ANALYSIS_HISTORICAL = "menuAnalysisHistorical"
 KEY_MENU_ITEM_ANALYSIS_ARKIME = "menuAnalysisArkime"
 KEY_MENU_ITEM_ANALYSIS_ZEEK = "menuAnalysisZeek"

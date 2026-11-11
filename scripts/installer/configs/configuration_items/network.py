@@ -26,6 +26,7 @@ CONFIG_ITEM_CAPTURE_LIVE_NETWORK_TRAFFIC = ConfigItem(
     validator=lambda x: isinstance(x, bool),
     question="Capture and analyze live network traffic?",
     widget_type=WidgetType.CHECKBOX,
+    sort_priority=3,  # under Analysis, after node name and extra tags and ahead of the sub-menus
 )
 
 CONFIG_ITEM_NGINX_SSL = ConfigItem(

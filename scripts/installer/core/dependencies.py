@@ -43,7 +43,6 @@ from scripts.installer.configs.constants.configuration_item_keys import *
 from scripts.installer.configs.constants.menu_item_keys import (
     KEY_MENU_ITEM_NETWORK,
     KEY_MENU_ITEM_ANALYSIS,
-    KEY_MENU_ITEM_ANALYSIS_LIVE,
     KEY_MENU_ITEM_ANALYSIS_HISTORICAL,
     KEY_MENU_ITEM_ANALYSIS_ARKIME,
     KEY_MENU_ITEM_ANALYSIS_ZEEK,
@@ -159,13 +158,6 @@ DEPENDENCY_CONFIG: Dict[str, DependencySpec] = {
             depends_on=None,
             condition=True,
             is_top_level=True,
-        )
-    ),
-    KEY_MENU_ITEM_ANALYSIS_LIVE: DependencySpec(
-        visibility=VisibilityRule(
-            depends_on=None,  # Always visible, parent relationship handled via ui_parent
-            condition=True,
-            ui_parent=KEY_MENU_ITEM_ANALYSIS,
         )
     ),
     KEY_MENU_ITEM_ANALYSIS_HISTORICAL: DependencySpec(
@@ -596,7 +588,7 @@ DEPENDENCY_CONFIG: Dict[str, DependencySpec] = {
         visibility=VisibilityRule(
             depends_on=KEY_CONFIG_ITEM_MALCOLM_PROFILE,
             condition=lambda profile: profile in (PROFILE_HEDGEHOG, PROFILE_MALCOLM),
-            ui_parent=KEY_MENU_ITEM_ANALYSIS_LIVE,
+            ui_parent=KEY_MENU_ITEM_ANALYSIS,
         )
     ),
     KEY_CONFIG_ITEM_OPENSEARCH_PRIMARY_MODE: DependencySpec(
@@ -839,7 +831,7 @@ DEPENDENCY_CONFIG: Dict[str, DependencySpec] = {
         visibility=VisibilityRule(
             depends_on=None,
             condition=True,
-            ui_parent=KEY_MENU_ITEM_NETWORK,
+            ui_parent=KEY_MENU_ITEM_ANALYSIS,
         ),
         value=ValueRule(
             kind=RuleKind.DERIVED,
@@ -1934,7 +1926,7 @@ DEPENDENCY_CONFIG: Dict[str, DependencySpec] = {
         visibility=VisibilityRule(
             depends_on=None,
             condition=True,
-            ui_parent=KEY_MENU_ITEM_NETWORK,
+            ui_parent=KEY_MENU_ITEM_ANALYSIS,
         )
     ),
 }

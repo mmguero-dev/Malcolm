@@ -128,3 +128,13 @@ def test_hedgehog_site_name_sits_directly_in_the_netbox_menu(mode):
     assert cfg.get_item(KEY_CONFIG_ITEM_NETBOX_SITE_NAME).ui_parent == KEY_MENU_ITEM_ENRICHMENT_NETBOX
     assert cfg.is_item_visible(KEY_CONFIG_ITEM_NETBOX_SITE_NAME)
     assert cfg.is_menu_item_visible(KEY_MENU_ITEM_ENRICHMENT_NETBOX)
+
+
+def test_capture_settings_live_under_analysis():
+    from scripts.installer.configs.constants.configuration_item_keys import KEY_CONFIG_ITEM_EXTRA_TAGS
+    from scripts.installer.configs.constants.menu_item_keys import KEY_MENU_ITEM_ANALYSIS
+
+    cfg = MalcolmConfig()
+    # node name and extra tags label live and uploaded traffic alike; live capture's own subtree carries the rest
+    for key in (KEY_CONFIG_ITEM_PCAP_NODE_NAME, KEY_CONFIG_ITEM_EXTRA_TAGS, KEY_CONFIG_ITEM_CAPTURE_LIVE_NETWORK_TRAFFIC):
+        assert cfg.get_item(key).ui_parent == KEY_MENU_ITEM_ANALYSIS, key
