@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi10/ubi-minimal AS manuf-builder
+FROM redhat/ubi10-minimal:latest AS manuf-builder
 
 COPY logstash/requirements.txt /work/
 COPY scripts/malcolm_utils.py /work/
@@ -16,7 +16,7 @@ RUN microdnf -y install \
     python3 -m pip install --no-cache-dir -r requirements.txt && \
     python3 manuf-oui-parse.py -o vendor_macs.yaml
 
-FROM docker.elastic.co/logstash/logstash-oss:9.2.8
+FROM docker.elastic.co/logstash/logstash-oss:9.5.6
 
 LABEL maintainer="malcolm@inl.gov"
 LABEL org.opencontainers.image.authors='malcolm@inl.gov'
@@ -48,11 +48,16 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 ENV PIP_ROOT_USER_ACTION=ignore
 
-ENV YQ_VERSION="4.52.5"
+ENV YQ_VERSION="4.54.3"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
+
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
 
 ENV TINI_VERSION=v0.19.0
 ENV TINI_URL=https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini
+
+ENV LOGSTASH_OPENSEARCH_OUTPUT_PLUGIN_VERSION="2.1.1"
 
 ADD --chmod=644 logstash/config/log4j2.properties /usr/share/logstash.build/config/
 ADD --chmod=644 logstash/config/logstash.yml /usr/share/logstash.build/config/logstash.orig.yml
@@ -64,33 +69,37 @@ ADD --chmod=755 logstash/scripts/*.py /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_utils.py /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_constants.py /usr/local/bin/
 
-RUN set -x && \
-    export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') && \
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
+    --mount=type=bind,source=shared/keys/RPM-GPG-KEY-EPEL-9,target=/usr/local/share/RPM-GPG-KEY-EPEL-9,ro \
+    set -x && \
     microdnf -y install curl-minimal && \
-        curl -sSL -o /tmp/epel-release.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
-        rpm -i /tmp/epel-release.rpm && \
+        curl -fsSL -o /tmp/epel-release.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
+        rpm --import /usr/local/share/RPM-GPG-KEY-EPEL-9 && \
+        rpm -i --define '_pkgverify_level all' /tmp/epel-release.rpm && \
     microdnf -y install \
         bash \
         ca-certificates \
         gettext \
         git \
-        jq \
         patch \
+        rsync \
         supervisor \
-        rsync && \
-    curl -sSLf -o /usr/bin/tini "${TINI_URL}-${BINARCH}" && \
-        chmod +x /usr/bin/tini && \
-    curl -fsSL -o /usr/local/bin/yq "${YQ_URL}${BINARCH}" && \
-        chmod 755 /usr/local/bin/yq && \
+        util-linux && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/tini "${TINI_URL}-{arch}" "tini_${TINI_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/yq "${YQ_URL}{arch}" "yq_${YQ_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" && \
     export JAVA_HOME=/usr/share/logstash/jdk && \
-    /usr/share/logstash/vendor/jruby/bin/jruby -S gem install bundler && \
+    logstash-plugin install --preserve --version "${LOGSTASH_OPENSEARCH_OUTPUT_PLUGIN_VERSION}" logstash-output-opensearch && \
+        /usr/share/logstash/bin/ruby -e 'path = Dir["/usr/share/logstash/vendor/bundle/jruby/3.4.0/gems/psych-*/lib/psych/class_loader.rb"].first or abort "psych class_loader not found"; text = File.read(path); changed = text.gsub!(/constants\.each do \|const\|\n\s+konst = const_get const\n\s+class_eval <<~RUBY, __FILE__, __LINE__ \+ 1\n\s+def #\{const\.to_s\.downcase\}\n\s+load #\{konst\.inspect\}\n\s+end\n\s+RUBY\n\s+end/, "constants.each do |const|\n      konst = const_get const\n      define_method(const.to_s.downcase) { load konst }\n    end"); abort "psych patch did not apply" unless changed; File.write(path, text)' && \
+        grep -n 'define_method' /usr/share/logstash/vendor/bundle/jruby/3.4.0/gems/psych-*/lib/psych/class_loader.rb && \
         echo "gem 'concurrent-ruby'" >> /usr/share/logstash/Gemfile && \
         echo "gem 'deep_merge'" >> /usr/share/logstash/Gemfile && \
         echo "gem 'fuzzy-string-match'" >> /usr/share/logstash/Gemfile && \
         echo "gem 'lru_reredux', git: 'https://github.com/mmguero-dev/lru_reredux'" >> /usr/share/logstash/Gemfile && \
         echo "gem 'stringex'" >> /usr/share/logstash/Gemfile && \
         /usr/share/logstash/bin/ruby -S bundle install && \
-    logstash-plugin install --preserve logstash-output-opensearch && \
+        /usr/share/logstash/bin/ruby -e 'path = Dir["/usr/share/logstash/vendor/bundle/jruby/3.4.0/gems/psych-*/lib/psych/class_loader.rb"].first or abort "psych class_loader not found"; text = File.read(path); unless text.include?("define_method(const.to_s.downcase)"); text.gsub!(/constants\.each do \|const\|\n\s+konst = const_get const\n\s+class_eval <<~RUBY, __FILE__, __LINE__ \+ 1\n\s+def #\{const\.to_s\.downcase\}\n\s+load #\{konst\.inspect\}\n\s+end\n\s+RUBY\n\s+end/, "constants.each do |const|\n      konst = const_get const\n      define_method(const.to_s.downcase) { load konst }\n    end"); abort "psych patch did not apply after bundle install" unless text.include?("define_method(const.to_s.downcase)"); File.write(path, text); end' && \
     microdnf clean all && \
     rm -rf \
         /root/.bundle \
@@ -107,11 +116,13 @@ RUN set -x && \
     rm -rf /usr/share/logstash.build/ && \
     mkdir -p /logstash-persistent-queue /usr/share/logstash/config/bootstrap /usr/share/logstash/config/persist && \
     usermod -a -G tty ${PUSER} && \
-    chown -R ${PUSER}:root /usr/share/logstash /logstash-persistent-queue && \
-    chmod -R u+rwX,go+rX /usr/share/logstash
+    chown -R root:root /usr/share/logstash  && \
+    chmod -R u+rwX,go+rX /usr/share/logstash && \
+    chown -R ${PUSER}:root /logstash-persistent-queue /usr/share/logstash/config /usr/share/logstash/data /usr/share/logstash/jdk/lib/security /usr/share/logstash/malcolm*
+
 
 COPY --from=manuf-builder --chmod=644 /work/vendor_macs.yaml /etc/vendor_macs.yaml
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/
 ADD --chmod=755 container-health-scripts/logstash.sh /usr/local/bin/container_health.sh
@@ -138,7 +149,7 @@ VOLUME ["/logstash-persistent-queue"]
 
 EXPOSE 5044 9001 9600
 
-ENTRYPOINT ["/usr/bin/tini", "--", "/usr/local/bin/docker-uid-gid-setup.sh", "/usr/local/bin/service_check_passthrough.sh", "-s", "logstash"]
+ENTRYPOINT ["/usr/local/bin/tini", "--", "/usr/local/bin/docker-uid-gid-setup.sh", "/usr/local/bin/service_check_passthrough.sh", "-s", "logstash"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf", "-n"]
 
 ARG BUILD_DATE

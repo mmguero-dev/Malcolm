@@ -7,29 +7,7 @@ These constants replace magic strings/numbers embedded in helper code to
 improve readability and keep behavior DRY and consistent across modules.
 """
 
-# Main configuration menu top-level keys used by TUI/DUI
-# This list should include the primary items users configure first.
-from scripts.installer.configs.constants.configuration_item_keys import (
-    KEY_CONFIG_ITEM_AUTO_ARKIME,
-    KEY_CONFIG_ITEM_AUTO_FREQ,
-    KEY_CONFIG_ITEM_AUTO_OUI,
-    KEY_CONFIG_ITEM_AUTO_SURICATA,
-    KEY_CONFIG_ITEM_AUTO_ZEEK,
-    KEY_CONFIG_ITEM_TRAEFIK_LABELS,
-    KEY_CONFIG_ITEM_CAPTURE_LIVE_NETWORK_TRAFFIC,
-    KEY_CONFIG_ITEM_CLEAN_UP_OLD_ARTIFACTS,
-    KEY_CONFIG_ITEM_INDEX_MANAGEMENT_POLICY,
-    KEY_CONFIG_ITEM_MALCOLM_PROFILE,
-    KEY_CONFIG_ITEM_NETBOX_MODE,
-    KEY_CONFIG_ITEM_NGINX_RESOLVER_IPV4,
-    KEY_CONFIG_ITEM_NGINX_RESOLVER_IPV6,
-    KEY_CONFIG_ITEM_NGINX_SSL,
-    KEY_CONFIG_ITEM_OPEN_PORTS,
-    KEY_CONFIG_ITEM_PCAP_NODE_NAME,
-    KEY_CONFIG_ITEM_REVERSE_DNS,
-    KEY_CONFIG_ITEM_RUNTIME_BIN,
-    KEY_CONFIG_ITEM_USE_DEFAULT_STORAGE_LOCATIONS,
-)
+from scripts.installer.configs.constants.configuration_item_keys import KEY_CONFIG_ITEM_MALCOLM_PROFILE
 
 # Compose file discovery
 COMPOSE_FILE_GLOB = "docker-compose*.yml"

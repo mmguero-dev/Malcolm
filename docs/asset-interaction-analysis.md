@@ -20,16 +20,16 @@ Please see the [NetBox page on GitHub](https://github.com/netbox-community/netbo
 
 ## <a name="NetBoxEnrichment"></a>Enriching network traffic metadata via NetBox lookups
 
-As Zeek logs and Suricata alerts are parsed and enriched (if the `NETBOX_ENRICHMENT` [environment variable in `./config/netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) is set to `true`), the NetBox API will be queried for the associated hosts' information. If found, the information retrieved by NetBox will be used to enrich these logs through the creation of the following new fields. See [the NetBox API](https://demo.netbox.dev/api/docs/) documentation and [the NetBox documentation](https://demo.netbox.dev/static/docs/introduction/) for more information.
+As Zeek logs and Suricata alerts are parsed and enriched (if the `NETBOX_ENRICHMENT` [environment variable in `./config/netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) is set to `true`), the NetBox API will be queried for the associated hosts' information. If found, the information retrieved by NetBox will be used to enrich these logs through the creation of the following new fields. See [the NetBox API](https://demo.netbox.dev/api/schema/swagger-ui/) documentation and [the NetBox documentation](https://demo.netbox.dev/static/docs/introduction/) for more information.
 
 * `destination.…`
-    - `destination.device.cluster` (`/virtualization/clusters/`) (for [Virtual Machine](https://demo.netbox.dev/static/docs/coe-functionality/virtualization/) device types)
-    - [`destination.device.device_type`](https://demo.netbox.dev/static/docs/core-functionality/device-types/) (`/dcim/device-types/`)
+    - `destination.device.cluster` (`/virtualization/clusters/`) (for [Virtual Machine](https://docs.netbox.dev/en/stable/features/virtualization/) device types)
+    - [`destination.device.device_type`](https://docs.netbox.dev/en/stable/models/dcim/devicetype/) (`/dcim/device-types/`)
     - `destination.device.id` (`/dcim/devices/{id}`)
     - `destination.device.manufacturer` (`/dcim/manufacturers/`)
     - `destination.device.name` (`/dcim/devices/`)
     - `destination.device.role` (`/dcim/device-roles/`)
-    - [`destination.device.service`](https://demo.netbox.dev/static/docs/core-functionality/services/#service-templates) (`/ipam/services/`)
+    - [`destination.device.service`](https://netboxlabs.com/docs/netbox/models/ipam/servicetemplate/) (`/ipam/services/`)
     - `destination.device.site` (`/dcim/sites/`)
     - `destination.device.details` (full JSON object, [only with `NETBOX_ENRICHMENT_VERBOSE: 'true'`](malcolm-config.md#MalcolmConfigEnvVars))
     - `destination.segment.id` (`/ipam/prefixes/{id}`)
@@ -50,7 +50,7 @@ As Zeek logs and Suricata alerts are parsed and enriched (if the `NETBOX_ENRICHM
 
 For Malcolm's purposes, both physical devices and virtualized hosts will be stored as described above: the `device_type` field can be used to distinguish between them.
 
-NetBox has the concept of [sites](https://demo.netbox.dev/static/docs/core-functionality/sites-and-racks/). Sites can have overlapping IP address ranges. The site to associate with network traffic can be specified when [PCAP is uploaded](upload.md#Upload), when configuring [live analysis](live-analysis.md#LiveAnalysis), and when [configuring forwarding from Hedgehog Linux](malcolm-hedgehog-e2e-iso-install.md#HedgehogCommConfig). If not otherwise specified, the value of the `NETBOX_DEFAULT_SITE` variable in [environment variable in `netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) will be used for these enrichment lookups.
+NetBox has the concept of [sites](https://netboxlabs.com/docs/netbox/features/facilities/#sites). Sites can have overlapping IP address ranges. The site to associate with network traffic can be specified when [PCAP is uploaded](upload.md#Upload), when configuring [live analysis](live-analysis.md#LiveAnalysis), and when [configuring forwarding from Hedgehog Linux](malcolm-hedgehog-e2e-iso-install.md#HedgehogCommConfig). If not otherwise specified, the value of the `NETBOX_DEFAULT_SITE` variable in [environment variable in `netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) will be used for these enrichment lookups.
 
 When NetBox enrichment is attempted for a log, the value `netbox` is automatically added to its `tags` field.
 
@@ -99,31 +99,33 @@ However, careful consideration should be made before enabling this feature: the 
 
 Devices created using this autopopulate method will include a `tags` value of `Autopopulated`. It is recommended that users periodically review automatically-created devices for correctness and to fill in known details that couldn't be determined from network traffic. For example, the `manufacturer` field for automatically-created devices will be set based on the organizational unique identifier (OUI) determined from the first three bytes of the observed MAC address, which may not be accurate if the device's traffic was observed across a router. If possible, observed hostnames (extracted from logs that provide a mapping of IP address to host name, such as Zeek's `dns.log`, `ntlm.log`, and `dhcp.log`) will be used in the naming of the automatically-created devices, falling back to the device manufacturer otherwise (e.g., `MYHOSTNAME` vs. `Schweitzer Engineering @ 10.10.0.123`).
 
-Since device autocreation is based on IP address, information about network segments (IP [prefixes](https://docs.netbox.dev/en/stable/models/ipam/prefix/)) must be first [manually specified](#NetBoxPopManual) in NetBox in order for devices to be automatically populated. Users should populate the `description` field in the NetBox IPAM Prefixes data model to specify a name to be used for NetBox network segment autopopulation and enrichment, otherwise the IP prefix itself will be used.
+Since device autocreation is based on IP address, information about network segments (IP [prefixes](https://docs.netbox.dev/en/stable/models/ipam/prefix/)) must be first [manually specified](#NetBoxPopManual) in NetBox in order for devices to be automatically populated. Users should populate the `description` field in the NetBox IPAM Prefixes data model to specify a name to be used for NetBox network segment autopopulation and enrichment; otherwise, the IP prefix itself will be used.
 
-Although network devices can be automatically created using this method, [services](https://demo.netbox.dev/static/docs/core-functionality/services/#service-templates) should inventoried manually. The **Uninventoried Observed Services** visualization in the [**Zeek Known Summary** dashboard](dashboards.md#DashboardsVisualizations) can help users review network services to be created in NetBox.
+Although network devices can be automatically created using this method, [services](https://netboxlabs.com/docs/netbox/models/ipam/servicetemplate/) should inventoried manually. The **Uninventoried Observed Services** visualization in the [**Zeek Known Summary** dashboard](dashboards.md#DashboardsVisualizations) can help users review network services to be created in NetBox.
 
 See [idaholab/Malcolm#135](https://github.com/idaholab/Malcolm/issues/135) for more information on this feature.
 
 ### <a name="NetBoxAutoPopSubnets"></a> Subnets considered for autopopulation
 
-When [passive device autopopulation](#NetBoxPopPassive) is enabled, devices with addresses in private IP space will be autopopulated by default. You can control this behavior using the `NETBOX_AUTO_POPULATE_SUBNETS` [environment variable in `./config/netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars). This variable accepts a comma-separated list of private CIDR subnets, with the following logic:
+When [passive device autopopulation](#NetBoxPopPassive) is enabled, devices with addresses in private IP space will be autopopulated by default. You can control this behavior using the `NETBOX_AUTO_POPULATE_SUBNETS` [environment variable in `./config/netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars). This variable accepts a comma-separated list of IPv4 and IPv6 CIDR subnets, with the following logic:
 
-* If left blank, *all private* IPv4 and IPv6 address ranges (as defined in [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) and [RFC 4193](https://datatracker.ietf.org/doc/html/rfc4193)) will be autopopulated.
+* If left blank, *all private* IPv4 and IPv6 address ranges (as defined in [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) and [RFC 4193](https://datatracker.ietf.org/doc/html/rfc4193)) will be autopopulated. Public addresses are never autopopulated in this case.
+* Listing a CIDR, private or public, makes the addresses in it eligible for autopopulation.
 * Use an exclamation point (`!`) before a CIDR to explicitly *exclude* that subnet.
-* If only exclusions are listed, all private IPs are allowed *except* those excluded.
-* If both inclusions and exclusions are listed:
-    * Only addresses matching the allowed subnets will be considered.
-    * Among those, any matching excluded subnets will be rejected.
-* Network base and broadcast addresses (e.g., `.0` and `.255`) are not considered assignable and will be ignored.
+* If only exclusions are listed, all private IPs are allowed *except* those excluded. Public IPs remain ineligible.
+* If both inclusions and exclusions are listed, the entries are evaluated in order, and the last entry that matches a given address decides whether it is autopopulated. An address that doesn't match any entry is not autopopulated.
+* An address given without a prefix length (e.g., `10.0.10.5`) is treated as a single host (`/32` for IPv4, `/128` for IPv6).
+* For IPv4 subnets of `/30` or larger, the network base and broadcast addresses (e.g., `.0` and `.255` in a `/24`) are not considered assignable and will be ignored. This doesn't apply to `/31` or `/32` entries, where every address is usable.
 
-This variable is especially useful for excluding dynamic address ranges such as those used by DHCP, which should generally not trigger autopopulation in NetBox. Since these addresses can change frequently and aren't tied to specific devices, including them could result in inaccurate or noisy inventory data. By fine-tuning which private subnets are included or excluded, users can ensure that only meaningful, typically static assignments are autopopulated.
+This variable is especially useful for excluding dynamic address ranges such as those used by DHCP, which should generally not trigger autopopulation in NetBox. Since these addresses can change frequently and aren't tied to specific devices, including them could result in inaccurate or noisy inventory data. By fine-tuning which subnets are included or excluded, users can ensure that only meaningful, typically static assignments are autopopulated.
 
 #### Multiple NetBox Sites
 
-Users may wish to apply different CIDR subnet filters for autopopulation within different NetBox sites. To support this, the `NETBOX_AUTO_POPULATE_SUBNETS` environment variable can accept multiple site-specific entries, each specifying a NetBox site name or numeric site ID, followed by a colon (`:`), and a comma-separated list of subnet rules (just like the single-site case described above). Multiple site entries should be separated by semicolons (`;`).
+Users may wish to apply different CIDR subnet filters for autopopulation within different NetBox sites. To support this, the `NETBOX_AUTO_POPULATE_SUBNETS` environment variable can accept multiple site-specific entries, each specifying a NetBox site name or numeric site ID, followed by a colon (`:`), and a comma-separated list of subnet rules (just like the single-site case described above). Multiple site entries should be separated by semicolons (`;`). A rule keyed by site name also applies when Malcolm looks up that site by its numeric ID.
 
-If no matching site-specific rule is found, the default rule — defined using an asterisk (`*`) as the site key, or by omitting the site name or ID — will be used as a fallback if present. If no fallback is defined, then all private IPs are autopopulated by default.
+If no matching site-specific rule is found, the default rule will be used as a fallback if present. The default rule is defined using an asterisk (`*`) as the site key, or by omitting the site name or ID. If no fallback is defined, then all private IPs are autopopulated by default.
+
+An entry without a site key may begin with an IPv6 CIDR (e.g., `!fc00::/7,fd12:3456:789a:1::/64`). Malcolm recognizes that the colons in such an entry belong to the IPv6 addresses. However, a numeric site ID followed by an IPv6 CIDR can sometimes combine into what looks like a single IPv6 address (e.g., `2:2001:db8::/32`). To avoid this, use the site's name rather than its numeric ID when the site's rule list begins with an IPv6 CIDR.
 
 #### Examples
 
@@ -133,16 +135,18 @@ If no matching site-specific rule is found, the default rule — defined using a
     * Allow all private IPs *except* `172.16.0.0/12`
 * `!10.0.0.0/8,10.0.10.0/24`
     * Exclude `10.0.0.0/8` generally, but *allow* `10.0.10.0/24` as an override
-* `10.0.0.0/8,!10.0.10.0/16,10.0.10.5/32`
-    * Allow all of `10.0.0.0/8` *except* `10.0.10.0/16`, *but still allow* `10.0.10.5`
+* `10.0.0.0/8,!10.0.0.0/16,10.0.10.5/32`
+    * Allow all of `10.0.0.0/8` *except* `10.0.0.0/16`, *but still allow* `10.0.10.5`
 * `!fc00::/7,fd12:3456:789a:1::/64`
     * Exclude all [ULA](https://en.wikipedia.org/wiki/Unique_local_address) IPv6 ranges, *except* a specific subnet
-* `site1:10.0.0.0/8,!10.0.10.0/16,10.0.10.5/32;site2:!172.16.0.0/12;site3:!fc00::/7,fd12:3456:789a:1::/64;!192.168.0.0/16`
+* `site1:10.0.0.0/8,!10.0.0.0/16,10.0.10.5/32;site2:!172.16.0.0/12;site3:!fc00::/7,fd12:3456:789a:1::/64;!192.168.0.0/16`
     * Specify different autopopulation rules for different NetBox sites
 
 ### <a name="NetBoxPopPassiveOUIMatch"></a> Matching device manufacturers to OUIs
 
-Malcolm's NetBox inventory is prepopulated with a collection of [community-sourced device type definitions](https://github.com/netbox-community/devicetype-library) which can then be augmented by users [manually](#NetBoxPopManual) or through [preloading](#NetBoxPreload). During passive autopopulation device manufacturer is inferred from organizationally unique identifiers (OUIs), which make up the first three octets of a MAC address. The IEEE Standards Association maintains the [registry of OUIs](https://standards-oui.ieee.org/), which is not necessarily very internally consistent with how organizations specify the name associated with their OUI entry. In other words, there's not a foolproof programattic way for Malcolm to map MAC address OUI organization names to NetBox manufacturer names, barring creating and maintaining a manual mapping (which would be very large and difficult to keep up-to-date).
+Malcolm's NetBox inventory is prepopulated with a collection of [community-sourced device type definitions](https://github.com/netbox-community/devicetype-library) which can then be augmented by users [manually](#NetBoxPopManual) or through [preloading](#NetBoxPreload). During passive autopopulation device manufacturer is inferred from organizationally unique identifiers (OUIs), which make up the first three octets of a MAC address. The IEEE Standards Association maintains the [registry of OUIs](https://standards-oui.ieee.org/), which is not necessarily very internally consistent with how organizations specify the name associated with their OUI entry. In other words, there's not a foolproof programmatic way for Malcolm to map MAC address OUI organization names to NetBox manufacturer names, barring creating and maintaining a manual mapping (which would be very large and difficult to keep up-to-date).
+
+**Device-type library import performance:** The full community library can make the initial NetBox startup slow. To import only the manufacturers you use, set `NETBOX_DEVICETYPE_IMPORT_VENDORS=cisco,arista` (substituting the desired device-library vendor slugs) in `config/netbox.env` before starting Malcolm. A vendor-restricted import also limits NetBox's manufacturer list used by fuzzy MAC OUI matching; devices from omitted vendors may not match or may receive autogenerated manufacturer entries without matching device types. An empty value imports the complete library. After a successful import, Malcolm records a completion marker in the NetBox database and skips the unchanged library on subsequent restarts. Changing the bundled device-library content or the selected vendor list automatically triggers a new import. Failed or partial imports are retried. To explicitly reimport a previously completed library (for example, after deleting types), temporarily set `NETBOX_DEVICETYPE_IMPORT_FORCE=true` and restart NetBox, then return it to `false`. This cache does not skip custom NetBox initializers or restore operations.
 
 Malcolm's [NetBox lookup code]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/logstash/ruby/netbox_enrich.rb) used in the log enrichment pipeline attempts to match OUI organization names against the list of NetBox's manufacturers using ["fuzzy string matching"](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance), a technique in which two strings of characters are compared and assigned a similarity score between `0` (completely dissimilar) and `1` (identical). The `NETBOX_DEFAULT_FUZZY_THRESHOLD` [environment variable in `netbox-common.env`](malcolm-config.md#MalcolmConfigEnvVars) can be used to tune the threshold for determining a match. A fairly high value is recommended (above `0.85`; `0.95` is the default) to avoid autopopulating the NetBox inventory with devices with manufacturers that don't actually exist in the network being monitored.
 

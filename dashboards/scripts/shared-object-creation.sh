@@ -195,6 +195,18 @@ function DoReplacersInFile() {
       # OpenSearch - flat_object - https://opensearch.org/docs/latest/field-types/supported-field-types/flat-object/
       # Elasticsearch - flattened - https://www.elastic.co/guide/en/elasticsearch/reference/current/flattened.html
       sed -i "s/flat_object/flattened/g" "${REPLFILE}" || true
+
+      # the parameters for wildcard field type differ between opensearch and elasticsearch
+      # opensearch - https://docs.opensearch.org/latest/mappings/supported-field-types/wildcard/
+      # elasticsearch - https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/keyword#wildcard-field-type
+      jq '
+        walk(
+          if type == "object" and .type? == "wildcard"
+          then del(.doc_values, .normalizer)
+          else .
+          end
+        )
+      ' "${REPLFILE}" | sponge "${REPLFILE}"
     fi
 
     if [[ "$FILE_TYPE" == "dashboard" ]]; then
@@ -477,7 +489,7 @@ if [[ "${CREATE_OS_ARKIME_SESSION_INDEX:-true}" = "true" ]] ; then
 
           #############################################################################################################################
           # Index pattern(s)
-          #   - Only set overwrite=true if we actually updated the templates above, otherwise overwrite=false and fail silently
+          #   - Only set overwrite=true if we actually updated the templates above; otherwise, overwrite=false and fail silently
           #     if they already exist (http result code 409)
           echo "Importing index pattern..."
           [[ "${TEMPLATES_IMPORTED}" == "true" ]] && SHOW_IMPORT_ERROR="--show-error" || SHOW_IMPORT_ERROR=
@@ -729,11 +741,21 @@ if [[ "${CREATE_OS_ARKIME_SESSION_INDEX:-true}" = "true" ]] ; then
             if [[ $DETECTORS_STARTED == 0 ]]; then
               set +e
               DUMMY_DETECTOR_ID=""
-              until [[ -n "$DUMMY_DETECTOR_ID" ]]; do
+              DUMMY_DETECTOR_SEARCH_ATTEMPTS=0
+              DUMMY_DETECTOR_SEARCH_MAX_ATTEMPTS=${DUMMY_DETECTOR_SEARCH_MAX_ATTEMPTS:-60}
+              if ! [[ "$DUMMY_DETECTOR_SEARCH_MAX_ATTEMPTS" =~ ^[0-9]+$ ]]; then
+                echo "Invalid DUMMY_DETECTOR_SEARCH_MAX_ATTEMPTS: $DUMMY_DETECTOR_SEARCH_MAX_ATTEMPTS" >&2
+                DUMMY_DETECTOR_SEARCH_MAX_ATTEMPTS=60
+              fi
+              until [[ -n "$DUMMY_DETECTOR_ID" ]] || (( DUMMY_DETECTOR_SEARCH_ATTEMPTS >= DUMMY_DETECTOR_SEARCH_MAX_ATTEMPTS )); do
                 sleep 5
                 DUMMY_DETECTOR_ID="$(curl "${CURL_CONFIG_PARAMS[@]}" --location --fail --silent -XPOST "$OPENSEARCH_URL_TO_USE/_plugins/_anomaly_detection/detectors/_search" -H "$XSRF_HEADER:true" -H 'Content-type:application/json' -d "{ \"query\": { \"match\": { \"name\": \"$DUMMY_DETECTOR_NAME\" } } }" | jq '.. | ._id? // empty' 2>/dev/null | head -n 1 | tr -d '"')"
+                (( DUMMY_DETECTOR_SEARCH_ATTEMPTS++ ))
               done
               set -e
+              if [[ -z "$DUMMY_DETECTOR_ID" ]]; then
+                echo "Warning: $DUMMY_DETECTOR_NAME did not appear after $DUMMY_DETECTOR_SEARCH_MAX_ATTEMPTS attempts, skipping anomaly detector engine initialization" >&2
+              fi
               if [[ -n "$DUMMY_DETECTOR_ID" ]]; then
                 echo "Starting $DUMMY_DETECTOR_NAME to initialize anomaly detector engine..."
                 CURL_OUT=$(get_tmp_output_filename)

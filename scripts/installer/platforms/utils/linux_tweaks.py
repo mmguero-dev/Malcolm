@@ -291,7 +291,7 @@ def apply_grub_cgroup(
 
     try:
         if platform.is_dry_run():
-            logger.info(f"Dry run: would update cgroup kernel parameters parameters in {grub_file}")
+            logger.info(f"Dry run: would update cgroup kernel parameters in {grub_file}")
             return InstallerResult.SKIPPED, "cgroup kernel parameters skipped (dry run)"
 
         if system_uses_systemd_boot():
@@ -314,7 +314,7 @@ def apply_grub_cgroup(
             with open(grub_file, "r", encoding="utf-8") as f:
                 orig_content = f.read()
 
-            # prefer GRUB_CMDLINE_LINUX, fallback to DEFAULT
+            # prefer GRUB_CMDLINE_LINUX, fall back to DEFAULT
             if re.search(r"^GRUB_CMDLINE_LINUX=", orig_content, re.MULTILINE):
                 varname = "GRUB_CMDLINE_LINUX"
             elif re.search(r"^GRUB_CMDLINE_LINUX_DEFAULT=", orig_content, re.MULTILINE):

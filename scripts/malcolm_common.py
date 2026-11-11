@@ -12,6 +12,7 @@ import os
 import math
 import platform
 import re
+import shutil
 import site
 import ssl
 import string
@@ -94,31 +95,71 @@ except ImportError:
 Dialog = None
 MainDialog = None
 
-# Reasonable dialog bounds; used to reduce awkward wrapping in python-dialog
+# Preferred dialog bounds. Actual bounds are further limited by the terminal.
 _DIALOG_MIN_WIDTH = 50
 _DIALOG_MAX_WIDTH = 140
 _DIALOG_MIN_HEIGHT = 7
 _DIALOG_MAX_HEIGHT = 30
 
+# Leave room for dialog's border/shadow and terminal edges.
+_DIALOG_TERMINAL_WIDTH_MARGIN = 4
+_DIALOG_TERMINAL_HEIGHT_MARGIN = 4
+
 
 def _dialog_size_for(text: str) -> tuple[int, int]:
-    """Compute a suitable (height, width) for a dialog widget.
+    """Compute a dialog size that fits the prompt and current terminal.
 
-    - Width fits the longest line with a small padding.
-    - Height accounts for the number of text lines plus button area.
+    The input value itself may be arbitrarily long; dialog's inputbox scrolls
+    horizontally, so it must not be used to determine the widget width.
     """
     try:
-        if not isinstance(text, str):
-            text = str(text)
+        text = str(text)
+
+        terminal = shutil.get_terminal_size(fallback=(80, 24))
+        max_width = max(
+            1,
+            min(
+                _DIALOG_MAX_WIDTH,
+                terminal.columns - _DIALOG_TERMINAL_WIDTH_MARGIN,
+            ),
+        )
+        max_height = max(
+            1,
+            min(
+                _DIALOG_MAX_HEIGHT,
+                terminal.lines - _DIALOG_TERMINAL_HEIGHT_MARGIN,
+            ),
+        )
+
+        # The configured minimum is only a preference. It cannot exceed the
+        # space actually available in the terminal.
+        min_width = min(_DIALOG_MIN_WIDTH, max_width)
+        min_height = min(_DIALOG_MIN_HEIGHT, max_height)
+
         lines = text.splitlines() or [""]
-        max_line = max((len(line) for line in lines), default=_DIALOG_MIN_WIDTH)
-        width = max(_DIALOG_MIN_WIDTH, min(max_line + 4, _DIALOG_MAX_WIDTH))
-        # base height for buttons + borders; add per text line beyond the first
-        height = _DIALOG_MIN_HEIGHT + max(0, len(lines) - 1)
-        height = max(_DIALOG_MIN_HEIGHT, min(height, _DIALOG_MAX_HEIGHT))
+
+        desired_width = max(
+            _DIALOG_MIN_WIDTH,
+            max((len(line) for line in lines), default=0) + 4,
+        )
+        width = min(desired_width, max_width)
+
+        # Account approximately for prompt lines wrapping at the selected
+        # dialog width. Four columns are reserved for borders/padding.
+        text_width = max(1, width - 4)
+        wrapped_lines = sum(max(1, math.ceil(len(line) / text_width)) for line in lines)
+
+        desired_height = _DIALOG_MIN_HEIGHT + wrapped_lines - 1
+        height = min(max(desired_height, min_height), max_height)
+
         return height, width
+
     except Exception:
-        return (_DIALOG_MIN_HEIGHT, _DIALOG_MIN_WIDTH)
+        terminal = shutil.get_terminal_size(fallback=(80, 24))
+        return (
+            min(_DIALOG_MIN_HEIGHT, max(1, terminal.lines - 4)),
+            min(_DIALOG_MIN_WIDTH, max(1, terminal.columns - 4)),
+        )
 
 
 def _dialog_menu_width_for(choices) -> int:
@@ -296,23 +337,67 @@ def LocalPathForContainerBindMount(
     return local_path
 
 
+_WILDCARD_HOST_IPS = ("", "0.0.0.0", "::")
+
+
+def _split_short_port(port_str):
+    """Split compose short-syntax ports into (host_ip, host_port, container_port_and_protocol).
+
+    Handles bracketed IPv6 host IPs ("[::]:443:443"). Returns None for entries with no host port.
+    """
+    host_ip = ""
+    rest = port_str.strip()
+    if rest.startswith("["):
+        end = rest.find("]:")
+        if end < 0:
+            return None
+        host_ip, rest = rest[1:end], rest[end + 2 :]
+        parts = rest.split(":")
+        return (host_ip, parts[0], parts[1]) if len(parts) == 2 else None
+    parts = rest.split(":")
+    if len(parts) == 3:
+        return tuple(parts)
+    if len(parts) == 2:
+        return ("", parts[0], parts[1])
+    return None
+
+
+def _port_sort_key(port):
+    first = port.split("/", 1)[0].split(":", 1)[0]
+    return (int(first) if first.isdigit() else float("inf"), port)
+
+
 def GetExposedPorts(docker_compose_contents, exclude_ports=None):
-    exclude_ports = exclude_ports or set()
+    exclude_ports = {str(p) for p in (exclude_ports or set())}
     host_ports = set()
 
-    for svc in docker_compose_contents.get("services", {}).values():
-        for port_str in svc.get("ports", []):
-            parts = port_str.split(":")
-            if len(parts) == 3:
-                ip, host_port, _ = parts
-                if ip in ("", "0.0.0.0") and host_port not in exclude_ports:
-                    host_ports.add(host_port)
-            elif len(parts) == 2:
-                host_port, _ = parts
-                if host_port not in exclude_ports:
-                    host_ports.add(host_port)
+    for svc in (docker_compose_contents.get("services") or {}).values():
+        for port_def in (svc or {}).get("ports") or []:
+            if isinstance(port_def, dict):
+                # long syntax
+                host_ip = str(port_def.get("host_ip") or "")
+                host_port = str(port_def.get("published") or "")
+                protocol = str(port_def.get("protocol") or "tcp").lower()
+            elif isinstance(port_def, (str, int)):
+                # short syntax; a bare container port (e.g., 443) gets a random host port, so nothing to open
+                if not (split := _split_short_port(str(port_def))):
+                    continue
+                host_ip, host_port, container_part = split
+                protocol = container_part.split("/", 1)[1].lower() if "/" in container_part else "tcp"
+            else:
+                continue
 
-    return sorted(host_ports, key=int)
+            if (host_ip not in _WILDCARD_HOST_IPS) or (not host_port) or (host_port in exclude_ports):
+                continue
+
+            if "-" in host_port:
+                # ranges use ufw's start:end/protocol syntax, which requires a protocol
+                start, _, end = host_port.partition("-")
+                host_ports.add(f"{start}:{end}/{protocol}")
+            else:
+                host_ports.add(host_port)
+
+    return sorted(host_ports, key=_port_sort_key)
 
 
 def BuildBoundPathReplacers(
@@ -400,16 +485,36 @@ def GetMemMegabytesFromJavaOptsLine(val):
 
 
 ##################################################################################################
+_K8S_QUANTITY_RE = re.compile(r'^([+-]?(?:\d+(?:\.\d*)?|\.\d+))(?:[eE]([+-]?\d+))?(Ki|Mi|Gi|Ti|Pi|Ei|k|M|G|T|P|E|m)?$')
+_K8S_QUANTITY_MULTIPLIERS = {
+    None: 1,
+    'm': 1e-3,
+    'k': 1000,
+    'M': 1000**2,
+    'G': 1000**3,
+    'T': 1000**4,
+    'P': 1000**5,
+    'E': 1000**6,
+    'Ki': 1024,
+    'Mi': 1024**2,
+    'Gi': 1024**3,
+    'Ti': 1024**4,
+    'Pi': 1024**5,
+    'Ei': 1024**6,
+}
+
+
 def ParseK8sMemoryToMib(val):
-    val = str(val).strip()
-    units = {'Ki': 1 / 1024, 'Mi': 1, 'Gi': 1024, 'Ti': 1024 * 1024}
+    """Convert a Kubernetes memory quantity (e.g., "512Mi", "2G", "1.5Gi", "1e9", "1073741824") to whole MiB.
 
-    for unit in units:
-        if val.endswith(unit):
-            value = float(val.replace(unit, ''))
-            return int(value * units[unit])
-
-    return 0
+    Returns 0 if the value can't be parsed.
+    """
+    match = _K8S_QUANTITY_RE.match(str(val).strip())
+    if not match:
+        return 0
+    number, exponent, suffix = match.groups()
+    num_bytes = float(number) * (10 ** int(exponent) if exponent else 1) * _K8S_QUANTITY_MULTIPLIERS[suffix]
+    return int(num_bytes / 1024**2)
 
 
 ##################################################################################################
@@ -1145,48 +1250,51 @@ def posInt(value):
 
 
 ###################################################################################################
+def _netbox_cidr_list_parses(cidr_list):
+    entries = [c.strip() for c in cidr_list.split(',') if c.strip()]
+    if not entries:
+        return False
+    for entry in entries:
+        try:
+            ipaddress.ip_network(entry[1:] if entry.startswith('!') else entry, strict=False)
+        except ValueError:
+            return False
+    return True
+
+
+def SplitNetBoxSubnetFilterSite(entry):
+    """Split one ';'-separated entry into (site_key, cidr_list).
+
+    The site key is optional, and a missing one becomes '*'. An entry that parses as a CIDR list in
+    its entirety (e.g., "!fc00::/7,fd12:3456:789a:1::/64") has no site key, even though IPv6 CIDRs
+    contain colons; otherwise the site key is whatever comes before the first colon.
+    """
+    entry = entry.strip()
+    if (':' not in entry) or _netbox_cidr_list_parses(entry):
+        return '*', entry
+    site_key, cidr_list = entry.split(':', 1)
+    return site_key.strip(), cidr_list
+
+
 def FormatNetBoxSubnetFilter(value):
     if (not value) or (not isinstance(value, str)) or (not value.strip()):
         return ""
 
     stripSpacePattern = re.compile(r'\s+')
     return ';'.join(
-        f"{k.strip()}:{stripSpacePattern.sub('', v)}"
-        for item in value.split(';')
-        for k, v in [item.split(':', 1) if ':' in item else ('*', item)]
+        f"{site_key}:{stripSpacePattern.sub('', cidr_list)}"
+        for site_key, cidr_list in (SplitNetBoxSubnetFilterSite(item) for item in value.split(';') if item.strip())
     )
 
 
-###################################################################################################
 def ValidNetBoxSubnetFilter(value):
     if not value.strip():
         return True
 
-    site_entries = [entry.strip() for entry in value.split(';') if entry.strip()]
-    cidr_pattern = re.compile(r'^!?([0-9a-fA-F:.]+/\d+)$')
-
-    for entry in site_entries:
-        if ':' in entry:
-            site_key, cidr_list = entry.split(':', 1)
-            site_key = site_key.strip()
-        else:
-            site_key = '*'
-            cidr_list = entry
-
-        if not site_key:  # site name can be '*', any string, or omitted (becomes '*')
+    for entry in (e.strip() for e in value.split(';') if e.strip()):
+        site_key, cidr_list = SplitNetBoxSubnetFilterSite(entry)
+        if (not site_key) or (not _netbox_cidr_list_parses(cidr_list)):
             return False
-
-        cidr_entries = [cidr.strip() for cidr in cidr_list.split(',') if cidr.strip()]
-        for cidr_entry in cidr_entries:
-            match = cidr_pattern.match(cidr_entry)
-            if not match:
-                return False
-
-            cidr = match.group(1)
-            try:
-                ipaddress.ip_network(cidr, strict=False)
-            except ValueError:
-                return False
 
     return True
 
@@ -1446,11 +1554,13 @@ def get_malcolm_version():
                 with open(compose_file_name, 'r') as f:
                     compose_data = yamlImported.YAML(typ='safe', pure=True).load(f)
                     image_tags = []
-                    for service_name, service_def in compose_data.get("services", {}).items():
+                    for service_def in compose_data.get("services", {}).values():
                         image = service_def.get("image")
-                        if image and ":" in image:
-                            image_tags.append(image.rsplit(":", 1)[1])
-                    result = get_highest_calver(image_tags)
+                        if image and "/malcolm/" in image:
+                            image = image.split("@", 1)[0]
+                            if ":" in image:
+                                image_tags.append(image.rsplit(":", 1)[1])
+                    result = get_highest_calver(image_tags) or MALCOLM_VERSION
         except Exception as e:
             eprint(f'Error deciphering docker-compose.yml: {e}')
 
@@ -1470,32 +1580,32 @@ def MalcolmAuthFilesExist(configDir=None, run_profile=PROFILE_MALCOLM, auth_meth
     configDirToCheck = (
         configDir if configDir is not None and os.path.isdir(configDir) else os.path.join(MalcolmPath, 'config')
     )
-    return (
-        (
-            (run_profile == PROFILE_HEDGEHOG)
-            or (
-                AuthFileCheck(
-                    os.path.join(MalcolmPath, os.path.join('nginx', 'htpasswd')),
-                    allowEmpty=(auth_method == 'no_authentication'),
-                )
-                and AuthFileCheck(
-                    os.path.join(MalcolmPath, os.path.join('nginx', 'nginx_ldap.conf')),
-                    allowEmpty=(auth_method != 'ldap'),
-                )
-                and AuthFileCheck(
-                    os.path.join(MalcolmPath, os.path.join('nginx', os.path.join('certs', 'cert.pem'))), allowEmpty=True
-                )
-                and AuthFileCheck(
-                    os.path.join(MalcolmPath, os.path.join('nginx', os.path.join('certs', 'key.pem'))), allowEmpty=True
-                )
-                and AuthFileCheck(os.path.join(configDirToCheck, 'netbox-secret.env'))
-                and AuthFileCheck(os.path.join(configDirToCheck, 'postgres.env'))
-                and AuthFileCheck(os.path.join(configDirToCheck, 'auth.env'))
-            )
-        )
-        and AuthFileCheck(os.path.join(configDirToCheck, 'valkey.env'))
-        and AuthFileCheck(os.path.join(MalcolmPath, '.opensearch.primary.curlrc'))
-    )
+
+    missing = []
+
+    if run_profile != PROFILE_HEDGEHOG:
+        checks = [
+            (os.path.join(MalcolmPath, 'nginx', 'htpasswd'), auth_method == 'no_authentication'),
+            (os.path.join(MalcolmPath, 'nginx', 'nginx_ldap.conf'), auth_method != 'ldap'),
+            (os.path.join(MalcolmPath, 'nginx', 'certs', 'cert.pem'), True),
+            (os.path.join(MalcolmPath, 'nginx', 'certs', 'key.pem'), True),
+            (os.path.join(configDirToCheck, 'netbox-secret.env'), False),
+            (os.path.join(configDirToCheck, 'postgres.env'), False),
+            (os.path.join(configDirToCheck, 'auth.env'), False),
+        ]
+        for path, allowEmpty in checks:
+            if not AuthFileCheck(path, allowEmpty=allowEmpty):
+                missing.append(path)
+
+    # checked regardless of profile
+    for path in (
+        os.path.join(configDirToCheck, 'valkey.env'),
+        os.path.join(MalcolmPath, '.opensearch.primary.curlrc'),
+    ):
+        if not AuthFileCheck(path):
+            missing.append(path)
+
+    return missing
 
 
 ###################################################################################################
@@ -1690,6 +1800,7 @@ LOG_IGNORE_REGEX = re.compile(
   | \bGET.+\b302\s+30\b
   | \d+\s+changes\s+in\s+\d+\s+seconds\.\s+Saving
   | _cat/indices
+  | API_TOKEN_PEPPERS\s+is\s+not\s+defined
   | Background\s+saving\s+started
   | Background\s+saving\s+terminated\s+with\s+success
   | branding.*config\s+is\s+not\s+found\s+or\s+invalid
@@ -1707,6 +1818,7 @@ LOG_IGNORE_REGEX = re.compile(
   | Error\s+during\s+file\s+comparison:.*no\s+such\s+file
   | Error\s+while\s+removing\s+state\s+from\s+statestore:\s+resource\s+.*\s+not\s+found
   | eshealth
+  | Test\s+run\s+complete.+failed:\s+0,\s+errored:\s+0
   | esindices/list
   | executing\s+attempt_(transition|set_replica_count)\s+for
   | failed\s+to\s+get\s+tcp6?\s+stats\s+from\s+/proc
@@ -1733,6 +1845,7 @@ LOG_IGNORE_REGEX = re.compile(
   | No\s+active\s+configuration\s+revision\s+found\s+-\s+falling\s+back\s+to\s+most\s+recent
   | Notice:\s+pcap:\s+read\s+(\d+)\s+file
   | opensearch.*has\s+insecure\s+file\s+permissions
+  | /opt/netbox.+Warning.+Unable\s+to\s+(resolve|guess)
   | points\s+to\s+an\s+already\s+known\s+ingest\s+target
   | (POST|PUT)\s+/(arkime_\w+)(/\w+)?/_(d?stat|doc|search).+HTTP/[\d\.].+\b20[01]\b
   | POST\s+/_bulk\s+HTTP/[\d\.].+\b20[01]\b
@@ -1789,122 +1902,89 @@ ISO8601_TIME_REGEX = re.compile(
 )
 
 
-def ProcessLogLine(line, debug=False):
-    global ISO8601_TIME_REGEX
-    global LOG_IGNORE_REGEX
-    global SERVICE_REGEX
-    global URL_USER_PASS_REGEX
+def _log_timestamp_from_json(output_json, message_time_match):
+    """Remove the preferred JSON timestamp, falling back to the log prefix."""
+    for key in ('time', 'timestamp', '@timestamp'):
+        if key in output_json:
+            return f"{output_json.pop(key)} "
+    return f"{message_time_match[0]} " if message_time_match is not None else ''
 
-    outputStr = CONTAINER_REPL_REGEX.sub(r"\1\2", URL_USER_PASS_REGEX.sub(r"\1xxxxxxxx\2", line.decode().strip()))
-    outputStrEscaped = EscapeAnsi(outputStr)
-    if LOG_IGNORE_REGEX.match(outputStrEscaped):
+
+def _format_supercronic_log(output_prefix, output_json, debug):
+    """Condense job events and suppress routine start/success chatter."""
+    for noisy_key in ('level', 'channel', 'iteration', 'job.position', 'job.schedule'):
+        output_json.pop(noisy_key, None)
+
+    if len(output_json) == 2 and 'job.command' in output_json and 'msg' in output_json:
+        job_status = output_json['msg']
+        if debug or job_status not in ('starting', 'job succeeded'):
+            return f"{output_prefix} {output_json['job.command']}: {job_status}"
         return None
-    else:
-        serviceMatch = SERVICE_REGEX.search(outputStrEscaped)
-        serviceMatchFmt = SERVICE_REGEX.search(outputStr) if coloramaImported else serviceMatch
-        serviceStr = serviceMatchFmt.group('service').replace('-container', '') if (serviceMatchFmt is not None) else ''
+    return f"{output_prefix}{json.dumps(output_json)}"
 
-        messageStr = serviceMatch.group('message') if (serviceMatch is not None) else ''
-        messageStrSplit = messageStr.split(' ')
-        messageTimeMatch = ISO8601_TIME_REGEX.match(messageStrSplit[0])
-        if (messageTimeMatch is None) or (len(messageStrSplit) <= 1):
-            messageStrToTestJson = messageStr
-        else:
-            messageStrToTestJson = messageStrSplit[1:].join(' ')
 
-        outputJson = LoadStrIfJson(messageStrToTestJson)
-        if isinstance(outputJson, dict):
-            # if there's a timestamp, move it outside of the JSON to the beginning of the log string
-            timeKey = None
-            if 'time' in outputJson:
-                timeKey = 'time'
-            elif 'timestamp' in outputJson:
-                timeKey = 'timestamp'
-            elif '@timestamp' in outputJson:
-                timeKey = '@timestamp'
-            timeStr = ''
-            if timeKey is not None:
-                timeStr = f"{outputJson[timeKey]} "
-                outputJson.pop(timeKey, None)
-            elif messageTimeMatch is not None:
-                timeStr = f"{messageTimeMatch[0]} "
+def _format_filebeat_log(output_prefix, output_json):
+    """Remove verbose Filebeat fields and summarize ordinary events."""
+    for noisy_key in (
+        'ecs.version',
+        'harvester_id',
+        'input_id',
+        'log.level',
+        'log.logger',
+        'log.origin',
+        'os_id',
+        'service.name',
+        'state_id',
+    ):
+        output_json.pop(noisy_key, None)
 
-            if ('job.schedule' in outputJson) and ('job.position' in outputJson) and ('job.command' in outputJson):
-                # this is a status line line from supercronic, let's format and clean it up so it fits in better with the rest of the logs
+    if len(output_json) == 3 and all(k in output_json for k in ('message', 'source_file', 'finished')):
+        return f"{output_prefix}{output_json['message'].rstrip('.')}: {output_json['source_file']}"
+    if len(output_json) == 1:
+        key = next(iter(output_json))
+        key_prefix = f'{key}: ' if key != 'message' else ''
+        return f"{output_prefix}{key_prefix}{output_json[key]}"
+    return f"{output_prefix}{json.dumps(output_json)}"
 
-                # remove some clutter for the display
-                for noisyKey in ['level', 'channel', 'iteration', 'job.position', 'job.schedule']:
-                    outputJson.pop(noisyKey, None)
 
-                # if it's just command and message, format those NOT as JSON
-                jobCmd = outputJson['job.command']
-                jobStatus = outputJson['msg']
-                if (len(outputJson.keys()) == 2) and ('job.command' in outputJson) and ('msg' in outputJson):
-                    # if it's the most common status (starting or job succeeded) then don't print unless debug mode
-                    if debug or ((jobStatus != 'starting') and (jobStatus != 'job succeeded')):
-                        return (
-                            f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr} {jobCmd}: {jobStatus}"
-                        )
-                    else:
-                        return None
+def _format_service_json(service, output_json, message_time_match, debug):
+    """Render a parsed log event according to its service-specific format."""
+    time_str = _log_timestamp_from_json(output_json, message_time_match)
+    output_prefix = f"{service}{Style.RESET_ALL if coloramaImported else ''} {time_str}"
 
-                else:
-                    # standardize and print the JSON line
-                    return (
-                        f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{json.dumps(outputJson)}"
-                    )
+    if all(k in output_json for k in ('job.schedule', 'job.position', 'job.command')):
+        return _format_supercronic_log(output_prefix, output_json, debug)
+    if 'dashboards' in service:
+        for noisy_key in ('type', 'tags', 'pid', 'method', 'prevState', 'prevMsg'):
+            output_json.pop(noisy_key, None)
+        return f'{output_prefix}{json.dumps(output_json)}'
+    if 'filebeat' in service:
+        return _format_filebeat_log(output_prefix, output_json)
+    return f'{output_prefix}{json.dumps(output_json)}'
 
-            elif 'dashboards' in serviceStr:
-                # this is an line line from dashboards, let's clean it up a bit: remove some clutter for the display
-                for noisyKey in ['type', 'tags', 'pid', 'method', 'prevState', 'prevMsg']:
-                    outputJson.pop(noisyKey, None)
 
-                # standardize and print the JSON line
-                return f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{json.dumps(outputJson)}"
+def ProcessLogLine(line, debug=False):
+    """Normalize and format a container log line, including timestamped JSON."""
+    output_str = CONTAINER_REPL_REGEX.sub(r"\1\2", URL_USER_PASS_REGEX.sub(r"\1xxxxxxxx\2", line.decode().strip()))
+    output_escaped = EscapeAnsi(output_str)
+    if LOG_IGNORE_REGEX.match(output_escaped):
+        return None
 
-            elif 'filebeat' in serviceStr:
-                # this is an line line from filebeat, let's clean it up a bit: remove some clutter for the display
-                for noisyKey in [
-                    'ecs.version',
-                    'harvester_id',
-                    'input_id',
-                    'log.level',
-                    'log.logger',
-                    'log.origin',
-                    'os_id',
-                    'service.name',
-                    'state_id',
-                ]:
-                    outputJson.pop(noisyKey, None)
+    service_match = SERVICE_REGEX.search(output_escaped)
+    service_match_fmt = SERVICE_REGEX.search(output_str) if coloramaImported else service_match
+    service = service_match_fmt.group('service').replace('-container', '') if service_match_fmt else ''
+    message = service_match.group('message') if service_match else ''
 
-                # we'll fancify a couple of common things from filebeat
-                if (
-                    (len(outputJson.keys()) == 3)
-                    and ('message' in outputJson)
-                    and ('source_file' in outputJson)
-                    and ('finished' in outputJson)
-                ):
-                    return f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{outputJson['message'].rstrip('.')}: {outputJson['source_file']}"
+    # Strip a leading ISO-8601 timestamp only when followed by a message.
+    # partition preserves spacing in the rest of a JSON line, unlike split/join.
+    first_token, separator, remaining = message.partition(' ')
+    message_time_match = ISO8601_TIME_REGEX.match(first_token)
+    json_text = remaining if message_time_match is not None and separator else message
+    output_json = LoadStrIfJson(json_text)
+    if isinstance(output_json, dict):
+        return _format_service_json(service, output_json, message_time_match, debug)
 
-                elif len(outputJson.keys()) == 1:
-                    outputKey = next(iter(outputJson))
-                    return f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{outputKey + ': ' if outputKey != 'message' else ''}{outputJson[outputKey]}"
-
-                else:
-                    # standardize and print the JSON line
-                    return (
-                        f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{json.dumps(outputJson)}"
-                    )
-
-            else:
-                # standardize and print the JSON line
-                return f"{serviceStr}{Style.RESET_ALL if coloramaImported else ''} {timeStr}{json.dumps(outputJson)}"
-
-        else:
-            # just a regular non-JSON string, print as-is
-            return outputStr if coloramaImported else outputStrEscaped
-
-    return None
+    return output_str if coloramaImported else output_escaped
 
 
 ##################################################################################################
@@ -2314,6 +2394,7 @@ _distro_info = get_distro_info()
 SYSTEM_INFO: dict[str, object] = {
     "image_architecture": get_system_image_architecture(),
     "total_mem_gb": total_memory_gb(),
+    "total_mem_bytes": _total_memory_bytes(),
     "cpu_cores": cpu_cores(),
     "uid": os.getuid(),
     "gid": os.getgid(),

@@ -5,8 +5,7 @@
 
 ###################################################################################################
 # Detect, partition, and format devices to be used for:
-#  - Hedgehog Linux - sensor packet/log captures
-#  - Malcolm - database and capture artifacts
+#  - Malcolm - database and capture artifacts (both Malcolm and Hedgehog variants)
 #
 # Run the script with --help for options
 ###################################################################################################
@@ -25,8 +24,6 @@ from collections import defaultdict
 from fstab import Fstab
 
 from malcolm_constants import (
-    HEDGEHOG_PCAP_DIR,
-    HEDGEHOG_ZEEK_DIR,
     MALCOLM_DB_DIR,
     MALCOLM_LOGS_DIR,
     MALCOLM_PCAP_DIR,
@@ -40,7 +37,6 @@ from malcolm_utils import (
     sizeof_fmt,
     str2bool,
 )
-
 
 MINIMUM_DEVICE_BYTES = 'minimum_device_bytes'
 MOUNT_ROOT_PATH = 'mount_root_path'
@@ -59,35 +55,15 @@ CRYPT_DEV_PREFIX = 'crypt_dev_prefix'
 
 ###################################################################################################
 # Operating system mode constants
-OS_MODE_HEDGEHOG = "hedgehog"
 OS_MODE_MALCOLM = "malcolm"
-OS_MODE_MALCOLM_HEDGEHOG = "malcolm-hedgehog"
+OS_MODE_HEDGEHOG = "hedgehog"
 
 ETC_INSTALLER_AGGREGATOR = "aggregator"
 ETC_INSTALLER_SENSOR = "sensor"
 
 OS_PARAMS = defaultdict(lambda: None)
-OS_PARAMS[OS_MODE_HEDGEHOG] = defaultdict(lambda: None)
 OS_PARAMS[OS_MODE_MALCOLM] = defaultdict(lambda: None)
-OS_PARAMS[OS_MODE_MALCOLM_HEDGEHOG] = defaultdict(lambda: None)
-OS_PARAMS[OS_MODE_HEDGEHOG].update(
-    {
-        MINIMUM_DEVICE_BYTES: 100 * 1024 * 1024 * 1024,  # 100GiB
-        MOUNT_ROOT_PATH: "/capture",
-        MOUNT_DIRS: [HEDGEHOG_PCAP_DIR, HEDGEHOG_ZEEK_DIR],
-        FSTAB_FILE: "/etc/fstab",
-        CRYPTTAB_FILE: "/etc/crypttab",
-        GROUP_OWNER: "netdev",
-        USER_UID: 1000,
-        DIR_PERMS: 0o750,
-        SUBDIR_PERMS: 0o770,
-        SYSTEM_CONFIG_FILE: '/opt/sensor/sensor_ctl/control_vars.conf',
-        CRYPT_KEYFILE: '/etc/capture_crypt.key',
-        CRYPT_KEYFILE_PERMS: 0o600,
-        OTHER_FILE_PERMS: 0o600,
-        CRYPT_DEV_PREFIX: 'capture_vault_',
-    }
-)
+OS_PARAMS[OS_MODE_HEDGEHOG] = defaultdict(lambda: None)
 OS_PARAMS[OS_MODE_MALCOLM].update(
     {
         MINIMUM_DEVICE_BYTES: 100 * 1024 * 1024 * 1024,  # 100GiB
@@ -105,7 +81,7 @@ OS_PARAMS[OS_MODE_MALCOLM].update(
         CRYPT_DEV_PREFIX: 'malcolm_vault_',
     }
 )
-OS_PARAMS[OS_MODE_MALCOLM_HEDGEHOG].update(
+OS_PARAMS[OS_MODE_HEDGEHOG].update(
     {
         **OS_PARAMS[OS_MODE_MALCOLM],
         MOUNT_DIRS: [d for d in OS_PARAMS[OS_MODE_MALCOLM][MOUNT_DIRS] if d != MALCOLM_DB_DIR],
@@ -128,6 +104,16 @@ class PartitionInfo:
         self.mapper = mapper
         self.uuid = uuid
         self.mount = mount
+
+    def __repr__(self):
+        return (
+            f"{self.__class__.__name__}("
+            f"device={self.device!r}, "
+            f"partition={self.partition!r}, "
+            f"mapper={self.mapper!r}, "
+            f"uuid={self.uuid!r}, "
+            f"mount={self.mount!r})"
+        )
 
 
 ###################################################################################################
@@ -156,7 +142,6 @@ def CreateMapperDeviceName(device):
 ###################################################################################################
 def DetermineOSPlatform():
     os_release_info = {}
-    installer_id = None
 
     try:
         os_release_info = distro.os_release_info()
@@ -173,44 +158,113 @@ def DetermineOSPlatform():
                     except Exception:
                         pass
 
-    if os.path.isfile('/etc/installer'):
-        with open("/etc/installer", 'r') as f:
-            installer_id = f.readline().strip()
-
-    variant = os_release_info.get('variant_id')
-
-    if (variant == OS_MODE_HEDGEHOG) and (installer_id == ETC_INSTALLER_AGGREGATOR):
-        return OS_MODE_MALCOLM_HEDGEHOG
-    else:
-        return variant
+    return os_release_info.get('variant_id')
 
 
 ###################################################################################################
-# determine if a device (eg., sda) is an internal (True) or removable (False) device
+def IsRaspberryPi():
+    try:
+        with open('/proc/device-tree/model', 'rb') as f:
+            model = f.read().rstrip(b'\0').decode(errors='replace')
+        is_raspberry_pi = model.startswith('Raspberry Pi')
+        logging.debug("Hardware model: %r; Raspberry Pi=%s", model, is_raspberry_pi)
+        return is_raspberry_pi
+    except OSError as exc:
+        logging.debug("Unable to read Raspberry Pi model: %s", exc)
+        return False
+
+
+###################################################################################################
+def IsDeviceOnBus(name, bus):
+    block_path = os.path.realpath(f'/sys/block/{name}')
+    bus_devices_path = f'/sys/bus/{bus}/devices'
+
+    if not os.path.isdir(bus_devices_path):
+        return False
+
+    for bus_device in os.listdir(bus_devices_path):
+        bus_device_path = os.path.realpath(os.path.join(bus_devices_path, bus_device))
+
+        try:
+            if os.path.commonpath((block_path, bus_device_path)) == bus_device_path:
+                logging.debug(
+                    "%s belongs to %s bus device %s",
+                    name,
+                    bus,
+                    bus_device,
+                )
+                return True
+        except ValueError:
+            continue
+
+    return False
+
+
+###################################################################################################
+# Determine whether a device is eligible for automatic storage configuration.
+#
+# USB devices are normally excluded. Raspberry Pi systems are allowed to use
+# USB storage because USB-attached SSDs are their normal bulk-storage option.
 def IsInternalDevice(name):
     if args.internalDevs and name in args.internalDevs:
+        logging.info("%s explicitly allowed by --internal", name)
         return True
 
-    rootdir_pattern = re.compile(r'^.*?/devices')
+    # Raspberry Pi systems commonly use USB-attached SSDs as storage.
+    # Mounted-device checks later in the script still protect the system disk.
+    if IsRaspberryPi() and IsDeviceOnBus(name, 'usb'):
+        logging.info("%s is USB-attached storage on a Raspberry Pi; allowing it", name)
+        return True
 
-    removableFlagFile = '/sys/block/%s/device/block/%s/removable' % (name, name)
+    removableFlagFile = f'/sys/block/{name}/device/block/{name}/removable'
     if not os.path.isfile(removableFlagFile):
-        removableFlagFile = '/sys/block/%s/removable' % (name)
+        removableFlagFile = f'/sys/block/{name}/removable'
+
     if os.path.isfile(removableFlagFile):
         with open(removableFlagFile) as f:
-            if f.read(1) == '1':
-                return False
+            removable = f.read(1)
 
-    path = rootdir_pattern.sub('', os.readlink('/sys/block/%s' % name))
-    hotplug_buses = ("usb", "ieee1394", "mmc", "pcmcia", "firewire")
-    for bus in hotplug_buses:
-        if os.path.exists('/sys/bus/%s' % bus):
-            for device_bus in os.listdir('/sys/bus/%s/devices' % bus):
-                device_link = rootdir_pattern.sub('', os.readlink('/sys/bus/%s/devices/%s' % (bus, device_bus)))
-                if re.search(device_link, path):
-                    return False
+        if removable == '1':
+            logging.debug("%s reports removable=1; excluding it", name)
+            return False
+
+    for bus in ("usb", "ieee1394", "mmc", "pcmcia", "firewire"):
+        if IsDeviceOnBus(name, bus):
+            logging.debug("%s is attached through hotplug bus %s; excluding it", name, bus)
+            return False
 
     return True
+
+
+###################################################################################################
+def GetDeviceMounts(device):
+    ecode, output = run_subprocess(
+        f'/bin/lsblk --json --tree --output name,path,mountpoint {device}',
+        stdout=True,
+        stderr=True,
+    )
+
+    if ecode != 0:
+        logging.error("Unable to inspect mounts for %s: %s", device, output)
+        return None
+
+    try:
+        block_info = json.loads('\n'.join(output))
+    except (TypeError, ValueError) as exc:
+        logging.error("Unable to parse lsblk output for %s: %s", device, exc)
+        return None
+
+    mounts = []
+
+    def collect(entries):
+        for entry in entries or []:
+            mountpoint = entry.get('mountpoint')
+            if mountpoint:
+                mounts.append(mountpoint)
+            collect(entry.get('children'))
+
+    collect(block_info.get('blockdevices'))
+    return sorted(set(mounts))
 
 
 ###################################################################################################
@@ -267,7 +321,7 @@ def main():
         default=None,
         metavar='<string>',
         type=str,
-        help=f'Script mode: {OS_MODE_HEDGEHOG}, {OS_MODE_MALCOLM} or {OS_MODE_MALCOLM_HEDGEHOG} (default: autodetect)',
+        help=f'Script mode: {OS_MODE_MALCOLM} or {OS_MODE_HEDGEHOG} (default: autodetect)',
     )
     parser.add_argument(
         '-i',
@@ -329,9 +383,9 @@ def main():
     logging.debug(f"Arguments: {args}")
 
     if not args.osMode:
-        args.osMode = DetermineOSPlatform()
+        args.osMode = DetermineOSPlatform() or OS_MODE_MALCOLM
 
-    if args.osMode in (OS_MODE_HEDGEHOG, OS_MODE_MALCOLM, OS_MODE_MALCOLM_HEDGEHOG):
+    if args.osMode in (OS_MODE_MALCOLM, OS_MODE_HEDGEHOG):
         osMode = args.osMode
     else:
         parser.print_help()
@@ -349,7 +403,7 @@ def main():
                 remove_prefix(x, '/dev/mapper/')
                 for x in glob.glob(f"/dev/mapper/{OS_PARAMS[osMode][CRYPT_DEV_PREFIX]}*")
             ]:
-                logging.info(f"Running crypsetup luksClose on {cryptDev}...")
+                logging.info(f"Running cryptsetup luksClose on {cryptDev}...")
                 _, cryptOut = run_subprocess(
                     f"/sbin/cryptsetup --verbose luksClose {cryptDev}", stdout=True, stderr=True, timeout=300
                 )
@@ -434,10 +488,28 @@ def main():
 
     # determine candidate storage devices, which are any disks that do not have a mount point associated with
     # it in any way, (no partitions, mappings, etc. that are mounted) and is at least 100 gigabytes
-    for device, entries in allDisks.items():
-        deviceMounts = list(set([par.mount for par in entries if par.mount is not None]))
-        if (len(deviceMounts) == 0) and (GetDeviceSize(device) >= OS_PARAMS[osMode][MINIMUM_DEVICE_BYTES]):
-            candidateDevs.append(device)
+    for device in allDisks:
+        deviceMounts = GetDeviceMounts(device)
+
+        # Failure to determine mount state excludes the device.
+        if deviceMounts is None:
+            logging.warning("%s skipped because its mount state is unknown", device)
+            continue
+
+        if deviceMounts:
+            logging.info("%s skipped because it has active mounts: %s", device, deviceMounts)
+            continue
+
+        deviceSize = GetDeviceSize(device)
+        if deviceSize < OS_PARAMS[osMode][MINIMUM_DEVICE_BYTES]:
+            logging.info(
+                "%s skipped because %s is below the minimum size",
+                device,
+                sizeof_fmt(deviceSize),
+            )
+            continue
+
+        candidateDevs.append(device)
 
     # sort candidate devices largest to smallest
     candidateDevs = sorted(candidateDevs, key=lambda x: GetDeviceSize(x), reverse=True)
@@ -460,6 +532,22 @@ def main():
             if (not args.interactive) or YesOrNo(
                 f'Partition and format {device}{" (dry-run)" if args.dryrun else ""}?'
             ):
+
+                currentMounts = GetDeviceMounts(device)
+                if currentMounts is None:
+                    logging.error(
+                        "Skipping %s because its mount state could not be verified",
+                        device,
+                    )
+                    continue
+                elif currentMounts:
+                    logging.error(
+                        "Skipping %s because it became mounted: %s",
+                        device,
+                        currentMounts,
+                    )
+                    continue
+
                 if args.dryrun:
                     logging.info(f"Partitioning {device} (dry run only)...")
                     logging.info(
@@ -518,7 +606,7 @@ def main():
                                 _, reloadOut = run_subprocess("systemctl daemon-reload")
 
                                 # for good measure, run luksErase in case it was a previous luks volume
-                                logging.info(f"Running crypsetup luksErase on {parDev}...")
+                                logging.info(f"Running cryptsetup luksErase on {parDev}...")
                                 _, cryptOut = run_subprocess(
                                     f"/sbin/cryptsetup --verbose --batch-mode luksErase {parDev}",
                                     stdout=True,
@@ -533,7 +621,7 @@ def main():
                                 # luks volume creation
 
                                 # format device as a luks volume
-                                logging.info(f"Running crypsetup luksFormat on {device}...")
+                                logging.info(f"Running cryptsetup luksFormat on {device}...")
                                 ecode, cryptOut = run_subprocess(
                                     f"/sbin/cryptsetup --verbose --batch-mode luksFormat {parDev} --uuid='{parUuid}' --key-file {OS_PARAMS[osMode][CRYPT_KEYFILE]}",
                                     stdout=True,
@@ -547,7 +635,7 @@ def main():
                                         logging.info(f"\t{line}")
                                 if ecode == 0:
                                     # open the luks volume in /dev/mapper/
-                                    logging.info(f"Running crypsetup luksOpen on {device}...")
+                                    logging.info(f"Running cryptsetup luksOpen on {device}...")
                                     parMapperDev = CreateMapperDeviceName(parDev)
                                     ecode, cryptOut = run_subprocess(
                                         f"/sbin/cryptsetup --verbose luksOpen {parDev} {CreateMapperName(parDev)} --key-file {OS_PARAMS[osMode][CRYPT_KEYFILE]}",
@@ -742,28 +830,7 @@ def main():
                             createdUserDirs[subdir] = userDir
                             break
 
-                if (osMode == OS_MODE_HEDGEHOG) and os.path.isfile(OS_PARAMS[osMode][SYSTEM_CONFIG_FILE]):
-                    # replace paths in-place in control_vars.conf
-                    capture_re = re.compile(r"\b(?P<key>PCAP_PATH|ZEEK_LOG_PATH)\s*=\s*.*?$")
-                    with fileinput.FileInput(OS_PARAMS[osMode][SYSTEM_CONFIG_FILE], inplace=True, backup='.bak') as f:
-                        for line in f:
-                            line = line.rstrip("\n")
-                            log_path_match = capture_re.search(line)
-                            if log_path_match is not None:
-                                if (log_path_match.group('key') == 'PCAP_PATH') and (
-                                    createdUserDirs[HEDGEHOG_PCAP_DIR] is not None
-                                ):
-                                    print(capture_re.sub(r"\1=%s" % createdUserDirs[HEDGEHOG_PCAP_DIR], line))
-                                elif (log_path_match.group('key') == 'ZEEK_LOG_PATH') and (
-                                    createdUserDirs[HEDGEHOG_ZEEK_DIR] is not None
-                                ):
-                                    print(capture_re.sub(r"\1=%s" % createdUserDirs[HEDGEHOG_ZEEK_DIR], line))
-                                else:
-                                    print(line)
-                            else:
-                                print(line)
-
-                elif (osMode in (OS_MODE_MALCOLM, OS_MODE_MALCOLM_HEDGEHOG)) and os.path.isdir(
+                if (osMode in (OS_MODE_MALCOLM, OS_MODE_HEDGEHOG)) and os.path.isdir(
                     os.path.join(ownerHome, 'Malcolm')
                 ):
                     # write .os-disk-config-defaults to be picked up by install.py

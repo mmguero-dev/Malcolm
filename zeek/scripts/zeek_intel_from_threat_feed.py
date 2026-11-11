@@ -33,7 +33,7 @@ def main():
                 'Outputs a Zeek intelligence framework file from various formats used to represent threat information:',
                 ' - "Indicator" objects in STIX™ v2.0/v2.1 JSON files',
                 ' - MISP attributes or core format JSON files',
-                ' - Indicators from Mantiant Threat Intelligence',
+                ' - Indicators from Mandiant Threat Intelligence',
                 '',
                 'See:',
                 ' - Malcolm documentation: https://idaholab.github.io/Malcolm/docs/zeek-intel.html#ZeekIntel',
@@ -47,8 +47,8 @@ def main():
                 ' - MISP default feeds: https://www.misp-project.org/feeds/',
                 ' - Managing MISP feeds: https://misp.gitbooks.io/misp-book/content/managing-feeds/',
                 ' - Expand MISP usage: https://github.com/idaholab/Malcolm/issues/336',
-                ' - Mandiant Threat Intelligence Indicators API: https://gtidocs.virustotal.com/reference/ioc-collection-object'
-                ' - Google Threat Intelligence IoC Collection API: https://gtidocs.virustotal.com/reference/ioc-collection-object'
+                ' - Mandiant Threat Intelligence Indicators API: https://gtidocs.virustotal.com/reference/ioc-collection-object',
+                ' - Google Threat Intelligence IoC Collection API: https://gtidocs.virustotal.com/reference/ioc-collection-object',
                 '',
                 'Note: The Zeek intelligence framework only supports simple indicators matched against a single value.',
                 'The STIX™ standard can express more complex indicators that cannot be expressed with Zeek intelligence items.',
@@ -91,6 +91,15 @@ def main():
         const=True,
         default=True,
         help='Add fields for corelight/ExtendIntel',
+    )
+    parser.add_argument(
+        '--misp-require-to-ids',
+        dest='mispRequireToIds',
+        type=malcolm_utils.str2bool,
+        nargs='?',
+        const=True,
+        default=zeek_threat_feed_utils.MISP_REQUIRE_TO_IDS_DEFAULT,
+        help='Skip MISP attributes whose to_ids flag is false (can be overridden per feed with require_to_ids)',
     )
     parser.add_argument(
         '--ssl-verify',
@@ -164,7 +173,13 @@ def main():
 
     with open(args.output, 'w') if args.output is not None else nullcontext() as outfile:
         zeekPrinter = zeek_threat_feed_utils.FeedParserZeekPrinter(
-            args.extended, args.notice, args.cif, since=since, file=outfile, logger=logging
+            args.extended,
+            args.notice,
+            args.cif,
+            since=since,
+            file=outfile,
+            logger=logging,
+            misp_require_to_ids=args.mispRequireToIds,
         )
 
         # if --input-file is specified, process first and append to  --input

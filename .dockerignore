@@ -34,6 +34,7 @@ kubernetes
 malcolm-iso
 hedgehog-raspi
 nginx/nginx_ldap*.conf
+nginx/lua/test*.lua
 pcap
 _site
 shared/bin/malcolm_constants.py
@@ -43,6 +44,7 @@ scripts
 !scripts/malcolm_constants.py
 !scripts/malcolm_kubernetes.py
 !scripts/malcolm_utils.py
+!scripts/safe-extract.py
 zeek-logs
 suricata-logs
 valkey
@@ -50,4 +52,7 @@ postgres
 filescan-logs
 netbox/media
 netbox/custom-plugins
+netbox/custom-scripts
 zeek/custom
+logstash/maps/otkb_fixture.json
+filescan/python-filescan/filescan/strelka/proto/strelka_pb2*

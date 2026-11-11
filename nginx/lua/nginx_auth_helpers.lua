@@ -6,6 +6,11 @@ local cjson = require("cjson.safe")
 local path_role_envs = {
     -- Special cases (if you add deeper patterns, put them up here)
 
+    -- Service account authentication setup
+    { pattern = "^/(auth|htadmin|admin_login)", roles = {
+        "ROLE_ADMIN"
+    }},
+
     -- Arkime PCAP view/export
     { pattern = "^/arkime/(api/)?sessions?/.+/packets(?:$|[/?])", roles = {
         "ROLE_ADMIN",
@@ -69,11 +74,20 @@ local path_role_envs = {
         "ROLE_UPLOAD"
     }},
 
-    -- NetBox
-    { pattern = "^/netbox", roles = {
+    -- NetBox (UI and API under /netbox, and the API passthrough at /mapi/netbox,
+    --   which nginx proxies straight to NetBox without going through the Malcolm API)
+    { pattern = "^/(mapi/)?netbox", roles = {
         "ROLE_ADMIN",
         "ROLE_NETBOX_READ_ACCESS",
         "ROLE_NETBOX_READ_WRITE_ACCESS",
+        "ROLE_READ_ACCESS",
+        "ROLE_READ_WRITE_ACCESS"
+    }},
+
+    -- Logstash statistics passthrough (nginx proxies /mapi/logstash/ straight to the
+    --   Logstash monitoring API without going through the Malcolm API)
+    { pattern = "^/mapi/logstash", roles = {
+        "ROLE_ADMIN",
         "ROLE_READ_ACCESS",
         "ROLE_READ_WRITE_ACCESS"
     }},
@@ -84,6 +98,21 @@ local path_role_envs = {
         "ROLE_READ_ACCESS",
         "ROLE_READ_WRITE_ACCESS",
         "ROLE_EXTRACTED_FILES"
+    }},
+
+    -- OpenSearch proxy: read-only search operations (reader tier)
+    { pattern = "^/mapi/opensearch/(?:[^/_][^/]*/|_all/)?(?:_search|_msearch|_count|_field_caps|_validate/query)$", roles = {
+        "ROLE_ADMIN",
+        "ROLE_DASHBOARDS_READ_ACCESS",
+        "ROLE_DASHBOARDS_READ_ALL_APPS_ACCESS",
+        "ROLE_DASHBOARDS_READ_WRITE_ACCESS",
+        "ROLE_DASHBOARDS_READ_WRITE_ALL_APPS_ACCESS",
+        "ROLE_READ_ACCESS",
+        "ROLE_READ_WRITE_ACCESS"
+    }},
+    -- OpenSearch proxy: everything else (admin only)
+    { pattern = "^/mapi/opensearch", roles = {
+        "ROLE_ADMIN"
     }},
 
     -- Dashboards & related paths
@@ -137,7 +166,7 @@ local uri_role_mappings = {
         { from = "ROLE_READ_ACCESS", to = "ROLE_EXTRACTED_FILES" },
         { from = "ROLE_READ_WRITE_ACCESS", to = "ROLE_EXTRACTED_FILES" }
     },
-    ["^/netbox"] = {
+    ["^/(mapi/)?netbox"] = {
         { from = "ROLE_READ_ACCESS", to = "ROLE_NETBOX_READ_ACCESS" },
         { from = "ROLE_READ_WRITE_ACCESS", to = "ROLE_NETBOX_READ_WRITE_ACCESS" }
     }
@@ -150,7 +179,55 @@ function _M.get_environment_variable(name)
     return (val and val ~= "") and val or nil
 end
 
+-- Normalize a raw request URI for RBAC matching.
+-- Uses request_uri (pre-rewrite) rather than ngx.var.uri (post-rewrite), but
+-- decodes percent-encoding and resolves path segments (dropping empty segments,
+-- . and ..) to match how nginx's ngx_http_parse_complex_uri normalizes the URI
+-- before location selection. Without this, an authenticated low-privilege user
+-- could reach a role-restricted location by percent-encoding, slash-doubling,
+-- case-varying, or inserting dot segments into the path, since nginx's location
+-- dispatch normalizes before matching but this function previously did not.
+local function normalize_uri_for_rbac(raw_uri)
+    local path = raw_uri:match("^[^?]+") or ""
+
+    -- Percent-decode BEFORE segment resolution, so encoded traversal sequences
+    -- (e.g. %2e%2e%2f, %2e) can't sneak past undetected.
+    path = ngx.unescape_uri(path)
+
+    -- Resolve path segments the same way nginx's ngx_http_parse_complex_uri
+    -- does before location selection: drop empty segments (repeated slashes),
+    -- skip . segments, and pop on .. segments. Do it with a single pass that
+    -- handles all interactions, including interleaved . and .. segments
+    -- (e.g. /x/./../upload, /a/./b/../../upload).
+    local trailing_slash = path:sub(-1) == "/"
+    local segments = {}
+    for segment in (path .. "/"):gmatch("([^/]*)/") do
+        if segment == ".." then
+            if #segments > 0 then
+                table.remove(segments)
+            end
+        elseif segment ~= "." and segment ~= "" then
+            segments[#segments + 1] = segment
+        end
+    end
+    path = "/" .. table.concat(segments, "/")
+    if trailing_slash and #segments > 0 then
+        path = path .. "/"
+    end
+
+    -- Case-fold: nginx's htadmin/admin_login location is matched with the
+    -- case-insensitive `~*` modifier, but path_role_envs patterns are matched
+    -- with case-sensitive ngx.re.find (no "i" flag). Lowercasing here keeps
+    -- matching consistent without touching every ngx.re.find/match call site.
+    path = path:lower()
+
+    return path
+end
+_M._normalize_uri_for_rbac = normalize_uri_for_rbac  -- exported for unit testing only
+_M._path_role_envs = path_role_envs  -- exported for unit testing only
+
 local role_based_access_enabled = false
+local keycloak_ssl_verify = false
 
 function _M.is_role_based_access_enabled()
     return role_based_access_enabled
@@ -165,6 +242,14 @@ function _M.init()
         role_based_access_enabled = false
     end
     ngx.log(ngx.INFO, "RBAC enabled by ROLE_BASED_ACCESS: " .. tostring(role_based_access_enabled))
+
+    -- Determine if ssl_verify is true (for remote Keycloaks)
+    local ssl_verify_env_match, err = ngx.re.match(_M.get_environment_variable("KEYCLOAK_SSL_VERIFY"), "^true$", "jo")
+    if ssl_verify_env_match ~= nil then
+        keycloak_ssl_verify = true
+    else
+        keycloak_ssl_verify = false
+    end
 
     -- Build the role expansion map dynamically from environment variables
     for pattern, mappings in pairs(uri_role_mappings) do
@@ -211,7 +296,7 @@ function _M.set_headers(username, token, groups, roles)
                 role_set[role] = true
             end
             -- Apply role expansion logic based on current request URI
-            local request_uri = ngx.var.request_uri:match("^[^?]+") or ""
+            local request_uri = normalize_uri_for_rbac(ngx.var.request_uri)
             for pattern, expansion in pairs(role_expansion_map) do
                 local m, err = ngx.re.match(request_uri, pattern)
                 if m then
@@ -254,7 +339,7 @@ function _M.refresh_token(httpc, token_url, client_id, client_secret, refresh_to
                 refresh_token = refresh_token
             }),
             headers = { ["Content-Type"] = "application/x-www-form-urlencoded" },
-            ssl_verify = false
+            ssl_verify = keycloak_ssl_verify
         })
         httpc:set_keepalive(60000, 10)
 
@@ -290,7 +375,7 @@ function _M.introspect_token(httpc, introspect_url, access_token, client_id, cli
             client_secret = client_secret
         }),
         headers = { ["Content-Type"] = "application/x-www-form-urlencoded" },
-        ssl_verify = false
+        ssl_verify = keycloak_ssl_verify
     })
     httpc:set_keepalive(60000, 10)
     if not res then
@@ -372,8 +457,9 @@ function _M.check_rbac(token_data)
         return ngx.HTTP_OK
     end
 
-    -- URI -> ENV VARS mapping
-    local uri = ngx.var.request_uri:match("^[^?]+") or ""
+    -- Normalize request_uri for RBAC matching: use the pre-rewrite path but
+    -- collapse traversal sequences so that patterns like /x/../upload/ cannot bypass role checks.
+    local uri = normalize_uri_for_rbac(ngx.var.request_uri)
     local username = token_data.preferred_username or ""
     local roles = (token_data.realm_access and token_data.realm_access.roles) or {}
 

@@ -54,7 +54,7 @@ ENV PCAP_PATH=$PCAP_PATH
 ENV PCAP_FILTER=$PCAP_FILTER
 ENV PCAP_SNAPLEN=$PCAP_SNAPLEN
 
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/
 ADD --chmod=755 container-health-scripts/pcap-capture.sh /usr/local/bin/container_health.sh
@@ -65,12 +65,18 @@ ADD --chmod=755 pcap-capture/scripts/*.sh /usr/local/bin/
 ADD --chmod=644 pcap-capture/templates/*.template /etc/supervisor.d/
 ADD --chmod=644 pcap-capture/requirements.txt /usr/local/src/requirements.txt
 
-RUN apt-get -q update && \
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
+
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
+    apt-get -q update && \
     apt-get install --no-install-recommends -y -q \
       bc \
+      ca-certificates \
+      curl \
       ethtool \
       git \
-      jq \
       libcap2-bin \
       netsniff-ng \
       openssl \
@@ -83,7 +89,8 @@ RUN apt-get -q update && \
       tcpdump \
       tini && \
     python3 -m pip install --break-system-packages --no-compile --no-cache-dir -r /usr/local/src/requirements.txt && \
-    apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages --purge remove git && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" && \
+    apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages --purge remove curl git && \
         apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages autoremove && \
         apt-get clean && \
         rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \

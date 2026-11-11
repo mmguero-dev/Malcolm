@@ -1,4 +1,4 @@
-FROM docker.elastic.co/beats/filebeat-oss:9.3.3
+FROM docker.elastic.co/beats/filebeat-oss:9.5.6
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -72,28 +72,34 @@ ARG FILEBEAT_SYSLOG_TCP_LISTEN=false
 ARG FILEBEAT_SYSLOG_UDP_LISTEN=false
 ARG PCAP_NODE_NAME=malcolm
 
-ENV SUPERCRONIC_VERSION="0.2.43"
+ENV SUPERCRONIC_VERSION="0.2.51"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 
 ENV TINI_VERSION=v0.19.0
 ENV TINI_URL=https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini
 
-ENV YQ_VERSION="4.52.5"
+ENV YQ_VERSION="4.54.3"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
 
-ENV EVTX_VERSION="0.11.2"
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
+
+ENV EVTX_VERSION="0.15.1"
 ENV EVTX_URL="https://github.com/omerbenamram/evtx/releases/download/v${EVTX_VERSION}/evtx_dump-v${EVTX_VERSION}-XXX-unknown-linux-gnu"
 
 USER root
 
 ADD --chmod=644 filebeat/requirements.txt /usr/local/src/
 
-RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
-    export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') && \
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
+    --mount=type=bind,source=shared/keys/RPM-GPG-KEY-EPEL-9,target=/usr/local/share/RPM-GPG-KEY-EPEL-9,ro \
+    export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
     microdnf -y install curl-minimal && \
-        curl -sSL -o /tmp/epel-release.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
-        rpm -i /tmp/epel-release.rpm && \
+        curl -fsSL -o /tmp/epel-release.rpm https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm && \
+        rpm --import /usr/local/share/RPM-GPG-KEY-EPEL-9 && \
+        rpm -i --define '_pkgverify_level all' /tmp/epel-release.rpm && \
     microdnf -y update && \
     microdnf -y install \
         bzip2 \
@@ -102,8 +108,9 @@ RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
         file \
         gzip \
         inotify-tools \
+        libarchive \
+        lzip \
         jo \
-        jq \
         openssl \
         p7zip \
         psmisc \
@@ -112,23 +119,21 @@ RUN export EVTXARCH=$(uname -m | sed 's/arm64/aarch64/') && \
         python3-setuptools \
         rsync \
         tar \
+        unrar \
         unzip \
-        xz \
-        xz-devel && \
-    curl -sSLf -o /usr/bin/tini "${TINI_URL}-${BINARCH}" && \
-        chmod +x /usr/bin/tini && \
+        util-linux \
+        xz && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/tini "${TINI_URL}-{arch}" "tini_${TINI_VERSION}_linux_{arch}" && \
     python3 -m pip install --upgrade pip setuptools wheel && \
     python3 -m pip install --no-compile --no-cache-dir -r /usr/local/src/requirements.txt && \
-    curl -fsSL -o /usr/local/bin/supercronic "${SUPERCRONIC_URL}${BINARCH}" && \
-      chmod +x /usr/local/bin/supercronic && \
-    curl -fsSL -o /usr/local/bin/yq "${YQ_URL}${BINARCH}" && \
-        chmod 755 /usr/local/bin/yq && \
-    curl -fsSL -o /usr/local/bin/evtx "$(echo "${EVTX_URL}" | sed "s/XXX/${EVTXARCH}/g")" && \
-        chmod 755 /usr/local/bin/evtx && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/supercronic "${SUPERCRONIC_URL}{arch}" "supercronic_${SUPERCRONIC_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/yq "${YQ_URL}{arch}" "yq_${YQ_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/evtx "$(echo "${EVTX_URL}" | sed "s/XXX/${EVTXARCH}/g")" "evtx_dump_${EVTX_VERSION}_linux_{arch}" && \
     microdnf clean all && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/
 ADD --chmod=755 container-health-scripts/filebeat.sh /usr/local/bin/container_health.sh
@@ -141,6 +146,7 @@ ADD --chmod=644 filebeat/filebeat-zeek-files-logs.yml /usr/share/filebeat-zeek-f
 ADD filebeat/scripts /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_utils.py /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_constants.py /usr/local/bin/
+ADD --chmod=755 scripts/safe-extract.py /usr/local/bin/
 ADD --chmod=644 shared/bin/watch_common.py /usr/local/bin/
 ADD --chmod=755 shared/bin/opensearch_status.sh /usr/local/bin/
 ADD --chmod=644 filebeat/supervisord.conf /etc/supervisord.conf
@@ -200,7 +206,7 @@ ENV PCAP_NODE_NAME=$PCAP_NODE_NAME
 # see PUSER_CHOWN comment above
 VOLUME ["/usr/share/filebeat-logs/data", "/usr/share/filebeat-nginx/data", "/usr/share/filebeat-syslog-tcp/data", "/usr/share/filebeat-syslog-udp/data", "/usr/share/filebeat-tcp/data", "/usr/share/filebeat-zeek-files-logs/data"]
 
-ENTRYPOINT ["/usr/bin/tini", \
+ENTRYPOINT ["/usr/local/bin/tini", \
             "--", \
             "/usr/local/bin/docker-uid-gid-setup.sh", \
             "/usr/local/bin/service_check_passthrough.sh", \

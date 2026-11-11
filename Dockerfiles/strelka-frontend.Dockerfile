@@ -1,4 +1,4 @@
-FROM ghcr.io/idaholab/strelka/frontend:malcolm
+FROM ghcr.io/idaholab/strelka/frontend:malcolm@sha256:e9db1bfc3a4fe2a935d1f052801e89af17a0b25a4783bb25432957195eeeb347
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -21,20 +21,25 @@ USER root
 
 ENV TERM=xterm
 
-ENV YQ_VERSION="4.52.5"
+ENV YQ_VERSION="4.54.3"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
+
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
 
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 
-RUN apk update --no-cache && \
-    apk --no-cache add curl bash jq psmisc rsync shadow tini && \
-    curl -fsSL -o /usr/local/bin/yq "${YQ_URL}$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')" && \
-      chmod 755 /usr/local/bin/yq && \
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
+    apk update --no-cache && \
+    apk --no-cache add curl bash psmisc rsync shadow su-exec tini && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/yq "${YQ_URL}{arch}" "yq_${YQ_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" && \
     addgroup -g ${DEFAULT_GID} ${PGROUP} ; \
       adduser -D -H -u ${DEFAULT_UID} -h /nonexistent -s /sbin/nologin -G ${PGROUP} -g ${PUSER} ${PUSER} ; \
       addgroup ${PUSER} tty
 
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=755 strelka/*.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/

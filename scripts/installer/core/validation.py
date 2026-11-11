@@ -28,15 +28,11 @@ from scripts.installer.configs.constants.constants import (
 )
 from scripts.installer.configs.constants.configuration_item_keys import (
     KEY_CONFIG_ITEM_ARKIME_WISE_URL,
-    KEY_CONFIG_ITEM_ARKIME_EXPOSE_WISE,
     KEY_CONFIG_ITEM_CAPTURE_LIVE_NETWORK_TRAFFIC,
     KEY_CONFIG_ITEM_CLEAN_UP_OLD_INDICES,
     KEY_CONFIG_ITEM_DASHBOARDS_URL,
     KEY_CONFIG_ITEM_EXPOSE_OPENSEARCH,
-    KEY_CONFIG_ITEM_FILESCAN_LOG_DIR,
-    KEY_CONFIG_ITEM_INDEX_DIR,
     KEY_CONFIG_ITEM_INDEX_PRUNE_THRESHOLD,
-    KEY_CONFIG_ITEM_INDEX_SNAPSHOT_DIR,
     KEY_CONFIG_ITEM_LIVE_ARKIME,
     KEY_CONFIG_ITEM_LIVE_SURICATA,
     KEY_CONFIG_ITEM_LIVE_ZEEK,
@@ -47,18 +43,14 @@ from scripts.installer.configs.constants.configuration_item_keys import (
     KEY_CONFIG_ITEM_OPENSEARCH_PRIMARY_MODE,
     KEY_CONFIG_ITEM_OPENSEARCH_PRIMARY_URL,
     KEY_CONFIG_ITEM_OPENSEARCH_SECONDARY_URL,
-    KEY_CONFIG_ITEM_PCAP_DIR,
     KEY_CONFIG_ITEM_PCAP_IFACE,
     KEY_CONFIG_ITEM_PCAP_NETSNIFF,
     KEY_CONFIG_ITEM_PCAP_TCPDUMP,
-    KEY_CONFIG_ITEM_SURICATA_LOG_DIR,
     KEY_CONFIG_ITEM_TRAEFIK_ENTRYPOINT,
     KEY_CONFIG_ITEM_TRAEFIK_HOST,
     KEY_CONFIG_ITEM_TRAEFIK_LABELS,
     KEY_CONFIG_ITEM_TRAEFIK_OPENSEARCH_HOST,
     KEY_CONFIG_ITEM_TRAEFIK_RESOLVER,
-    KEY_CONFIG_ITEM_USE_DEFAULT_STORAGE_LOCATIONS,
-    KEY_CONFIG_ITEM_ZEEK_LOG_DIR,
 )
 from scripts.installer.configs.constants.enums import (
     SearchEngineMode,
@@ -87,7 +79,6 @@ def _validate_local_vs_remote_urls(malcolm_config, add_issue) -> None:
         osurl = malcolm_config.get_value(KEY_CONFIG_ITEM_OPENSEARCH_PRIMARY_URL)
         dashurl = malcolm_config.get_value(KEY_CONFIG_ITEM_DASHBOARDS_URL)
         wiseurl = malcolm_config.get_value(KEY_CONFIG_ITEM_ARKIME_WISE_URL)
-        expose_wise = malcolm_config.get_value(KEY_CONFIG_ITEM_ARKIME_EXPOSE_WISE)
 
         def _validate_conn_for_profile(
             conn_value: str,
@@ -153,16 +144,15 @@ def _validate_local_vs_remote_urls(malcolm_config, add_issue) -> None:
             "host:port",
         )
 
-        if expose_wise:
-            _validate_conn_for_profile(
-                wiseurl,
-                LOCAL_ARKIME_WISE_URL,
-                KEY_CONFIG_ITEM_ARKIME_WISE_URL,
-                "Arkime WISE",
-                profile if (not arkime_live) else PROFILE_HEDGEHOG,
-                arkime_live or (profile == PROFILE_HEDGEHOG),
-                "https://host/wise/",
-            )
+        _validate_conn_for_profile(
+            wiseurl,
+            LOCAL_ARKIME_WISE_URL,
+            KEY_CONFIG_ITEM_ARKIME_WISE_URL,
+            "Arkime WISE",
+            profile if (not arkime_live) else PROFILE_HEDGEHOG,
+            arkime_live or (profile == PROFILE_HEDGEHOG),
+            "https://host/wise/",
+        )
 
         _validate_url_for_mode(
             osurl,
@@ -254,7 +244,10 @@ def _validate_live_capture_iface(malcolm_config, add_issue) -> None:
     if any_method:
         if malcolm_config.is_item_visible(KEY_CONFIG_ITEM_PCAP_IFACE):
             pcap_iface = malcolm_config.get_value(KEY_CONFIG_ITEM_PCAP_IFACE)
-            if not _is_non_empty_str(pcap_iface):
+            if not (
+                (isinstance(pcap_iface, str) and _is_non_empty_str(pcap_iface))
+                or (isinstance(pcap_iface, list) and pcap_iface and all(_is_non_empty_str(x) for x in pcap_iface))
+            ):
                 add_issue(
                     KEY_CONFIG_ITEM_PCAP_IFACE,
                     "Required when live capture is enabled",
@@ -294,50 +287,8 @@ def _validate_live_pcap_capture(malcolm_config, add_issue) -> None:
     ):
         add_issue(
             KEY_CONFIG_ITEM_LIVE_ARKIME,
-            f"Arime live capture is not available for the {profile} run profile with {primary_mode} as the primary data store",
+            f"Arkime live capture is not available for the {profile} run profile with {primary_mode} as the primary data store",
         )
-
-
-def _validate_storage_dirs(malcolm_config, add_issue) -> None:
-    """Require explicit storage paths when the user opted out of defaults.
-
-    PCAP/Zeek/Filescan/Suricata dirs are always required when not using defaults.
-    Index/snapshot dirs are required only when running Malcolm with local primary
-    OpenSearch (Hedgehog and remote primaries don't write indexes locally).
-    """
-    use_defaults = bool(malcolm_config.get_value(KEY_CONFIG_ITEM_USE_DEFAULT_STORAGE_LOCATIONS))
-    if use_defaults:
-        return
-
-    base_storage_keys = (
-        KEY_CONFIG_ITEM_PCAP_DIR,
-        KEY_CONFIG_ITEM_ZEEK_LOG_DIR,
-        KEY_CONFIG_ITEM_FILESCAN_LOG_DIR,
-        KEY_CONFIG_ITEM_SURICATA_LOG_DIR,
-    )
-    for key in base_storage_keys:
-        if not malcolm_config.is_item_visible(key):
-            continue
-        value = malcolm_config.get_value(key)
-        if not _is_non_empty_str(value):
-            add_issue(key, "Required when not using default storage locations")
-
-    profile = malcolm_config.get_value(KEY_CONFIG_ITEM_MALCOLM_PROFILE)
-    primary_mode = malcolm_config.get_value(KEY_CONFIG_ITEM_OPENSEARCH_PRIMARY_MODE)
-    needs_index_dirs = (
-        profile == PROFILE_MALCOLM
-        and isinstance(primary_mode, str)
-        and primary_mode == SearchEngineMode.OPENSEARCH_LOCAL.value
-    )
-    if not needs_index_dirs:
-        return
-
-    for key in (KEY_CONFIG_ITEM_INDEX_DIR, KEY_CONFIG_ITEM_INDEX_SNAPSHOT_DIR):
-        if not malcolm_config.is_item_visible(key):
-            continue
-        value = malcolm_config.get_value(key)
-        if not _is_non_empty_str(value):
-            add_issue(key, "Required when not using default storage locations")
 
 
 def _validate_old_artifact_cleanup(malcolm_config, add_issue) -> None:
@@ -411,13 +362,27 @@ def validate_required(malcolm_config) -> List[ValidationIssue]:
     except Exception as e:
         InstallerLogger.error(f"Error validating configuration (_validate_old_artifact_cleanup): {e}")
 
-    # 8) storage paths required when user opts out of default locations
+    # 8) values from a loaded configuration that couldn't be used
     try:
-        _validate_storage_dirs(malcolm_config, add_issue)
+        _validate_load_issues(malcolm_config, add_issue)
     except Exception as e:
-        InstallerLogger.error(f"Error validating configuration (_validate_storage_dirs): {e}")
+        InstallerLogger.error(f"Error validating configuration (_validate_load_issues): {e}")
 
     return issues
+
+
+def _validate_load_issues(malcolm_config, add_issue) -> None:
+    """Report values from a loaded source (settings file, .env files, etc.) that were invalid.
+
+    The installer kept another value for these instead, so the user should look at them before
+    saving. Setting the value clears the issue. Settings that are hidden for the current
+    configuration aren't used by it and can't be reached in the menus, so those are only logged.
+    """
+    for key, issue in malcolm_config.get_load_issues().items():
+        if malcolm_config.is_item_visible(key):
+            add_issue(key, f"the loaded value couldn't be used ({issue.message}); set it to continue")
+        else:
+            InstallerLogger.warning(f"Ignoring unusable loaded value for hidden setting {key}: {issue.message}")
 
 
 def format_validation_summary(issues: List[ValidationIssue]) -> str:
@@ -425,7 +390,7 @@ def format_validation_summary(issues: List[ValidationIssue]) -> str:
     if not issues:
         return ""
     lines = [
-        "Some required settings are missing:",
+        "Some settings are missing or invalid:",
     ]
     for issue in issues:
         lines.append(f"- {issue.label}: {issue.message}")

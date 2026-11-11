@@ -12,15 +12,17 @@ including Zeek analysis, Suricata analysis, and file extraction configuration.
 
 from scripts.malcolm_constants import WidgetType
 
-from scripts.installer.core.config_item import ConfigItem
+from scripts.installer.core.config_item import ConfigItem, ListOfStringsConfigItem
 from scripts.installer.configs.constants.configuration_item_keys import (
     KEY_CONFIG_ITEM_AUTO_ARKIME,
     KEY_CONFIG_ITEM_AUTO_FREQ,
     KEY_CONFIG_ITEM_AUTO_OUI,
     KEY_CONFIG_ITEM_AUTO_SURICATA,
     KEY_CONFIG_ITEM_AUTO_ZEEK,
+    KEY_CONFIG_ITEM_AUTO_ZEEK_COMMUNITY_ID,
     KEY_CONFIG_ITEM_MALCOLM_ICS,
     KEY_CONFIG_ITEM_REVERSE_DNS,
+    KEY_CONFIG_ITEM_SURICATA_DISABLE_SIDS,
     KEY_CONFIG_ITEM_SURICATA_RULE_UPDATE,
     KEY_CONFIG_ITEM_ZEEK_ICS_BEST_GUESS,
 )
@@ -61,10 +63,29 @@ CONFIG_ITEM_SURICATA_UPDATE_RULES = ConfigItem(
     widget_type=WidgetType.CHECKBOX,
 )
 
+CONFIG_ITEM_SURICATA_DISABLE_SIDS = ListOfStringsConfigItem(
+    key=KEY_CONFIG_ITEM_SURICATA_DISABLE_SIDS,
+    label="Disabled Suricata SIDs",
+    default_value=[],
+    validator=lambda value: (
+        lambda valid_item: (
+            value == ""
+            or valid_item(value)
+            or (isinstance(value, (list, tuple, set)) and all(valid_item(item) for item in value))
+        )
+    )(
+        lambda item: (isinstance(item, int) and not isinstance(item, bool) and item > 0)
+        or (isinstance(item, str) and item.isascii() and item.isdigit() and int(item) > 0)
+    ),
+    question="Comma-separated list of Suricata SIDs to disable",
+    widget_type=WidgetType.TEXT,
+    accept_blank=True,
+)
+
 CONFIG_ITEM_ZEEK_DISABLE_ICS_ALL = ConfigItem(
     key=KEY_CONFIG_ITEM_MALCOLM_ICS,
     label="Enable Zeek ICS/OT Analyzers",
-    default_value=False,
+    default_value=True,
     validator=lambda x: isinstance(x, bool),
     question="Is Malcolm being used to monitor an Operational Technology/Industrial Control Systems (OT/ICS) network?",
     widget_type=WidgetType.CHECKBOX,
@@ -103,6 +124,15 @@ CONFIG_ITEM_FREQ_LOOKUP = ConfigItem(
     default_value=True,
     validator=lambda x: isinstance(x, bool),
     question="Perform string randomness scoring on some fields?",
+    widget_type=WidgetType.CHECKBOX,
+)
+
+CONFIG_ITEM_LOGSTASH_ZEEK_COMPUTE_COMMUNITY_ID = ConfigItem(
+    key=KEY_CONFIG_ITEM_AUTO_ZEEK_COMMUNITY_ID,
+    label="Enrich with Community ID",
+    default_value=True,
+    validator=lambda x: isinstance(x, bool),
+    question="Calculate Community ID flow hashes for Zeek logs that don't already have one?",
     widget_type=WidgetType.CHECKBOX,
 )
 

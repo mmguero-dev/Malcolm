@@ -53,12 +53,15 @@ ENV TERM=xterm
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-ENV SUPERCRONIC_VERSION="0.2.43"
+ENV SUPERCRONIC_VERSION="0.2.51"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 
-ENV YQ_VERSION="4.52.5"
+ENV YQ_VERSION="4.54.3"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
+
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
 
 ENV STRELKA_HOST=$STRELKA_HOST
 ENV STRELKA_PORT=$STRELKA_PORT
@@ -86,7 +89,9 @@ ADD --chmod=644 docs/images/logo/Malcolm_background.png "${FILESCAN_HTTP_SERVER_
 ADD --chmod=644 docs/images/icon/favicon.ico "${FILESCAN_HTTP_SERVER_ASSETS_DIR}/favicon.ico"
 ADD --chmod=755 filescan/scripts/web-ui-asset-download.sh /usr/local/bin/
 
-RUN set -e ; \
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
+    set -e ; \
     groupadd --gid ${DEFAULT_GID} ${PGROUP} ; \
         useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} --home /nonexistent ${PUSER} ; \
         usermod -a -G tty ${PUSER} ; \
@@ -104,7 +109,6 @@ RUN set -e ; \
       g++ \
       git \
       inotify-tools \
-      jq \
       libjansson-dev \
       libjansson4 \
       libmagic-dev \
@@ -120,16 +124,15 @@ RUN set -e ; \
       tini \
       unzip \
       webfs ; \
-    curl -fsSL -o /usr/local/bin/supercronic "${SUPERCRONIC_URL}$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')" ; \
-        chmod +x /usr/local/bin/supercronic ; \
-    curl -fsSL -o /usr/local/bin/yq "${YQ_URL}$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/')" ; \
-        chmod 755 /usr/local/bin/yq ; \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/supercronic "${SUPERCRONIC_URL}{arch}" "supercronic_${SUPERCRONIC_VERSION}_linux_{arch}" ; \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/yq "${YQ_URL}{arch}" "yq_${YQ_VERSION}_linux_{arch}" ; \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" ; \
     mkdir -p /filescan /filescan/data/files /filescan/data/logs "${FILESCAN_HTTP_SERVER_ASSETS_DIR}" ; \
     cd /tmp && \
       /usr/local/bin/web-ui-asset-download.sh -o "${FILESCAN_HTTP_SERVER_ASSETS_DIR}/css" && \
     cd /install-filescan ; \
         python3 -m pip install --break-system-packages --no-cache-dir -r requirements.txt ; \
-        make ; \
+        make -B ; \
         python3 -m pip install --break-system-packages --no-cache-dir . ; \
     cd /filescan ; \
     find /filescan "${FILESCAN_HTTP_SERVER_ASSETS_DIR}" -type d -exec chmod 755 "{}" \; ; \
@@ -152,7 +155,7 @@ RUN set -e ; \
         apt-get clean -y -q ; \
         rm -rf /install-filescan /var/lib/apt/lists/* /var/cache/* /tmp/* /var/tmp/* /usr/lib/x86_64-linux-gnu/*.a
 
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=755 container-health-scripts/filescan.sh /usr/local/bin/container_health.sh
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/prune_files.sh /usr/local/bin/

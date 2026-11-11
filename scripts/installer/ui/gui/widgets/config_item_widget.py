@@ -92,8 +92,8 @@ def _setup_visibility_observer(widget, key, malcolm_config):
                     depends_str = ", ".join(depends_on) if isinstance(depends_on, list) else str(depends_on)
                     add_tooltip(widget, f"Disabled: depends on {depends_str}")
 
-    if hasattr(malcolm_config, 'observe'):
-        malcolm_config.observe(key, on_visibility_change)
+    if hasattr(malcolm_config, 'observe_visibility'):
+        malcolm_config.observe_visibility(key, on_visibility_change)
         on_visibility_change(None)
 
 
@@ -532,8 +532,8 @@ def _create_radio_group(
                     tooltip_text = f"Disabled: depends on {depends_str}"
                     add_tooltip(first_radio, tooltip_text)
 
-        if hasattr(malcolm_config, 'observe'):
-            malcolm_config.observe(key, on_visibility_change)
+        if hasattr(malcolm_config, 'observe_visibility'):
+            malcolm_config.observe_visibility(key, on_visibility_change)
             on_visibility_change(None)
 
     container.pack(anchor="w")

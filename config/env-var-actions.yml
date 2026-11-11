@@ -20,6 +20,11 @@ copied_environment_variables:
       ARKIME_EXPOSE_WISE_GUI:
         ARKIME_EXPOSE_WISE_GUI:
           "false": "true"
+  arkime_secret:
+    arkime_secret:
+      ARKIME_WISE_CONFIG_PIN_CODE:
+        ARKIME_WISE_CONFIG_PIN_CODE:
+          "WISE2019": ""
   auth_common:
     auth_common:
       NGINX_AUTH_MODE:
@@ -59,9 +64,12 @@ copied_environment_variables:
       LOGSTASH_NETBOX_ENRICHMENT_DATASETS:
         LOGSTASH_NETBOX_ENRICHMENT_DATASETS:
           ? "suricata.alert,zeek.conn,zeek.dhcp,zeek.dns,zeek.known_hosts,zeek.known_services,zeek.ntlm,zeek.notice,zeek.signatures,zeek.software,zeek.weird"
-          : "filescan.strelka,suricata.alert,zeek.conn,zeek.dce_rpc,zeek.dhcp,zeek.dns,zeek.known_hosts,zeek.known_routers,zeek.known_services,zeek.login,zeek.ntlm,zeek.notice,zeek.rdp,zeek.rfb,zeek.signatures,zeek.smb_cmd,zeek.smb_files,zeek.smb_mapping,zeek.software,zeek.ssh,zeek.weird"
+          : "default"
           ? "suricata.alert,zeek.conn,zeek.dce_rpc,zeek.dhcp,zeek.dns,zeek.known_hosts,zeek.known_routers,zeek.known_services,zeek.login,zeek.ntlm,zeek.notice,zeek.rdp,zeek.rfb,zeek.signatures,zeek.smb_cmd,zeek.smb_files,zeek.smb_mapping,zeek.software,zeek.ssh,zeek.weird"
-          : "filescan.strelka,suricata.alert,zeek.conn,zeek.dce_rpc,zeek.dhcp,zeek.dns,zeek.known_hosts,zeek.known_routers,zeek.known_services,zeek.login,zeek.ntlm,zeek.notice,zeek.rdp,zeek.rfb,zeek.signatures,zeek.smb_cmd,zeek.smb_files,zeek.smb_mapping,zeek.software,zeek.ssh,zeek.weird"
+          : "default"
+          ? "filescan.strelka,suricata.alert,zeek.conn,zeek.dce_rpc,zeek.dhcp,zeek.dns,zeek.known_hosts,zeek.known_routers,zeek.known_services,zeek.login,zeek.ntlm,zeek.notice,zeek.rdp,zeek.rfb,zeek.signatures,zeek.smb_cmd,zeek.smb_files,zeek.smb_mapping,zeek.software,zeek.ssh,zeek.weird"
+          : "default"
+
   netbox:
     netbox:
       REMOTE_AUTH_HEADER:
@@ -202,6 +210,14 @@ copied_environment_variables:
     netbox_secret:
       REDIS_PASSWORD:
         REDIS_PASSWORD
+  zeek:
+    zeek:
+      ZEEK_PORTS_GENISYS:
+        ZEEK_GENISYS_PORTS
+      ZEEK_PORTS_ENIP:
+        ZEEK_ENIP_PORTS
+      ZEEK_PORTS_SYNCHROPHASOR:
+        ZEEK_SYNCHROPHASOR_PORTS
 removed_environment_variables:
   # env_file:
   #   - key1
@@ -257,6 +273,8 @@ removed_environment_variables:
     - DB_HOST
     - DB_USER
     - DB_PASSWORD
+  suricata:
+    - SURICATA_UPDATE_ETOPEN
   suricata_offline:
     - SURICATA_PCAP_PROCESSOR
   valkey:
@@ -301,6 +319,9 @@ removed_environment_variables:
     - EXTRACTED_FILE_YARA_CUSTOM_ONLY
     - VTOT_REQUESTS_PER_MINUTE
     - YARA_MAX_REQUESTS
+    - ZEEK_ENIP_PORTS
+    - ZEEK_GENISYS_PORTS
+    - ZEEK_SYNCHROPHASOR_PORTS
   zeek_offline:
     - ZEEK_PCAP_PROCESSOR
   zeek_secret:

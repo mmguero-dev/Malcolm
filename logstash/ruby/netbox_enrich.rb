@@ -8,13 +8,19 @@ require 'fuzzystringmatch'
 require 'ipaddr'
 require 'json'
 require 'lru_reredux'
-require 'psych'
+require 'pathname'
+require 'yaml'
 require 'uri'
 require 'stringex_lite'
 
+# shared TLS trust store (see malcolm_ca_trust.rb); it sits next to this script both in the
+#   image and in the source tree, with the image path as a fallback in case __dir__ is unset
+_malcolm_ca_trust_rb = [__dir__, '/usr/share/logstash/malcolm-ruby'].compact.map { |d| File.join(d, 'malcolm_ca_trust.rb') }.find { |f| File.file?(f) }
+require(_malcolm_ca_trust_rb || 'malcolm_ca_trust')
+
 ##############################################################################################
-# Despite the warning against globla variables, we are using them here in order to make sure that
-#   we don't have duplicate caches for things cross different clones of the filter,
+# Despite the warning against global variables, we are using them here in order to make sure that
+#   we don't have duplicate caches for things across different clones of the filter,
 #   which is what happens if you just use @instance_variables. However, we should
 #   be safe because 1) we are using Concurrent::Map to maintain these per-type caches, and
 #   2) because the caches themselves are threadsafe. Note that this will share these values
@@ -67,17 +73,18 @@ class NetBoxConnLazy
   def initialize(
     url,
     token,
-    debug
+    debug,
+    ssl_verify = false
   )
     @object = nil
     @url = url
     @token = token
     @netboxConnDebug = debug
+    @sslVerify = ssl_verify
     @connected = false
   end
 
   def method_missing(method, *args, &block)
-
     puts "#{method}(#{args.map(&:inspect).join(', ')})" if @netboxConnDebug
 
     if $method_timings_logging_thread_running
@@ -105,7 +112,14 @@ class NetBoxConnLazy
   private
 
   def initialize_object
-    @object = Faraday.new(@url) do |conn|
+    # Faraday leaves TLS verification on by default (its net_http adapter defers to Net::HTTP,
+    #   which applies OpenSSL VERIFY_PEER). @sslVerify is based on NETBOX_SSL_CERTIFICATE_VERIFICATION,
+    #   so pass the option through rather than relying on the default either way --
+    #   being explicit keeps the intent readable. When verifying, hand Faraday a store that
+    #   includes the CAs from PUSER_CA_TRUST rather than relying on jruby-openssl's default paths.
+    sslOptions = { :verify => @sslVerify }
+    sslOptions[:cert_store] = MalcolmCaTrust.cert_store if @sslVerify
+    @object = Faraday.new(@url, :ssl => sslOptions) do |conn|
       conn.request :authorization, 'Token', @token
       conn.request :url_encoded
       conn.response :json, :parser_options => { :symbolize_names => true }
@@ -114,6 +128,20 @@ class NetBoxConnLazy
   end
 end
 
+
+##############################################################################################
+def cidr_list_parses?(cidr_list)
+  entries = cidr_list.split(',').map(&:strip).reject(&:empty?)
+  return false if entries.empty?
+  entries.all? do |entry|
+    begin
+      IPAddr.new(entry.start_with?('!') ? entry[1..] : entry)
+      true
+    rescue ArgumentError
+      false
+    end
+  end
+end
 
 ##############################################################################################
 def parse_autopopulate_config(raw_config)
@@ -136,16 +164,12 @@ def parse_autopopulate_config(raw_config)
     end
 
     range = cidr.to_range
-    unless range.first.private?
-      puts "parse_autopopulate_config skipping non-private CIDR: #{cidr_str}"
-      next
-    end
 
     entries << {
       cidr: cidr,
       allow: !is_exclusion,
       network: range.first,
-      broadcast: range.to_a.last
+      broadcast: range.end
     }
   end
 
@@ -167,7 +191,7 @@ def parse_autopopulate_configs_for_sites(raw_config, config_site_hash)
     site_entry = site_entry.strip
     next if site_entry.empty?
 
-    if site_entry.include?(':')
+    if site_entry.include?(':') && !cidr_list_parses?(site_entry)
       site_id, cidr_list = site_entry.split(':', 2)
       site_id = site_id.strip
     else
@@ -259,7 +283,7 @@ def register(
   @add_tag = nil if @add_tag.respond_to?(:empty?) && @add_tag.empty?
 
   # verbose - either specified directly or read from ENV via verbose_env
-  #   false - store the "name" (fallback to "display") and "id" value(s) as @target.name and @target.id
+  #   false - store the "name" (fall back to "display") and "id" value(s) as @target.name and @target.id
   #             e.g., (@target is destination.segment) destination.segment.name => ["foobar"]
   #                                                    destination.segment.id => [123]
   #   true - store a hash of arrays *under* @target
@@ -314,6 +338,20 @@ def register(
   if @netbox_token.nil? && !_netbox_token_env.nil?
     # could be something like "NETBOX_TOKEN;SUPERUSER_API_TOKEN", take first variable that evaluates
     @netbox_token = _netbox_token_env.split(/[;,:\s]+/).map { |env| ENV[env].to_s }.find { |val| val && !val.strip.empty? }
+  end
+
+  # TLS certificate verification for the NetBox API connection.
+  #   Only meaningful for an https:// NETBOX_URL (i.e. NETBOX_MODE=remote).
+  #   The local NetBox container is reached over plain HTTP, where this has no effect.
+  _netbox_ssl_verify_str = params["netbox_ssl_verify"]
+  _netbox_ssl_verify_env = params["netbox_ssl_verify_env"]
+  if _netbox_ssl_verify_str.nil? && !_netbox_ssl_verify_env.nil?
+    _netbox_ssl_verify_str = ENV[_netbox_ssl_verify_env]
+  end
+  @netbox_ssl_verify = [1, true, '1', 'true', 't', 'on', 'enabled'].include?(_netbox_ssl_verify_str.to_s.downcase)
+  if !@netbox_ssl_verify && @netbox_url.to_s.downcase.start_with?('https:')
+    puts "netbox_enrich: TLS certificate verification DISABLED for #{@netbox_url} " \
+         "(via #{_netbox_ssl_verify_env || 'netbox_ssl_verify script_param'})"
   end
 
   # hash of hashes, where key = site ID and value = hash of lookup types (from @lookup_type),
@@ -487,7 +525,7 @@ def register(
    end
 
   # make sure required tags exist before starting up
-  _tmp_nb_conn = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose)
+  _tmp_nb_conn = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose, @netbox_ssl_verify)
   [
     [{ 'name' => 'Autopopulated', 'slug' => 'malcolm-autopopulated', 'color' => 'add8e6' }],
     [{ 'name' => 'Manufacturer Unknown', 'slug' => 'manufacturer-unknown', 'color' => 'd3d3d3' }],
@@ -541,9 +579,7 @@ def autopopulate_allowed?(ip_input, site_id, config_site_hash)
          end
        end
 
-  return false unless ip.private?
-
-  # Determine applicable config: site-specific first, fallback to '*', else allow
+  # Determine applicable config: site-specific first, fall back to '*', else allow
   config = config_site_hash[site_id]
   if config.nil? && (site_id.is_a?(Integer) || site_id.to_s.match?(/\A[+-]?\d+\z/)) && (site_id.to_i > 0)
     # the site is being looked up by ID, not name, but there's no matching site ID in the config_site_hash,
@@ -555,18 +591,18 @@ def autopopulate_allowed?(ip_input, site_id, config_site_hash)
   end
   config = config_site_hash['*'] if config.nil?
 
-  return true if config.nil? || config[:allow_all_private]
+  return ip.private? if config.nil? || config[:allow_all_private]
 
-  # If no positive entries, but negatives exist, allow all except those excluded
+  # If no positive entries, but negatives exist, allow all private IPs except those excluded
   if config[:entries].none? { |e| e[:allow] } && !config[:entries].empty?
-    return !config[:entries].any? { |entry| entry[:cidr].include?(ip) }
+    return ip.private? && !config[:entries].any? { |entry| entry[:cidr].include?(ip) }
   end
 
   # Iterate entries in order; last matching rule wins
   allow = nil
   config[:entries].each do |entry|
     if entry[:cidr].include?(ip)
-      next if ip.ipv4? && (ip == entry[:network] || ip == entry[:broadcast])  # Skip unassignable
+      next if ip.ipv4? && (entry[:cidr].prefix <= 30) && (ip == entry[:network] || ip == entry[:broadcast])  # Skip unassignable
       allow = entry[:allow]
     end
   end
@@ -860,7 +896,7 @@ def lookup_or_create_site(
         _site = nil
 
         # this shouldn't be too often, once the hash gets populated
-        _nb_to_use = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose) if _nb_to_use.nil?
+        _nb_to_use = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose, @netbox_ssl_verify) if _nb_to_use.nil?
 
         # look it up by ID
         _query = { :offset => 0,
@@ -894,7 +930,7 @@ def lookup_or_create_site(
         _site_id = 0
 
         # this shouldn't be too often, once the hash gets populated
-        _nb_to_use = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose) if _nb_to_use.nil?
+        _nb_to_use = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose, @netbox_ssl_verify) if _nb_to_use.nil?
 
         # try to look it up by name
         _query = { :offset => 0,
@@ -1136,11 +1172,14 @@ def lookup_prefixes(
           end
           prefixes << { :name => _prefixName,
                         :id => p.fetch(:id, nil),
+                        :cidr => p.fetch(:prefix, nil),
                         :site => ((_site = p.fetch(:site, nil)) && _site&.has_key?(:name)) ? _site[:name] : _site&.fetch(:display, nil),
                         :tenant => ((_tenant = p.fetch(:tenant, nil)) && _tenant&.has_key?(:name)) ? _tenant[:name] : _tenant&.fetch(:display, nil),
                         :url => p.fetch(:url, nil),
                         :tags => p.fetch(:tags, nil),
-                        :details => @verbose ? p : nil }
+                        :details => @verbose ? p : nil
+                      # merge in any NetBox custom_fields (e.g. :purdue_zone) as top-level keys; on key collision, keep our hardcoded value over the custom field
+                      }.merge(p.fetch(:custom_fields, {}) || {}) { |_key, base_val, _custom_val| base_val }
         end
         _query[:offset] += _tmp_prefixes.size
         break unless (_tmp_prefixes.size >= @page_size)
@@ -1203,6 +1242,70 @@ def lookup_or_create_role(
   end
 end
 
+##############################################################################################
+# Convert a NetBox-supplied absolute object URL (e.g. the :url field on a device or virtual
+#   machine) into a connection-relative API path that cannot escape the configured NetBox origin.
+#
+# The NetBox API token is attached to every request made on the NetBoxConnLazy/Faraday
+#   connection. Faraday builds the request URL by merging the argument onto the connection's
+#   url_prefix, and URI#merge discards that base entirely when handed an absolute or
+#   protocol-relative reference. So passing a response-supplied URL straight through (even after
+#   delete_prefix) lets whatever answered the previous request redirect the next one -- and the
+#   token with it -- to an arbitrary host or a non-HTTP scheme.
+#
+# Returns the relative path (no leading slash) when url is on the configured NetBox origin and
+#   under its API path, or nil when it should not be followed.
+def netbox_relative_api_path(
+  url,
+  url_base,
+  url_suffix
+)
+  return nil if url.nil?
+  _url_str = url.to_s
+  return nil if _url_str.empty?
+
+  # protocol-relative (//host/path) names a foreign authority; never follow it
+  return nil if _url_str.start_with?('//')
+
+  begin
+    _candidate = URI.parse(_url_str)
+  rescue URI::Error
+    return nil
+  end
+
+  _api_root = url_suffix.to_s.empty? ? '/' : url_suffix.to_s
+
+  if _candidate.absolute?
+    # must be http(s) on the exact same origin as the configured NetBox (scheme + host + port)
+    return nil unless %w[http https].include?(_candidate.scheme.to_s.downcase)
+    begin
+      _base = URI.parse("#{url_base}#{_api_root}")
+    rescue URI::Error
+      return nil
+    end
+    return nil unless _candidate.origin == _base.origin
+    _path = _candidate.path.to_s
+  else
+    # relative reference: resolve it against the API root before validating
+    _path = _candidate.path.to_s
+    _path = "#{_api_root}/#{_path}" unless _path.start_with?('/')
+  end
+
+  # collapse any "." / ".." segments, then require the result to still sit under the API path
+  _normalized = Pathname.new(_path).cleanpath.to_s
+  _api_root_clean = Pathname.new(_api_root).cleanpath.to_s
+  _api_root_prefix = _api_root_clean.end_with?('/') ? _api_root_clean : "#{_api_root_clean}/"
+  return nil unless (_normalized == _api_root_clean) || _normalized.start_with?(_api_root_prefix)
+
+  _relative = _normalized.delete_prefix(_api_root_clean).delete_prefix('/')
+  return nil if _relative.empty?
+
+  # preserve a trailing slash (NetBox object URLs end in one) and any query string
+  _relative = "#{_relative}/" if _path.end_with?('/') && !_relative.end_with?('/')
+  _candidate.query.to_s.empty? ? _relative : "#{_relative}?#{_candidate.query}"
+end
+
+##############################################################################################
 def lookup_devices(
   ip_str,
   site_id,
@@ -1230,8 +1333,15 @@ def lookup_devices(
           then
             _is_device = !_device_obj.nil?
             _device = _is_device ? _device_obj : _virtualized_obj
-            # if we can, follow the :assigned_object's "full" device URL to get more information
-            _device = (_device.has_key?(:url) && (_full_device = nb.get(_device[:url].delete_prefix(url_base).delete_prefix(url_suffix).delete_prefix("/")).body)) ? _full_device : _device
+            # if we can, follow the :assigned_object's "full" device URL to get more information.
+            # :url comes from the NetBox response body and the API token is attached to every
+            #   request on this connection, so resolve it to a path that is guaranteed to stay on
+            #   the configured NetBox origin instead of prefix-stripping the string. A stripped
+            #   absolute URL (https://attacker.example/x, http://169.254.169.254/..., file:///...)
+            #   survives delete_prefix untouched and Faraday's URI merge would then discard the
+            #   base entirely, sending the token to a host of the responder's choosing.
+            _device_rel_url = netbox_relative_api_path(_device[:url], url_base, url_suffix)
+            _device = (_device_rel_url && (_full_device = nb.get(_device_rel_url).body)) ? _full_device : _device
             _device_site_obj = _device.fetch(:site, nil)
             if ((_device_site_obj&.fetch(:id, 0)).to_i == site_id.to_i)
               _device_id = _device.fetch(:id, nil)
@@ -1277,7 +1387,9 @@ def lookup_devices(
                           :cluster => ((_cluster = _device.fetch(:cluster, nil)) && _cluster&.has_key?(:name)) ? _cluster[:name] : _cluster&.fetch(:display, nil),
                           :device_type => ((_dtype = _device.fetch(:device_type, nil)) && _dtype&.has_key?(:name)) ? _dtype[:name] : _dtype&.fetch(:display, nil),
                           :manufacturer => ((_manuf = _device.dig(:device_type, :manufacturer)) && _manuf&.has_key?(:name)) ? _manuf[:name] : _manuf&.fetch(:display, nil),
-                          :details => @verbose ? _device : nil }
+                          :details => @verbose ? _device : nil
+                        # merge in any NetBox custom_fields (e.g. :purdue_zone) as top-level keys; on key collision, keep our hardcoded value over the custom field
+                        }.merge(_device.fetch(:custom_fields, {}) || {}) { |_key, base_val, _custom_val| base_val }
           end
         end
         _query[:offset] += _tmp_ip_addresses.size
@@ -1531,7 +1643,7 @@ def netbox_lookup(
 
   if (@autopopulate || (!@target.nil? && !@target.empty?)) && autopopulate_allowed?(_key_ip, site_id, $global_autopopulate_subnets_config_site_hash)
 
-    _nb = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose)
+    _nb = NetBoxConnLazy.new(@netbox_url, @netbox_token, @debug_verbose, @netbox_ssl_verify)
 
     _site_obj = lookup_or_create_site(site_id, '', _nb)
     _lookup_service_port = (@lookup_service ? event.get("#{@lookup_service_port_source}") : nil).to_i
@@ -1549,6 +1661,7 @@ def netbox_lookup(
     _autopopulate_manuf = nil
     _prefixes = nil
     _devices = nil
+    _interface_created = false
 
     # handle :ip_device first, because if we're doing autopopulate we're also going to use
     # some of the logic from :ip_prefix
@@ -1564,7 +1677,7 @@ def netbox_lookup(
         _devices = lookup_devices(ip_key, site_id, _lookup_service_port, @netbox_url_base, @netbox_uri_suffix, _nb)
 
         if @autopopulate && (_devices.nil? || _devices.empty?)
-          # no results found, autopopulate enabled, private-space IP address...
+          # no results found, autopopulate enabled, eligible IP address...
           # let's create an entry for this device
           _autopopulate_device,
           _autopopulate_role,
@@ -1603,7 +1716,7 @@ def netbox_lookup(
         # update with new information on an existing device (i.e., from a previous call to netbox_lookup)
         _patched_device_data = Hash.new
 
-        # get existing tags to update them to remove "unkown-..." values if needed
+        # get existing tags to update them to remove "unknown-..." values if needed
         _tags = previous_result.fetch(:tags, nil)&.flatten&.map{ |hash| { slug: hash[:slug] } }&.uniq
 
         # API endpoints are different for VM vs real device
@@ -1692,7 +1805,8 @@ def netbox_lookup(
               then
                 _device_written = true
                 _autopopulate_device = _vm_create_response
-                # we've created the device as a VM, create_device_interface will be called below to create its interface
+                # we've created the device as a VM; create its interface+IP now (before lookup_devices)
+                # so that lookup_devices can find the new VM by IP and return a rich result
 
                 # now delete the old device entry
                 _old_device_delete_response = _nb.delete("dcim/devices/#{_previous_device_id}/")
@@ -1706,6 +1820,14 @@ def netbox_lookup(
                     reason: _old_device_delete_response.reason_phrase,
                     body: _old_device_delete_response.body })
                 end
+
+                # create interface+IP for the new VM now so lookup_devices can find it below
+                _autopopulate_device = create_device_interface(ip_key,
+                                                               _autopopulate_device,
+                                                               _autopopulate_manuf,
+                                                               _autopopulate_mac,
+                                                               _nb)
+                _interface_created = true
               elsif @debug
                 puts('netbox_lookup (%{name}): _vm_create_response: %{result}' % { name: _vm_data[:name], result: JSON.generate(_vm_create_response) })
               end
@@ -1747,6 +1869,42 @@ def netbox_lookup(
       # retrieve the list of IP address prefixes containing the search key
       _prefixes = lookup_prefixes(ip_key, site_id, _nb)
 
+      # if we autocreated a device/VM and a containing prefix has a purdue_zone custom
+      #   field set, propagate that value to the new object (most specific prefix wins)
+      if !_autopopulate_device.nil? &&
+         _autopopulate_device.fetch(:id, nil)&.nonzero? &&
+         _prefixes.is_a?(Array) &&
+         (_zone_prefix = _prefixes.select { |p| p.is_a?(Hash) && !p[:purdue_zone].to_s.empty? }
+                                  .max_by { |p| (IPAddr.new(p[:cidr].to_s).prefix rescue -1) }) &&
+         (_purdue_zone = _zone_prefix[:purdue_zone])
+      then
+        begin
+          _zone_patch_data = { :custom_fields => { :purdue_zone => _purdue_zone } }
+          if (_zone_patch_response = _nb.patch("#{_autopopulate_manuf&.fetch(:vm, false) ? 'virtualization/virtual-machines' : 'dcim/devices'}/#{_autopopulate_device[:id]}/", _zone_patch_data.to_json, @nb_headers).body) &&
+             _zone_patch_response.is_a?(Hash) &&
+             _zone_patch_response.has_key?(:id)
+          then
+            # reflect the value in this event's enrichment result as well
+            _lookup_result[:purdue_zone] = [ _purdue_zone ] if (@lookup_type == :ip_device) && _lookup_result.is_a?(Hash)
+          elsif @debug
+            puts('netbox_lookup (%{name} @ %{site}): _zone_patch_response: %{result}' % { name: ip_key, site: site_id, result: JSON.generate(_zone_patch_response) })
+          end
+        rescue Faraday::Error => e
+          puts "netbox_lookup purdue_zone patch (#{ip_key}, #{site_id}): #{e.message}" if @debug
+        end
+      end
+
+      # keep only the single most-specific matching prefix (longest cidr prefix length);
+      #   without this, overlapping parent/child prefixes (e.g. 10.0.0.0/8 and 10.0.0.0/24)
+      #   both survive into segment.name/segment.id, producing multi-valued segment fields
+      if (@lookup_type == :ip_prefix) && _prefixes.is_a?(Array) && !_prefixes.empty?
+        _prefixes = [_prefixes.max_by { |p| (IPAddr.new(p[:cidr].to_s).prefix rescue -1) }]
+      end
+
+      # :cidr was only needed for most-specific-prefix selection above; drop it so
+      #   the ip_prefix enrichment output shape is unchanged
+      _prefixes.each { |p| p.delete(:cidr) if p.is_a?(Hash) } if _prefixes.is_a?(Array)
+
       if (_prefixes.nil? || _prefixes.empty?) && @autopopulate_create_prefix
         # we didn't find a prefix containing this private-space IPv4 address and auto-create is true
         _prefix_info = autopopulate_prefixes(_key_ip, site_id, @default_status, _nb)
@@ -1758,15 +1916,15 @@ def netbox_lookup(
       _lookup_result = _prefixes unless (@lookup_type != :ip_prefix)
     end # @lookup_type == :ip_prefix
 
-    if !_autopopulate_device.nil? && _autopopulate_device.fetch(:id, nil)&.nonzero?
-      # device has been created, we need to create an interface for it
+    if !_autopopulate_device.nil? && _autopopulate_device.fetch(:id, nil)&.nonzero? && !_interface_created
+      # device has been created (fresh autopopulate, not a device->VM conversion), we need to create an interface for it
       _autopopulate_device = create_device_interface(ip_key,
                                                      _autopopulate_device,
                                                      _autopopulate_manuf,
                                                      _autopopulate_mac,
                                                      _nb)
     end # check if device was created and has ID
-  end # IP address is private IP
+  end # eligible IP address
 
   # yield return value for _lookup_hash getset
   return (!_lookup_result.nil? && !_lookup_result.empty?) ? _lookup_result : nil, _key_ip, _nb&.initialized? || false

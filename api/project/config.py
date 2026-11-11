@@ -27,6 +27,9 @@ class Config(object):
     LOGSTASH_HOST = os.getenv('LOGSTASH_HOST', 'logstash')
     LOGSTASH_LJ_PORT = int(os.getenv('LOGSTASH_LJ_PORT', '5044'))
     MALCOLM_API_DEBUG = os.getenv('MALCOLM_API_DEBUG', 'false')
+    MALCOLM_API_HTTP_CONNECT_TIMEOUT_SEC = float(os.getenv('MALCOLM_API_HTTP_CONNECT_TIMEOUT_SEC', '5'))
+    MALCOLM_API_HTTP_READ_TIMEOUT_SEC = float(os.getenv('MALCOLM_API_HTTP_READ_TIMEOUT_SEC', '30'))
+    MALCOLM_API_READY_TIMEOUT_SEC = float(os.getenv('MALCOLM_API_READY_TIMEOUT_SEC', '5'))
     MALCOLM_API_PREFIX = os.getenv('MALCOLM_API_PREFIX', 'mapi')
     MALCOLM_NETWORK_INDEX_PATTERN = os.getenv('MALCOLM_NETWORK_INDEX_PATTERN', 'arkime_sessions3-*')
     MALCOLM_NETWORK_INDEX_TIME_FIELD = os.getenv('MALCOLM_NETWORK_INDEX_TIME_FIELD', 'firstPacket')
@@ -34,6 +37,7 @@ class Config(object):
     MALCOLM_OTHER_INDEX_TIME_FIELD = os.getenv('MALCOLM_OTHER_INDEX_TIME_FIELD', '@timestamp')
     MALCOLM_TEMPLATE = os.getenv('MALCOLM_TEMPLATE', 'malcolm_template')
     MALCOLM_VERSION = os.getenv('MALCOLM_VERSION', 'unknown')
+    NETBOX_SSL_CERTIFICATE_VERIFICATION = os.getenv('NETBOX_SSL_CERTIFICATE_VERIFICATION', 'false')
     NETBOX_TOKEN = os.getenv('NETBOX_TOKEN') or os.getenv('SUPERUSER_API_TOKEN', '')
     NETBOX_URL = os.getenv('NETBOX_URL') or 'http://netbox:8080/netbox'
     OPENSEARCH_CREDS_CONFIG_FILE = os.getenv(

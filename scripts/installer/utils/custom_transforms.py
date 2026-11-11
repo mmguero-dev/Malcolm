@@ -16,7 +16,7 @@ from scripts.malcolm_utils import (
     DATABASE_MODE_LABELS,
     DATABASE_MODE_ENUMS,
 )
-from scripts.malcolm_common import FormatNetBoxSubnetFilter, SYSTEM_INFO
+from scripts.malcolm_common import FormatNetBoxSubnetFilter
 from scripts.malcolm_constants import OrchestrationFramework
 from scripts.installer.configs.constants.constants import SERVICE_PORT_LOGSTASH, LOCAL_LOGSTASH_HOST
 from scripts.installer.configs.constants.enums import SearchEngineMode
@@ -88,7 +88,7 @@ def custom_transform_suricata_disable_ics_all(malcolmIcs: bool) -> str:
 
 
 def custom_reverse_transform_suricata_disable_ics_all(value: str) -> bool:
-    return _env_str_to_bool(value)
+    return not _env_str_to_bool(value)
 
 
 custom_transform_suricata_rotated_pcap = _rotated_pcap_forward
@@ -186,11 +186,9 @@ def custom_reverse_transform_logstash_java_opts(value: str) -> str:
     if not match:
         return ""
     size, unit = match.groups()
-    mem = f"{size}{unit or 'g'}"
-    # Skip returning the default value (10g) to avoid unnecessary overrides
-    if mem.lower() == SYSTEM_INFO.get("suggested_ls_memory", "3g"):
-        return ""
-    return mem
+    # Always return what the file says, even when it matches this host's suggested size: skipping it
+    #   would let another default (e.g., the Kubernetes one) replace a value the user saved.
+    return f"{size}{unit or 'g'}"
 
 
 def custom_transform_opensearch_primary(opensearchPrimaryMode) -> str:
@@ -220,11 +218,9 @@ def custom_reverse_transform_opensearch_java_opts(value: str) -> str:
     if not match:
         return ""
     size, unit = match.groups()
-    mem = f"{size}{unit or 'g'}"
-    # Skip returning the default valueto avoid unnecessary overrides
-    if mem.lower() == SYSTEM_INFO.get("suggested_os_memory", "16g"):
-        return ""
-    return mem
+    # Always return what the file says, even when it matches this host's suggested size: skipping it
+    #   would let another default (e.g., the Kubernetes one) replace a value the user saved.
+    return f"{size}{unit or 'g'}"
 
 
 def custom_transform_pcap_enable_tcpdump(pcapTcpDump: bool, pcapNetSniff: bool, captureLive: bool) -> str:

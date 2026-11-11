@@ -19,7 +19,7 @@ Depending on the volume of files extracted from network traffic, file scanning c
 
 Extracted files are scanned by [Strelka](https://target.github.io/strelka/#/), an [open-source](https://github.com/target/strelka) "real-time, container-based file scanning system used for threat hunting, threat detection, and incident response."
 
-Individual Strelka [scanners](https://target.github.io/strelka/#/?id=scanner-list) can be enabled/disabled by including/excluding the scanner's name from the `STRELKA_SCANNERS` [variable in `pipeline.env`](malcolm-config.md#MalcolmConfigEnvVars).
+Individual Strelka [scanners](https://target.github.io/strelka/#/?id=scanner-list) can be enabled/disabled by including/excluding the scanner's name from the `STRELKA_SCANNERS` [variable in `pipeline.env`](malcolm-config.md#MalcolmConfigEnvVars). This variable is a comma-separated list which may contain scanner names and/or the string `default` for the built-in list of scanners (see `MALCOLM_STRELKA_SCANNERS_DEFAULT` in [`malcolm_constants.py`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/scripts/malcolm_constants.py)). Values may be combined (e.g., `default,ScanStrings`).
 
 Because scanners may have configurable options, an individual scanner can be configured by editing its `.yaml` file in [`strelka/config/backend/scanners/`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/config/backend/scanners/). It's recommended to validate a scanner's configuration file after making changes to it. This could be done using an [online YAML validator](https://www.yamllint.com/) or locally depending on available tools:
 
@@ -30,9 +30,9 @@ Other Strelka-related configuration files can be found under [`strelka/config/`]
 
 For the [**YARA**](https://github.com/VirusTotal/yara) scanner, Malcolm's [default YARA rule set]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/backend/yara_rules_setup.sh) and/or [user-defined custom YARA rules](custom-rules.md#YARA) are used for scanning.
 
-The `RULES_UPDATE_ENABLED` [environment variable](malcolm-config.md#MalcolmConfigEnvVars) in [`pipeline.env`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/config/pipeline.env) controls whether or not to regularly pull signature/rule definitions from the internet for file scanning engines, including [**ClamAV**](https://www.clamav.net/) signatures and Malcolm's [default YARA rule set]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/backend/yara_rules_setup.sh).
+The `RULES_UPDATE_ENABLED` [environment variable](malcolm-config.md#MalcolmConfigEnvVars) in [`pipeline.env`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/config/pipeline.env.example) controls whether or not to regularly pull signature/rule definitions from the internet for file scanning engines, including [**ClamAV**](https://www.clamav.net/) signatures and Malcolm's [default YARA rule set]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/strelka/backend/yara_rules_setup.sh).
 
-The `FILESCAN_PRESERVATION` [environment variable](malcolm-config.md#MalcolmConfigEnvVars) in [`filescan.env`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/config/filescan.env) determines the behavior for preservation of scanned files:
+The `FILESCAN_PRESERVATION` [environment variable](malcolm-config.md#MalcolmConfigEnvVars) in [`filescan.env`]({{ site.github.repository_url }}/blob/{{ site.github.build_revision }}/config/filescan.env.example) determines the behavior for preservation of scanned files:
 
 * `quarantined`: preserve only files in `./zeek-logs/extract_files` that are flagged by the YARA, ClamAV, or [**Capa**](https://github.com/fireeye/capa) scanners
 * `all`: preserve all extracted files  files in `./zeek-logs/extract_files`

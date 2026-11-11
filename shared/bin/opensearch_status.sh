@@ -84,51 +84,52 @@ until [[ "$(curl "${CURL_CONFIG_PARAMS[@]}" -fsSL "$OPENSEARCH_URL/_cat/health?h
   sleep 1
 done
 
-echo "$OPENSEARCH_PRIMARY is up and healthy at "$OPENSEARCH_URL"" >&2
+echo "$OPENSEARCH_PRIMARY is up and healthy at "$OPENSEARCH_URL""
 
 if [[ -n "$WAIT_FOR_TEMPLATE_LEGACY" ]]; then
   sleep 1
-  echo "Waiting until $OPENSEARCH_PRIMARY has legacy template \"$WAIT_FOR_TEMPLATE_LEGACY\"..." >&2
+  echo "Waiting until $OPENSEARCH_PRIMARY has legacy template \"$WAIT_FOR_TEMPLATE_LEGACY\"..."
   until ( curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_template/$WAIT_FOR_TEMPLATE_LEGACY" 2>/dev/null | grep -q mappings ); do
     sleep 5
   done
-  echo "$OPENSEARCH_PRIMARY legacy template \"$WAIT_FOR_TEMPLATE_LEGACY\" exists" >&2
+  echo "$OPENSEARCH_PRIMARY legacy template \"$WAIT_FOR_TEMPLATE_LEGACY\" exists"
   sleep 5
 fi
 
 if [[ -n "$WAIT_FOR_TEMPLATE" ]]; then
   sleep 1
-  echo "Waiting until $OPENSEARCH_PRIMARY has index template \"$WAIT_FOR_TEMPLATE\"..." >&2
+  echo "Waiting until $OPENSEARCH_PRIMARY has index template \"$WAIT_FOR_TEMPLATE\"..."
   until ( curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_index_template/$WAIT_FOR_TEMPLATE" 2>/dev/null | grep -q index_templates ); do
     sleep 5
   done
-  echo "$OPENSEARCH_PRIMARY index template \"$WAIT_FOR_TEMPLATE\" exists" >&2
+  echo "$OPENSEARCH_PRIMARY index template \"$WAIT_FOR_TEMPLATE\" exists"
   sleep 5
 fi
 
 if (( $WAIT_FOR_LOG_DATA == 1 )); then
   sleep 1
 
-  echo "Waiting until $OPENSEARCH_PRIMARY has logs..." >&2
+  echo "Waiting until $OPENSEARCH_PRIMARY has logs..."
 
   # wait until at least one network traffic log index exists (get index count where docs.count > 0)
   FOUND_INDEX=
   while true; do
-    # use jq if it's available to parse the machine-readable index list as JSON, fall back to awk if it's not
+    # Require a positive document count; missing/null counts are not evidence
+    # of ingested logs. Select the count column explicitly in the text fallback.
     if command -v jq >/dev/null 2>&1; then
-      if (( $(curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_cat/indices/$MALCOLM_NETWORK_INDEX_PATTERN?format=json" 2>/dev/null | jq '[.[] | select(.["docs.count"] != "0")] | length' 2>/dev/null) > 0 )); then
+      if (( $(curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_cat/indices/$MALCOLM_NETWORK_INDEX_PATTERN?format=json" 2>/dev/null | jq '[.[] | select((.["docs.count"] | tonumber? // 0) > 0)] | length' 2>/dev/null) > 0 )); then
         FOUND_INDEX="$MALCOLM_NETWORK_INDEX_PATTERN"
-      elif [[ "$MALCOLM_NETWORK_INDEX_PATTERN" != "$ARKIME_NETWORK_INDEX_PATTERN" ]] && (( $(curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_cat/indices/$ARKIME_NETWORK_INDEX_PATTERN?format=json" 2>/dev/null | jq '[.[] | select(.["docs.count"] != "0")] | length' 2>/dev/null) > 0 )); then
+      elif [[ "$MALCOLM_NETWORK_INDEX_PATTERN" != "$ARKIME_NETWORK_INDEX_PATTERN" ]] && (( $(curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_cat/indices/$ARKIME_NETWORK_INDEX_PATTERN?format=json" 2>/dev/null | jq '[.[] | select((.["docs.count"] | tonumber? // 0) > 0)] | length' 2>/dev/null) > 0 )); then
         FOUND_INDEX="$ARKIME_NETWORK_INDEX_PATTERN"
       fi
     else
-      if (( $(curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_cat/indices/$MALCOLM_NETWORK_INDEX_PATTERN" 2>/dev/null | awk '$7 != "0"' | wc -l) > 0 )); then
+      if (( $(curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_cat/indices/$MALCOLM_NETWORK_INDEX_PATTERN?h=docs.count" 2>/dev/null | awk '$1 ~ /^[0-9]+$/ && $1 + 0 > 0' | wc -l) > 0 )); then
         FOUND_INDEX="$MALCOLM_NETWORK_INDEX_PATTERN"
-      elif [[ "$MALCOLM_NETWORK_INDEX_PATTERN" != "$ARKIME_NETWORK_INDEX_PATTERN" ]] && (( $(curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_cat/indices/$ARKIME_NETWORK_INDEX_PATTERN" 2>/dev/null | awk '$7 != "0"' | wc -l) > 0 )); then
+      elif [[ "$MALCOLM_NETWORK_INDEX_PATTERN" != "$ARKIME_NETWORK_INDEX_PATTERN" ]] && (( $(curl "${CURL_CONFIG_PARAMS[@]}" -fs -H'Content-Type: application/json' -XGET "$OPENSEARCH_URL/_cat/indices/$ARKIME_NETWORK_INDEX_PATTERN?h=docs.count" 2>/dev/null | awk '$1 ~ /^[0-9]+$/ && $1 + 0 > 0' | wc -l) > 0 )); then
         FOUND_INDEX="$ARKIME_NETWORK_INDEX_PATTERN"
       fi
     fi
     [[ -n "$FOUND_INDEX" ]] && break || sleep 5
   done
-  echo "Logs exist." >&2
+  echo "Logs exist."
 fi

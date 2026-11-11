@@ -1,4 +1,4 @@
-FROM ghcr.io/idaholab/strelka/backend:malcolm
+FROM ghcr.io/idaholab/strelka/backend:malcolm@sha256:9009624c876805d4fed5644cb3cb8a3e46c41f409ca07586df287fcf70d635c3
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -27,10 +27,13 @@ ENV RULES_UPDATE_ENABLED=$RULES_UPDATE_ENABLED
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TERM=xterm
 
-ENV YQ_VERSION="4.52.5"
+ENV YQ_VERSION="4.54.3"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
 
-ENV SUPERCRONIC_VERSION="0.2.43"
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
+
+ENV SUPERCRONIC_VERSION="0.2.51"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 
@@ -46,14 +49,16 @@ ENV CLAMAV_RULES_DIR="/var/lib/clamav"
 ARG STRELKA_BACKEND_PROCS=1
 ENV STRELKA_BACKEND_PROCS=$STRELKA_BACKEND_PROCS
 
-ARG STRELKA_SCANNERS=ScanBatch,ScanBmpEof,ScanBzip2,ScanClamav,ScanDmg,ScanDocx,ScanDonut,ScanEmail,ScanEncryptedDoc,ScanEncryptedZip,ScanEntropy,ScanExiftool,ScanGifEof,ScanGzip,ScanHtml,ScanIqy,ScanIso,ScanJarManifest,ScanJavascript,ScanJnlp,ScanJpegEof,ScanJson,ScanLibarchive,ScanLnk,ScanLsb,ScanLzma,ScanMacho,ScanManifest,ScanMsi,ScanOle,ScanOnenote,ScanPdf,ScanPe,ScanPgp,ScanPhp,ScanPkcs7,ScanPlist,ScanPngEof,ScanPyinstaller,ScanQr,ScanRar,ScanRpm,ScanRtf,ScanSevenZip,ScanSwf,ScanTar,ScanTnef,ScanTranscode,ScanUdf,ScanUpx,ScanUrl,ScanVb,ScanVba,ScanVhd,ScanVsto,ScanXar,ScanXl4ma,ScanXml,ScanYara,ScanZip,ScanZlib,ScanZstd
+ARG STRELKA_SCANNERS=default
 ENV STRELKA_SCANNERS=$STRELKA_SCANNERS
 
 ADD --chmod=755 strelka/*.sh /usr/local/bin/
 ADD --chmod=755 strelka/backend/*.sh /usr/local/bin/
+ADD --chmod=644 scripts/malcolm_constants.py /usr/local/bin/
 ADD strelka/config/backend /etc/strelka/
 
-RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') && \
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
     apt-get -q update && \
     apt-get -y --no-install-recommends install \
       bc \
@@ -62,17 +67,15 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       clamav-freshclam \
       curl \
       git \
-      jq \
       libclamunrar12 \
       procps \
       psmisc \
       rsync \
       tini && \
     usermod -a -G tty ${PUSER} && \
-    curl -fsSL -o /usr/local/bin/yq "${YQ_URL}${BINARCH}" && \
-      chmod 755 /usr/local/bin/yq && \
-    curl -fsSL -o /usr/local/bin/supercronic "${SUPERCRONIC_URL}${BINARCH}" && \
-      chmod +x /usr/local/bin/supercronic && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/yq "${YQ_URL}{arch}" "yq_${YQ_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/supercronic "${SUPERCRONIC_URL}{arch}" "supercronic_${SUPERCRONIC_VERSION}_linux_{arch}" && \
     mkdir -p "${YARA_RULES_DIR}" "${YARA_RULES_SRC_DIR}" /var/log/clamav "${CLAMAV_RULES_DIR}" && \
     cd "${YARA_RULES_SRC_DIR}" && \
       /usr/local/bin/yara_rules_setup.sh -u && \
@@ -94,13 +97,17 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/log/journal
 
+# make certifi use the system store (populated from /var/local/ca-trust on startup)
+RUN CERTIFI_PEM="$(python3 -c 'import certifi; print(certifi.where())')" && \
+    ln -sf /etc/ssl/certs/ca-certificates.crt "$CERTIFI_PEM"
+
 USER ${PUSER}
 
 RUN /usr/bin/freshclam freshclam --config-file=/etc/clamav/freshclam.conf
 
 USER root
 
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=644 strelka/backend/supervisord.conf /etc/supervisord.conf
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/

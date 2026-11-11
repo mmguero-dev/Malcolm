@@ -18,7 +18,7 @@ Checking out the [Malcolm source code]({{ site.github.repository_url }}/tree/{{ 
 * `filescan-logs` - an initially empty directory into which file scanning result logs will be generated
 * `filescan` - code and configuration for the `filescan` container that can scan files extracted by Zeek
 * `freq-server` - code and configuration for the `freq` container used for calculating entropy of strings
-* `hedgehog-raspi` - code and configuration for building a [Hedgehog Linux](live-analysis.md#Hedgehog) [Raspberry Pi image](hedgehog-raspi-build.md#HedgehogRaspiBuild)
+* `hedgehog-raspi` - code and configuration for building a [Hedgehog Linux](live-analysis.md#Hedgehog) [Raspberry Pi image](hedgehog-raspi.md)
 * `htadmin` - configuration for the `htadmin` user account management container
 * `keycloak` - code for the [`keycloak`](authsetup.md#AuthKeycloak) container
 * `logstash` - code and configuration for the `logstash` container that parses Zeek logs and forwards them to the `opensearch` container
@@ -68,11 +68,11 @@ Then, go take a walk or something since it will be a while. When you are done, y
 * `ghcr.io/idaholab/malcolm/filebeat-oss` (based on `docker.elastic.co/beats/filebeat-oss`)
 * `ghcr.io/idaholab/malcolm/filescan` (based on `python:3`)
 * `ghcr.io/idaholab/malcolm/freq` (based on `debian:13-slim`)
-* `ghcr.io/idaholab/malcolm/htadmin` (based on `debian:11-slim`)
+* `ghcr.io/idaholab/malcolm/htadmin` (based on `debian:13-slim`)
 * `ghcr.io/idaholab/malcolm/keycloak` (based on `quay.io/keycloak/keycloak`)
 * `ghcr.io/idaholab/malcolm/logstash-oss` (based on `docker.elastic.co/logstash/logstash-oss`)
 * `ghcr.io/idaholab/malcolm/netbox` (based on `netboxcommunity/netbox:latest`)
-* `ghcr.io/idaholab/malcolm/nginx-proxy` (based on `alpine:3.23`)
+* `ghcr.io/idaholab/malcolm/nginx-proxy` (based on `alpine:3.24`)
 * `ghcr.io/idaholab/malcolm/opensearch` (based on `opensearchproject/opensearch`)
 * `ghcr.io/idaholab/malcolm/pcap-capture` (based on `debian:13-slim`)
 * `ghcr.io/idaholab/malcolm/pcap-monitor` (based on `debian:13-slim`)
@@ -90,17 +90,28 @@ Alternately, if you have forked Malcolm on GitHub, [workflow files]({{ site.gith
 
 ## Creating pre-packaged installation files
 
-`scripts/malcolm_appliance_packager.sh` can be run to package up the configuration files (and, if necessary, the images), which can be copied to a network share or USB drive for distribution to non-networked machines. For example:
+`scripts/malcolm_appliance_packager.sh` can be run to package up the configuration files (and, if necessary, the images), which can be copied to a network share or USB drive for distribution to non-networked machines.
+
+After packaging the configuration files, the script asks whether to package container images. Answer `m` to save the images used by the `malcolm` [run profile](live-analysis.md#Profiles), `h` to save the images used by the `hedgehog` run profile, or `N` (the default) to skip saving images. The images are saved from the local container image cache, so the images for the chosen profile must already be present (built or pulled) on the system running the script.
+
+The images archive is named for the chosen profile and for the CPU architecture of the system running the script:
+
+* `malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz` - Malcolm profile, `amd64` (`x86_64`)
+* `malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.arm64.tar.xz` - Malcolm profile, `arm64` (`aarch64`)
+* `hedgehog_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz` - Hedgehog profile, `amd64` (`x86_64`)
+* `hedgehog_YYYYMMDD_HHNNSS_xxxxxxx_images.arm64.tar.xz` - Hedgehog profile, `arm64` (`aarch64`)
+
+The configuration tarball (`malcolm_YYYYMMDD_HHNNSS_xxxxxxx.tar.gz`) is the same for both profiles and all architectures. For example:
 
 ```
 $ ./scripts/malcolm_appliance_packager.sh 
 ...
 Packaged Malcolm to "/home/user/Downloads/malcolm_20251029_140727_d22a504f.tar.gz"
 
-Do you need to package container images also [y/N]? y
+Do you need to package container images also [m/h/N]? m
 This might take a few minutes...
 
-Packaged Malcolm images to "/home/user/Downloads/malcolm_20251029_140727_d22a504f_images.tar.xz"
+Packaged Malcolm container images to "/home/user/Downloads/malcolm_20251029_140727_d22a504f_images.tar.xz"
 
 To install and configure Malcolm, run install.py
 
@@ -138,7 +149,7 @@ If you have obtained pre-packaged installation files to install Malcolm on a non
 
 * `malcolm_YYYYMMDD_HHNNSS_xxxxxxx.README.txt` - This readme file contains minimal setup instructions for extracting the contents of the other tarballs and running the Malcolm appliance.
 * `malcolm_YYYYMMDD_HHNNSS_xxxxxxx.tar.gz` - This tarball contains the configuration files and directory configuration used by an instance of Malcolm. It can be extracted via `tar -xf malcolm_YYYYMMDD_HHNNSS_xxxxxxx.tar.gz` upon which a directory will be created (named similarly to the tarball) containing the directories and configuration files. Alternatively, `install.py` can accept this filename as an argument and handle its extraction and initial configuration for you.
-* `malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz` - This tarball contains the images used by Malcolm. It can be imported manually via `docker load -i malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz`
+* `malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz` - This tarball contains the images used by Malcolm. It can be imported manually via `docker load -i malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz`. Depending on the run profile and architecture it was packaged for, it may instead be named `hedgehog_YYYYMMDD_HHNNSS_xxxxxxx_images.tar.xz` (Hedgehog profile), and either name may include an `.arm64` suffix before `.tar.xz` for `arm64` systems (e.g., `malcolm_YYYYMMDD_HHNNSS_xxxxxxx_images.arm64.tar.xz`). Make sure the archive matches the run profile and CPU architecture of the system where it will be loaded.
 * `install.py` - This install script can load the images and extract Malcolm configuration files from the aforementioned tarballs and do some initial configuration for you (see [Running `install.py`](ubuntu-install-example.md#UIOpts)).
 
 Run `install.py malcolm_XXXXXXXX_XXXXXX_XXXXXXX.tar.gz` and follow the prompts. If you do not already have Docker and Docker Compose installed, the `install.py` script will help you install them.

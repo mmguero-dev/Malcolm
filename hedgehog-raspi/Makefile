@@ -1,11 +1,23 @@
 all: shasums
 
 # List all the supported and built Pi platforms here. They get expanded
-# to names like 'raspi_4_trixie.yaml' and 'raspi_5_trixie.img.xz'.
-BUILD_FAMILIES := 4 5
-BUILD_RELEASES := trixie
+# to names like 'raspi_4_trixie.yaml' and 'raspi_5_forky.img.xz'.
 
-platforms := $(foreach plat, $(BUILD_FAMILIES),$(foreach rel, $(BUILD_RELEASES),  raspi_$(plat)_$(rel)))
+# List supported releases by Raspberry Pi model.
+BUILD_RELEASES_4 := trixie forky
+BUILD_RELEASES_5 := forky
+
+RPI_KERNEL_REPO ?= https://github.com/raspberrypi/linux.git
+RPI_KERNEL_REF ?= rpi-6.18.y
+RPI_KERNEL_JOBS ?= $(shell nproc)
+RPI_KERNEL_DEB := build/rpi5-kernel.deb
+RPI_KERNEL_BUILD_DEPS := \
+	bc bison build-essential debhelper device-tree-compiler dpkg-dev dwarves \
+	fakeroot flex git libdw-dev libelf-dev libssl-dev python3 rsync
+
+platforms := \
+  $(foreach rel,$(BUILD_RELEASES_4),raspi_4_$(rel)) \
+  $(foreach rel,$(BUILD_RELEASES_5),raspi_5_$(rel))
 
 shasums: $(addsuffix .img.sha256,$(platforms)) $(addsuffix .img.xz.sha256,$(platforms))
 xzimages: $(addsuffix .img.xz,$(platforms))
@@ -24,15 +36,26 @@ endif
 target_platforms:
 	@echo $(platforms)
 
-# Generate targets based on all family * release combinations:
+# Generate targets based on supported model/release combinations.
 define dynamic_yaml_target =
-  raspi_$(1)_$(2).yaml: raspi_master.yaml generate-recipe.py
+  raspi_$(1)_$(2).yaml: raspi_master.yaml generate-recipe.py $(3)
   raspi_$(1)_$(2).yaml:
 	./generate-recipe.py $(1) $(2)
 endef
-$(foreach release,$(BUILD_RELEASES), \
-  $(foreach family,$(BUILD_FAMILIES), \
-    $(eval $(call dynamic_yaml_target,$(family),$(release)))))
+
+$(foreach release,$(BUILD_RELEASES_4), \
+  $(eval $(call dynamic_yaml_target,4,$(release),)))
+
+$(foreach release,$(BUILD_RELEASES_5), \
+  $(eval $(call dynamic_yaml_target,5,$(release),$(RPI_KERNEL_DEB))))
+
+$(RPI_KERNEL_DEB): build-rpi-kernel.sh
+	apt-get update
+	apt-get install -y --no-install-recommends $(RPI_KERNEL_BUILD_DEPS)
+	RPI_KERNEL_REPO='$(RPI_KERNEL_REPO)' \
+	RPI_KERNEL_REF='$(RPI_KERNEL_REF)' \
+	RPI_KERNEL_JOBS='$(RPI_KERNEL_JOBS)' \
+	./build-rpi-kernel.sh '$@'
 
 %.img.sha256: %.img
 	echo $@
@@ -57,7 +80,7 @@ _ck_root:
 	[ `whoami` = 'root' ] # Only root can summon vmdb2 ☹
 
 _clean_yaml:
-	rm -f $(addsuffix .yaml,$(platforms)) raspi_base_trixie.yaml
+	rm -f $(addsuffix .yaml,$(platforms))
 _clean_images:
 	rm -f $(addsuffix .img,$(platforms))
 _clean_xzimages:
@@ -70,6 +93,8 @@ _clean_logs:
 	rm -f $(addsuffix .log,$(platforms))
 _clean_tarballs:
 	rm -f $(addsuffix .tar.gz,$(platforms))
-clean: _clean_xzimages _clean_images _clean_shasums _clean_yaml _clean_tarballs _clean_logs _clean_bmaps
+_clean_rpi_kernel:
+	rm -rf build/rpi-kernel build/rpi5-kernel.deb
+clean: _clean_xzimages _clean_images _clean_shasums _clean_yaml _clean_tarballs _clean_logs _clean_bmaps _clean_rpi_kernel
 
-.PHONY: _ck_root _build_img clean _clean_images _clean_yaml _clean_tarballs _clean_logs
+.PHONY: _ck_root _build_img clean _clean_images _clean_yaml _clean_tarballs _clean_logs _clean_rpi_kernel

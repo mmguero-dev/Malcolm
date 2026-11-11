@@ -46,13 +46,23 @@ ENV DASHBOARDS_TIMEPICKER_FROM=$DASHBOARDS_TIMEPICKER_FROM
 ENV DASHBOARDS_TIMEPICKER_TO=$DASHBOARDS_TIMEPICKER_TO
 ENV PATH="/data:${PATH}"
 
-ENV SUPERCRONIC_VERSION="0.2.43"
+ENV SUPERCRONIC_VERSION="0.2.51"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 
-ENV ECS_RELEASES_URL="https://api.github.com/repos/elastic/ecs/releases/latest"
+ENV YQ_VERSION="4.54.3"
+ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
 
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
+
+# Keep the ECS schema revision and archive digest in sync when updating.
+ENV ECS_VERSION="9.5.0"
+ENV ECS_COMMIT="401807e0547301525acd28c4fb667203fec66d59"
+ENV ECS_SHA256="8cc199dba1510d14e5623b52dadf03b5da0f3e7bfca0ef5d7a34a7f6d766f3cd"
+ENV ECS_SOURCE_URL="https://codeload.github.com/elastic/ecs/tar.gz/${ECS_COMMIT}"
+
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD dashboards/dashboards /opt/dashboards
 ADD dashboards/anomaly_detectors /opt/anomaly_detectors
 # TODO: restore after we resolve cisagov/Malcolm#746
@@ -71,14 +81,14 @@ ADD --chmod=755 shared/bin/opensearch_status.sh /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_utils.py /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_constants.py /usr/local/bin/
 
-RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') && \
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
     apt-get -q update && \
     apt-get -y -q --allow-downgrades --allow-remove-essential --allow-change-held-packages install --no-install-recommends \
       bash \
       bc \
       curl \
       git \
-      jq \
       moreutils \
       openssl \
       procps \
@@ -88,14 +98,17 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       rsync \
       tini && \
     pip3 install --break-system-packages -r /usr/local/src/requirements.txt && \
-    curl -fsSL -o /usr/local/bin/supercronic "${SUPERCRONIC_URL}${BINARCH}" && \
-      chmod +x /usr/local/bin/supercronic && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/supercronic "${SUPERCRONIC_URL}{arch}" "supercronic_${SUPERCRONIC_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/yq "${YQ_URL}{arch}" "yq_${YQ_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" && \
     groupadd --gid ${DEFAULT_GID} ${PUSER} && \
       useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} -d /nonexistent -s /sbin/nologin ${PUSER} && \
       usermod -a -G tty ${PUSER} && \
     mkdir -p /data/init /opt/ecs && \
       cd /opt && \
-      curl -sSL "$(curl -sSL "$ECS_RELEASES_URL" | jq '.tarball_url' | tr -d '"')" | tar xzf - -C ./ecs --strip-components 1 && \
+      curl -fsSL -o /tmp/ecs-source.tar.gz "$ECS_SOURCE_URL" && \
+      echo "${ECS_SHA256}  /tmp/ecs-source.tar.gz" | sha256sum -c - && \
+      tar xzf /tmp/ecs-source.tar.gz -C ./ecs --strip-components 1 && \
       mv /opt/ecs/generated/elasticsearch /opt/ecs-templates && \
       rsync -av /opt/ecs-templates/ /opt/ecs-templates-os/ && \
       find /opt/ecs-templates-os -name "*.json" -exec sed -i 's/\("type"[[:space:]]*:[[:space:]]*\)"match_only_text"/\1"text"/' "{}" \; && \
@@ -120,7 +133,11 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
                                 /opt/templates && \
     chmod 755 /usr/local/bin/*.sh /usr/local/bin/*.py /data/init && \
     chmod 400 /opt/maps/* && \
-    (echo "*/2 * * * * /usr/local/bin/shared-object-creation.sh\n0 10 * * * /usr/local/bin/index-refresh.py -vvv --index MALCOLM_NETWORK_INDEX_PATTERN --template malcolm_template --unassigned\n30 */2 * * * /usr/local/bin/index-refresh.py --index MALCOLM_OTHER_INDEX_PATTERN --template malcolm_beats_template --unassigned\n*/20 * * * * /usr/local/bin/opensearch_index_size_prune.py" > ${SUPERCRONIC_CRONTAB})
+    (echo "*/2 * * * * /usr/local/bin/shared-object-creation.sh\n5,35 * * * * /usr/local/bin/index-init.sh\n*/20 * * * * /usr/local/bin/opensearch_index_size_prune.py" > ${SUPERCRONIC_CRONTAB})
+
+# make certifi use the system store (populated from /var/local/ca-trust on startup)
+RUN CERTIFI_PEM="$(python3 -c 'import certifi; print(certifi.where())')" && \
+    ln -sf /etc/ssl/certs/ca-certificates.crt "$CERTIFI_PEM"
 
 EXPOSE $OFFLINE_REGION_MAPS_PORT
 

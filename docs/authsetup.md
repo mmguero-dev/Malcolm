@@ -22,7 +22,7 @@ With the local basic authentication method, user accounts are managed by Malcolm
 
 LDAP authentication is managed on a remote directory service, such as a [Microsoft Active Directory Domain Services](https://docs.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview) or [OpenLDAP](https://www.openldap.org/).
 
-Kecloak authentication can either be managed by Malcolm's [embedded Keycloak](#AuthKeycloakEmbedded) instance, or it can be [managed by a remote Keycloak](#AuthKeycloakRemote) instance.
+Keycloak authentication can either be managed by Malcolm's [embedded Keycloak](#AuthKeycloakEmbedded) instance, or it can be [managed by a remote Keycloak](#AuthKeycloakRemote) instance.
 
 Malcolm's authentication method is defined in the [`auth-common.env` configuration file](malcolm-config.md#MalcolmConfigEnvVars) file with the `NGINX_AUTH_MODE` environment variable: valid values are `basic` (or `true` for legacy compatibility), to use [TLS-encrypted HTTP basic](#AuthBasicAccountManagement) authentication (default); `ldap` (or `false` for legacy compatibility) to use [Lightweight Directory Access Protocol (LDAP)](#AuthLDAP) authentication; `keycloak` to use [authentication managed by Malcolm's embedded Keycloak](#AuthKeycloakEmbedded) instance;  `keycloak_remote` to use [authentication managed by a remote Keycloak](#AuthKeycloakRemote) instance; or, `no_authentication` to disable authentication.
 
@@ -47,6 +47,10 @@ See [the **the end-to-end Malcolm installation example**](malcolm-hedgehog-e2e-i
 Malcolm user accounts can be used to access the [interfaces](quickstart.md#UserInterfaceURLs) of all of its [components](components.md#Components), including Arkime. Arkime uses its own internal database of user accounts, so when a Malcolm user account logs in to Arkime for the first time, Malcolm creates a corresponding Arkime user account automatically. This being the case, it is *not* recommended to use the Arkime **Users** settings page or change the password via the **Password** form under the Arkime **Settings** page, as those settings would not be consistently used across Malcolm.
 
 Users may change their passwords via the **Malcolm User Management** page by clicking **User Self Service**.
+
+When forwarding data from a [Hedgehog Linux](live-analysis.md#Hedgehog) sensor, the administrator should go to the **Malcolm User Management** page (**https://﹤Malcolm host or IP address﹥/auth**) and create a service account for the sensor to use. The sensor's Arkime `capture` sends session data to Malcolm's OpenSearch instance and queries Malcolm's [WISE service](arkime.md#ArkimeWISE) with these credentials. They're given to the sensor during [configuration](malcolm-hedgehog-e2e-iso-install.md#HedgehogCommConfig) by answering **Y** to **Store username/password for OpenSearch/Elasticsearch instance?** when running `auth_setup` on Hedgehog Linux.
+
+Create this service account *even if* Malcolm's normal user authentication method is [LDAP](#AuthLDAP) or [Keycloak](#AuthKeycloak). Hedgehog Linux always connects to Malcolm over HTTP(S) basic authentication using this local account, while people signing in to Malcolm's interfaces keep using LDAP or Keycloak as usual. See [**Known Limitation with Hedgehog Linux**](#AuthKeycloakHedgehog) for how this fits alongside Keycloak.
 
 ## <a name="AuthLDAP"></a>Lightweight Directory Access Protocol (LDAP) authentication
 
@@ -77,7 +81,7 @@ auth_ldap_cache_size 1000;
 
 This file is mounted into the `nginx` container when Malcolm is started to provide connection information for the LDAP server.
 
-The contents of `nginx_ldap.conf` will vary depending on how the LDAP server is configured. Some of the [avaiable parameters](https://github.com/kvspb/nginx-auth-ldap#available-config-parameters) in that file include:
+The contents of `nginx_ldap.conf` will vary depending on how the LDAP server is configured. Some of the [available parameters](https://github.com/kvspb/nginx-auth-ldap#available-config-parameters) in that file include:
 
 * **`url`** - the `ldap://` or `ldaps://` connection URL for the remote LDAP server, which has the [following syntax](https://www.ietf.org/rfc/rfc2255.txt): `ldap[s]://<hostname>:<port>/<base_dn>?<attributes>?<scope>?<filter>`
 * **`binddn`** and **`binddn_password`** - the account credentials used to query the LDAP directory
@@ -88,8 +92,6 @@ The contents of `nginx_ldap.conf` will vary depending on how the LDAP server is 
 Before starting Malcolm, edit `nginx/nginx_ldap.conf` according to the specifics of your LDAP server and directory tree structure. Using a LDAP search tool such as [`ldapsearch`](https://www.openldap.org/software/man.cgi?query=ldapsearch) in Linux or [`dsquery`](https://social.technet.microsoft.com/wiki/contents/articles/2195.active-directory-dsquery-commands.aspx) in Windows may be of help as you formulate the configuration. Your changes should be made within the curly braces of the `ldap_server ad_server { … }` section. You can troubleshoot configuration file syntax errors and LDAP connection or credentials issues by running `./scripts/logs` (or `docker compose logs nginx`) and examining the output of the `nginx` container.
 
 Note that as an alternative to the nginx LDAP integration described in this section, [Keycloak](#AuthKeycloak) can also be configured to [federate one or more LDAP servers](https://www.keycloak.org/docs/latest/server_admin/index.html#_ldap).
-
-The **Malcolm User Management** page described above is not available when using LDAP authentication.
 
 ### <a name="AuthLDAPSecurity"></a>LDAP connection security
 
@@ -150,6 +152,8 @@ The next steps happen in the context of `auth_setup`.
 6. Provide the Keycloak URL, or the URL to which Malcolm should direct authentication requests for Keycloak. This should be the URL of the existing keycloak provider.
 
 ![Specify the Keycloak URL](./images/screenshots/keycloak_auth_setup_remote_url.png)
+
+The user is also asked whether Malcolm should verify the remote Keycloak's TLS certificate, which sets `KEYCLOAK_SSL_VERIFY` in `keycloak.env`. Verification is disabled by default to accommodate self-signed certificates, but enabling it is **strongly recommended**: without it, a host able to intercept traffic between Malcolm and the Keycloak instance could impersonate Keycloak and influence authentication decisions. If Keycloak's certificate is issued by a publicly-trusted certificate authority, no further steps are needed. Otherwise, place the issuing CA certificate (in PEM format) in Malcolm's `nginx/ca-trust/` directory before starting Malcolm. When verification is disabled, Malcolm's nginx container logs a warning at startup.
 
 7. Enter the client ID and client secret that should be used by Malcolm to authenticate.
 
@@ -336,14 +340,14 @@ nginx-proxy-1  | 2025-03-11 17:29:14,283 INFO success: nginx entered RUNNING sta
 
 ### <a name="AuthKeycloakHedgehog"></a>Known Limitation with Hedgehog Linux
 
-Due to known compatibility issues between Arkime capture on [Hedgehog Linux](live-analysis.md#Hedgehog), Malcolm’s nginx reverse proxy, and Keycloak, special authentication handling is required when using a [local OpenSearch instance](opensearch-instances.md#OpenSearchInstance) exposed to external hosts as well as Malcolm's instance of Arkime's [WISE service](arkime.md#ArkimeWISE).
+Due to known compatibility issues between Arkime capture on [Hedgehog Linux](live-analysis.md#Hedgehog), Malcolm's nginx reverse proxy, and Keycloak, special authentication handling is required when using a [local OpenSearch instance](opensearch-instances.md#OpenSearchInstance) exposed to external hosts as well as Malcolm's instance of Arkime's [WISE service](arkime.md#ArkimeWISE).
 
-For the WISE service, and if Malcolm is using a local OpenSearch service (typically accessible via port 9200/tcp), [HTTP basic](#AuthBasicAccountManagement) authentication must be enabled for those endpoints — even when Keycloak is selected as Malcolm’s primary authentication method.
+For the WISE service, and if Malcolm is using a local OpenSearch service (typically accessible via port 9200/tcp), [HTTP basic](#AuthBasicAccountManagement) authentication must be enabled for those endpoints — even when Keycloak is selected as Malcolm's primary authentication method.
 
 When specifying the remote Malcolm aggregator credentials on Hedgehog Linux (e.g., *Store username/password for OpenSearch/Elasticsearch instance?* in `auth_setup`), use the Malcolm credentials described in the [**Local Account Management**](#AuthBasicAccountManagement) section — *not* Keycloak credentials. In this setup:
 
-* The basic administrator account is used to manage other basic accounts via the **Malcolm User Management** page (https://<malcolm-host>/auth).
-* These basic credentials apply *only* to Malcolm’s OpenSearch API and Arkime WISE endpoints.
+* The basic administrator account is used to manage other basic accounts via the **Malcolm User Management** page (https://﹤Malcolm host or IP address﹥/auth).
+* These basic credentials apply *only* to Malcolm's OpenSearch API and Arkime WISE endpoints.
 
 This limitation does not apply if Malcolm is connected to a remote OpenSearch or Elasticsearch [instance](opensearch-instances.md#OpenSearchInstance).
 
@@ -492,11 +496,13 @@ Authentication Setup:
   --auth-admin-username <string>
                         Administrator username (for --auth-noninteractive)
   --auth-admin-password-openssl <string>
-                        Administrator password hash from "openssl -passwd -1" (for --auth-noninteractive)
+                        Administrator password hash from "openssl -passwd -6" (for --auth-noninteractive)
   --auth-admin-password-htpasswd <string>
                         Administrator password hash from "htpasswd -n -B username | cut -d: -f2" (for --auth-noninteractive)
   --auth-arkime-password <string>
-                        Password hash secret for Arkime viewer cluster (for --auth-noninteractive)
+                        Password hash secret for Arkime viewer (for --auth-noninteractive)
+  --auth-arkime-wise-pin <string>
+                        WISE web config code for Arkime (for --auth-noninteractive)
   --auth-generate-webcerts [AUTHGENWEBCERTS]
                         (Re)generate self-signed certificates for HTTPS access (for --auth-noninteractive)
   --auth-generate-fwcerts [AUTHGENFWCERTS]
@@ -519,6 +525,8 @@ Authentication Setup:
                         Keycloak redirect URI
   --auth-keycloak-url <string>
                         Keycloak URL
+  --auth-keycloak-ssl-verify [AUTHKEYCLOAKSSLVERIFY]
+                        Verify Keycloak SSL certificate (when --auth-method is keycloak_remote)
   --auth-keycloak-client-id <string>
                         Keycloak client ID
   --auth-keycloak-client-secret <string>
@@ -536,7 +544,7 @@ Authentication Setup:
 …
 ```
 
-In order to avoid specifying passwords as command line arguments, when setting the administrator password noninteractively the user must instead provide hashes generated by [`openssl -passwd -1`](https://www.openssl.org/docs/man1.1.1/man1/openssl-passwd.html) and [`htpasswd -n -B username`](https://httpd.apache.org/docs/2.4/programs/htpasswd.html).
+In order to avoid specifying passwords as command line arguments, when setting the administrator password noninteractively the user must instead provide hashes generated by [`openssl -passwd -6`](https://www.openssl.org/docs/man1.1.1/man1/openssl-passwd.html) and [`htpasswd -n -B username`](https://httpd.apache.org/docs/2.4/programs/htpasswd.html).
 
 # <a name="LoggingOut"></a>Log Out of Malcolm
 

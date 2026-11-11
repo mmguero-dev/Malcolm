@@ -33,12 +33,15 @@ ENV PUSER_RLIMIT_UNLOCK=true
 # see PUSER_CHOWN at the bottom of the file (after the other environment variables it references)
 USER root
 
-ENV SUPERCRONIC_VERSION="0.2.43"
+ENV SUPERCRONIC_VERSION="0.2.51"
 ENV SUPERCRONIC_URL="https://github.com/aptible/supercronic/releases/download/v$SUPERCRONIC_VERSION/supercronic-linux-"
 ENV SUPERCRONIC_CRONTAB="/etc/crontab"
 
-ENV YQ_VERSION="4.52.5"
+ENV YQ_VERSION="4.54.3"
 ENV YQ_URL="https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq_linux_"
+
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
 
 ENV SURICATA_VERSION_PATTERN="1:8.0.*"
 
@@ -58,7 +61,8 @@ ENV SURICATA_UPDATE_CACHE_DIR="$SURICATA_UPDATE_DIR/cache"
 
 ADD --chmod=644 suricata/requirements.txt /usr/local/src/requirements.txt
 
-RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') && \
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
     sed -i "s/main$/main contrib non-free/g" /etc/apt/sources.list.d/debian.sources && \
     echo "deb http://deb.debian.org/debian trixie-backports main contrib non-free" | tee /etc/apt/sources.list.d/trixie-backports.list && \
     apt-get -q update && \
@@ -69,7 +73,6 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
         git \
         inotify-tools \
         iproute2 \
-        jq \
         less \
         libcap-ng0 \
         libcap2-bin \
@@ -109,10 +112,9 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
         suricata=${SURICATA_VERSION_PATTERN} \
         suricata-update && \
     python3 -m pip install --break-system-packages --no-compile --no-cache-dir -r /usr/local/src/requirements.txt && \
-    curl -fsSL -o /usr/local/bin/supercronic "${SUPERCRONIC_URL}${BINARCH}" && \
-      chmod +x /usr/local/bin/supercronic && \
-    curl -fsSL -o /usr/bin/yq "${YQ_URL}${BINARCH}" && \
-        chmod 755 /usr/bin/yq && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/supercronic "${SUPERCRONIC_URL}{arch}" "supercronic_${SUPERCRONIC_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/yq "${YQ_URL}{arch}" "yq_${YQ_VERSION}_linux_{arch}" && \
+    sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" && \
     groupadd --gid ${DEFAULT_GID} ${PGROUP} && \
       useradd -M --uid ${DEFAULT_UID} --gid ${DEFAULT_GID} --home /nonexistent ${PUSER} && \
       usermod -a -G tty ${PUSER} && \
@@ -122,8 +124,10 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
         chown -R ${PUSER}:${PGROUP} "$SURICATA_CUSTOM_RULES_DIR" "$SURICATA_DEFAULT_RULES_DIR" "$SURICATA_CONFIG_DIR" "$SURICATA_CUSTOM_CONFIG_DIR" /etc/supervisor.d && \
     cp "$(dpkg -L suricata-update | grep 'update\.yaml$' | head -n 1)" \
         "$SURICATA_UPDATE_CONFIG_FILE" && \
+    yq -i '.sources = []' "$SURICATA_UPDATE_CONFIG_FILE" && \
     suricata-update update-sources --verbose --data-dir "$SURICATA_MANAGED_DIR" --config "$SURICATA_UPDATE_CONFIG_FILE" --suricata-conf "$SURICATA_CONFIG_FILE" && \
     suricata-update update --fail --verbose --etopen --data-dir "$SURICATA_MANAGED_DIR" --config "$SURICATA_UPDATE_CONFIG_FILE" --suricata-conf "$SURICATA_CONFIG_FILE" && \
+    cp -a "$SURICATA_MANAGED_DIR"/update/cache /opt/suricata/update-cache && \
     cp /usr/bin/suricata /usr/bin/suricata-offline && \
     chown root:${PGROUP} /usr/bin/suricata && \
       setcap 'CAP_NET_RAW+eip CAP_NET_ADMIN+eip CAP_IPC_LOCK+eip' /usr/bin/suricata && \
@@ -132,7 +136,7 @@ RUN export BINARCH=$(uname -m | sed 's/x86_64/amd64/' | sed 's/aarch64/arm64/') 
       apt-get clean && \
       rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/lib/suricata/cache/*
 
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=644 scripts/malcolm_utils.py /usr/local/bin/
 ADD --chmod=644 scripts/malcolm_constants.py /usr/local/bin/
 ADD --chmod=644 shared/bin/pcap_utils.py /usr/local/bin/
@@ -158,7 +162,7 @@ ARG SURICATA_AUTO_ANALYZE_PCAP_THREADS=0
 ARG SURICATA_DISABLE_SIDS=
 ARG SURICATA_UPDATE_RULES=false
 ARG SURICATA_UPDATE_DEBUG=false
-ARG SURICATA_UPDATE_ETOPEN=true
+ARG SURICATA_UPDATE_ENABLE_SOURCES=et/open
 ARG SURICATA_LIVE_CAPTURE=false
 ARG SURICATA_ROTATED_PCAP=false
 # PCAP_IFACE=comma-separated list of capture interfaces
@@ -180,7 +184,7 @@ ENV SURICATA_CUSTOM_RULES_ONLY=$SURICATA_CUSTOM_RULES_ONLY
 ENV SURICATA_DISABLE_SIDS=$SURICATA_DISABLE_SIDS
 ENV SURICATA_UPDATE_RULES=$SURICATA_UPDATE_RULES
 ENV SURICATA_UPDATE_DEBUG=$SURICATA_UPDATE_DEBUG
-ENV SURICATA_UPDATE_ETOPEN=$SURICATA_UPDATE_ETOPEN
+ENV SURICATA_UPDATE_ENABLE_SOURCES=$SURICATA_UPDATE_ENABLE_SOURCES
 ENV SURICATA_LIVE_CAPTURE=$SURICATA_LIVE_CAPTURE
 ENV SURICATA_ROTATED_PCAP=$SURICATA_ROTATED_PCAP
 ENV PCAP_IFACE=$PCAP_IFACE

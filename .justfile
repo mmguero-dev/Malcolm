@@ -53,6 +53,17 @@ _base_config +CAPTURE_FLAG:
   ( [[ "${ZEEK_INTEL_ON_STARTUP:-false}" == "true" ]] || [[ -n "${ZEEK_INTEL_CRON_EXPRESSION}" ]] ) && ZEEK_INTEL=true || ZEEK_INTEL=false
   ( [[ -z "${OPENSEARCH_PATH}" ]] || [[ -z "${OPENSEARCH_SNAPSHOT_PATH}" ]] || [[ -z "${FILESCAN_PATH}" ]] || [[ -z "${PCAP_PATH}" ]] || [[ -z "${SURICATA_PATH}" ]] || [[ -z "${ZEEK_PATH}" ]] ) && \
     DEFAULT_PATHS=true || DEFAULT_PATHS=false
+  # services are only exposed when the open ports selection isn't "no"
+  if [[ -n "${OPEN_PORTS}" ]]; then
+    OPEN_PORTS_SELECTION="${OPEN_PORTS}"
+  elif [[ "${LOGSTASH_EXPOSE:-false}" == "true" ]] || [[ "${OPENSEARCH_EXPOSE:-false}" == "true" ]] || \
+       [[ "${FILEBEAT_TCP_EXPOSE:-false}" == "true" ]] || [[ "${SFTP_EXPOSE:-false}" == "true" ]] || \
+       [[ "${SYSLOG_PORT_TCP:-0}" != "0" ]] || [[ "${SYSLOG_PORT_UDP:-0}" != "0" ]]; then
+    OPEN_PORTS_SELECTION=customize
+  else
+    OPEN_PORTS_SELECTION=no
+  fi
+  [[ -n "${OPENSEARCH_SECONDARY}" ]] && SECONDARY_STORE=true || SECONDARY_STORE=false
 
   tee "${JQ_FILE}" >/dev/null <<EOF
     .configuration.runtimeBin = "${MALCOLM_CONTAINER_RUNTIME:-docker}"
@@ -64,10 +75,22 @@ _base_config +CAPTURE_FLAG:
     | .configuration.autoArkime = ${AUTO_ARKIME:-true}
     | .configuration.autoFreq = ${AUTO_FREQ:-true}
     | .configuration.autoOui = ${AUTO_OUI:-true}
+    | .configuration.autoZeekCommunityID = ${AUTO_COMMUNITY_ID:-true}
     | .configuration.autoSuricata = ${AUTO_SURICATA:-true}
     | .configuration.autoZeek = ${AUTO_ZEEK:-true}
+    | .configuration.auxFwAide = ${AUX_FW_AIDE:-false}
+    | .configuration.auxFwAuditlog = ${AUX_FW_AUDITLOG:-false}
+    | .configuration.auxFwCPU = ${AUX_FW_CPU:-false}
+    | .configuration.auxFwDf = ${AUX_FW_DF:-false}
+    | .configuration.auxFwDisk = ${AUX_FW_DISK:-false}
+    | .configuration.auxFwKmsg = ${AUX_FW_KMSG:-false}
+    | .configuration.auxFwMem = ${AUX_FW_MEM:-false}
+    | .configuration.auxFwNetwork = ${AUX_FW_NETWORK:-false}
+    | .configuration.auxFwSystemd = ${AUX_FW_SYSTEMD:-false}
+    | .configuration.auxFwThermal = ${AUX_FW_THERMAL:-false}
     | .configuration.captureLiveNetworkTraffic = ${CAPTURE_LIVE}
     | .configuration.captureStats = ${CAPTURE_STATS}
+    | .configuration.cleanUpOldIndices = ${DELETE_OLD_INDICES:-false}
     | .configuration.containerNetworkName = "${NETWORK_NAME}"
     | .configuration.dashboardsDarkMode = ${DARK_MODE:-true}
     | .configuration.dashboardsUrl = "${DASHBOARDS_URL:-http://dashboards:5601/dashboards}"
@@ -78,8 +101,18 @@ _base_config +CAPTURE_FLAG:
     | .configuration.exposeSFTP = ${SFTP_EXPOSE:-false}
     | .configuration.extractedFileMaxPercentThreshold = ${EXTRACTED_FILE_TOTAL_DISK_USAGE_PERCENT_THRESHOLD:-100}
     | .configuration.extractedFileMaxSizeThreshold = "${EXTRACTED_FILE_MAX_SIZE_THRESHOLD:-1T}"
-    | .configuration.extraTags = "${EXTRA_TAGS:-}"
+    | .configuration.extraTags = (
+        "${EXTRA_TAGS:-}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.filebeatTcpDefaults = ${FILEBEAT_TCP_EXPOSE:-false}
+    | .configuration.filebeatTcpLogFormat = "${FILEBEAT_TCP_LOG_FORMAT:-json}"
+    | if "${FILEBEAT_TCP_PARSE_DROP_FIELD}" == "" then . else .configuration.filebeatTcpParseDropField = "${FILEBEAT_TCP_PARSE_DROP_FIELD}" end
+    | if "${FILEBEAT_TCP_PARSE_SOURCE_FIELD}" == "" then . else .configuration.filebeatTcpParseSourceField = "${FILEBEAT_TCP_PARSE_SOURCE_FIELD}" end
+    | if "${FILEBEAT_TCP_PARSE_TARGET_FIELD}" == "" then . else .configuration.filebeatTcpParseTargetField = "${FILEBEAT_TCP_PARSE_TARGET_FIELD}" end
+    | .configuration.filebeatTcpTag = "${FILEBEAT_TCP_TAG:-_malcolm_beats}"
     | .configuration.fileCarveHttpServeEncryptKey = "${EXTRACTED_FILE_SERVER_PASSWORD:-infected}"
     | .configuration.fileCarveHttpServer = ${EXTRACTED_FILE_SERVER:-true}
     | .configuration.fileCarveHttpServerZip = ${EXTRACTED_FILE_SERVER_ZIP:-true}
@@ -87,15 +120,17 @@ _base_config +CAPTURE_FLAG:
     | .configuration.filePreserveMode = "${FILE_PRESERVATION:-quarantined}"
     | .configuration.filescanLogDir = "${FILESCAN_PATH}"
     | .configuration.fileScanRuleUpdate = ${FILE_SCAN_RULE_UPDATE:-false}
+    | if "${IMAGE_ARCH}" == "" then . else .configuration.imageArch = "${IMAGE_ARCH}" end
     | .configuration.indexDir = "${OPENSEARCH_PATH}"
     | .configuration.indexManagementHistoryInWeeks = ${INDEX_MANAGEMENT_WEEKS_OF_HISTORY:-13}
     | .configuration.indexManagementHotWarm = ${INDEX_MANAGEMENT_HOT_WARM_ENABLE:-false}
-    | .configuration.indexManagementOptimizationTimePeriod = "${INDEX_MANAGEMENT_OPTIMIZATION_TIME_PERIOD}"
+    | if "${INDEX_MANAGEMENT_OPTIMIZATION_TIME_PERIOD}" == "" then . else .configuration.indexManagementOptimizationTimePeriod = "${INDEX_MANAGEMENT_OPTIMIZATION_TIME_PERIOD}" end
     | .configuration.indexManagementOptimizeSessionSegments = ${INDEX_MANAGEMENT_SEGMENTS:-1}
     | .configuration.indexManagementPolicy = ${INDEX_MANAGEMENT_ENABLE:-false}
     | .configuration.indexManagementReplicas = ${INDEX_MANAGEMENT_REPLICAS:-0}
-    | .configuration.indexManagementSpiDataRetention = "${INDEX_MANAGEMENT_SPI_DATA_RETENTION}"
-    | .configuration.indexPruneThreshold = "${DELETE_INDEX_THRESHOLD:-10T}"
+    | if "${INDEX_MANAGEMENT_SPI_DATA_RETENTION}" == "" then . else .configuration.indexManagementSpiDataRetention = "${INDEX_MANAGEMENT_SPI_DATA_RETENTION}" end
+    | .configuration.indexPruneNameSort = ${DELETE_INDEX_BY_NAME:-false}
+    | if ${DELETE_OLD_INDICES:-false} then .configuration.indexPruneThreshold = "${DELETE_INDEX_THRESHOLD:-10T}" else . end
     | .configuration.indexSnapshotDir = "${OPENSEARCH_SNAPSHOT_PATH}"
     | .configuration.liveArkime = ${CAPTURE_ARKIME}
     | .configuration.liveArkimeCompressionLevel = ${LIVE_CAPTURE_ARKIME_COMPRESSION_LEVEL:-0}
@@ -106,6 +141,8 @@ _base_config +CAPTURE_FLAG:
     | .configuration.logstashHost = "${LOGSTASH_HOST:-logstash:5044}"
     | .configuration.lsMemory = "${LOGSTASH_MEMORY}"
     | .configuration.lsWorkers = ${LOGSTASH_WORKERS}
+    | .configuration.malSysPruneLogs = ${PRUNE_OLDEST_LOGS:-false}
+    | .configuration.malSysPrunePcap = ${PRUNE_OLDEST_PCAP:-false}
     | .configuration.malcolmIcs = ${ZEEK_ICS:-true}
     | .configuration.malcolmProfile = "${MALCOLM_PROFILE:-malcolm}"
     | .configuration.malcolmRestartPolicy = "${RESTART_MALCOLM:-no}"
@@ -115,10 +152,18 @@ _base_config +CAPTURE_FLAG:
     | .configuration.netboxLogstashEnrich = ${NETBOX_ENRICH:-true}
     | .configuration.netboxMode = "${NETBOX:-local}"
     | .configuration.netboxSiteName = "${NETBOX_SITE_NAME:-Malcolm}"
+    | .configuration.netboxSslVerify = ${NETBOX_SSL_VERIFY:-false}
     | .configuration.netboxUrl = "${NETBOX_URL}"
+    | .configuration.logstashNetBoxEnrichedDatasets = (
+        "${LOGSTASH_NETBOX_ENRICHMENT_DATASETS:-default}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.nginxResolverIpv4 = ${NGINX_RESOLVER_IPV4:-true}
     | .configuration.nginxResolverIpv6 = ${NGINX_RESOLVER_IPV6:-false}
     | .configuration.nginxSSL = ${HTTPS:-true}
+    | .configuration.openPortsSelection = "${OPEN_PORTS_SELECTION}"
     | .configuration.opensearchPrimaryMode = "${OPENSEARCH:-opensearch-local}"
     | .configuration.opensearchPrimarySslVerify = ${OPENSEARCH_SSL_VERIFY:-false}
     | .configuration.opensearchPrimaryUrl = "${OPENSEARCH_URL:-https://opensearch:9200}"
@@ -128,17 +173,42 @@ _base_config +CAPTURE_FLAG:
     | .configuration.osMemory = "${OPENSEARCH_MEMORY}"
     | .configuration.pcapDir = "${PCAP_PATH}"
     | .configuration.pcapFilter = "${CAPTURE_FILTER}"
-    | .configuration.pcapIface = "${CAPTURE_IFACE}"
+    | .configuration.pcapIface = (
+        "${CAPTURE_IFACE:-}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.pcapNetSniff = ${CAPTURE_NETSNIFF}
     | .configuration.pcapNodeName = "${NODE_NAME:-$(hostname -s)}"
     | .configuration.pcapTcpDump = ${CAPTURE_TCPDUMP}
     | .configuration.pipelineEnabled = ${PIPELINE_ENABLED:-true}
+    | .configuration.pipelineScanners = (
+        "${STRELKA_SCANNERS:-}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.pipelineWorkers = ${PIPELINE_WORKERS:-1}
     | .configuration.processGroupId = ${PGID:-$(id -g)}
     | .configuration.processUserId = ${PUID:-$(id -u)}
+    | if "${REACHBACK_REQUEST_ACL}" == "" then . else .configuration.reachbackRequestAcl = (
+        "${REACHBACK_REQUEST_ACL}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      ) end
+    | .configuration.remoteMalcolmHost = "${REMOTE_MALCOLM_HOST}"
     | .configuration.reverseDns = ${REVERSE_DNS:-false}
+    | .configuration.secondaryDocumentStore = ${SECONDARY_STORE}
     | .configuration.suricataLogDir = "${SURICATA_PATH}"
     | .configuration.suricataRuleUpdate = ${SURICATA_RULE_UPDATE:-false}
+    | .configuration.suricataDisableSids = (
+        "${SURICATA_DISABLE_SIDS:-}"
+        | split(",")
+        | map(gsub("^[[:space:]]+|[[:space:]]+$"; ""))
+        | map(select(length > 0))
+      )
     | .configuration.syslogTcpPort = ${SYSLOG_PORT_TCP:-0}
     | .configuration.syslogUdpPort = ${SYSLOG_PORT_UDP:-0}
     | .configuration.traefikEntrypoint = "${TRAEFIK_ENTRYPOINT}"
@@ -151,6 +221,7 @@ _base_config +CAPTURE_FLAG:
     | .configuration.zeekICSBestGuess = ${ZEEK_ICS_BEST_GUESS:-true}
     | .configuration.zeekIntelCronExpression = "${ZEEK_INTEL_CRON_EXPRESSION}"
     | .configuration.zeekIntelFeedSince = "${ZEEK_INTEL_FEED_SINCE:-24 hours ago}"
+    | .configuration.zeekIntelFeedSslVerify = ${ZEEK_INTEL_FEED_SSL_VERIFY:-false}
     | .configuration.zeekIntelItemExpiration = "${ZEEK_INTEL_ITEM_EXPIRATION:-1min}"
     | .configuration.zeekIntelOnStartup = ${ZEEK_INTEL_ON_STARTUP}
     | .configuration.zeekLogDir = "${ZEEK_PATH}"
@@ -160,6 +231,8 @@ _base_config +CAPTURE_FLAG:
   EOF
 
   jq -f "${JQ_FILE}" "${SETTINGS_FILE}" | sponge "${SETTINGS_FILE}"
+
+  [[ "$DEBUG" == "true" ]] && jq < "${SETTINGS_FILE}" >&2
 
   python3 ./scripts/install.py --verbose "${DEBUG}" --configure --non-interactive \
     --configure-file "${MALCOLM_COMPOSE_FILE:-docker-compose.yml}" \
@@ -181,7 +254,6 @@ _base_config +CAPTURE_FLAG:
           "opensearch.env:MALCOLM_NETWORK_INDEX_SUFFIX=${MALCOLM_NETWORK_INDEX_SUFFIX:-'%{%y%m%d}'}" \
           "opensearch.env:MALCOLM_OTHER_INDEX_ALIAS=${MALCOLM_OTHER_INDEX_ALIAS:-malcolm_other}" \
           "opensearch.env:MALCOLM_OTHER_INDEX_SUFFIX=${MALCOLM_OTHER_INDEX_SUFFIX:-'%{%y%m%d}'}" \
-          "suricata.env:SURICATA_DISABLE_SIDS=${SURICATA_DISABLE_SIDS:-}" \
           "suricata-offline.env:SURICATA_AUTO_ANALYZE_PCAP_PROCESSES=${SURICATA_AUTO_ANALYZE_PCAP_PROCESSES:-2}" \
           "suricata-offline.env:SURICATA_AUTO_ANALYZE_PCAP_THREADS=${SURICATA_AUTO_ANALYZE_PCAP_THREADS:-0}" \
           "upload-common.env:MALCOLM_API_DEBUG=${MALCOLM_API_DEBUG:-false}" \
@@ -216,9 +288,10 @@ auth-setup:
     --auth-generate-postgres-password "${AUTH_GENERATE_POSTGRES_PASSWORD:-false}" \
     --auth-generate-keycloak-db-password "${AUTH_GENERATE_KEYCLOAK_DB_PASSWORD:-true}" \
     --auth-admin-username "${AUTH_ADMIN_USERNAME}" \
-    --auth-admin-password-openssl "$(echo -n "${AUTH_ADMIN_PASSWORD}" | openssl passwd -1 --stdin)" \
+    --auth-admin-password-openssl "$(echo -n "${AUTH_ADMIN_PASSWORD}" | openssl passwd -6 --stdin)" \
     --auth-admin-password-htpasswd "$(echo -n "${AUTH_ADMIN_PASSWORD}" | htpasswd -i -n -B username | cut -d: -f2 | head -n 1)" \
-    --auth-arkime-password "${AUTH_ARKIME_PASSWORD:-Malcolm}" \
+    --auth-arkime-password "${AUTH_ARKIME_PASSWORD:-}" \
+    --auth-arkime-wise-pin "${AUTH_ARKIME_WISE_PIN:-}" \
     --auth-generate-webcerts "${AUTH_GENERATE_WEBCERTS:-true}" \
     --auth-generate-fwcerts "${AUTH_GENERATE_FWCERTS:-true}" \
     --auth-keycloak-realm "${AUTH_KEYCLOAK_REALM:-master}" \
@@ -226,6 +299,7 @@ auth-setup:
     --auth-keycloak-url "${AUTH_KEYCLOAK_URL}" \
     --auth-keycloak-client-id "${AUTH_KEYCLOAK_CLIENT_ID}" \
     --auth-keycloak-client-secret "${AUTH_KEYCLOAK_CLIENT_SECRET}" \
+    --auth-keycloak-bootstrap-user "${AUTH_KEYCLOAK_BOOTSTRAP_USERNAME}" \
     --auth-keycloak-bootstrap-password "${AUTH_KEYCLOAK_BOOTSTRAP_PASSWORD}" \
     --auth-require-group "${AUTH_REQUIRE_GROUP}" \
     --auth-require-role "${AUTH_REQUIRE_ROLE}" \

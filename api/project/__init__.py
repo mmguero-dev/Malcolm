@@ -13,11 +13,13 @@ import urllib3
 import warnings
 
 from collections import defaultdict, OrderedDict
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from flask import Flask, jsonify, request
 from requests.auth import HTTPBasicAuth
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 from malcolm_constants import DatabaseMode
+from werkzeug.exceptions import BadRequest, HTTPException
 
 # map categories of field names to OpenSearch dashboards
 fields_to_urls = []
@@ -211,9 +213,24 @@ redisPassword = app.config["VALKEY_PASSWORD"]
 strelkaHost = app.config["STRELKA_HOST"]
 strelkaPort = app.config["STRELKA_PORT"]
 
+# (connect, read) timeouts for outbound HTTP requests to other Malcolm services, so a stalled
+#   dependency can't hold an API worker indefinitely
+httpTimeout = (app.config["MALCOLM_API_HTTP_CONNECT_TIMEOUT_SEC"], app.config["MALCOLM_API_HTTP_READ_TIMEOUT_SEC"])
+# timeout applied to each individual check performed by the readiness endpoint
+readyTimeout = app.config["MALCOLM_API_READY_TIMEOUT_SEC"]
+
 opensearchLocal = (databaseMode == DatabaseMode.OpenSearchLocal) or (opensearchUrl == 'https://opensearch:9200')
 opensearchSslVerify = app.config["OPENSEARCH_SSL_CERTIFICATE_VERIFICATION"] == "true"
 opensearchCreds = malcolm_utils.ParseCurlFile(app.config["OPENSEARCH_CREDS_CONFIG_FILE"])
+
+# TLS certificate verification for the NetBox API. Only meaningful for NETBOX_MODE=remote over
+#   https://; the bundled NetBox container is reached over plain HTTP on the internal container
+#   network. Defaults to false to preserve existing behavior on upgrade. CA certificates placed
+#   in ./nginx/ca-trust are installed into the container trust store at startup by
+#   docker-uid-gid-setup.sh, so an internally-issued remote NetBox cert works with this enabled.
+netboxSslVerify = app.config["NETBOX_SSL_CERTIFICATE_VERIFICATION"] == "true"
+# scheme/host/port of the configured NetBox, used to bound which URLs we'll send the API token to
+netboxOrigin = urlparse(netboxUrl)
 
 DatabaseInitArgs = {}
 if urlparse(opensearchUrl).scheme == 'https':
@@ -248,6 +265,10 @@ databaseClient = DatabaseClass(
     **DatabaseInitArgs,
 )
 
+# both client libraries expose their exception hierarchy under .exceptions, so the
+#   handlers below work regardless of which backend was imported above
+DatabaseNotFoundError = DatabaseImport.exceptions.NotFoundError
+
 
 def doctype_is_host_logs(d):
     return any([str(d).lower().startswith(x) for x in ['host', 'beat', 'miscbeat']])
@@ -255,6 +276,38 @@ def doctype_is_host_logs(d):
 
 def random_id(length=20):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
+
+
+def same_origin_as_netbox(url):
+    """Return True if url has the same scheme/host/port as the configured NETBOX_URL.
+
+    Used to bound where the NetBox API token is sent. NetBox paginates with an absolute
+    "next" URL taken from the response body, so without this check a hostile or spoofed
+    response could point the next request (and the Authorization header on it) at a host
+    of the attacker's choosing.
+    """
+
+    def effective_port(parsed):
+        # urlparse().port is None when the URL omits an explicit port, so fill in the
+        #   scheme default to keep https://host and https://host:443 comparable
+        try:
+            return parsed.port or {'http': 80, 'https': 443}.get(parsed.scheme.lower())
+        except ValueError:
+            # malformed port
+            return False
+
+    try:
+        candidate = urlparse(url)
+    except Exception:
+        return False
+    if candidate.scheme.lower() != netboxOrigin.scheme.lower():
+        return False
+    if (candidate.hostname or '').lower() != (netboxOrigin.hostname or '').lower():
+        return False
+    candidatePort = effective_port(candidate)
+    if (candidatePort is False) or (candidatePort != effective_port(netboxOrigin)):
+        return False
+    return True
 
 
 def get_request_arguments(req):
@@ -282,9 +335,11 @@ def is_internal_request(req):
 
 
 def translate_roles(req):
-    roles_map = defaultdict(lambda: True)
+    roles_map = defaultdict(lambda: False)
     try:
         client_roles = [role for role in map(str.strip, req.headers.get('X-Forwarded-Roles', '').split(',')) if role]
+        roles_map['ping'] = True
+        roles_map['version'] = True
         roles_map['event'] = any(
             role in client_roles
             for role in (
@@ -359,6 +414,14 @@ def translate_roles(req):
                 app.config["ROLE_READ_WRITE_ACCESS"],
             )
         )
+        roles_map['redis_keyspace_info'] = any(
+            role in client_roles
+            for role in (
+                app.config["ROLE_ADMIN"],
+                app.config["ROLE_READ_ACCESS"],
+                app.config["ROLE_READ_WRITE_ACCESS"],
+            )
+        )
         roles_map['ready'] = any(
             role in client_roles
             for role in (
@@ -400,6 +463,21 @@ def check_roles(req):
         return True
 
 
+def _parse_query_time(value):
+    """Parse a query time, interpreting timezone-free inputs as UTC."""
+    if not value:
+        return None
+    if isinstance(value, (int, float)) or str(value).isdigit():
+        return datetime.fromtimestamp(int(value), timezone.utc)
+    try:
+        dt = datetime.fromisoformat(value)
+    except ValueError:
+        dt = dateparser.parse(value, settings={'TIMEZONE': 'UTC', 'RETURN_AS_TIMEZONE_AWARE': True})
+        if dt is None:
+            raise BadRequest(f"Unable to parse time value: {value}")
+    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+
+
 def gettimes(args):
     """Parses 'from' and 'to' times out of the provided dictionary, returning
     two datetime objects
@@ -418,22 +496,7 @@ def gettimes(args):
     return start_time, end_time
         datetime objects representing the start and end time for a query
     """
-    if start_time_str := args.get("from"):
-        start_time = (
-            datetime.utcfromtimestamp(int(start_time_str))
-            if start_time_str.isdigit()
-            else dateparser.parse(start_time_str)
-        )
-    else:
-        start_time = None
-    if end_time_str := args.get("to"):
-        end_time = (
-            datetime.utcfromtimestamp(int(end_time_str)) if end_time_str.isdigit() else dateparser.parse(end_time_str)
-        )
-    else:
-        end_time = None
-
-    return start_time, end_time
+    return _parse_query_time(args.get("from")), _parse_query_time(args.get("to"))
 
 
 def getfilters(args):
@@ -608,10 +671,10 @@ def filtertime(search, args, default_from="1 day ago", default_to="now"):
     """
     start_time, end_time = gettimes(args)
     start_time_ms = int(
-        start_time.timestamp() * 1000 if start_time is not None else dateparser.parse(default_from).timestamp() * 1000
+        start_time.timestamp() * 1000 if start_time is not None else _parse_query_time(default_from).timestamp() * 1000
     )
     end_time_ms = int(
-        end_time.timestamp() * 1000 if end_time is not None else dateparser.parse(default_to).timestamp() * 1000
+        end_time.timestamp() * 1000 if end_time is not None else _parse_query_time(default_to).timestamp() * 1000
     )
     return (
         start_time_ms,
@@ -682,16 +745,134 @@ def filtervalues(search, args):
     return (filters, s)
 
 
-def aggfields(fieldnames, current_request, urls=None):
+def nonnegative_integer_argument(args, name, default=None):
+    """Parse an integer without silently truncating floats or accepting booleans."""
+    value = args.get(name, default)
+    if type(value) is int and value >= 0:
+        return value
+    if isinstance(value, str) and re.fullmatch(r'[0-9]+', value.strip()):
+        try:
+            return int(value.strip())
+        except ValueError:
+            pass
+    raise BadRequest(f"'{name}' must be a nonnegative integer")
+
+
+def document_sort(args):
+    """Normalize a comma-separated string or JSON array of field sort expressions."""
+    if 'sort' not in args:
+        return []
+    expressions = args['sort']
+    if isinstance(expressions, str):
+        expressions = expressions.split(',')
+    if not isinstance(expressions, list) or not expressions:
+        raise BadRequest("'sort' must be a nonempty string or array of strings")
+
+    sorts = []
+    for expression in expressions:
+        if not isinstance(expression, str) or not (expression := expression.strip()):
+            raise BadRequest("Each sort expression must be a nonempty string")
+        direction = 'asc'
+        field = expression
+        if ':' in expression:
+            field, direction = expression.rsplit(':', 1)
+            field, direction = field.strip(), direction.strip().lower()
+        elif expression.startswith('-'):
+            field, direction = expression[1:], 'desc'
+        if (
+            not field
+            or field.startswith(('-', '+'))
+            or any(char.isspace() or char in ',:' for char in field)
+            or direction not in ('asc', 'desc')
+        ):
+            raise BadRequest("Sort expressions must use 'field', '-field', or 'field:asc|desc'")
+        sorts.append({field: {'order': direction}})
+    return sorts
+
+
+def document_track_total_hits(args):
+    """Accept a boolean or nonnegative counting threshold, preserving backend defaults."""
+    if 'track_total_hits' not in args:
+        return None
+    value = args['track_total_hits']
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, str) and value.strip().lower() in ('true', 'false'):
+        return value.strip().lower() == 'true'
+    return nonnegative_integer_argument(args, 'track_total_hits')
+
+
+def search_response_metadata(response):
+    """Preserve search status; absent metadata remains unknown (JSON null)."""
+    return {'shards': response.get('_shards'), 'timed_out': response.get('timed_out')}
+
+
+def debug_search_response(endpoint, response, **details):
+    """Log a compact search summary and any shard failures when API debugging is enabled."""
+    if debugApi:
+        shards = response.get('_shards') or {}
+        details.update(
+            timed_out=response.get('timed_out'),
+            shards_total=shards.get('total'),
+            shards_successful=shards.get('successful'),
+            shards_skipped=shards.get('skipped'),
+            shards_failed=shards.get('failed'),
+            took_ms=response.get('took'),
+        )
+        print(f"{endpoint}: {json.dumps(details, default=str)}")
+        if failures := shards.get('failures'):
+            print(f"{endpoint} shard failures: {json.dumps(failures, default=str)}")
+
+
+def bucket_missing_value(fieldname, idx):
+    """Return the bucket 'missing' (empty bucket) label to use for fieldname in index idx.
+
+    Looks up the field's mapping type to pick a type-appropriate placeholder. The
+    mapping is only a cosmetic hint, so any failure to retrieve it falls back to the
+    default placeholder instead of failing the whole aggregation. The backend answers
+    404 when the index pattern matches nothing at all, which happens routinely before
+    the first documents have been indexed.
+    """
+    try:
+        mapping = databaseClient.indices.get_field_mapping(
+            fields=fieldname,
+            index=idx,
+        )
+    except DatabaseNotFoundError:
+        # index/pattern doesn't exist yet (e.g., Malcolm is still initializing)
+        if debugApi:
+            print(f"agg: no mapping for '{fieldname}', index '{idx}' does not exist yet")
+        return missing_field_map[None]
+    except Exception as e:
+        if debugApi:
+            print(f"agg: {type(e).__name__}: {str(e)} getting mapping for '{fieldname}' in '{idx}'")
+        return missing_field_map[None]
+
+    if (not mapping) or (not isinstance(mapping, dict)):
+        return missing_field_map[None]
+
+    return missing_field_map[
+        next(
+            iter(
+                malcolm_utils.dictsearch(
+                    mapping[next(iter(OrderedDict(sorted(mapping.items(), reverse=True))))], 'type'
+                )
+            ),
+            None,
+        )
+    ]
+
+
+def aggfields(fieldnames, args, urls=None):
     """Returns a bucket aggregation for a particular field over a given time range
 
     Parameters
     ----------
     fieldname : string or Array of string
         The name of the field(s) on which to perform the aggregation
-    current_request : Request
-        The flask Request object being processed (see gettimes/filtertime and getfilters/filtervalues)
-        Uses 'from', 'to', 'limit', 'filter', and 'doctype' from current_request arguments
+    args : dict
+        Parsed request arguments (see gettimes/filtertime and getfilters/filtervalues).
+        Uses 'from', 'to', 'limit', 'filter', and 'doctype'.
 
     Returns
     -------
@@ -704,7 +885,10 @@ def aggfields(fieldnames, current_request, urls=None):
     fields
         the name of the field(s) on which the aggregation was performed
     """
-    args = get_request_arguments(current_request)
+    top_bucket_name = next(iter(malcolm_utils.get_iterable(fieldnames)))
+    if top_bucket_name in ('range', 'filter', 'fields', 'urls', 'shards', 'timed_out'):
+        raise BadRequest(f"Aggregation field '{top_bucket_name}' conflicts with a reserved response key")
+
     idx = index_from_args(args)
     s = SearchClass(
         using=databaseClient,
@@ -712,51 +896,54 @@ def aggfields(fieldnames, current_request, urls=None):
     ).extra(size=0)
     start_time_ms, end_time_ms, s = filtertime(s, args)
     filters, s = filtervalues(s, args)
-    bucket_limit = int(malcolm_utils.deep_get(args, ["limit"], app.config["RESULT_SET_LIMIT"]))
+    bucket_limit = nonnegative_integer_argument(args, 'limit', app.config['RESULT_SET_LIMIT'])
+    if bucket_limit == 0:
+        raise BadRequest("Aggregation 'limit' must be greater than zero")
     last_bucket = s.aggs
 
     for fname in malcolm_utils.get_iterable(fieldnames):
-        # Get the field mapping type for this field, and map it to a good default "missing"
-        #   (empty bucket) label for the bucket missing= parameter below
-        mapping = databaseClient.indices.get_field_mapping(
-            fields=fname,
-            index=idx,
-        )
-        missing_val = (
-            missing_field_map[
-                next(
-                    iter(
-                        malcolm_utils.dictsearch(
-                            mapping[next(iter(OrderedDict(sorted(mapping.items(), reverse=True))))], 'type'
-                        )
-                    ),
-                    None,
-                )
-            ]
-            if (mapping and isinstance(mapping, dict))
-            else missing_field_map[None]
-        )
-
-        # chain on the aggregation for the next field
+        # chain on the aggregation for the next field, labelling documents where the
+        #   field is absent with a type-appropriate "missing" value
         last_bucket = last_bucket.bucket(
             fname,
             "terms",
             field=fname,
             size=bucket_limit,
-            missing=missing_val,
+            missing=bucket_missing_value(fname, idx),
         )
 
-    response = s.execute()
+    try:
+        response = s.execute().to_dict()
+    except DatabaseNotFoundError:
+        # index/pattern doesn't exist and the backend rejected the search outright
+        if debugApi:
+            print(f"agg: index '{idx}' does not exist yet, returning empty aggregation")
+        response = {}
 
-    top_bucket_name = next(iter(malcolm_utils.get_iterable(fieldnames)))
+    # When the index pattern matches no indices the backend answers 200 with zero
+    #   shards and omits 'aggregations' entirely, so normalize the bucket container
+    #   here. Callers can then always iterate result[field]['buckets'].
+    top_bucket = response.get('aggregations', {}).get(top_bucket_name) or {}
+    top_bucket.setdefault('buckets', [])
+
     result_dict = {
-        top_bucket_name: response.aggregations.to_dict().get(top_bucket_name, {}),
+        top_bucket_name: top_bucket,
         'range': (start_time_ms // 1000, end_time_ms // 1000),
         'filter': filters,
         'fields': malcolm_utils.get_iterable(fieldnames),
+        **search_response_metadata(response),
     }
     if (urls is not None) and (len(urls) > 0):
         result_dict['urls'] = urls
+
+    if debugApi:
+        buckets = result_dict[top_bucket_name].get('buckets')
+        debug_search_response(
+            'agg',
+            response,
+            fields=result_dict['fields'],
+            buckets=len(buckets) if buckets is not None else None,
+        )
 
     return jsonify(result_dict)
 
@@ -790,11 +977,12 @@ def aggregate(fieldname):
     if not check_roles(request):
         raise PermissionError("Not authorized to perform this action")
 
-    start_time, end_time = gettimes(get_request_arguments(request))
+    args = get_request_arguments(request)
+    start_time, end_time = gettimes(args)
     fields = fieldname.split(",")
     return aggfields(
         fields,
-        request,
+        args,
         urls=urls_for_field(fields, start_time=start_time, end_time=end_time),
     )
 
@@ -809,7 +997,8 @@ def document():
     Parameters
     ----------
     request : Request
-        Uses 'from', 'to', 'limit', 'filter', and 'doctype' from request arguments
+        Uses 'from', 'to', 'limit', 'filter', 'doctype', 'sort', 'offset', and
+        'track_total_hits' from request arguments
 
     Returns
     -------
@@ -817,21 +1006,47 @@ def document():
         dict containing the filters, e.g., {"_id":"210301-Cgnjsc2Tkdl38g25D6-cotp-5485"}
     results
         array of the documents retrieved (up to 'limit')
+    total
+        backend hit count and relation, or None if counting is disabled
+    shards, timed_out
+        backend search status, or None when unavailable
     """
     if not check_roles(request):
         raise PermissionError("Not authorized to perform this action")
 
     args = get_request_arguments(request)
+    limit = nonnegative_integer_argument(args, 'limit', app.config['RESULT_SET_LIMIT'])
+    offset = nonnegative_integer_argument(args, 'offset', 0)
+    sorts = document_sort(args)
+    track_total_hits = document_track_total_hits(args)
     s = SearchClass(
         using=databaseClient,
         index=index_from_args(args),
-    ).extra(size=int(malcolm_utils.deep_get(args, ["limit"], app.config["RESULT_SET_LIMIT"])))
-    start_time_ms, end_time_ms, s = filtertime(s, args, default_from="1970-1-1", default_to="now")
+    ).extra(**{'size': limit, 'from': offset})
+    if sorts:
+        s = s.sort(*sorts)
+    if track_total_hits is not None:
+        s = s.extra(track_total_hits=track_total_hits)
+    start_time_ms, end_time_ms, s = filtertime(s, args, default_from="0", default_to="now")
     filters, s = filtervalues(s, args)
+    response = s.execute().to_dict()
+    if debugApi:
+        hits = response.get('hits', {})
+        total = hits.get('total')
+        debug_search_response(
+            'document',
+            response,
+            returned=len(hits.get('hits', [])),
+            offset=offset,
+            total=total.get('value') if isinstance(total, dict) else total,
+            relation=total.get('relation') if isinstance(total, dict) else None,
+        )
     return jsonify(
-        results=s.execute().to_dict().get('hits', {}).get('hits', []),
+        results=response.get('hits', {}).get('hits', []),
+        total=response.get('hits', {}).get('total'),
         range=(start_time_ms // 1000, end_time_ms // 1000),
         filter=filters,
+        **search_response_metadata(response),
     )
 
 
@@ -865,6 +1080,7 @@ def indices():
         f'{opensearchUrl}/_cat/indices?format=json',
         auth=opensearchReqHttpAuth,
         verify=opensearchSslVerify,
+        timeout=httpTimeout,
     ).json()
     result["malcolm_network_index_pattern"] = app.config["MALCOLM_NETWORK_INDEX_PATTERN"]
     result["malcolm_other_index_pattern"] = app.config["MALCOLM_OTHER_INDEX_PATTERN"]
@@ -895,7 +1111,11 @@ def fields():
         raise PermissionError("Not authorized to perform this action")
 
     args = get_request_arguments(request)
+
     template_name = malcolm_utils.deep_get(args, ["template"], app.config["MALCOLM_TEMPLATE"])
+    if not re.fullmatch(r'[A-Za-z0-9_*-]+', template_name):
+        return jsonify(error="Invalid template name"), 400
+
     doctype = doctype_from_args(args)
     include_arkime = (template_name == app.config["MALCOLM_TEMPLATE"]) and (doctype == "network")
 
@@ -950,6 +1170,7 @@ def get_opensearch_template_fields(template_name):
             f"{opensearchUrl}/_index_template/{template_name}",
             auth=opensearchReqHttpAuth,
             verify=opensearchSslVerify,
+            timeout=httpTimeout,
         ).json()
 
         for template in malcolm_utils.deep_get(response, ["index_templates"], []):
@@ -968,6 +1189,7 @@ def get_opensearch_template_fields(template_name):
                     f"{opensearchUrl}/_component_template/{comp_name}",
                     auth=opensearchReqHttpAuth,
                     verify=opensearchSslVerify,
+                    timeout=httpTimeout,
                 ).json()
                 for component in malcolm_utils.get_iterable(malcolm_utils.deep_get(comp_resp, ["component_templates"])):
                     result.update(
@@ -995,6 +1217,7 @@ def get_dashboards_fields(args):
             },
             auth=opensearchReqHttpAuth,
             verify=opensearchSslVerify,
+            timeout=httpTimeout,
         ).json()
 
         for field in resp.get('fields', []):
@@ -1022,9 +1245,13 @@ def extract_field_info(properties, source=None):
     """Convert a mapping properties dict into the internal field format."""
     fields = {}
     for name, info in properties.items():
-        # Skip top-level objects that just contain subfields
-        if 'properties' in info and 'type' not in info:
-            continue
+        # Include object descendants using their fully qualified field names.
+        if 'properties' in info:
+            fields.update(
+                (f'{name}.{child}', entry) for child, entry in extract_field_info(info['properties'], source).items()
+            )
+            if 'type' not in info:
+                continue
         entry = {}
         if debugApi:
             info['source'] = source
@@ -1076,6 +1303,7 @@ def version():
         opensearchUrl,
         auth=opensearchReqHttpAuth,
         verify=opensearchSslVerify,
+        timeout=httpTimeout,
     ).json()
     if isinstance(opensearchStats, dict):
         opensearchStats['health'] = dict(databaseClient.cluster.health())
@@ -1143,6 +1371,7 @@ def ready():
                 port=port,
                 password=password,
                 socket_connect_timeout=timeout,
+                socket_timeout=timeout,
             )
             return r.ping()
         except Exception:
@@ -1192,40 +1421,74 @@ def ready():
                 print(f"{type(e).__name__}: {e} getting {name} status")
             return default
 
-    # Each component’s check becomes a small lambda
+    # Each component's check becomes a small lambda. Every check is bounded by readyTimeout so a
+    #   stalled dependency can't hold the request open.
     checks = {
-        "arkime": (lambda: requests.get(arkimeStatusUrl, verify=False).raise_for_status() or True, False),
+        "arkime": (
+            lambda: requests.get(arkimeStatusUrl, verify=False, timeout=readyTimeout).raise_for_status() or True,
+            False,
+        ),
         "dashboards": (
             lambda: requests.get(
                 f"{dashboardsUrl}/api/status",
                 auth=opensearchReqHttpAuth,
                 verify=opensearchSslVerify,
+                timeout=readyTimeout,
             ).json(),
             {},
         ),
-        "dashboards_maps": (lambda: malcolm_utils.check_socket(dashboardsHelperHost, dashboardsMapsPort), False),
-        "extracted_files": (lambda: malcolm_utils.check_socket(filescanHost, filescanHttpServerPort), False),
-        "filebeat_tcp": (lambda: malcolm_utils.check_socket(filebeatHost, filebeatTcpJsonPort), False),
-        "filescan": (lambda: filescan_healthy(filescanHost, filescanHealthPort), False),
-        "freq": (lambda: requests.get(freqUrl).raise_for_status() or True, False),
-        "logstash_health": (lambda: requests.get(f"{logstashUrl}/_health_report").json(), {}),
-        "logstash_lumberjack": (lambda: malcolm_utils.check_socket(logstashHost, logstashLJPort), False),
+        "dashboards_maps": (
+            lambda: malcolm_utils.check_socket(dashboardsHelperHost, dashboardsMapsPort, timeout=readyTimeout),
+            False,
+        ),
+        "extracted_files": (
+            lambda: malcolm_utils.check_socket(filescanHost, filescanHttpServerPort, timeout=readyTimeout),
+            False,
+        ),
+        "filebeat_tcp": (
+            lambda: malcolm_utils.check_socket(filebeatHost, filebeatTcpJsonPort, timeout=readyTimeout),
+            False,
+        ),
+        "filescan": (lambda: filescan_healthy(filescanHost, filescanHealthPort, timeout=readyTimeout), False),
+        "freq": (lambda: requests.get(freqUrl, timeout=readyTimeout).raise_for_status() or True, False),
+        "logstash_health": (
+            lambda: requests.get(f"{logstashUrl}/_health_report", timeout=readyTimeout).json(),
+            {},
+        ),
+        "logstash_lumberjack": (
+            lambda: malcolm_utils.check_socket(logstashHost, logstashLJPort, timeout=readyTimeout),
+            False,
+        ),
         "netbox": (
             lambda: requests.get(
                 f"{netboxUrl}/api/?format=json",
                 headers={"Authorization": f"Token {netboxToken}"} if netboxToken else None,
-                verify=False,
+                verify=netboxSslVerify,
+                timeout=readyTimeout,
             ).json(),
             {},
         ),
         "opensearch": (lambda: dict(databaseClient.cluster.health()), {}),
-        "pcap_monitor": (lambda: malcolm_utils.check_socket(pcapMonitorHost, pcapTopicPort), False),
-        "redis": (lambda: redis_accessible(redisHost, redisPort, redisPassword), False),
-        "redis_cache": (lambda: redis_accessible(redisCacheHost, redisCachePort, redisPassword), False),
-        "strelka": (lambda: malcolm_utils.check_socket(strelkaHost, strelkaPort), False),
+        "pcap_monitor": (
+            lambda: malcolm_utils.check_socket(pcapMonitorHost, pcapTopicPort, timeout=readyTimeout),
+            False,
+        ),
+        "redis": (lambda: redis_accessible(redisHost, redisPort, redisPassword, timeout=readyTimeout), False),
+        "redis_cache": (
+            lambda: redis_accessible(redisCacheHost, redisCachePort, redisPassword, timeout=readyTimeout),
+            False,
+        ),
+        "strelka": (
+            lambda: malcolm_utils.check_socket(strelkaHost, strelkaPort, timeout=readyTimeout),
+            False,
+        ),
     }
 
-    results = {name: safe_check(name, func, default) for name, (func, default) in checks.items()}
+    # run the checks concurrently so the total time is bounded by the slowest single check
+    #   rather than the sum of all of them
+    with ThreadPoolExecutor(max_workers=len(checks)) as executor:
+        futures = {name: executor.submit(safe_check, name, func, default) for name, (func, default) in checks.items()}
+        results = {name: future.result() for name, future in futures.items()}
 
     return jsonify(
         arkime=results["arkime"],
@@ -1301,6 +1564,7 @@ def dashboard_export(dashid):
                 },
                 auth=opensearchReqHttpAuth,
                 verify=opensearchSslVerify,
+                timeout=httpTimeout,
             )
             response.raise_for_status()
 
@@ -1327,7 +1591,7 @@ def dashboard_export(dashid):
                 # ... or just return it as-is
                 responseText = response.text
 
-            # remove index pattern definition from exported dashboard as they get created programatically
+            # remove index pattern definition from exported dashboard as they get created programmatically
             #   on Malcolm startup and we don't want them to come in with imported dashboards
             if responseParsed := malcolm_utils.LoadStrIfJson(responseText):
                 if 'objects' in responseParsed and isinstance(responseParsed['objects'], list):
@@ -1365,10 +1629,12 @@ def dashboard_export(dashid):
             )
 
     except Exception as e:
-        errStr = f"{type(e).__name__}: {str(e)} exporting OpenSearch Dashboard {dashid}"
+        # Log the full exception detail server-side only; the caller just gets a generic
+        # message so internal hostnames, URLs, and library/version info aren't leaked.
         if debugApi:
-            print(errStr)
-        return jsonify(error=errStr)
+            print(f"{type(e).__name__}: {str(e)} exporting OpenSearch Dashboard {dashid}")
+            print(traceback.format_exc())
+        return jsonify(error=f'Could not export OpenSearch Dashboard {dashid}')
 
 
 @app.route(
@@ -1406,7 +1672,7 @@ def ingest_stats():
             ).extra(size=0)
             # Exclusions:
             #   NGINX access and error logs: we want to exclude nginx error and
-            #       access logs, otherwise the very act of accessing Malcolm will
+            #       access logs; otherwise, the very act of accessing Malcolm will
             #       update the latest ingest time returned from this function.
             #   event() webhook: we want to exclude alerts written by the event()
             #       webhook API (see below) and limit our results to actual
@@ -1486,7 +1752,7 @@ def netbox_sites():
         url = f'{netboxUrl}/api/dcim/sites/?format=json'
         while url:
             try:
-                response = requests.get(url, headers=headers, verify=False)
+                response = requests.get(url, headers=headers, verify=netboxSslVerify, timeout=httpTimeout)
                 response.raise_for_status()
             except Exception as e:
                 if debugApi:
@@ -1499,7 +1765,16 @@ def netbox_sites():
                         for site in data.get("results", [])
                     }
                 )
-                url = data.get("next")
+                # The "next" pagination URL comes from the NetBox response body, and we re-send the
+                #   API token with it. Only follow it if it points back at the configured NetBox
+                #   origin, so a hostile or spoofed response can't redirect the token elsewhere.
+                #   Resolved against the current URL first so a relative "next" still works.
+                nextUrl = urljoin(url, data["next"]) if data.get("next") else None
+                if nextUrl and not same_origin_as_netbox(nextUrl):
+                    if debugApi:
+                        print(f"Refusing to follow NetBox pagination URL outside {netboxUrl}: {nextUrl}")
+                    break
+                url = nextUrl
             else:
                 break
 
@@ -1562,6 +1837,7 @@ def redis_keyspace_info():
                 port=port,
                 password=password,
                 socket_connect_timeout=timeout,
+                socket_timeout=timeout,
                 decode_responses=True,
             )
             return r.info("keyspace")
@@ -1581,6 +1857,20 @@ def redis_keyspace_info():
             print(f"{type(e).__name__}: \"{str(e)}\" getting Redis keyspace info")
 
     return jsonify(result)
+
+
+def deep_merge(base, overlay, conflicts=None):
+    if conflicts is None:
+        conflicts = {}
+    for key, value in overlay.items():
+        if key in base:
+            if isinstance(base[key], dict) and isinstance(value, dict):
+                deep_merge(base[key], value, conflicts.setdefault(key, {}))
+            else:
+                conflicts[key] = value
+        else:
+            base[key] = value
+    return conflicts
 
 
 @app.route(
@@ -1664,7 +1954,8 @@ def event():
     status
         the JSON-formatted OpenSearch response from indexing/updating the alert record
     """
-    if (not is_internal_request(request)) and (not check_roles(request)):
+    internal_request = is_internal_request(request)
+    if (not internal_request) and (not check_roles(request)):
         raise PermissionError("Not authorized to perform this action")
 
     alert = {}
@@ -1717,7 +2008,17 @@ def event():
         if (not alertBody) and '_raw' in data:
             alertBody = data.get('_raw')
         if alertBody:
-            alert['event']['original'] = alertBody
+            try:
+                if alertBodyParsed := (
+                    alertBody if isinstance(alertBody, dict) else malcolm_utils.LoadStrIfJson(alertBody)
+                ):
+                    conflicts = deep_merge(alert, alertBodyParsed)
+                    if conflicts:
+                        alert['conflicts'] = conflicts
+                else:
+                    alert['event']['original'] = alertBody
+            except Exception:
+                alert['event']['original'] = alertBody
 
         if triggerName := malcolm_utils.deep_get(
             data,
@@ -1764,10 +2065,22 @@ def event():
                 if hitCount := malcolm_utils.deep_get(alertResults[0], ['hits', 'total', 'value'], 0):
                     alert['event']['hits'] = hitCount
 
-        docDateStr = dateparser.parse(alert[app.config["MALCOLM_NETWORK_INDEX_TIME_FIELD"]]).strftime('%y%m%d')
+        # Record who submitted this document. It's set after the merge so the submitted body can't supply it.
+        alert['event']['submitter'] = (
+            'internal' if internal_request else (request.headers.get('X-Forwarded-User') or 'unknown')
+        )
+
+        docDateStr = (
+            _parse_query_time(alert[app.config["MALCOLM_NETWORK_INDEX_TIME_FIELD"]])
+            .astimezone(timezone.utc)
+            .strftime('%y%m%d')
+        )
+        # The "alert." namespace keeps caller-supplied IDs from colliding with (and overwriting) pipeline
+        # records in the same index: Arkime IDs are URL-safe base64 and Zeek UIDs are alphanumeric, so
+        # neither ever contains a '.'.
         idxResponse = databaseClient.index(
             index=f"{app.config['MALCOLM_NETWORK_INDEX_PATTERN'].rstrip('*')}{docDateStr}",
-            id=f"{docDateStr}-{alert['event']['id']}",
+            id=f"{docDateStr}-alert.{alert['event']['id']}",
             body=alert,
         )
 
@@ -1776,6 +2089,12 @@ def event():
         print(json.dumps(alert, default=str))
         print(json.dumps(idxResponse, default=str))
     return jsonify(result=idxResponse)
+
+
+@app.errorhandler(PermissionError)
+def permission_error(e):
+    """Return HTTP 403 for authorization failures."""
+    return jsonify(error="Not authorized to perform this action"), 403
 
 
 @app.errorhandler(Exception)
@@ -1788,10 +2107,14 @@ def basic_error(e):
     Returns
     -------
     error
-        The type of exception and its string representation (e.g., "KeyError: 'protocols'")
+        Generic error message; exception details are logged server-side only.
     """
+    # Let HTTP exceptions return their proper status codes
+    if isinstance(e, HTTPException):
+        return jsonify(error=e.description), e.code
+
     errorStr = f"{type(e).__name__}: {str(e)}"
-    if debugApi and (not isinstance(e, PermissionError)):
+    if debugApi:
         print(errorStr)
         print(traceback.format_exc())
-    return jsonify(error=errorStr)
+    return jsonify(error="Internal server error"), 500

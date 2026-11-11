@@ -6,17 +6,28 @@ import json
 import logging
 import time
 
-from malcolm_utils import AtomicInt, ContextLockedOrderedDict, same_file_or_dir
+from malcolm_utils import AtomicInt, ContextLockedOrderedDict
 
 from watchdog.events import (
-    FileSystemEventHandler,
-    FileMovedEvent,
-    FileModifiedEvent,
-    FileCreatedEvent,
+    EVENT_TYPE_OPENED,
     FileClosedEvent,
-    FileOpenedEvent,
+    FileClosedNoWriteEvent,
+    FileCreatedEvent,
     FileDeletedEvent,
+    FileModifiedEvent,
+    FileMovedEvent,
+    FileOpenedEvent,
+    FileSystemEventHandler,
 )
+
+try:
+    from watchdog.events import DirAttribEvent, FileAttribEvent
+
+    ATTRIB_EVENT_TYPES = (FileAttribEvent, DirAttribEvent)
+except ImportError:
+    # watchdog < 7 (e.g., the filebeat image on Python 3.9) has no attrib events and reports
+    #   metadata-only changes as FileModifiedEvent, which the size comparison below handles
+    ATTRIB_EVENT_TYPES = ()
 
 from multiprocessing.pool import ThreadPool
 from threading import get_native_id
@@ -50,13 +61,13 @@ class FileOperationEventHandler(FileSystemEventHandler):
         # In self.deck itself, items at the first (idx=0) of this OrderedDict are the
         #   oldest, items at the last (idx=len-1) are the newest.
         self.deck = ContextLockedOrderedDict()
-        # because of the pain in the butt that is the fact that we get the modify events
-        #   on attributes-only changes (see below where I set fSize), if events show up
-        #   for files and we've ONLY seen open and/or attribute-only modify events (i.e.,
-        #   the size doesn't change) then we're just going to hold on to them here in
-        #   self.modDeck until we promote them to self.deck for processing.
-        #   Once gorakhargosh/watchdog#800 is pulled (resolving gorakhargosh/watchdog#260)
-        #   we can get rid of this complication and just ignore attribute-only events.
+        # Files we've only seen opened, or modified without a size change, wait in
+        #   self.modDeck until something shows they're being written, and are then
+        #   promoted to self.deck for processing. Under inotify, watchdog 7+ reports
+        #   metadata-only changes as attrib events (dropped in on_any_event), so a
+        #   modified event means a real write. The polling observer still reports a
+        #   utime as "modified" because the mtime changed, which is why the size
+        #   comparison below stays.
         self.modDeck = OrderedDict()
 
     def done(self):
@@ -65,8 +76,42 @@ class FileOperationEventHandler(FileSystemEventHandler):
     def updateTime(self):
         self.nowTime = int(time.time())
 
+    def cancel_read_open(self, event):
+        # IN_CLOSE_NOWRITE means the matching IN_OPEN was a read-only open, which can't change the
+        #   file's contents. Retract one recorded "opened" so the reader's visit doesn't count as
+        #   activity: a file nobody else is tracking drops out of the decks entirely, while an
+        #   "opened" left behind by a writer that still holds the file keeps it waiting for its close.
+        #   This never promotes or appends; a close with no recorded open is ignored.
+        if event.is_directory:
+            return
+        fName = event.src_path
+        with self.deck as d:
+            for deck in (d, self.modDeck):
+                history = deck.get(fName)
+                if history is None:
+                    continue
+                for idx in range(len(history) - 1, -1, -1):
+                    if history[idx].operation == EVENT_TYPE_OPENED:
+                        del history[idx]
+                        break
+                if not history:
+                    deck.pop(fName, None)
+                self.logger.debug(
+                    f"⊖\t{event.event_type: <10}\t{fName}\t{json.dumps(deck.get(fName, []))}\t{self.workerPid}"
+                )
+                break
+
     def on_any_event(self, event):
         fName = None
+        # watchdog 7+ reports metadata-only changes (chmod, chown, utime, xattr) as
+        # FileAttribEvent/DirAttribEvent; they can't change content, so ignore them.
+        # with watchdog 6, ATTRIB_EVENT_TYPES is empty so the size-comparison check
+        # handles it and ignores them instead.
+        if isinstance(event, ATTRIB_EVENT_TYPES):
+            return
+        if isinstance(event, FileClosedNoWriteEvent):
+            self.cancel_read_open(event)
+            return
         if not event.is_directory:
             self.updateTime()
 
@@ -80,13 +125,10 @@ class FileOperationEventHandler(FileSystemEventHandler):
                 fNameOld = None
                 self.logger.debug(f"🗲\t{event.event_type: <10}\t{event.src_path}\t{self.workerPid}")
 
-            # This is a pain, but due to this watchdog issue (see
-            # https://github.com/gorakhargosh/watchdog/issues/260 and
-            # https://github.com/gorakhargosh/watchdog/pull/800)
-            # we get FileModifiedEvent triggered for metadata-only changes
-            # even if content has not changed (e.g., file access time).
-            # So for now, if we detect a file has been modified but the size
-            # hasn't changed, we will ignore that event.
+            # The polling observer reports any mtime change (touch, utime) as a
+            # FileModifiedEvent even when the content hasn't changed, so a modified
+            # event that leaves the size unchanged is ignored. Under inotify that
+            # only happens for a same-length rewrite in place, treated the same way.
             try:
                 fSize = os.path.getsize(fName)
             except Exception:
@@ -106,10 +148,10 @@ class FileOperationEventHandler(FileSystemEventHandler):
                 try:
                     deckInserted = d
 
-                    if fNameOld and same_file_or_dir(os.path.dirname(fNameOld), os.path.dirname(fName)):
-                        # a file was simply renamed in the watched directory (not moved
-                        # from some other directory) so remove the old filename from our list
-                        # and a new one will get added
+                    if fNameOld:
+                        # Moves can cross subdirectories of the watched tree. Retire any
+                        # tracked source path, not just same-directory renames; the file
+                        # will be queued at its destination below.
                         d.pop(fNameOld, None)
                         self.modDeck.pop(fNameOld, None)
 
@@ -128,7 +170,11 @@ class FileOperationEventHandler(FileSystemEventHandler):
                             # don't do *anything*, leave the entry untouched in the list
                             noop = True
 
-                        elif (len(d[fName]) > 0) and (d[fName][-1].operation == event.event_type):
+                        elif (
+                            (len(d[fName]) > 0)
+                            and (d[fName][-1].operation == event.event_type)
+                            and (not isinstance(event, FileOpenedEvent))
+                        ):
                             # if the previous operation (the last one in the history) was the same as this one,
                             # replace the operation rather than appending a new one (effectively just updating the timestamp)
                             if (newOpLog.timestamp > d[fName][-1].timestamp) or (newOpLog.size != d[fName][-1].size):
@@ -157,6 +203,23 @@ class FileOperationEventHandler(FileSystemEventHandler):
                             self.logger.debug(f"𝦸\t{event.event_type: <10}\t{fName}\t{self.workerPid}")
                             d[fName] = self.modDeck.pop(fName)
                             d[fName].append(newOpLog)
+
+                        else:
+                            # not promoted yet: keep staging it in modDeck, recording this event so a later
+                            # size change can be recognized as a real modification. Without this, the
+                            # event fell through to the move_to_end below against the main deck, which
+                            # doesn't contain this file (KeyError), and was never recorded, so a file whose
+                            # first event was "opened" could never be promoted by a "modified" event.
+                            deckInserted = self.modDeck
+                            staged = self.modDeck[fName]
+                            if (
+                                staged
+                                and (staged[-1].operation == event.event_type)
+                                and (not isinstance(event, FileOpenedEvent))
+                            ):
+                                staged[-1] = newOpLog
+                            else:
+                                staged.append(newOpLog)
 
                     else:
                         # this is a file we were not previously tracking at all, in either deck

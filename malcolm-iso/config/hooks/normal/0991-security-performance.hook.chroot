@@ -87,13 +87,32 @@ net.ipv4.conf.default.send_redirects=0
 net.ipv4.icmp_echo_ignore_broadcasts=1
 net.ipv4.ip_forward=1
 net.ipv4.tcp_retries2=5
-net.ipv6.conf.all.accept_source_route=0
-net.ipv6.conf.all.accept_ra=0
-net.ipv6.conf.default.accept_ra=0
-net.ipv6.conf.all.disable_ipv6=1
-net.ipv6.conf.default.disable_ipv6=1
-net.ipv6.conf.lo.disable_ipv6=1
+-net.ipv6.conf.all.accept_source_route=0
+-net.ipv6.conf.all.accept_ra=0
+-net.ipv6.conf.default.accept_ra=0
+-net.ipv6.conf.all.disable_ipv6=1
+-net.ipv6.conf.default.disable_ipv6=1
+-net.ipv6.conf.lo.disable_ipv6=1
 EOF
+
+mkdir -p /etc/polkit-1/rules.d/
+cat << 'EOF' > /etc/polkit-1/rules.d/50-networkmanager-netdev.rules
+polkit.addRule(function(action, subject) {
+    if (subject.isInGroup("netdev")) {
+        if (
+            action.id == "org.freedesktop.NetworkManager.network-control" ||
+            action.id == "org.freedesktop.NetworkManager.settings.modify.system" ||
+            action.id == "org.freedesktop.NetworkManager.settings.modify.own" ||
+            action.id == "org.freedesktop.NetworkManager.enable-disable-network" ||
+            action.id == "org.freedesktop.NetworkManager.enable-disable-wifi"
+        ) {
+            return polkit.Result.YES;
+        }
+    }
+});
+EOF
+chmod 755 /etc/polkit-1/rules.d/
+chmod 644 /etc/polkit-1/rules.d/50-networkmanager-netdev.rules
 
 # password requirement hardening
 sed -i -e 's/[[:space:]]*nullok[[:alnum:]_]*//g' /etc/pam.d/common-auth
@@ -124,10 +143,51 @@ echo "umask 077" >> /etc/profile
 echo "export UMASK=077" >> /etc/profile
 echo "export PYTHONDONTWRITEBYTECODE=1" >> /etc/profile
 
-# put sudoers log into its own logfile
-awk 'FNR==NR{ if (/^Defaults/) p=NR; next} 1; FNR==p{ print "Defaults\t!syslog\nDefaults\tlogfile=/var/log/sudo.log" }' /etc/sudoers /etc/sudoers > /tmp/newsudoers
-mv /tmp/newsudoers /etc/sudoers && chmod 440 /etc/sudoers
-cat << 'EOF' > /etc/logrotate.d/sudoers
+# Configure sudo logging and include /usr/local/bin in sudo's secure PATH.
+sudoers_tmp="$(mktemp /etc/sudoers.tmp.XXXXXX)"
+trap 'rm -f "${sudoers_tmp}"' EXIT
+
+awk '
+    function add_defaults() {
+        print "Defaults\t!syslog"
+        print "Defaults\tlogfile=/var/log/sudo.log"
+        print "Defaults\tsecure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\""
+    }
+
+    FNR == NR {
+        if (/^[[:space:]]*Defaults/) {
+            p = FNR
+        }
+        next
+    }
+
+    !/^[[:space:]]*Defaults[[:space:]]+secure_path[[:space:]]*=/ {
+        print
+    }
+
+    FNR == p {
+        add_defaults()
+        inserted = 1
+    }
+
+    END {
+        if (!inserted) {
+            add_defaults()
+        }
+    }
+' /etc/sudoers /etc/sudoers > "${sudoers_tmp}"
+
+chown root:root "${sudoers_tmp}"
+chmod 0440 "${sudoers_tmp}"
+
+if visudo -cf "${sudoers_tmp}"; then
+    mv "${sudoers_tmp}" /etc/sudoers
+    trap - EXIT
+else
+    exit 1
+fi
+
+cat <<'EOF' > /etc/logrotate.d/sudoers
 /var/log/sudo.log
 {
   weekly
@@ -140,9 +200,15 @@ cat << 'EOF' > /etc/logrotate.d/sudoers
 }
 EOF
 
+chown root:root /etc/logrotate.d/sudoers
+chmod 0644 /etc/logrotate.d/sudoers
+
 # tweak some auditd settings
 sed -r -i "s/((disk_full_action|disk_error_action)\s*=\s*).*/\1 SYSLOG/" /etc/audit/auditd.conf
 sed -r -i "s/(network_failure_action\s*=\s*).*/\1 syslog/" /etc/audit/audisp-remote.conf
+
+# filter auditd rules that don't apply to this platform
+/usr/local/bin/filter-audit-rules
 
 # disable ntp for now, and disable servers, but it could be turned back on later
 systemctl disable ntpsec || true
@@ -154,14 +220,7 @@ usermod -d /var/lib/ntpsec ntpsec
 
 # disable default fluentbit configuration
 systemctl disable fluent-bit || true
-
-# add fluentbit logfmt parser
-cat << 'EOF' >> /etc/fluent-bit/parsers.conf
-
-[PARSER]
-    Name logfmt
-    Format logfmt
-EOF
+rm -f /etc/fluent-bit/fluent-bit.conf
 
 # remove identifying operating system information from /etc/issue*
 truncate -s 0 /etc/motd

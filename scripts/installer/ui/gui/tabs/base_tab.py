@@ -221,10 +221,10 @@ class BaseTab:
                 if target:
                     target.pack_forget()
 
-        # Observe changes to update enabled/disabled state
-        self.malcolm_config.observe(
+        # Observe visibility changes to update enabled/disabled state
+        self.malcolm_config.observe_visibility(
             key,
-            lambda _value, k=key: self._update_widget_visibility(k)
+            lambda _visible, k=key: self._update_widget_visibility(k)
         )
 
     def _compute_initial_collapse_state(self, key: str) -> bool:

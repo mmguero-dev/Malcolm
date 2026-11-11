@@ -1,4 +1,4 @@
-FROM postgres:16-alpine
+FROM postgres:18-alpine
 
 # Copyright (c) 2026 Battelle Energy Alliance, LLC.  All rights reserved.
 LABEL maintainer="malcolm@inl.gov"
@@ -22,7 +22,7 @@ USER root
 
 ENV TERM=xterm
 
-COPY --from=ghcr.io/mmguero-dev/gostatic --chmod=755 /goStatic /usr/bin/goStatic
+COPY --from=ghcr.io/mmguero-dev/gostatic:latest@sha256:cba944f026b430ba5db45f563b32b0ad849703ae5996d3a30ce5deffd1ef9112 --chmod=755 /goStatic /usr/bin/goStatic
 ADD --chmod=755 shared/bin/docker-uid-gid-setup.sh /usr/local/bin/
 ADD --chmod=755 shared/bin/service_check_passthrough.sh /usr/local/bin/
 ADD --chmod=755 container-health-scripts/postgres.sh /usr/local/bin/container_health.sh
@@ -30,9 +30,22 @@ ADD --chmod=755 postgres-scripts/docker-entrypoint-initdb.d/*.sh /docker-entrypo
 ADD --chmod=755 postgres-scripts/docker-entrypoint-startdb.d/*.sh /docker-entrypoint-startdb.d/
 ADD --chmod=755 postgres-scripts/*.sh /usr/local/bin/
 
+ENV PGDATA=/var/lib/postgresql/data
+
+ENV JQ_VERSION="1.8.2"
+ENV JQ_URL="https://github.com/jqlang/jq/releases/download/jq-${JQ_VERSION}/jq-linux-"
+
+RUN --mount=type=bind,source=shared/bin/install-verified-binary.sh,target=/usr/local/share/install-verified-binary.sh,ro \
+    --mount=type=bind,source=shared/checksums/binaries.sha256,target=/usr/local/share/binaries.sha256,ro \
+    apk --no-cache add --virtual .jq-fetch-deps curl && \
+      sh /usr/local/share/install-verified-binary.sh /usr/local/bin/jq "${JQ_URL}{arch}" "jq_${JQ_VERSION}_linux_{arch}" && \
+      apk del .jq-fetch-deps
+
 RUN apk update --no-cache && \
-    apk add --no-cache bash jq procps psmisc rsync shadow tini && \
-    apk add --no-cache --virtual .build-deps rsync && \
+    apk add --no-cache bash musl-locales procps psmisc rsync shadow tini && \
+    # NOTE: as this moves image forward, add old supported versions
+    # here for version-to-version upgrades (e.g., postgresql18 postgresql18-contrib)
+    apk add --no-cache postgresql16 postgresql16-contrib && \
     rsync -a /usr/local/bin/ /usr/bin/ && \
     rsync -a /usr/local/share/ /usr/share/ && \
     rsync -a /usr/local/lib/ /usr/lib/ && \
@@ -40,8 +53,8 @@ RUN apk update --no-cache && \
     ln -s /usr/bin /usr/local/bin && \
     ln -s /usr/share /usr/local/share && \
     ln -s /usr/lib /usr/local/lib && \
-    chmod 00775 /var/lib/postgresql /var/lib/postgresql/data /run/postgresql && \
-    apk del .build-deps
+    mkdir -p "${PGDATA}" && \
+    chmod 00775 /var/lib/postgresql /var/lib/postgresql/data /run/postgresql
 
 USER root
 

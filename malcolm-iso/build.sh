@@ -170,6 +170,7 @@ PYCODE
   mkdir -p "$MALCOLM_DEST_DIR/logstash/certs/"
   mkdir -p "$MALCOLM_DEST_DIR/logstash/maps/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/custom-plugins/requirements/"
+  mkdir -p "$MALCOLM_DEST_DIR/netbox/custom-scripts/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/media/"
   mkdir -p "$MALCOLM_DEST_DIR/netbox/preload/"
   mkdir -p "$MALCOLM_DEST_DIR/nginx/ca-trust/"
@@ -203,7 +204,7 @@ PYCODE
   cp ./.envrc.example "$MALCOLM_DEST_DIR/.envrc.example"
   cp ./scripts/install.py "$MALCOLM_DEST_DIR/scripts/"
   cp -r ./scripts/installer/ "$MALCOLM_DEST_DIR/scripts/"
-  rm -rf "$MALCOLM_DEST_DIR/scripts/installer/tests" "$MALCOLM_DEST_DIR/scripts/installer/ui/gui"
+  rm -rf "$MALCOLM_DEST_DIR/shared/tests" "$MALCOLM_DEST_DIR/scripts/installer/ui/gui"
   cp ./scripts/tx-rx-secure.sh "$MALCOLM_DEST_DIR/scripts/"
   cp ./scripts/control.py "$MALCOLM_DEST_DIR/scripts/"
   pushd "$MALCOLM_DEST_DIR/scripts/" >/dev/null 2>&1
@@ -275,6 +276,8 @@ PYCODE
   # copy shared scripts and some branding stuff
   mkdir -p ./config/includes.chroot/usr/local/bin/ ./config/includes.chroot/opt/
   rsync -a "$SCRIPT_PATH/../shared/bin/" ./config/includes.chroot/usr/local/bin/
+  mkdir -p ./config/includes.chroot/usr/local/share/
+  cp "$SCRIPT_PATH/../shared/checksums/binaries.sha256" ./config/includes.chroot/usr/local/share/
   rsync -a "$SCRIPT_PATH/kiosk/" ./config/includes.chroot/opt/kiosk/
   cp "$SCRIPT_PATH/../scripts/malcolm_utils.py" ./config/includes.chroot/usr/local/bin/
   cp "$SCRIPT_PATH/../scripts/malcolm_constants.py" ./config/includes.chroot/usr/local/bin/
@@ -300,7 +303,7 @@ PYCODE
                 ./config/includes.chroot/etc/xdg/autostart/kiosk-browser.desktop
     XFCE_PANEL_REMOVE=(17 18 20 21 22 23 24)
   else
-    sed -i '/^[[:space:]]*systemctl enable kiosk[[:space:]]*$/d' ./config/hooks/normal/*.hook.chroot
+    sed -i '/^[[:space:]]*systemctl enable kiosk\(\.service\)\?[[:space:]]*$/d' ./config/hooks/normal/*.hook.chroot
     ln -s -f -r ./config/includes.chroot/usr/share/images/desktop-base/Malcolm_background.png \
                 ./config/includes.chroot/usr/share/images/desktop-base/default
     XFCE_PANEL_REMOVE=(30)
@@ -334,7 +337,7 @@ PYCODE
     --backports false \
     --binary-images iso-hybrid \
     --bootappend-install "auto=true locales=en_US.UTF-8 keyboard-layouts=us" \
-    --bootappend-live "boot=live components username=${LIVE_USER} nosplash random.trust_cpu=on elevator=deadline cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem systemd.unified_cgroup_hierarchy=1" \
+    --bootappend-live "boot=live components username=${LIVE_USER} nosplash random.trust_cpu=on cgroup_enable=memory swapaccount=1 cgroup.memory=nokmem systemd.unified_cgroup_hierarchy=1" \
     --chroot-filesystem squashfs \
     --debian-installer live \
     --debian-installer-distribution $IMAGE_DISTRIBUTION \

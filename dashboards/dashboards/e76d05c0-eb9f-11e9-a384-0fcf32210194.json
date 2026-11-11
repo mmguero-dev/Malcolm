@@ -455,8 +455,8 @@
           "destination.port",
           "event.action",
           "event.result",
-          "zeek.s7comm.pdu_reference",
-          "zeek.uid"
+          "s7comm.pduref",
+          "event.id"
         ],
         "description": "",
         "hits": 0,
@@ -495,7 +495,7 @@
           "destination.port",
           "event.action",
           "event.result",
-          "zeek.uid"
+          "event.id"
         ],
         "description": "",
         "hits": 0,
@@ -535,8 +535,8 @@
           "zeek.s7comm_read_szl.szl_index",
           "event.action",
           "event.result",
-          "zeek.s7comm.pdu_reference",
-          "zeek.uid"
+          "s7comm.pduref",
+          "event.id"
         ],
         "description": "",
         "hits": 0,
@@ -615,7 +615,7 @@
           "zeek.s7comm_upload_download.block_type",
           "file.path",
           "zeek.s7comm_upload_download.destination_filesystem",
-          "zeek.uid"
+          "event.id"
         ],
         "description": "",
         "hits": 0,

@@ -63,12 +63,18 @@
                   "type": "keyword"
                 },
                 "inner_vlan": {
-                  "type": "integer"
+                  "type": "keyword"
                 },
                 "ja4l": {
                   "type": "keyword"
                 },
                 "ja4ls": {
+                  "type": "keyword"
+                },
+                "ja4l_delta": {
+                  "type": "keyword"
+                },
+                "ja4ls_delta": {
                   "type": "keyword"
                 },
                 "ja4t": {
@@ -111,7 +117,7 @@
                   "type": "keyword"
                 },
                 "vlan": {
-                  "type": "integer"
+                  "type": "keyword"
                 }
               }
             },
@@ -281,9 +287,6 @@
                       "type": "text"
                     }
                   }
-                },
-                "ftime": {
-                  "type": "date"
                 },
                 "local_orig": {
                   "type": "keyword"
@@ -528,7 +531,7 @@
                 "cif_confidence": {
                   "type": "float"
                 },
-                "file_description": {
+                "file_desc": {
                   "type": "keyword",
                   "ignore_above": 1024,
                   "fields": {
@@ -547,28 +550,25 @@
                 "seen_where": {
                   "type": "keyword"
                 },
-                "confidence" : {
+                "confidence": {
                   "type": "float"
                 },
-                "threat_score" : {
+                "threat_score": {
                   "type": "float"
                 },
-                "verdict" : {
+                "verdict": {
                   "type": "keyword"
                 },
-                "verdict_source" : {
+                "verdict_source": {
                   "type": "keyword"
                 },
-                "associated" : {
+                "category": {
                   "type": "keyword"
                 },
-                "category" : {
+                "campaigns": {
                   "type": "keyword"
                 },
-                "campaigns" : {
-                  "type": "keyword"
-                },
-                "reports" : {
+                "reports": {
                   "type": "keyword"
                 }
               }
@@ -692,12 +692,6 @@
                   "type": "keyword"
                 },
                 "client_cert_subject": {
-                  "type": "keyword"
-                },
-                "auth_ticket_sha256": {
-                  "type": "keyword"
-                },
-                "new_ticket_sha256": {
                   "type": "keyword"
                 },
                 "cname": {
@@ -955,6 +949,13 @@
                 }
               }
             },
+            "multicast_participants": {
+              "properties": {
+                "participants": {
+                  "type": "ip"
+                }
+              }
+            },
             "mysql": {
               "properties": {
                 "arg": {
@@ -1153,6 +1154,62 @@
                 },
                 "xmt_time": {
                   "type": "date"
+                }
+              }
+            },
+            "ntp_control": {
+              "properties": {
+                "op_code": {
+                  "type": "long"
+                },
+                "sequence": {
+                  "type": "long"
+                },
+                "status": {
+                  "type": "long"
+                },
+                "association_id": {
+                  "type": "long"
+                },
+                "resp_bit": {
+                  "type": "keyword"
+                },
+                "err_bit": {
+                  "type": "keyword"
+                },
+                "more_bit": {
+                  "type": "keyword"
+                },
+                "data": {
+                  "type": "keyword"
+                },
+                "key_id": {
+                  "type": "long"
+                },
+                "crypto_checksum": {
+                  "type": "keyword"
+                }
+              }
+            },
+            "ntp_private": {
+              "properties": {
+                "req_code": {
+                  "type": "long"
+                },
+                "sequence": {
+                  "type": "long"
+                },
+                "implementation": {
+                  "type": "long"
+                },
+                "auth_bit": {
+                  "type": "keyword"
+                },
+                "err": {
+                  "type": "long"
+                },
+                "data": {
+                  "type": "keyword"
                 }
               }
             },
@@ -2572,10 +2629,16 @@
                     "L": {
                       "type": "keyword"
                     },
+                    "name": {
+                      "type": "keyword"
+                    },
                     "O": {
                       "type": "keyword"
                     },
                     "OU": {
+                      "type": "keyword"
+                    },
+                    "postalCode": {
                       "type": "keyword"
                     },
                     "pseudonym": {
@@ -2588,6 +2651,9 @@
                       "type": "keyword"
                     },
                     "ST": {
+                      "type": "keyword"
+                    },
+                    "street": {
                       "type": "keyword"
                     },
                     "title": {
@@ -2627,6 +2693,9 @@
                 },
                 "certificate_subject": {
                   "properties": {
+                    "businessCategory": {
+                      "type": "keyword"
+                    },
                     "C": {
                       "type": "keyword"
                     },
@@ -2648,7 +2717,16 @@
                     "initials": {
                       "type": "keyword"
                     },
+                    "jurisdictionC": {
+                      "type": "keyword"
+                    },
+                    "jurisdictionST": {
+                      "type": "keyword"
+                    },
                     "L": {
+                      "type": "keyword"
+                    },
+                    "name": {
                       "type": "keyword"
                     },
                     "O": {

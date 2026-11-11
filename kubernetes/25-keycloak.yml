@@ -35,11 +35,11 @@ spec:
     spec:
       containers:
       - name: keycloak-container
-        image: ghcr.io/idaholab/malcolm/keycloak:26.04.2
+        image: ghcr.io/idaholab/malcolm/keycloak:26.11.0
         imagePullPolicy: Always
         stdin: false
         tty: true
-        command: ["/usr/bin/tini"]
+        command: ["/usr/local/bin/tini"]
         args: ["--",
                "/usr/local/bin/docker-uid-gid-setup.sh",
                "/usr/local/bin/service_check_passthrough.sh",
@@ -75,6 +75,7 @@ spec:
         volumeMounts:
           - mountPath: /var/local/ca-trust/configmap
             name: keycloak-var-local-catrust-volume
+      terminationGracePeriodSeconds: 30
       volumes:
         - name: keycloak-var-local-catrust-volume
           configMap:
